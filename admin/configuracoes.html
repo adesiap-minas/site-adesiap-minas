@@ -1162,7 +1162,11 @@
             noticias:      'noticias.html',
             vagas:         'vagas.html',
         };
-        if (rotas[pagina] && pagina !== 'configuracoes') {
+        // Páginas já implementadas — navegar diretamente
+        const prontas = ['configuracoes', 'projetos'];
+        if (prontas.includes(pagina)) {
+            if (pagina !== 'configuracoes') window.location.href = rotas[pagina];
+        } else if (rotas[pagina]) {
             mostrarToast('Página em construção — em breve!', 'aviso');
         }
     }
