@@ -1,0 +1,2159 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Somos | Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis — Atualizadas conforme Diretrizes 2026 */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Tipografia */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        /* Utilitários */
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .bg-light {
+            background-color: var(--areia-fundo);
+        }
+
+        .bg-dark {
+            background-color: var(--azul-profundo);
+            color: #fff;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .accent-text {
+            color: var(--terracota-institucional);
+        }
+
+        .section-tag {
+            display: inline-block;
+            background-color: rgba(184, 92, 56, 0.1);
+            color: var(--terracota-institucional);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        /* Novo Estilo de Título de Impacto (Display Title) */
+        .display-title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.85;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            color: var(--azul-institucional);
+        }
+
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+
+        .display-title.light {
+            color: #fff;
+        }
+
+        .display-title.light span {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 767px) {
+            .display-title {
+                font-size: 3.2rem;
+            }
+
+            .display-title span {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Botões */
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            padding: 14px 34px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-institucional);
+            border-color: var(--azul-institucional);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-white {
+            display: inline-block;
+            background-color: transparent;
+            color: #fff;
+            padding: 14px 34px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+
+        .btn-outline-white:hover {
+            background-color: #fff;
+            color: var(--azul-profundo);
+            border-color: #fff;
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+
+        /* Header / Menu */
+        header {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--azul-institucional);
+            padding: 5px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-menu a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--azul-institucional);
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .main-menu a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .main-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--terracota-institucional);
+            transition: width 0.3s ease;
+        }
+
+        .main-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                padding: 40px 20px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+                overflow-y: auto;
+                gap: 0;
+            }
+
+            .main-menu.active {
+                left: 0;
+            }
+
+            .main-menu li a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+        }
+
+        /* Hero Section Específica */
+        .hero-qs {
+            height: 80vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(11, 31, 51, 0.85), rgba(11, 31, 51, 0.85)), url('Fotos/Hello Quem somos/quem-somos-hello.webp') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            color: #fff;
+            padding-top: calc(var(--header-height) + var(--topbar-height) + var(--topbar-height));
+        }
+
+        .hero-qs h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .hero-qs p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin-bottom: 35px;
+        }
+
+        .indicators-hero {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .ind-item h3 {
+            color: var(--ambar-impacto);
+            font-size: 3.5rem;
+            margin-bottom: 5px;
+            font-weight: 800;
+            display: flex;
+            align-items: baseline;
+            line-height: 1;
+        }
+
+        .ind-item .counter {
+            font-size: 3.5rem;
+            font-weight: 800;
+        }
+
+        .ind-item .symbol {
+            font-size: 2.2rem;
+            margin-left: 2px;
+            font-weight: 700;
+        }
+
+        .ind-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            opacity: 0.8;
+            display: block;
+        }
+
+        /* Timeline Trayjetória */
+        /* Timeline Trayjetória - Redesign Moderno */
+        .timeline-container {
+            position: relative;
+            padding: 60px 0 20px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 80px;
+            /* Alinhado com o centro do node */
+            left: 5%;
+            width: 90%;
+            height: 4px;
+            background: linear-gradient(to right, var(--azul-institucional), var(--terracota-institucional));
+            border-radius: 4px;
+            z-index: 1;
+            opacity: 0.2;
+        }
+
+        .timeline-item {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .timeline-node {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 4px solid var(--terracota-institucional);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(184, 92, 56, 0.3);
+            position: relative;
+        }
+
+        .timeline-item:hover .timeline-node {
+            transform: scale(1.3);
+            background: var(--terracota-institucional);
+            box-shadow: 0 0 25px rgba(184, 92, 56, 0.5);
+        }
+
+        .timeline-node::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--terracota-institucional);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-node::after {
+            background: #fff;
+        }
+
+        .timeline-content {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            border-top: 4px solid transparent;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .timeline-item:hover .timeline-content {
+            transform: translateY(-10px);
+            border-top-color: var(--terracota-institucional);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-year {
+            font-weight: 900;
+            font-size: 2rem;
+            color: var(--azul-institucional);
+            margin-bottom: 10px;
+            display: block;
+            line-height: 1;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Missão, Visão, Valores */
+        .mvv-card {
+            background: #fff;
+            padding: 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+
+        .mvv-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--terracota-institucional);
+        }
+
+        .mvv-icon {
+            font-size: 2.5rem;
+            color: var(--terracota-institucional);
+            margin-bottom: 25px;
+        }
+
+        .mvv-card h3 {
+            color: var(--azul-institucional);
+            margin-bottom: 20px;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .value-item {
+            background: var(--areia-fundo);
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            color: var(--azul-institucional);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            background: var(--terracota-institucional);
+            color: #fff;
+        }
+
+        /* Áreas de Atuação Grid */
+        .area-card {
+            position: relative;
+            height: 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: #fff;
+            transition: all 0.5s ease;
+        }
+
+        .area-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 1;
+        }
+
+        .area-card:hover {
+            transform: scale(1.03);
+        }
+
+        .area-card .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .area-card .icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--area-color);
+        }
+
+        .area-card h4 {
+            color: #fff;
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+
+        /* Cores das Áreas */
+        .area-econ {
+            --area-color: #D9902F;
+        }
+
+        .area-sust {
+            --area-color: #3B8C6E;
+        }
+
+        .area-infra {
+            --area-color: #12395D;
+        }
+
+        .area-social {
+            --area-color: #B85C38;
+        }
+
+        /* Princípios Governança */
+        .principals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .principal-item {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .principal-item h4 {
+            color: var(--ambar-impacto);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .principal-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Efeito de Bordas Animadas (Estilo Projetos) */
+        /* Nossos Valores Radial Style */
+        .values-section {
+            position: relative;
+            padding: 100px 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .values-radial-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 700px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .center-logo {
+            width: 160px;
+            height: 160px;
+            background: var(--azul-institucional);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 60px rgba(18, 57, 93, 0.2);
+            border: 10px solid #fff;
+            padding: 20px;
+        }
+
+        .center-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .value-node {
+            position: absolute;
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .value-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 15px;
+            border: 2px solid rgba(184, 92, 56, 0.1);
+            transition: all 0.4s ease;
+            color: var(--azul-institucional);
+            z-index: 3;
+        }
+
+        .value-node:hover .value-circle {
+            transform: scale(1.2) translateY(-5px);
+            color: #fff;
+            background: var(--terracota-institucional);
+            box-shadow: 0 15px 35px rgba(184, 92, 56, 0.4);
+            border-color: transparent;
+        }
+
+        .value-name {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .value-node:hover .value-name {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        /* Anéis concêntricos decorativos */
+        .radial-rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1.5px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rotateRing linear infinite;
+        }
+
+        @keyframes rotateRing {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        #values-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 991px) {
+            .values-radial-container {
+                height: auto;
+                flex-wrap: wrap;
+                gap: 40px;
+                padding: 40px 15px;
+            }
+
+            .center-logo,
+            .radial-rings {
+                display: none;
+            }
+
+            .value-node {
+                position: static !important;
+                width: calc(50% - 20px);
+                transform: none !important;
+            }
+
+            #values-canvas {
+                display: none;
+            }
+        }
+
+        /* Atuação - Diagrama de Venn */
+        .atuacao-section {
+            padding: 120px 0;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .venn-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .venn-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .venn-circle {
+            mix-blend-mode: multiply;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            transform-origin: center;
+        }
+
+        .circle-gov {
+            fill: rgba(184, 92, 56, 0.9);
+            animation: floatVenn 6s ease-in-out infinite;
+        }
+
+        .circle-priv {
+            fill: rgba(18, 57, 93, 0.9);
+            animation: floatVenn 8s ease-in-out infinite 1s;
+        }
+
+        .circle-soc {
+            fill: rgba(217, 144, 47, 0.9);
+            animation: floatVenn 7s ease-in-out infinite 0.5s;
+        }
+
+        .venn-wrapper:hover .venn-circle {
+            opacity: 0.6;
+        }
+
+        .venn-circle:hover {
+            transform: scale(1.08);
+            opacity: 1 !important;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes floatVenn {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(5px, -10px);
+            }
+        }
+
+        .venn-label {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            fill: #fff;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.4s ease;
+        }
+
+        .label-main {
+            font-size: 16px;
+        }
+
+        .label-sub {
+            font-size: 10px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .label-center {
+            font-size: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .principals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .principal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .principal-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            right: 30px;
+            height: 2px;
+            background: var(--terracota-institucional);
+            transform: scaleX(0);
+            transition: 0.4s;
+            transform-origin: left;
+        }
+
+        .principal-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-10px);
+            border-color: rgba(184, 92, 56, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .principal-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .principal-card i {
+            font-size: 2rem;
+            color: var(--terracota-institucional);
+            margin-bottom: 25px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .principal-card h4 {
+            color: #fff;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .principal-card p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+            transition: 0.3s;
+        }
+
+        .principal-card:hover p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 991px) {
+            .principals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .principals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .values-radial-container {
+            position: relative;
+            border-radius: 20px;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        @media (max-width: 991px) {
+            .venn-wrapper {
+                height: 400px;
+                margin-bottom: 40px;
+            }
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            border-radius: 20px;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: visible;
+        }
+
+        .about-image-wrapper::before,
+        .about-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            z-index: -1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .about-image-wrapper::before {
+            background-color: var(--azul-profundo);
+            transform: scale(0.95);
+        }
+
+        .about-image-wrapper::after {
+            background-color: var(--terracota-institucional);
+            transform: scale(0.95);
+        }
+
+        .about-image-wrapper:hover {
+            transform: scale(1.02);
+            animation: hoverPop 0.4s ease-out forwards;
+        }
+
+        .about-image-wrapper:hover::before {
+            opacity: 0.2;
+            transform: translateY(-20px) translateX(-20px);
+            animation: slick-hover-2 8s linear infinite;
+        }
+
+        .about-image-wrapper:hover::after {
+            opacity: 0.2;
+            transform: translateY(20px) translateX(20px);
+            animation: slick-hover 8s linear infinite reverse;
+        }
+
+        @keyframes hoverPop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes slick-hover {
+
+            0%,
+            100% {
+                transform: translateY(20px) translateX(20px);
+            }
+
+            50% {
+                transform: translateY(-20px) translateX(-20px);
+            }
+        }
+
+        @keyframes slick-hover-2 {
+
+            0%,
+            100% {
+                transform: translateY(-20px) translateX(-20px);
+            }
+
+            50% {
+                transform: translateY(20px) translateX(20px);
+            }
+        }
+
+        .about-img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+
+
+        @media (max-width: 991px) {
+            .hero-qs h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
+            .principals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- SEÇÃO CORPO TÉCNICO (Inspirado no Portfólio) --- */
+        .technical-staff-section {
+            padding: 100px 0;
+            background-color: #D35400;
+            /* Laranja vibrante do portfólio */
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .technical-staff-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L100 100 M100 0 L0 100" stroke="white" stroke-opacity="0.05" fill="none"/></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .staff-title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 50px;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+
+        .staff-title span {
+            display: block;
+            opacity: 0.6;
+            font-size: 4rem;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px 40px;
+            max-width: 900px;
+        }
+
+        .staff-pill {
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .staff-pill:hover {
+            transform: translateX(10px);
+        }
+
+        .staff-icon-box {
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--azul-institucional);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .staff-text-tag {
+            background: #fff;
+            color: #fff;
+            /* O texto terá a cor branca, o fundo será colorido via classes */
+            padding: 12px 30px 12px 45px;
+            border-radius: 0 30px 30px 0;
+            margin-left: -35px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            min-width: 280px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Efeito de "aba" ou dobra na etiqueta */
+        .staff-text-tag::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 15px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            clip-path: polygon(100% 0, 0 50%, 100% 100%);
+        }
+
+        /* Cores das Etiquetas (Inspiradas no Portfólio) */
+        .staff-blue .staff-text-tag {
+            background: #1F4E79;
+            color: #fff;
+        }
+
+        .staff-amber .staff-text-tag {
+            background: #BF8F00;
+            color: #fff;
+        }
+
+        .staff-green .staff-text-tag {
+            background: #548235;
+            color: #fff;
+        }
+
+        .staff-grey .staff-text-tag {
+            background: #A5A5A5;
+            color: #fff;
+        }
+
+        .staff-black .staff-text-tag {
+            background: #262626;
+            color: #fff;
+        }
+
+        .staff-maroon .staff-text-tag {
+            background: #843C39;
+            color: #fff;
+        }
+
+        .staff-gold .staff-text-tag {
+            background: #C5A15B;
+            color: #fff;
+        }
+
+        @media (max-width: 767px) {
+            .staff-title {
+                font-size: 3rem;
+            }
+
+            .staff-title span {
+                font-size: 2.5rem;
+            }
+
+            .staff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .staff-text-tag {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root {
+            --topbar-height: 36px;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--topbar-height);
+            background-color: var(--azul-institucional);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar-inner {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .topbar-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.72rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .topbar-link:hover {
+            color: #fff;
+        }
+
+        .topbar-link i {
+            color: #25D366;
+            font-size: 0.9rem;
+        }
+
+        .topbar-link strong {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .topbar-sep {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .tb-short {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .topbar-link strong {
+                display: none;
+            }
+
+            .tb-full {
+                display: none;
+            }
+
+            .tb-short {
+                display: inline;
+            }
+
+            .topbar-link {
+                font-size: 0.62rem;
+                letter-spacing: 0;
+            }
+
+            .topbar-inner {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <!-- Header -->
+
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span
+                    class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span
+                    class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span
+                    class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html" style="color: var(--terracota-institucional);">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 1. HERO INSTITUCIONAL -->
+    <section class="hero-qs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 reveal-on-scroll">
+                    <span class="section-tag"
+                        style="background: rgba(255,255,255,0.1); color: var(--ambar-impacto);">Desde 2003</span>
+                    <h1>Há mais de duas décadas transformando investimentos em benefícios para a sociedade</h1>
+                    <p>A ADESIAP Minas atua no desenvolvimento econômico, social, ambiental e territorial por meio da
+                        gestão estratégica de programas e projetos.</p>
+
+                    <div class="indicators-hero">
+                        <div class="ind-item">
+                            <h3><span class="symbol">+</span><span class="counter" data-target="23">0</span></h3>
+                            <span class="ind-label">Anos de História</span>
+                        </div>
+                        <div class="ind-item">
+                            <h3><span class="symbol">+</span><span class="counter" data-target="100">0</span></h3>
+                            <span class="ind-label">Projetos Ativos</span>
+                        </div>
+                        <div class="ind-item">
+                            <h3><span class="symbol">+</span><span class="counter" data-target="400">0</span><span
+                                    class="symbol"> Mil</span></h3>
+                            <span class="ind-label">Beneficiados</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. QUEM SOMOS (REMODELADA) -->
+    <section class="section-padding bg-dark">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <div class="about-image-wrapper">
+                        <img src="Fotos/Seção Nossa Essência/Nossa Essência.png" alt="Equipe Adesiap" class="about-img">
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <div class="ps-lg-5">
+                        <h2 class="display-title light">
+                            <span>EVOLUÇÃO</span>
+                            INSTITUCIONAL
+                        </h2>
+                        <p style="color: rgba(255,255,255,0.7);">Fundada em 2003 como ADESITA, nossa organização nasceu
+                            com a missão de fomentar o desenvolvimento de Itabirito e região. Com o sucesso das
+                            operações e o reconhecimento de nossa capacidade técnica, evoluímos para ADESIAP e, mais
+                            recentemente, consolidamos nossa marca como <strong>ADESIAP Minas</strong>.</p>
+                        <p style="color: rgba(255,255,255,0.7);">Hoje, atuamos de forma multissetorial, conectando as
+                            necessidades do poder público às oportunidades da iniciativa privada, sempre com o foco no
+                            impacto real para a sociedade civil.</p>
+                        <p style="color: rgba(255,255,255,0.7);">Somos uma entidade sem fins lucrativos que acredita na
+                            gestão profissional como ferramenta de transformação territorial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. NOSSA TRAJETÓRIA (REMODELADA) -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 reveal-on-scroll">
+                    <h2 class="display-title">
+                        <span>NOSSA</span>
+                        TRAJETÓRIA
+                    </h2>
+                    <p>Duas décadas de crescimento, inovação e resultados que transformam territórios.</p>
+                </div>
+            </div>
+            <div class="mt-5 reveal-on-scroll delay-1">
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div class="row">
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2003</span>
+                                <p class="timeline-desc">Fundação da ADESITA em Itabirito/MG</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2007</span>
+                                <p class="timeline-desc">Recebemos o título de Utilidade Pública</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2007</span>
+                                <p class="timeline-desc">Qualificada como OSCIP — publicado no Diário Oficial da União</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2015</span>
+                                <p class="timeline-desc">Expansão de Projetos e Parcerias Estratégicas</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2020</span>
+                                <p class="timeline-desc">Transformação Institucional para ADESIAP</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 timeline-item">
+                            <div class="timeline-node"></div>
+                            <div class="timeline-content">
+                                <span class="timeline-year">2024</span>
+                                <p class="timeline-desc">Consolidação ADESIAP Minas e Atuação Nacional</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. NOSSA ESSÊNCIA (MISSÃO, VISÃO E VALORES - REMODELADA) -->
+    <section class="section-padding" id="essencia"
+        style="background-color: var(--terracota-institucional); color: #fff;">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <h2 class="display-title light">
+                        <span>NOSSA</span>
+                        ESSÊNCIA
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Missão e Visão Cards -->
+            <div class="row g-4 mb-5">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <div class="mvv-card"
+                        style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 40px;">
+                        <div class="mvv-icon" style="color: #fff; font-size: 2rem; margin-bottom: 20px;"><i
+                                class="fas fa-bullseye"></i></div>
+                        <h3 class="display-title light" style="font-size: 2.2rem; margin-bottom: 15px;">MISSÃO</h3>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 1rem;">Promover o desenvolvimento sustentável
+                            dos territórios através de gestão técnica de excelência, articulando parcerias que
+                            transformam investimentos em impacto social e econômico real.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <div class="mvv-card"
+                        style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 40px;">
+                        <div class="mvv-icon" style="color: #fff; font-size: 2rem; margin-bottom: 20px;"><i
+                                class="fas fa-eye"></i></div>
+                        <h3 class="display-title light" style="font-size: 2.2rem; margin-bottom: 15px;">VISÃO</h3>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 1rem;">Ser a principal referência nacional em
+                            governança e execução de projetos de desenvolvimento territorial, reconhecida pela
+                            integridade, inovação e resultados tangíveis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Título Valores -->
+            <div class="text-center mt-5 mb-4 reveal-on-scroll">
+                <h2 class="display-title light" style="font-size: 3.5rem;">VALORES</h2>
+            </div>
+
+            <!-- Radial Values Container -->
+            <div class="values-radial-container reveal-on-scroll">
+                <canvas id="values-canvas"></canvas>
+
+                <div class="radial-rings">
+                    <div class="ring" style="width: 300px; height: 300px; animation-duration: 40s;"></div>
+                    <div class="ring"
+                        style="width: 500px; height: 500px; animation-duration: 60s; animation-direction: reverse;">
+                    </div>
+                    <div class="ring" style="width: 650px; height: 650px; animation-duration: 80s;"></div>
+                </div>
+
+                <div class="center-logo">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas">
+                </div>
+
+                <!-- Nós de Valores -->
+                <div class="value-node" data-icon="fas fa-lightbulb" data-name="Inovação"></div>
+                <div class="value-node" data-icon="fas fa-hands-helping" data-name="Empatia"></div>
+                <div class="value-node" data-icon="fas fa-user-check" data-name="Responsabilidade"></div>
+                <div class="value-node" data-icon="fas fa-users" data-name="Unidade"></div>
+                <div class="value-node" data-icon="fas fa-sync-alt" data-name="Adaptabilidade"></div>
+                <div class="value-node" data-icon="fas fa-rocket" data-name="Eficiência"></div>
+                <div class="value-node" data-icon="fas fa-heart" data-name="Respeito"></div>
+                <div class="value-node" data-icon="fas fa-eye" data-name="Transparência"></div>
+                <div class="value-node" data-icon="fas fa-globe-americas" data-name="Impacto Social"></div>
+                <div class="value-node" data-icon="fas fa-balance-scale" data-name="Ética"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ATUAÇÃO (LAYOUT DUAS COLUNAS) -->
+    <section class="section-padding bg-light" id="atuacao">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Coluna Esquerda: Diagrama -->
+                <div class="col-lg-6 reveal-on-scroll">
+                    <div class="venn-wrapper">
+                        <svg viewBox="0 0 600 600" class="venn-svg">
+                            <!-- Círculos com alta opacidade -->
+                            <circle class="venn-circle circle-gov" cx="300" cy="220" r="180" />
+                            <circle class="venn-circle circle-priv" cx="390" cy="380" r="180" />
+                            <circle class="venn-circle circle-soc" cx="210" cy="380" r="180" />
+
+                            <!-- Rótulos em Branco e Centralizados -->
+                            <text x="300" y="190" text-anchor="middle" class="venn-label label-main">GOVERNO</text>
+                            <text x="300" y="210" text-anchor="middle" class="venn-label label-sub">1º SETOR</text>
+
+                            <text x="420" y="390" text-anchor="middle" class="venn-label label-main">INICIATIVA</text>
+                            <text x="420" y="415" text-anchor="middle" class="venn-label label-main">PRIVADA</text>
+                            <text x="420" y="435" text-anchor="middle" class="venn-label label-sub">2º SETOR</text>
+
+                            <text x="180" y="400" text-anchor="middle" class="venn-label label-main">OSC's</text>
+                            <text x="180" y="420" text-anchor="middle" class="venn-label label-sub">3º SETOR</text>
+
+                            <!-- Centro -->
+                            <text x="300" y="340" text-anchor="middle" class="venn-label label-center">SOCIEDADE</text>
+                            <text x="300" y="370" text-anchor="middle" class="venn-label label-center">CIVIL</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Conteúdo -->
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <div class="ps-lg-5">
+                        <h2 class="display-title">
+                            <span>ATUAÇÃO</span>
+                            INTERSETORIAL
+                        </h2>
+                        <p>A ADESIAP Minas atua como uma plataforma de articulação estratégica, conectando as esferas
+                            pública, privada e o terceiro setor. Nosso papel é traduzir as necessidades dos territórios
+                            em projetos viáveis, garantindo que investimentos e políticas públicas se transformem em
+                            resultados tangíveis para a população.</p>
+                        <p>Através desta sinergia, potencializamos a geração de valor compartilhado. O resultado é um
+                            ecossistema de desenvolvimento territorial robusto, pautado pela transparência e focado na
+                            transformação social de longo prazo, onde o Governo, as Empresas e as Organizações da
+                            Sociedade Civil trabalham de forma coordenada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. GOVERNANÇA (REMODELADA PREMIUM) -->
+    <section class="section-padding" style="background-color: #0b1f33; position: relative; overflow: hidden;">
+        <!-- Elemento decorativo de fundo -->
+        <div
+            style="position: absolute; top: -10%; right: -5%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(184,92,56,0.05) 0%, transparent 70%); pointer-events: none;">
+        </div>
+
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8 reveal-on-scroll">
+                    <h2 class="display-title light" style="font-size: 4rem;">
+                        <span>GOVERNANÇA</span>
+                        ÉTICA E TRANSPARÊNCIA
+                    </h2>
+                </div>
+            </div>
+
+            <div class="principals-grid">
+                <!-- Legalidade -->
+                <div class="principal-card reveal-on-scroll">
+                    <i class="fas fa-gavel"></i>
+                    <h4>Legalidade</h4>
+                    <p>Conformidade total com a legislação vigente e os marcos regulatórios do terceiro setor.</p>
+                </div>
+
+                <!-- Transparência -->
+                <div class="principal-card reveal-on-scroll delay-1">
+                    <i class="fas fa-eye"></i>
+                    <h4>Transparência</h4>
+                    <p>Acesso claro, objetivo e voluntário às informações e resultados institucionais.</p>
+                </div>
+
+                <!-- Eficiência -->
+                <div class="principal-card reveal-on-scroll delay-2">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Eficiência</h4>
+                    <p>Otimização inteligente de recursos para maximizar o impacto em cada território.</p>
+                </div>
+
+                <!-- Moralidade -->
+                <div class="principal-card reveal-on-scroll">
+                    <i class="fas fa-balance-scale"></i>
+                    <h4>Moralidade</h4>
+                    <p>Ética inegociável e integridade em todas as esferas de atuação da ADESIAP.</p>
+                </div>
+
+                <!-- Economicidade -->
+                <div class="principal-card reveal-on-scroll delay-1">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Economicidade</h4>
+                    <p>Gestão técnica rigorosa voltada para o melhor custo-benefício social e sustentabilidade.</p>
+                </div>
+
+                <!-- Impessoalidade -->
+                <div class="principal-card reveal-on-scroll delay-2">
+                    <i class="fas fa-user-shield"></i>
+                    <h4>Impessoalidade</h4>
+                    <p>Foco exclusivo no interesse público e institucional, sem privilégios ou favorecimentos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CORPO TÉCNICO -->
+    <section class="technical-staff-section" id="corpo-tecnico">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 reveal-on-scroll">
+                    <h2 class="staff-title">
+                        <span>CORPO</span>
+                        TÉCNICO
+                    </h2>
+                </div>
+                <div class="col-lg-7">
+                    <div class="staff-grid">
+                        <!-- Gerenciamento de Projetos -->
+                        <div class="staff-pill staff-blue reveal-on-scroll">
+                            <div class="staff-icon-box"><i class="fas fa-project-diagram"></i></div>
+                            <div class="staff-text-tag">Gerenciamento de<br>projetos</div>
+                        </div>
+
+                        <!-- Direito -->
+                        <div class="staff-pill staff-amber reveal-on-scroll delay-1">
+                            <div class="staff-icon-box"><i class="fas fa-gavel"></i></div>
+                            <div class="staff-text-tag">Direito</div>
+                        </div>
+
+                        <!-- Ciências Econômicas -->
+                        <div class="staff-pill staff-green reveal-on-scroll">
+                            <div class="staff-icon-box"><i class="fas fa-chart-line"></i></div>
+                            <div class="staff-text-tag">Ciências<br>Econômicas</div>
+                        </div>
+
+                        <!-- Gestão de Pessoas -->
+                        <div class="staff-pill staff-grey reveal-on-scroll delay-1">
+                            <div class="staff-icon-box"><i class="fas fa-id-card"></i></div>
+                            <div class="staff-text-tag">Gestão de<br>Pessoas</div>
+                        </div>
+
+                        <!-- Engenharia -->
+                        <div class="staff-pill staff-black reveal-on-scroll">
+                            <div class="staff-icon-box"><i class="fas fa-cogs"></i></div>
+                            <div class="staff-text-tag">Engenharia de<br>Produção e Bioprocessos</div>
+                        </div>
+
+                        <!-- Administração -->
+                        <div class="staff-pill staff-maroon reveal-on-scroll delay-1">
+                            <div class="staff-icon-box"><i class="fas fa-briefcase"></i></div>
+                            <div class="staff-text-tag">Administração</div>
+                        </div>
+
+                        <!-- Tecnologia e Design -->
+                        <div class="staff-pill staff-gold reveal-on-scroll">
+                            <div class="staff-icon-box"><i class="fas fa-laptop-code"></i></div>
+                            <div class="staff-text-tag">Tecnologia<br>e Design</div>
+                        </div>
+
+                        <!-- Engenheiro Civil -->
+                        <div class="staff-pill staff-blue reveal-on-scroll delay-1">
+                            <div class="staff-icon-box"><i class="fas fa-hard-hat"></i></div>
+                            <div class="staff-text-tag">Engenharia<br>Civil</div>
+                        </div>
+
+                        <!-- Geologia -->
+                        <div class="staff-pill staff-green reveal-on-scroll">
+                            <div class="staff-icon-box"><i class="fas fa-mountain"></i></div>
+                            <div class="staff-text-tag">Geologia</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
+
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i
+                            class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico"
+                        target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"
+                            style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Smooth Scroll
+        let lenis;
+        const initSmoothScroll = () => {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+            });
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // Lógica do Botão Voltar ao Topo
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                lenis.scrollTo(0);
+            });
+        };
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        const initAnimations = () => {
+
+
+            // Reveal on Scroll
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                if (el.classList.contains('delay-2')) delay = 0.4;
+                if (el.classList.contains('delay-3')) delay = 0.6;
+
+                gsap.from(el, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    delay: delay,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+
+            // Counters logic
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                gsap.to(counter, {
+                    innerText: target,
+                    duration: 2,
+                    snap: { innerText: 1 },
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: "top 90%",
+                    },
+                    onUpdate: function () {
+                        counter.innerText = Math.ceil(this.targets()[0].innerText);
+                    }
+                });
+            });
+        };
+
+        window.onload = () => {
+            initSmoothScroll();
+            initAnimations();
+            initMobileMenu();
+            initRadialValues();
+        };
+
+        // Classe de Partículas (Reutilizada da Home para consistência)
+        class ParticleNetwork {
+            constructor(canvasId, particleCount = 50) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.width = this.canvas.width = this.canvas.offsetWidth;
+                this.height = this.canvas.height = this.canvas.offsetHeight;
+
+                for (let i = 0; i < particleCount; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.width,
+                        y: Math.random() * this.height,
+                        vx: (Math.random() - 0.5) * 0.8,
+                        vy: (Math.random() - 0.5) * 0.8,
+                        radius: Math.random() * 2 + 1
+                    });
+                }
+                this.animate();
+            }
+            animate() {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                this.ctx.fillStyle = 'rgba(18, 57, 93, 0.4)';
+                for (let p of this.particles) {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > this.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > this.height) p.vy *= -1;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        function initRadialValues() {
+            const container = document.querySelector('.values-radial-container');
+            const nodes = document.querySelectorAll('.value-node');
+            if (!container || nodes.length === 0) return;
+
+            const radius = window.innerWidth > 768 ? 280 : 0; // Raio da órbita
+            const total = nodes.length;
+
+            nodes.forEach((node, i) => {
+                const icon = node.getAttribute('data-icon');
+                const name = node.getAttribute('data-name');
+
+                node.innerHTML = `
+                    <div class="value-circle"><i class="${icon}"></i></div>
+                    <div class="value-name">${name}</div>
+                `;
+
+                if (window.innerWidth > 991) {
+                    const angle = (i * (360 / total)) * (Math.PI / 180);
+                    const x = Math.cos(angle) * radius;
+                    const y = Math.sin(angle) * radius;
+                    node.style.transform = `translate(${x}px, ${y}px)`;
+                }
+            });
+
+            new ParticleNetwork('values-canvas', 60);
+        }
+
+        function initMobileMenu() {
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mainMenu = document.getElementById('main-menu');
+
+            if (mobileBtn && mainMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mainMenu.classList.toggle('active');
+                    const icon = mobileBtn.querySelector('i');
+                    if (mainMenu.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                const menuLinks = mainMenu.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mainMenu.classList.remove('active');
+                        const icon = mobileBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+

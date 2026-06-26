@@ -1,0 +1,892 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparência | Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .display-title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.85;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            color: var(--azul-institucional);
+        }
+
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 767px) {
+            .display-title {
+                font-size: 3.2rem;
+            }
+
+            .display-title span {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Header / Menu */
+        header {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--azul-institucional);
+            padding: 5px;
+        }
+
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-menu a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--azul-institucional);
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .main-menu a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .main-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--terracota-institucional);
+            transition: width 0.3s ease;
+        }
+
+        .main-menu a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                padding: 40px 20px;
+                overflow-y: auto;
+                gap: 0;
+            }
+
+            .main-menu.active {
+                left: 0;
+            }
+
+            .main-menu li a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+        }
+
+        /* Hero */
+        .hero-qs {
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 80px);
+            padding-bottom: 80px;
+            min-height: 450px;
+            background: linear-gradient(rgba(11, 31, 51, 0.85), rgba(11, 31, 51, 0.85)), url('Fotos/Hello Quem somos/quem-somos-hello.webp') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .hero-qs h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero-qs p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.25rem;
+            max-width: 700px;
+        }
+
+        /* Tabs and Docs */
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            border-bottom: 2px solid var(--areia-fundo);
+            margin-bottom: 40px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: var(--texto-secundario);
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.88rem;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .tab-btn.active {
+            color: var(--terracota-institucional);
+            border-bottom-color: var(--terracota-institucional);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            background: #fff;
+            border: 1px solid var(--areia-fundo);
+            border-radius: 12px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .doc-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(18, 57, 93, 0.1);
+            border-color: var(--terracota-institucional);
+        }
+
+        .doc-item:hover .fa-download {
+            color: var(--azul-institucional) !important;
+            transform: translateY(2px);
+        }
+
+        .fa-download {
+            transition: all 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+    
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root { --topbar-height: 36px; }
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        </style>
+</head>
+
+<body>
+
+    
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html" style="color: var(--terracota-institucional);">Transparência</a>
+                    </li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-qs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1>Transparência</h1>
+                    <p style="margin-bottom: 20px;">A Adesiap Minas tem o compromisso de promover a transparência em
+                        todas as suas atividades e ações. Acreditamos que a transparência é fundamental para fortalecer
+                        a confiança e o engajamento dos nossos parceiros, colaboradores e da sociedade em geral.</p>
+                    <p style="margin-bottom: 20px;">Reafirmamos nosso compromisso acreditamos que o acesso à informação
+                        é um direito fundamental da sociedade. Estamos em constante busca pela melhoria contínua e
+                        incentivamos você a explorar nossa página de transparência e nos contatar caso tenha qualquer
+                        dúvida ou sugestão.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+
+            <div class="row reveal-on-scroll delay-1">
+                <div class="col-12">
+                    <div class="tabs-nav">
+                        <button class="tab-btn active" onclick="openTab(event, 'inst')">Documentos
+                            Institucionais</button>
+                        <button class="tab-btn" onclick="openTab(event, 'contas')">Prestação de Contas</button>
+                        <button class="tab-btn" onclick="openTab(event, 'relatorios')">Relatórios e Atas</button>
+                        <button class="tab-btn" onclick="openTab(event, 'editais')">Editais</button>
+                        <button class="tab-btn" onclick="openTab(event, 'parcerias')">Parcerias Públicas e Privadas</button>
+                        <button class="tab-btn" onclick="openTab(event, 'mural')">Contratos e Parcerias</button>
+                    </div>
+
+                    <div id="inst" class="tab-content" style="display: block;">
+                        <div class="doc-list"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                            <a href="Docs/ESTATUTO.docx" target="_blank" class="doc-item">
+                                <i class="fas fa-file-word"
+                                    style="font-size: 2.2rem; color: var(--azul-institucional); margin-right: 18px;"></i>
+                                <div>
+                                    <h4
+                                        style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                        Estatuto Social</h4>
+                                    <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                        DOCX</span>
+                                </div>
+                                <i class="fas fa-download"
+                                    style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                            </a>
+
+                            <a href="Docs/ADESIAP - Portfólio.docx" target="_blank" class="doc-item">
+                                <i class="fas fa-file-word"
+                                    style="font-size: 2.2rem; color: var(--azul-institucional); margin-right: 18px;"></i>
+                                <div>
+                                    <h4
+                                        style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                        Portfólio Institucional</h4>
+                                    <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                        DOCX</span>
+                                </div>
+                                <i class="fas fa-download"
+                                    style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="contas" class="tab-content">
+                        <!-- Ano 2024 -->
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3
+                                style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>2024
+                            </h3>
+                            <div class="doc-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Prestação de Contas Anual</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Balanço Financeiro</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Ano 2023 -->
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3
+                                style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>2023
+                            </h3>
+                            <div class="doc-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Prestação de Contas 2023</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="relatorios" class="tab-content">
+                        <!-- Ano 2024 -->
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3
+                                style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>2024
+                            </h3>
+                            <div class="doc-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Relatório de Gestão (1º Sem)</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Ano 2023 -->
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3
+                                style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>2023
+                            </h3>
+                            <div class="doc-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Relatório Anual de Atividades</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="editais" class="tab-content">
+                        <!-- Ano 2024 -->
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3
+                                style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="far fa-calendar-alt" style="margin-right: 10px;"></i>2024
+                            </h3>
+                            <div class="doc-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <a href="#" target="_blank" class="doc-item">
+                                    <i class="fas fa-file-pdf"
+                                        style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4
+                                            style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">
+                                            Chamamento Público 01/2024</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Baixar arquivo
+                                            PDF</span>
+                                    </div>
+                                    <i class="fas fa-download"
+                                        style="margin-left: auto; color: var(--terracota-institucional); font-size: 1.2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parcerias Públicas e Privadas -->
+                    <div id="parcerias" class="tab-content">
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3 style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="fas fa-handshake" style="margin-right: 10px;"></i>Parcerias Públicas e Privadas
+                            </h3>
+                            <div class="doc-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <div class="doc-item" style="opacity: 0.5; cursor: default;">
+                                    <i class="fas fa-file-pdf" style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4 style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">Documentos em breve</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Em atualização</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contratos e Parcerias -->
+                    <div id="mural" class="tab-content">
+                        <div class="year-section" style="margin-bottom: 40px;">
+                            <h3 style="border-bottom: 2px solid var(--areia-fundo); padding-bottom: 10px; margin-bottom: 20px; color: var(--terracota-institucional); font-size: 1.5rem;">
+                                <i class="fas fa-clipboard-list" style="margin-right: 10px;"></i>Contratos e Parcerias
+                            </h3>
+                            <div class="doc-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                                <div class="doc-item" style="opacity: 0.5; cursor: default;">
+                                    <i class="fas fa-file-pdf" style="font-size: 2.2rem; color: #d32f2f; margin-right: 18px;"></i>
+                                    <div>
+                                        <h4 style="margin-bottom: 2px; font-size: 1.15rem; color: var(--azul-institucional);">Documentos em breve</h4>
+                                        <span style="font-size: 0.85rem; color: var(--texto-secundario);">Em atualização</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openTab(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).style.display = 'block';
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Menu Mobile Script
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.querySelector('.main-menu');
+
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Initialize Animations
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.from(".hero-qs h1, .hero-qs p", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, delay: 0.2 });
+            gsap.from(".reveal-on-scroll", { y: 30, opacity: 0, duration: 0.8, scrollTrigger: ".reveal-on-scroll" });
+        });
+    </script>
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        // Lógica do Botão Voltar ao Topo
+        (function () {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+

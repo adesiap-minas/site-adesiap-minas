@@ -1,0 +1,3174 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome (CDN para garantir carregamento dos ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis */
+        /* Base e Variáveis — Atualizadas conforme Diretrizes 2026 */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Tipografia */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        /* Utilitários */
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .bg-light {
+            background-color: var(--areia-fundo);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .accent-text {
+            color: var(--terracota-institucional);
+        }
+
+        .impact-text {
+            color: var(--ambar-impacto);
+        }
+
+        /* Botões */
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            border-color: var(--azul-institucional);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--azul-institucional);
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 4px;
+            border: 2px solid var(--azul-institucional);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--terracota-institucional);
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+
+        /* Header e Navegação (Estilo APPA) */
+        header {
+            position: fixed;
+            top: var(--topbar-height);
+            width: 100%;
+            height: var(--header-height);
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-menu li a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 10px 0;
+            transition: color 0.3s;
+            color: var(--azul-institucional);
+        }
+
+        /* Efeito de hover usando o terracota */
+        .main-menu li a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .main-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--terracota-institucional);
+            transition: width 0.3s;
+        }
+
+        .main-menu li a:hover::after {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            margin-top: calc(var(--header-height) + var(--topbar-height));
+            height: 80vh;
+            min-height: 600px;
+            background-image: linear-gradient(rgba(11, 31, 51, 0.5),
+                    rgba(18, 57, 93, 0.4)), url('Fotos/Hello Index/background-Hello-index.png');
+            background-size: cover;
+            background-position: 100% center;
+            /* Garante que o lado direito seja priorizado */
+            display: flex;
+            align-items: center;
+            color: #fff;
+            overflow: visible;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 20;
+        }
+
+        .hero h1,
+        .hero p {
+            position: relative;
+            z-index: 21;
+        }
+
+        .hero .btn-primary,
+        .hero .btn-outline {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: inline-block !important;
+            position: relative;
+            z-index: 25;
+            margin-top: 25px;
+        }
+
+        .hero .btn-primary {
+            background-color: var(--terracota-institucional) !important;
+            color: #fff !important;
+            border-color: var(--terracota-institucional) !important;
+        }
+
+        .hero .btn-outline {
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #fff;
+        }
+
+        .hero p {
+            color: #e0e0e0;
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Indicadores / Impacto */
+        .impact-box {
+            background: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+
+        .impact-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-bottom: 3px solid var(--terracota-institucional);
+            /* Detalhe terracota */
+        }
+
+        .impact-box h3 {
+            font-size: 3rem;
+            color: var(--azul-institucional);
+            margin-bottom: 10px;
+        }
+
+        .impact-box p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Serviços e Governança */
+        .service-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Portfólio (Grid Estilo APPA) */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-overlay p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Responsivo e Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--azul-institucional);
+            padding: 5px;
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                padding: 40px 20px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+                overflow-y: auto;
+            }
+
+            .main-menu.active {
+                left: 0;
+            }
+
+            .main-menu li a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+
+            /* Ajustes Tipográficos Mobile */
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .impact-box h3 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .section-padding {
+                padding: 50px 0;
+            }
+
+            /* Ajuste do Preloader para caber na tela do celular */
+            .preloader-text-container {
+                gap: 5px;
+                flex-wrap: wrap;
+                max-width: 95vw;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        /* --- GRÁFICO RADIAL DE INDICADORES (Inspirado em Rock Group) --- */
+        .radial-impact-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .radial-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+        }
+
+        .radial-center-text h3 {
+            font-size: 2.8rem;
+            margin-bottom: 0;
+            line-height: 1;
+            color: var(--azul-institucional);
+        }
+
+        .radial-center-text p {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .radial-svg {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            /* Não é mais necessário rotacionar pois o path do pino já foi desenhado começando do topo (12h) */
+            overflow: visible;
+        }
+
+        .radial-svg .arc {
+            will-change: stroke-dashoffset;
+        }
+
+        .indicator-label {
+            position: absolute;
+            text-align: center;
+            width: 150px;
+            z-index: 10;
+            background: rgba(244, 244, 244, 0.8);
+            padding: 5px;
+            border-radius: 8px;
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .radial-impact-container.active .indicator-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .indicator-label h4 {
+            font-size: 1.8rem;
+            margin: 10px 0 0 0;
+            color: var(--azul-institucional);
+        }
+
+        .indicator-label span.desc {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            line-height: 1.2;
+            display: block;
+        }
+
+        /* Posições dos Rótulos (Layout Simétrico e Espaçoso) */
+        .label-tl {
+            top: -10px;
+            left: -50px;
+            text-align: center;
+        }
+
+        .label-tr {
+            top: -10px;
+            right: -50px;
+            text-align: center;
+        }
+
+        .label-bl {
+            bottom: -10px;
+            left: -50px;
+            text-align: center;
+        }
+
+        .label-br {
+            bottom: -10px;
+            right: -50px;
+            text-align: center;
+        }
+
+        /* Linhas Pontilhadas (Dentro do SVG) */
+        .svg-dotted-line {
+            stroke-width: 2;
+            stroke-dasharray: 4, 4;
+            opacity: 0;
+            will-change: opacity;
+        }
+
+        /* Ajuste Mobile para o Radial */
+        @media (max-width: 768px) {
+            .radial-impact-container {
+                max-width: 320px;
+                padding: 60px 0;
+            }
+
+            .radial-center-text {
+                top: 40%;
+            }
+
+            /* Sobe o texto um pouco porque o pino tem uma ponta longa pra baixo */
+            .radial-center-text h3 {
+                font-size: 1.8rem;
+            }
+
+            .indicator-label {
+                width: 110px;
+                background: none;
+            }
+
+            .indicator-label h4 {
+                font-size: 1.4rem;
+            }
+
+            .indicator-label span.desc {
+                font-size: 0.75rem;
+            }
+
+            .label-tl {
+                top: -40px;
+                left: -20px;
+            }
+
+            .label-tr {
+                top: -40px;
+                right: -20px;
+            }
+
+            .label-bl {
+                bottom: -40px;
+                left: -20px;
+            }
+
+            .label-br {
+                bottom: -40px;
+                right: -20px;
+            }
+
+            .dotted-line {
+                display: none;
+                /* Oculta as linhas para evitar poluição visual no celular */
+            }
+        }
+
+        /* --- PRELOADER INSPIRADO NO PIXY --- */
+        #custom-preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+
+        .preloader-text-container {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            /* Coloca as palavras na mesma linha */
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            /* Espaçamento entre as palavras */
+            z-index: 1;
+        }
+
+        .preloader-word {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            /* Tamanho fluido: min 1.5rem, escala 5vw, max 3.5rem */
+            font-weight: 800;
+            color: var(--azul-institucional);
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+            filter: blur(5px);
+            margin: 0;
+            display: inline-block;
+        }
+
+        .preloader-reveal-container {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .preloader-logo {
+            max-height: 126px;
+            /* Aumentado em mais 20% (era 105px) */
+            max-width: 80vw;
+            /* Garante que nunca ultrapasse a largura da tela */
+            height: auto;
+            /* Mantém a proporção se a largura for espremida */
+            opacity: 0;
+            width: auto;
+            transform: scale(0.9);
+        }
+
+        .reveal-box {
+            position: absolute;
+            top: -10px;
+            bottom: -10px;
+            left: 0;
+            width: 0%;
+            background-color: var(--azul-institucional);
+            z-index: 3;
+        }
+
+        /* Animações Textos */
+        @keyframes textEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes textExit {
+            to {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+        }
+
+        .w1 {
+            animation: textEnter 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) forwards 0.2s, textExit 0.4s ease-in forwards 1.7s;
+        }
+
+        .w2 {
+            animation: textEnter 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) forwards 0.4s, textExit 0.4s ease-in forwards 1.7s;
+        }
+
+        .w3 {
+            animation: textEnter 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) forwards 0.6s, textExit 0.4s ease-in forwards 1.7s;
+        }
+
+        .w4 {
+            animation: textEnter 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) forwards 0.8s, textExit 0.4s ease-in forwards 1.7s;
+        }
+
+        /* Animações Logo e Box */
+        @keyframes boxSweepRight {
+            0% {
+                left: 0;
+                width: 0%;
+            }
+
+            50% {
+                left: 0;
+                width: 100%;
+            }
+
+            51% {
+                left: auto;
+                right: 0;
+                width: 100%;
+            }
+
+            100% {
+                left: auto;
+                right: 0;
+                width: 0%;
+            }
+        }
+
+        @keyframes logoReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            1% {
+                opacity: 1;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .reveal-box {
+            animation: boxSweepRight 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards 2.0s;
+        }
+
+        .preloader-logo {
+            animation: logoReveal 0.45s ease-out forwards 2.45s, textExit 0.6s ease-in forwards 3.8s;
+        }
+
+        body.preloader-active {
+            overflow: hidden;
+        }
+
+        /* Seção Quem Somos (Novo) */
+        .about-section {
+            padding: 100px 0;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            padding-right: 30px;
+            padding-bottom: 30px;
+        }
+
+        .about-image-wrapper::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80%;
+            height: 80%;
+            border: 10px solid var(--areia-fundo);
+            z-index: 1;
+            border-radius: 8px;
+        }
+
+        .about-img {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 8px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content {
+            padding-left: 40px;
+        }
+
+        /* Seção Instagram */
+        .instagram-section {
+            padding: 80px 0;
+            background-color: var(--branco);
+        }
+
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .insta-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .insta-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .insta-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(18, 57, 93, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .insta-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .insta-item:hover .insta-overlay {
+            opacity: 1;
+        }
+
+        @media (max-width: 991px) {
+            .insta-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .insta-grid {
+                gap: 10px;
+            }
+        }
+
+        .about-content h2 {
+            margin-bottom: 30px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 25px;
+            text-align: justify;
+            line-height: 1.7;
+        }
+
+        /* Novo Estilo de Título de Impacto (Display Title) */
+        .display-title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.85;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            color: var(--azul-institucional);
+        }
+
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+
+        .display-title.light {
+            color: #fff;
+        }
+
+        .display-title.light span {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 767px) {
+            .display-title {
+                font-size: 3.2rem;
+            }
+
+            .display-title span {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Animações de Entrada (Segurança de Visibilidade) */
+        .reveal-on-scroll {
+            opacity: 1;
+            transform: none;
+            transition: none;
+            /* Controlado pelo GSAP */
+        }
+
+        .delay-1 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.4s;
+        }
+
+        @media (max-width: 991px) {
+            .about-content {
+                padding-left: 0;
+                margin-top: 50px;
+            }
+
+            .about-img {
+                height: 400px;
+            }
+
+            .about-section {
+                padding: 60px 0;
+            }
+
+            .about-content h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Padronização de Títulos e Textos (Seções) */
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-header.text-center {
+            text-align: center;
+        }
+
+        .section-tag {
+            color: var(--terracota-institucional);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--azul-institucional);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .section-title .accent-text {
+            color: var(--terracota-institucional);
+        }
+
+        .section-title.light {
+            color: #fff;
+        }
+
+        .section-desc {
+            color: var(--texto-secundario);
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+            max-width: 800px;
+        }
+
+        .section-desc.light {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Seção Serviços */
+        .service-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #f0f0f0;
+            transition: all 0.4s ease;
+            height: 100%;
+            position: relative;
+        }
+
+        .gov-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+
+        .gov-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            right: 30px;
+            height: 2px;
+            background: var(--terracota-institucional);
+            transform: scaleX(0);
+            transition: 0.4s;
+            transform-origin: left;
+        }
+
+        .gov-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-10px);
+            border-color: rgba(184, 92, 56, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .gov-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .gov-icon {
+            font-size: 2rem;
+            color: var(--terracota-institucional);
+            margin-bottom: 25px;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .gov-card h3 {
+            color: #fff;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gov-card p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+            transition: 0.3s;
+        }
+
+        .gov-card:hover p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(18, 57, 93, 0.1);
+            border-color: var(--terracota-institucional);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--terracota-institucional);
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 25px;
+        }
+
+        .service-link {
+            font-weight: 700;
+            color: var(--azul-institucional);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .service-link i {
+            transition: transform 0.3s;
+        }
+
+        .service-link:hover i {
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 991px) {
+            .service-card {
+                padding: 30px;
+            }
+        }
+
+        /* Seção Parceiros (Mosaico Flutuante) */
+        .partners-section {
+            padding: 100px 0;
+            background-color: var(--areia-fundo);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .partners-mosaic {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 40px;
+            align-items: center;
+            justify-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .partner-item {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatLogo 8s ease-in-out infinite;
+            opacity: 0.8;
+        }
+
+        .partner-item:hover {
+            opacity: 1;
+            transform: scale(1.1) !important;
+            z-index: 10;
+        }
+
+        .partner-logo {
+            max-height: 55px;
+            max-width: 140px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.05));
+        }
+
+        :root {
+            --float-dist: 10px;
+        }
+
+        @keyframes floatLogo {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+
+            33% {
+                transform: translateY(calc(-1 * var(--float-dist))) translateX(5px);
+            }
+
+            66% {
+                transform: translateY(calc(0.5 * var(--float-dist))) translateX(-5px);
+            }
+        }
+
+        /* Delays variados para movimento orgânico */
+        .p-delay-1 {
+            animation-delay: 0s;
+        }
+
+        .p-delay-2 {
+            animation-delay: 1.2s;
+        }
+
+        .p-delay-3 {
+            animation-delay: 2.5s;
+        }
+
+        .p-delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        .p-delay-5 {
+            animation-delay: 3.1s;
+        }
+
+        .p-delay-6 {
+            animation-delay: 1.8s;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --float-dist: 5px;
+            }
+
+            .partners-section {
+                padding: 60px 0;
+            }
+
+            .partners-mosaic {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+                padding: 0 15px;
+            }
+
+            .partner-logo {
+                max-height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .partners-mosaic {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .partner-logo {
+                max-height: 35px;
+            }
+        }
+
+        /* Configuração Base das Seções para Sobreposição */
+        section {
+            position: relative;
+            background-color: var(--branco);
+            /* z-index natural pela ordem do DOM resolve a sobreposição */
+        }
+
+        /* Seção Conheça a Adesiap Minas (Quem Somos) */
+        .about-section {
+            padding: 100px 0;
+            background-color: var(--branco);
+        }
+
+        /* Seção Onde Estamos (Mapa) */
+        .where-we-are {
+            padding: 120px 0;
+            background-color: var(--branco);
+            overflow: visible;
+            /* Permite que o mapa e a linha expandida apareçam */
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: visible;
+        }
+
+        .brazil-map-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+            overflow: visible;
+            /* Importante para a linha scale(1.05) */
+        }
+
+        .map-state {
+            fill: #e0e0e0;
+            stroke: #fff;
+            stroke-width: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .map-state.active {
+            fill: var(--terracota-institucional);
+        }
+
+        .map-state:hover {
+            fill: var(--azul-institucional);
+            transform: scale(1.02);
+            transform-origin: center;
+        }
+
+        /* Linha de contorno animada estilo Coca-Cola */
+        .contour-line {
+            fill: none;
+            stroke: #000;
+            /* Linha Preta conforme solicitado */
+            stroke-width: 2;
+            stroke-dasharray: 3000;
+            stroke-dashoffset: 3000;
+            animation: drawContour 6s linear forwards infinite;
+            opacity: 0.6;
+            z-index: 10;
+            transform: scale(1.05);
+            /* Afasta a linha da borda */
+            transform-origin: center;
+        }
+
+        @keyframes drawContour {
+            0% {
+                stroke-dashoffset: 3000;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .map-label {
+            position: absolute;
+            background: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .presence-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 30px;
+        }
+
+        .presence-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: var(--texto-principal);
+            font-weight: 500;
+        }
+
+        .presence-list li i {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            color: var(--terracota-institucional);
+            font-size: 1.1rem;
+        }
+
+        /* Seção Quem Somos - Efeito de Bordas Animadas (Estilo Projetos) */
+        .about-image-wrapper {
+            position: relative;
+            border-radius: 20px;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            overflow: visible;
+            /* Permite as bordas flutuantes */
+        }
+
+        .about-image-wrapper::before,
+        .about-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            z-index: -1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .about-image-wrapper::before {
+            background-color: var(--azul-profundo);
+            transform: scale(0.95);
+        }
+
+        .about-image-wrapper::after {
+            background-color: var(--terracota-institucional);
+            transform: scale(0.95);
+        }
+
+        .about-image-wrapper:hover {
+            transform: scale(1.02);
+            animation: hoverPop 0.4s ease-out forwards;
+        }
+
+        .about-image-wrapper:hover::before {
+            opacity: 0.2;
+            transform: translateY(-20px) translateX(-20px);
+            animation: slick-hover-2 8s linear infinite;
+        }
+
+        .about-image-wrapper:hover::after {
+            opacity: 0.2;
+            transform: translateY(20px) translateX(20px);
+            animation: slick-hover 8s linear infinite reverse;
+        }
+
+        .about-img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 991px) {
+            .where-we-are {
+                padding: 60px 0;
+            }
+
+            .map-container {
+                margin-top: 50px;
+            }
+        }
+
+        /* Seção Governança */
+        .governance-section {
+            padding: 100px 0;
+            background-color: var(--areia-fundo);
+            color: var(--texto-principal);
+        }
+
+        .gov-card {
+            background: var(--branco);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(18, 57, 93, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .gov-card:hover {
+            background: var(--branco);
+            box-shadow: 0 15px 40px rgba(18, 57, 93, 0.08);
+            border-color: var(--ambar-impacto);
+            transform: translateY(-5px);
+        }
+
+        /* Remove a barra deslizante do ::after (definida no bloco para seção escura) */
+        .governance-section .gov-card::after {
+            content: none;
+        }
+
+        /* Garante cores corretas no hover (sobrescreve bloco de seção escura) */
+        .governance-section .gov-card h3,
+        .governance-section .gov-card:hover h3 {
+            color: var(--azul-institucional);
+        }
+
+        .governance-section .gov-card p,
+        .governance-section .gov-card:hover p {
+            color: var(--texto-secundario);
+        }
+
+        .gov-icon {
+            font-size: 2.5rem;
+            color: var(--ambar-impacto);
+            margin-bottom: 25px;
+        }
+
+        .gov-card h3 {
+            color: var(--azul-institucional);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .gov-card p {
+            color: var(--texto-secundario);
+            font-size: 1rem;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        /* Seção Projetos */
+        .projects-section {
+            padding: 100px 0;
+            background-color: var(--areia-fundo);
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            /* Alterado para hidden para garantir que a imagem corte no topo perfeitamente */
+            background: var(--cat-color-light, #fff);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        /* Pseudo-elementos para o efeito de bordas animadas - Re-ajustado para funcionar com overflow hidden no card */
+        .project-card::before,
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            z-index: -1;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .project-card::before {
+            background-color: var(--cat-color-strong);
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .project-card::after {
+            background-color: var(--cat-color);
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        /* Efeito de Hover */
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(18, 57, 93, 0.2);
+            border-color: var(--cat-color);
+            background: #fff;
+            /* Fundo vira branco sólido no hover para máxima legibilidade */
+            overflow: visible;
+            animation: hoverPop 0.4s ease-out forwards;
+        }
+
+        .project-card:hover::before {
+            opacity: 0.3;
+            transform: translateY(-15px) translateX(-15px);
+            animation: slick-hover-2 6s 0.4s linear infinite;
+            /* Aumentado de 4s para 6s */
+        }
+
+        .project-card:hover::after {
+            opacity: 0.3;
+            transform: translateY(15px) translateX(15px);
+            animation: slick-hover 6s 0.4s linear infinite reverse;
+            /* Aumentado de 4s para 6s */
+        }
+
+        /* Animações Keyframes */
+        @keyframes hoverPop {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+
+            33% {
+                transform: scale(1.05) translateY(-12px);
+            }
+
+            66% {
+                transform: scale(0.98) translateY(-8px);
+            }
+
+            100% {
+                transform: scale(1.02) translateY(-10px);
+            }
+        }
+
+        @keyframes slick-hover {
+
+            0%,
+            100% {
+                transform: translateY(15px) translateX(15px);
+            }
+
+            25% {
+                transform: translateY(-10px) translateX(12px);
+            }
+
+            50% {
+                transform: translateY(15px) translateX(-15px);
+            }
+
+            75% {
+                transform: translateY(-8px) translateX(-10px);
+            }
+        }
+
+        @keyframes slick-hover-2 {
+
+            0%,
+            100% {
+                transform: translateY(-15px) translateX(-15px);
+            }
+
+            25% {
+                transform: translateY(12px) translateX(-10px);
+            }
+
+            50% {
+                transform: translateY(-15px) translateX(15px);
+            }
+
+            75% {
+                transform: translateY(10px) translateX(8px);
+            }
+        }
+
+        .project-img {
+            height: 250px;
+            /* Aumentado levemente para compensar a subida */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            flex-shrink: 0;
+            width: calc(100% + 2px);
+            /* Alarga 1px de cada lado para cobrir a borda do card */
+            margin: -1px -1px 0 -1px;
+            /* Sobe e alinha com a borda do card */
+            padding: 0;
+            display: block;
+            border-radius: 16px 16px 0 0;
+            /* Arredonda no topo para casar com o card */
+            z-index: 1;
+        }
+
+        .project-img::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px 16px 0 0;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+        }
+
+        .project-content {
+            padding: 30px;
+            background: transparent;
+            border-radius: 0 0 16px 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .project-tag {
+            background: var(--cat-color-strong);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .project-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--azul-institucional);
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover h3 {
+            color: var(--azul-profundo);
+            /* Cor mais forte no hover */
+        }
+
+        .project-card p {
+            color: var(--texto-secundario);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover p {
+            color: var(--texto-principal);
+            /* Texto principal para maior contraste no hover */
+        }
+
+        .project-link {
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--cat-color-strong);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        /* Cores das Categorias e ODS - Agora com variáveis LIGHT para o fundo e STRONG para bordas */
+        .cat-economico {
+            --cat-color: var(--azul-institucional);
+            --cat-color-strong: #0a2135;
+            --cat-color-light: #e7effa;
+        }
+
+        .cat-social {
+            --cat-color: var(--terracota-institucional);
+            --cat-color-strong: #8a452a;
+            --cat-color-light: #fdf2ed;
+        }
+
+        .cat-cultura {
+            --cat-color: var(--ambar-impacto);
+            --cat-color-strong: #a66e24;
+            --cat-color-light: #fef8e8;
+        }
+
+        .cat-sustentabilidade {
+            --cat-color: var(--verde-sustentabilidade);
+            --cat-color-strong: #2a634e;
+            --cat-color-light: #eff7f2;
+        }
+
+        .cat-infraestrutura {
+            --cat-color: #5F6B76;
+            --cat-color-strong: #3d464d;
+            --cat-color-light: #f1f3f4;
+        }
+
+        .cat-esporte {
+            --cat-color: #E63946;
+            --cat-color-strong: #b12c36;
+            --cat-color-light: #fdedee;
+        }
+
+        .cat-renda {
+            --cat-color: #F4A261;
+            --cat-color-strong: #d38141;
+            --cat-color-light: #fef5ec;
+        }
+
+        .cat-mobilidade {
+            --cat-color: #2A9D8F;
+            --cat-color-strong: #1e7167;
+            --cat-color-light: #ebf6f5;
+        }
+
+        .project-ods {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .ods-icon {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .ods-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .reveal-on-scroll {
+            will-change: transform, opacity;
+        }
+
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root {
+            --topbar-height: 36px;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--topbar-height);
+            background-color: var(--azul-institucional);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar-inner {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .topbar-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.72rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .topbar-link:hover {
+            color: #fff;
+        }
+
+        .topbar-link i {
+            color: #25D366;
+            font-size: 0.9rem;
+        }
+
+        .topbar-link strong {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .topbar-sep {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .tb-short {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .topbar-link strong {
+                display: none;
+            }
+
+            .tb-full {
+                display: none;
+            }
+
+            .tb-short {
+                display: inline;
+            }
+
+            .topbar-link {
+                font-size: 0.62rem;
+                letter-spacing: 0;
+            }
+
+            .topbar-inner {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body class="preloader-active">
+
+    <!-- Preloader -->
+    <div id="custom-preloader">
+        <canvas id="preloader-canvas"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: auto;"></canvas>
+        <div class="preloader-text-container">
+            <span class="preloader-word w1">Novos</span>
+            <span class="preloader-word w2">tempos,</span>
+            <span class="preloader-word w3">novos</span>
+            <span class="preloader-word w4">rumos!</span>
+        </div>
+        <div class="preloader-reveal-container">
+            <div class="reveal-box"></div>
+            <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas" class="preloader-logo">
+        </div>
+    </div>
+    <!-- Fim do Preloader -->
+
+    <!-- Header / Menu (Fixo, Limpo, Estilo APPA) -->
+
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span
+                    class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span
+                    class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span
+                    class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html" style="color: var(--terracota-institucional);">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section (Destaque Institucional) -->
+    <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1>Expertise técnica e governança intersetorial para projetos de impacto nacional</h1>
+                    <p>Especialistas em converter recursos em progresso concreto e duradouro, com economicidade,
+                        qualidade e eficiência, garantindo segurança jurídica e governança de excelência para
+                        municípios, empresas e organizações da sociedade civil.</p>
+                    <a href="#projetos" class="btn-primary">Projetos</a>
+                    <a href="transparencia.html" class="btn-outline"
+                        style="color: #fff; border-color: rgba(255,255,255,0.4); margin-left: 15px;"> Transparência</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Conheça a Adesiap Minas (Quem Somos) -->
+    <section class="about-section" id="quem-somos">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <div class="about-image-wrapper">
+                        <img src="Fotos/Seção Nossa Essência/Nossa Essência.png" alt="Nossa Essência - Adesiap Minas"
+                            class="about-img">
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <div class="about-content">
+                        <h2 class="display-title">
+                            <span>NOSSA</span>
+                            ESSÊNCIA
+                        </h2>
+                        <p class="section-desc mb-4">
+                            Com mais de 23 anos de história, nascemos para transformar. Hoje, como <strong>ADESIAP
+                                Minas</strong>, vamos além das fronteiras locais, conectando poder público, iniciativa
+                            privada e sociedade civil para construir um futuro próspero e sustentável para os
+                            territórios em que atuamos.
+                        </p>
+                        <p class="section-desc">
+                            Acreditamos em um modelo de gestão ágil, inovador e orientado a resultados.
+                            Convertemos ideias em projetos estruturados de alto impacto, gerando resultados concretos
+                            para as comunidades e segurança jurídica para nossos parceiros.
+                        </p>
+                        <div class="mt-4">
+                            <a href="quem-somos.html" class="btn-primary">Saiba mais sobre a ADESIAP</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Parceiros (Mosaico Flutuante) -->
+    <section class="partners-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h2 class="display-title">
+                        <span>QUEM CAMINHA</span>
+                        CONOSCO
+                    </h2>
+                </div>
+            </div>
+
+            <div class="partners-mosaic">
+                <!-- Logos com animações dessincronizadas -->
+                <div class="partner-item p-delay-1"><img src="Parceiros/Webp/vale-logo.webp" alt="Vale"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-2"><img src="Parceiros/Webp/gerdau-logo.webp" alt="Gerdau"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-3"><img src="Parceiros/Webp/sebrae-logo.webp" alt="Sebrae"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-4"><img src="Parceiros/Webp/Coca-Cola_Femsa_Logo.webp"
+                        alt="Coca Cola Femsa" class="partner-logo"></div>
+                <div class="partner-item p-delay-5"><img src="Parceiros/Webp/logo-caixa.webp" alt="Caixa"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-6"><img src="Parceiros/Webp/logo-banco-do-brasil-2048.webp"
+                        alt="Banco do Brasil" class="partner-logo"></div>
+                <div class="partner-item p-delay-1"><img src="Parceiros/Webp/prefeitura-de-itabirito-logo.webp"
+                        alt="Prefeitura de Itabirito" class="partner-logo"></div>
+                <div class="partner-item p-delay-2"><img src="Parceiros/Webp/sicoob.webp" alt="Sicoob"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-3"><img src="Parceiros/Webp/logo-sicredi.webp" alt="Sicredi"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-4"><img src="Parceiros/Webp/Alis-logo.webp" alt="Alis"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-5"><img src="Parceiros/Webp/saae-itabirito.webp" alt="SAAE"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-6"><img src="Parceiros/Webp/ACE-logo.webp" alt="ACE"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-1"><img src="Parceiros/Webp/cdl-logo.webp" alt="CDL"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-2"><img src="Parceiros/Webp/farid-logo.webp" alt="Farid"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-3"><img src="Parceiros/Webp/logo-caquende.webp" alt="Caquende"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-4"><img src="Parceiros/Webp/logo-vdl_verde.webp" alt="VDL"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-5"><img src="Parceiros/Webp/igmg-logo.webp" alt="IGMG"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-6"><img src="Parceiros/Webp/logo_masterix.webp" alt="Masterix"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-1"><img src="Parceiros/Webp/Logo_herculanomineracao.webp"
+                        alt="Herculano Mineração" class="partner-logo"></div>
+                <div class="partner-item p-delay-2"><img src="Parceiros/Webp/camera-itabirito-logo.webp"
+                        alt="Câmara de Itabirito" class="partner-logo"></div>
+                <div class="partner-item p-delay-3"><img src="Parceiros/Webp/logo-sincovita.webp" alt="Sincovita"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-4"><img src="Parceiros/Webp/samarco.webp" alt="Samarco"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-5"><img src="Parceiros/Webp/Policia-militar.svg" alt="Polícia Militar"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-6"><img src="Parceiros/Webp/policia-civil.webp" alt="Polícia Civil"
+                        class="partner-logo"></div>
+                <div class="partner-item p-delay-1"><img src="Parceiros/Webp/ministerio-publico.webp"
+                        alt="Ministério Público" class="partner-logo"></div>
+                <div class="partner-item p-delay-2"><img src="Parceiros/Webp/csn.webp" alt="CSN" class="partner-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Onde Estamos -->
+    <section class="where-we-are" id="onde-estamos">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 reveal-on-scroll">
+                    <div>
+                        <h2 class="display-title">
+                            <span>SEM</span>
+                            FRONTEIRAS
+                        </h2>
+                        <p class="section-desc">Atuamos em diversas regiões do país, levando inteligência técnica,
+                            governança qualificada e capacidade de execução onde for necessário.</p>
+                    </div>
+
+                    <ul class="presence-list">
+                        <li><i class="fas fa-check-circle"></i> Gerenciamento de programas e projetos</li>
+                        <li><i class="fas fa-check-circle"></i> Promoção de parcerias público-privadas</li>
+                        <li><i class="fas fa-check-circle"></i> Identificação de oportunidades e investimentos</li>
+                        <li><i class="fas fa-check-circle"></i> Consultoria e assessoria a empreendedores</li>
+                        <li><i class="fas fa-check-circle"></i> Diagnóstico e pesquisa</li>
+                        <li><i class="fas fa-check-circle"></i> Organização de eventos estratégicos</li>
+                        <li><i class="fas fa-check-circle"></i> Gestão de termos de compromisso ambiental</li>
+                        <li><i class="fas fa-check-circle"></i> Elaboração de projetos e captação</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-7 reveal-on-scroll delay-1">
+                    <div class="map-container" style="max-width: 100%; overflow: visible;">
+                        <!-- SVG Brasil Oficial (Model Coca-Cola) com Contorno Animado -->
+                        <svg class="brazil-map-svg" viewBox="-50 -50 826 824" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+                            <!-- Sombra/Filtro expandido para evitar corte -->
+                            <defs>
+                                <filter id="cokeShadow" x="-20%" y="-20%" width="140%" height="140%"
+                                    filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                    <feOffset dx="4" dy="4" />
+                                    <feGaussianBlur stdDeviation="2" />
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0" />
+                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+                                </filter>
+                            </defs>
+
+                            <g filter="url(#cokeShadow)">
+                                <!-- Silhueta do Brasil (Preenchimento) -->
+                                <path id="brazil-silhouette-coke" class="map-state active"
+                                    d="M100.217 146.385C100.217 146.385 94.6155 184.954 94.9039 191.588C95.2075 198.206 93.3707 201.56 86.6764 199.89C79.9822 198.221 75.58 200.437 72.2253 203.184C68.8706 205.932 54.6319 206.706 50.2298 212.003C45.8125 217.3 44.249 222.036 40.3629 226.21C36.4769 230.4 33.2892 232.753 35.1866 236.82C37.0841 240.888 37.1296 242.27 29.6612 247.4C22.1776 252.515 22.1017 264.294 25.4564 268.757C28.8263 273.219 54.1158 310.271 66.4114 305.975C78.7071 301.68 86.3273 285.954 86.4336 297.232C86.5398 308.51 78.9348 321.867 100.232 321.108C121.529 320.349 138.956 313.701 149.688 305.459C160.405 297.217 178.089 289.036 179.835 296.412C181.596 303.805 179.804 328.759 194.559 337.866C209.329 346.973 269.775 358.661 270.094 378.621C270.413 398.581 265.904 408.341 281.327 409.783C296.749 411.225 312.552 409.813 317.47 434.388C322.388 458.962 301.319 505.076 317.47 512.088C333.621 519.116 344.338 501.63 349.226 517.037C354.114 532.443 343.943 549.201 357.62 547.637C371.297 546.089 378.69 546.377 374.348 561.146C369.992 575.915 374.348 578.556 379.965 588.377C385.582 598.213 372.481 609.916 361.233 620.678C350 631.439 313.037 649.836 327.306 661.478C341.575 673.105 377.582 685.036 381.589 701.778C385.597 718.52 374.789 723.878 386.507 724C398.226 724.136 426.628 676.961 435.477 662.966C444.327 648.971 466.05 635.887 465.564 612.769C465.078 589.652 466.262 580.894 477.267 572.667C488.273 564.455 533.402 537.862 542.935 540.063C552.453 542.264 572.293 545.967 587.078 529.726C601.863 513.485 637.338 461.437 640.253 438.122C643.182 414.807 640.632 360.877 650.666 361.287C660.7 361.697 669.14 359.86 677.716 343.558C686.293 327.256 721.632 292.997 724.956 274.737C728.28 256.492 721.616 229.292 702.9 223.19C684.183 217.088 667.5 203.624 655.524 190.965C643.547 178.306 630.447 181.053 615.206 177.122C599.95 173.191 580.611 165.116 561.758 171.476C542.905 177.836 557.508 163.81 553.485 157.01C549.462 150.195 520.773 136.428 508.902 133.104C497.031 129.779 495.18 125.742 483.339 123.161C471.499 120.581 461.405 87.2636 447.849 82.2242C434.293 77.1848 438.028 69.3526 434.02 56.5872C430.028 43.837 423.06 32.9689 416.655 46.1441C410.249 59.3194 385.506 78.6572 376.884 77.2455C368.261 75.8339 358.759 70.749 345.355 77.2455C331.936 83.7421 330.843 78.9 318.214 84.2126C305.584 89.5252 284.454 103.292 277.608 87.8707C270.762 72.4339 271.384 55.5398 276.075 47.404C280.75 39.2681 268.576 19.7937 260.622 23.9224C252.667 28.0358 241.738 42.5316 220.82 45.1575C199.902 47.7683 176.784 33.2573 180.791 44.4593C184.799 55.6613 192.434 75.2116 200.236 75.8794C208.039 76.5625 201.906 87.2484 188.199 92.5154C174.491 97.7825 156.109 109.561 145.134 99.695C134.174 89.8288 138.409 86.8841 123.457 89.6315C108.49 92.3788 92.0197 87.9466 90.1526 95.9155C88.2855 103.884 97.2416 104.901 88.7864 114.221C80.3313 123.541 94.2512 130.751 95.1316 133.756C96.012 136.747 101.416 137.87 100.217 146.385Z" />
+
+                                <!-- Linha de Contorno Animada (Em PRETO e na FRENTE) -->
+                                <path class="contour-line"
+                                    d="M100.217 146.385C100.217 146.385 94.6155 184.954 94.9039 191.588C95.2075 198.206 93.3707 201.56 86.6764 199.89C79.9822 198.221 75.58 200.437 72.2253 203.184C68.8706 205.932 54.6319 206.706 50.2298 212.003C45.8125 217.3 44.249 222.036 40.3629 226.21C36.4769 230.4 33.2892 232.753 35.1866 236.82C37.0841 240.888 37.1296 242.27 29.6612 247.4C22.1776 252.515 22.1017 264.294 25.4564 268.757C28.8263 273.219 54.1158 310.271 66.4114 305.975C78.7071 301.68 86.3273 285.954 86.4336 297.232C86.5398 308.51 78.9348 321.867 100.232 321.108C121.529 320.349 138.956 313.701 149.688 305.459C160.405 297.217 178.089 289.036 179.835 296.412C181.596 303.805 179.804 328.759 194.559 337.866C209.329 346.973 269.775 358.661 270.094 378.621C270.413 398.581 265.904 408.341 281.327 409.783C296.749 411.225 312.552 409.813 317.47 434.388C322.388 458.962 301.319 505.076 317.47 512.088C333.621 519.116 344.338 501.63 349.226 517.037C354.114 532.443 343.943 549.201 357.62 547.637C371.297 546.089 378.69 546.377 374.348 561.146C369.992 575.915 374.348 578.556 379.965 588.377C385.582 598.213 372.481 609.916 361.233 620.678C350 631.439 313.037 649.836 327.306 661.478C341.575 673.105 377.582 685.036 381.589 701.778C385.597 718.52 374.789 723.878 386.507 724C398.226 724.136 426.628 676.961 435.477 662.966C444.327 648.971 466.05 635.887 465.564 612.769C465.078 589.652 466.262 580.894 477.267 572.667C488.273 564.455 533.402 537.862 542.935 540.063C552.453 542.264 572.293 545.967 587.078 529.726C601.863 513.485 637.338 461.437 640.253 438.122C643.182 414.807 640.632 360.877 650.666 361.287C660.7 361.697 669.14 359.86 677.716 343.558C686.293 327.256 721.632 292.997 724.956 274.737C728.28 256.492 721.616 229.292 702.9 223.19C684.183 217.088 667.5 203.624 655.524 190.965C643.547 178.306 630.447 181.053 615.206 177.122C599.95 173.191 580.611 165.116 561.758 171.476C542.905 177.836 557.508 163.81 553.485 157.01C549.462 150.195 520.773 136.428 508.902 133.104C497.031 129.779 495.18 125.742 483.339 123.161C471.499 120.581 461.405 87.2636 447.849 82.2242C434.293 77.1848 438.028 69.3526 434.02 56.5872C430.028 43.837 423.06 32.9689 416.655 46.1441C410.249 59.3194 385.506 78.6572 376.884 77.2455C368.261 75.8339 358.759 70.749 345.355 77.2455C331.936 83.7421 330.843 78.9 318.214 84.2126C305.584 89.5252 284.454 103.292 277.608 87.8707C270.762 72.4339 271.384 55.5398 276.075 47.404C280.75 39.2681 268.576 19.7937 260.622 23.9224C252.667 28.0358 241.738 42.5316 220.82 45.1575C199.902 47.7683 176.784 33.2573 180.791 44.4593C184.799 55.6613 192.434 75.2116 200.236 75.8794C208.039 76.5625 201.906 87.2484 188.199 92.5154C174.491 97.7825 156.109 109.561 145.134 99.695C134.174 89.8288 138.409 86.8841 123.457 89.6315C108.49 92.3788 92.0197 87.9466 90.1526 95.9155C88.2855 103.884 97.2416 104.901 88.7864 114.221C80.3313 123.541 94.2512 130.751 95.1316 133.756C96.012 136.747 101.416 137.87 100.217 146.385Z" />
+                            </g>
+
+                            <!-- Pins Adesiap (Localizados com precisão no novo coordinate system) -->
+                            <circle cx="300" cy="200" r="12" fill="#fff" stroke="var(--terracota-institucional)"
+                                stroke-width="3" class="map-dot" /> <!-- PA -->
+                            <circle cx="410" cy="350" r="12" fill="#fff" stroke="var(--terracota-institucional)"
+                                stroke-width="3" class="map-dot" /> <!-- DF -->
+                            <circle cx="480" cy="450" r="12" fill="#fff" stroke="var(--terracota-institucional)"
+                                stroke-width="3" class="map-dot" /> <!-- MG -->
+                            <circle cx="380" cy="650" r="12" fill="#fff" stroke="var(--terracota-institucional)"
+                                stroke-width="3" class="map-dot" /> <!-- RS -->
+                        </svg>
+
+                        <!-- Labels (Pins) Reposicionados -->
+                        <div class="map-label" style="top: 22%; left: 35%;">AMAPÁ / PARÁ</div>
+                        <div class="map-label" style="top: 42%; left: 52%;">DISTRITO FEDERAL</div>
+                        <div class="map-label" style="top: 58%; left: 65%;">MINAS GERAIS</div>
+                        <div class="map-label" style="top: 85%; left: 45%;">RIO GRANDE DO SUL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Painel de Impacto (Gráfico Radial) -->
+    <section class="section-padding" id="impacto"
+        style="position: relative; overflow: hidden; padding: 100px 0; background-color: var(--azul-profundo); color: #fff;">
+        <!-- Canvas para efeito de partículas de fundo -->
+        <canvas id="impact-canvas"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3;"></canvas>
+
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h2 class="display-title light">
+                        <span>IMPACTO QUE</span>
+                        TRANSFORMA
+                    </h2>
+                    <p class="section-desc" style="color: rgba(255,255,255,0.75);">Números que refletem nossa
+                        competência e transparência ao longo de décadas.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="radial-impact-container">
+
+                        <!-- Textos ao Redor -->
+                        <div class="indicator-label label-tl"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-users" style="font-size: 28px; color: var(--ambar-impacto);"></i>
+                            <h4 style="color: #fff;">+<span class="counter" data-target="900">0</span> mil</h4>
+                            <span class="desc" style="color: rgba(255,255,255,0.6);">Pessoas<br>Beneficiadas</span>
+                        </div>
+                        <div class="indicator-label label-tr"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-project-diagram" style="font-size: 28px; color: var(--branco);"></i>
+                            <h4 style="color: #fff;">+<span class="counter" data-target="203">0</span></h4>
+                            <span class="desc" style="color: rgba(255,255,255,0.6);">Projetos<br>Executados</span>
+                        </div>
+                        <div class="indicator-label label-bl"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-map-marker-alt" style="font-size: 28px; color: var(--branco);"></i>
+                            <h4 style="color: #fff;">+<span class="counter" data-target="20">0</span></h4>
+                            <span class="desc" style="color: rgba(255,255,255,0.6);">Municípios<br>Atendidos</span>
+                        </div>
+                        <div class="indicator-label label-br"
+                            style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-chart-line" style="font-size: 28px; color: var(--ambar-impacto);"></i>
+                            <h4 class="accent-text" style="color: var(--ambar-impacto);">+<span class="counter"
+                                    data-target="123">0</span> mi</h4>
+                            <span class="desc" style="color: rgba(255,255,255,0.6);">Reais<br>Gerenciados</span>
+                        </div>
+
+                        <!-- Os pontilhados em HTML foram removidos para usarmos SVG nativo -->
+
+                        <!-- SVG Gráfico Radial em formato de PINO -->
+                        <svg viewBox="0 0 400 400" class="radial-svg" id="radial-chart">
+                            <!-- Fundo dos arcos (trilhas invisíveis/claras) -->
+                            <path class="bg-arc"
+                                d="M 200,120 A 40,40 0 0,1 234.64,180 L 200,240 L 165.36,180 A 40,40 0 0,1 200,120 Z"
+                                stroke="rgba(255,255,255,0.1)" stroke-width="14" fill="none" />
+                            <path class="bg-arc"
+                                d="M 200,95 A 65,65 0 0,1 256.29,192.5 L 200,290 L 143.71,192.5 A 65,65 0 0,1 200,95 Z"
+                                stroke="rgba(255,255,255,0.1)" stroke-width="14" fill="none" />
+                            <path class="bg-arc"
+                                d="M 200,70 A 90,90 0 0,1 277.94,205 L 200,340 L 122.06,205 A 90,90 0 0,1 200,70 Z"
+                                stroke="rgba(255,255,255,0.1)" stroke-width="14" fill="none" />
+                            <path class="bg-arc"
+                                d="M 200,45 A 115,115 0 0,1 299.59,217.5 L 200,390 L 100.41,217.5 A 115,115 0 0,1 200,45 Z"
+                                stroke="rgba(255,255,255,0.1)" stroke-width="14" fill="none" />
+
+                            <!-- Arcos animáveis no formato de PINO organizados para que linhas não se cruzem -->
+                            <!-- Arco 1 Interno (85%, aponta para TL / Pessoas) -->
+                            <path class="arc arc-1"
+                                d="M 200,120 A 40,40 0 0,1 234.64,180 L 200,240 L 165.36,180 A 40,40 0 0,1 200,120 Z"
+                                stroke="var(--azul-institucional)" stroke-width="14" fill="none" stroke-linecap="round"
+                                data-percent="85" />
+                            <!-- Arco 2 (65%, aponta para BL / Unidades) -->
+                            <path class="arc arc-2"
+                                d="M 200,95 A 65,65 0 0,1 256.29,192.5 L 200,290 L 143.71,192.5 A 65,65 0 0,1 200,95 Z"
+                                stroke="var(--texto-secundario)" stroke-width="14" fill="none" stroke-linecap="round"
+                                data-percent="65" />
+                            <!-- Arco 3 (35%, aponta para BR / Recursos Terracota) -->
+                            <path class="arc arc-3"
+                                d="M 200,70 A 90,90 0 0,1 277.94,205 L 200,340 L 122.06,205 A 90,90 0 0,1 200,70 Z"
+                                stroke="var(--terracota-institucional)" stroke-width="14" fill="none"
+                                stroke-linecap="round" data-percent="35" />
+                            <!-- Arco 4 Externo (15%, aponta para TR / Projetos) -->
+                            <path class="arc arc-4"
+                                d="M 200,45 A 115,115 0 0,1 299.59,217.5 L 200,390 L 100.41,217.5 A 115,115 0 0,1 200,45 Z"
+                                stroke="#a0a0a0" stroke-width="14" fill="none" stroke-linecap="round"
+                                data-percent="15" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Seção Governança e Integridade -->
+    <section class="governance-section" id="governanca">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8">
+                    <h2 class="display-title">
+                        <span>GOVERNANÇA</span>
+                        SÓLIDA
+                    </h2>
+                    <p class="section-desc"><strong>Mais do que gestão, garantimos segurança jurídica, compliance e transparência total em todas as etapas de execução.</strong></p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3 reveal-on-scroll">
+                    <div class="gov-card">
+                        <div class="gov-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Programa de Integridade</h3>
+                        <p>Políticas anticorrupção e canal de denúncias independente para garantir ética em todos os
+                            níveis.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal-on-scroll delay-1">
+                    <div class="gov-card" id="transparencia">
+                        <div class="gov-icon"><i class="fas fa-file-contract"></i></div>
+                        <h3>Transparência Ativa</h3>
+                        <p>Divulgação voluntária de balanços, estatutos e prestações de contas em nosso portal.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal-on-scroll delay-2">
+                    <div class="gov-card">
+                        <div class="gov-icon"><i class="fas fa-gavel"></i></div>
+                        <h3>Segurança Jurídica</h3>
+                        <p>Processos pautados na Lei 13.019/2014 e rigorosas normativas de governança do terceiro setor.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal-on-scroll delay-3">
+                    <div class="gov-card">
+                        <div class="gov-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h3>Prestação de Contas</h3>
+                        <p>Monitoramento contínuo e relatórios anuais detalhados sobre o uso de recursos e impactos
+                            gerados.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 text-center">
+                <div class="col-12">
+                    <a href="transparencia.html" class="btn-outline">Acessar Portal de Transparência</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Serviços e Programas -->
+    <section class="section-padding" id="servicos" style="background-color: var(--branco);">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-8">
+                    <h2 class="display-title">
+                        <span>O QUE</span>
+                        FAZEMOS
+                    </h2>
+                    <p class="section-desc">Atuamos como gestora técnica e intermediadora intersetorial, estruturando
+                        soluções em 6 eixos especializados para municípios, empresas e organizações da sociedade
+                        civil.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <!-- Eixo 1 -->
+                <div class="col-lg-4 reveal-on-scroll">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-project-diagram"></i></div>
+                        <h3>Gestão de Projetos e Programas</h3>
+                        <p>Planejamos, executamos, monitoramos e prestamos contas de projetos intersetoriais — do
+                            diagnóstico à entrega — incluindo PMO terceirizado, termos de parceria (Lei 13.019/2014) e
+                            captação de recursos.</p>
+                    </div>
+                </div>
+                <!-- Eixo 2 -->
+                <div class="col-lg-4 reveal-on-scroll delay-1">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Desenvolvimento Econômico</h3>
+                        <p>Fomentamos ecossistemas locais de negócios e apoiamos micro e pequenas empresas com o CAMPE
+                            (Selo Ouro Sebrae 2025), além de semanas e fóruns de desenvolvimento e qualificação
+                            profissional.</p>
+                    </div>
+                </div>
+                <!-- Eixo 3 -->
+                <div class="col-lg-4 reveal-on-scroll delay-2">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-leaf"></i></div>
+                        <h3>Meio Ambiente e Instrumentos Legais</h3>
+                        <p>Gerenciamos obrigações socioambientais de empresas e municípios — TCAs, TCCEs e TACs —
+                            transformando passivos em projetos de impacto positivo, com assessoria em ESG e economia
+                            circular.</p>
+                    </div>
+                </div>
+                <!-- Eixo 4 -->
+                <div class="col-lg-4 reveal-on-scroll">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-hard-hat"></i></div>
+                        <h3>Infraestrutura, Obras e Mobilidade</h3>
+                        <p>Gerenciamos projetos de infraestrutura física — do licenciamento à entrega — em obras
+                            públicas, mobilidade e acessibilidade, reconstrução pós-desastre e iluminação pública
+                            inteligente.</p>
+                    </div>
+                </div>
+                <!-- Eixo 5 -->
+                <div class="col-lg-4 reveal-on-scroll delay-1">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-hands-helping"></i></div>
+                        <h3>Desenvolvimento Social e Cultural</h3>
+                        <p>Estruturamos projetos de impacto social direto, conectando financiadores a populações
+                            vulneráveis: reintegração social (APAC), saúde comunitária, projetos culturais e logística
+                            humanitária.</p>
+                    </div>
+                </div>
+                <!-- Eixo 6 -->
+                <div class="col-lg-4 reveal-on-scroll delay-2">
+                    <div class="service-card">
+                        <div class="service-icon"><i class="fas fa-city"></i></div>
+                        <h3>Tecnologia e Cidades Inteligentes</h3>
+                        <p>Estruturamos soluções tecnológicas integradas para a gestão pública e privada: segurança e
+                            videomonitoramento, inclusão digital e defesa civil inteligente, com foco em eficiência e
+                            qualidade de vida.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 text-center reveal-on-scroll">
+                    <a href="servicos.html" class="btn-primary" style="padding: 12px 30px;">Saiba mais sobre nossos
+                        serviços</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Projetos Estratégicos -->
+    <section class="projects-section" id="projetos">
+        <div class="container">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-6">
+                    <h2 class="display-title">
+                        <span>PROJETOS QUE</span>
+                        MARCAM
+                    </h2>
+                    <p class="section-desc mt-3">Casos de sucesso que geram valor, fomentam a cultura e criam
+                        oportunidades reais para a população.</p>
+                </div>
+                <div class="col-lg-6 d-flex justify-content-lg-end mt-4 mt-lg-0">
+                    <a href="projetos.html" class="btn-primary" style="padding: 12px 30px;">Ver Todos os Projetos</a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Projeto 1: SDE -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                    <div class="project-card cat-economico">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Desenvolvimento Econômico</span></div>
+                            <h3>SDE - Semana de Desenvolvimento</h3>
+                            <p>O maior evento de fomento ao empreendedorismo regional, unindo poder público e iniciativa
+                                privada para gerar negócios e empregos.</p>
+                            <div class="project-ods">
+                                <img src="ODS/08_0.webp" class="ods-icon" alt="ODS 8"
+                                    title="ODS 8 - Trabalho Decente e Crescimento Econômico">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto 2: Salas do Empreendedor -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-1">
+                    <div class="project-card cat-economico">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Desenvolvimento Econômico</span></div>
+                            <h3>CAMPE – Atendimento ao Empreendedor</h3>
+                            <p>Serviços essenciais que promovem o desenvolvimento sustentável e a autonomia econômica de
+                                centenas de empreendedores locais, com Selo Ouro Sebrae.</p>
+                            <div class="project-ods">
+                                <img src="ODS/08_0.webp" class="ods-icon" alt="ODS 8"
+                                    title="ODS 8 - Trabalho Decente e Crescimento Econômico">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto 3: Projetos Culturais -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-2">
+                    <div class="project-card cat-cultura">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1596423735880-5f2a689b903e?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Educação e Cultura</span></div>
+                            <h3>Natal de Nova Lima</h3>
+                            <p>Iniciativa para fomentar o turismo, comércio local e a geração de receita na cidade
+                                durante os festejos natalinos, com foco na valorização do patrimônio.</p>
+                            <div class="project-ods">
+                                <img src="ODS/04_0.webp" class="ods-icon" alt="ODS 4"
+                                    title="ODS 4 - Educação de Qualidade">
+                                <img src="ODS/08_0.webp" class="ods-icon" alt="ODS 8"
+                                    title="ODS 8 - Trabalho Decente e Crescimento Econômico">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto 4: Desassoreamento -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                    <div class="project-card cat-sustentabilidade">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Sustentabilidade e Meio Ambiente</span></div>
+                            <h3>Desassoreamento do Rio Itabirito</h3>
+                            <p>Limpeza do Rio Itabirito e córregos para aumentar a vazão, reduzir enchentes e minimizar
+                                impactos sociais e econômicos para a população.</p>
+                            <div class="project-ods">
+                                <img src="ODS/13_0.webp" class="ods-icon" alt="ODS 13"
+                                    title="ODS 13 - Ação Contra a Mudança Global do Clima">
+                                <img src="ODS/11_0.webp" class="ods-icon" alt="ODS 11"
+                                    title="ODS 11 - Cidades e Comunidades Sustentáveis">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto 5: APAC Itabirito -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-1">
+                    <div class="project-card cat-infraestrutura">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1533035353720-f1c6a75ce8c4?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Infraestrutura</span></div>
+                            <h3>Projeto APAC Itabirito</h3>
+                            <p>Implantação do Centro de Reintegração Social da APAC para oferecer alternativa humanizada
+                                ao sistema prisional e reduzir a reincidência criminal.</p>
+                            <div class="project-ods">
+                                <img src="ODS/16_0.webp" class="ods-icon" alt="ODS 16"
+                                    title="ODS 16 - Paz, Justiça e Instituições Eficazes">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeto 6: SOS Rio Grande do Sul -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-2">
+                    <div class="project-card cat-social">
+                        <div class="project-img"
+                            style="background-image: url('https://images.unsplash.com/photo-1593113589914-07599b082613?auto=format&fit=crop&q=80&w=800');">
+                        </div>
+                        <div class="project-content" style="display: flex; flex-direction: column; height: 100%;">
+                            <div><span class="project-tag">Desenvolvimento Social</span></div>
+                            <h3>SOS Rio Grande do Sul</h3>
+                            <p>Gerenciamento da aquisição, logística e distribuição de cestas básicas e kits
+                                emergenciais para as populações afetadas pelas enchentes.</p>
+                            <div class="project-ods">
+                                <img src="ODS/01_1.webp" class="ods-icon" alt="ODS 1"
+                                    title="ODS 1 - Erradicação da Pobreza">
+                                <img src="ODS/02_0.webp" class="ods-icon" alt="ODS 2"
+                                    title="ODS 2 - Fome Zero e Agricultura Sustentável">
+                            </div>
+                            <a href="projetos.html" class="project-link mt-auto">Saiba mais <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Notícias -->
+    <section class="section-padding" id="noticias" style="background-color: #fdfdfd;">
+        <div class="container">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-8">
+                    <h2 class="display-title">
+                        <span>ÚLTIMAS</span>
+                        NOTÍCIAS
+                    </h2>
+                    <p class="section-desc mt-3">Acompanhe as principais novidades, eventos e conquistas da ADESIAP
+                        Minas.</p>
+                </div>
+                <div class="col-lg-4 d-flex justify-content-lg-end mt-4 mt-lg-0">
+                    <a href="#" class="btn-outline">Ver Todas as Notícias</a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Notícia 1 -->
+                <div class="col-lg-4 reveal-on-scroll">
+                    <div class="news-card"
+                        style="background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 100%; display: flex; flex-direction: column;">
+                        <div
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800'); background-size: cover; background-position: center;">
+                        </div>
+                        <div style="padding: 25px; flex-grow: 1; display: flex; flex-direction: column;">
+                            <span
+                                style="color: var(--terracota-institucional); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">Evento
+                                Institucional</span>
+                            <h4 style="margin: 15px 0; font-size: 1.25rem; color: var(--azul-institucional);">ADESIAP
+                                Minas celebra 20 anos de impacto no território</h4>
+                            <p style="font-size: 0.95rem; color: #666; line-height: 1.6;">Uma trajetória marcada pela
+                                transformação social e pelo fortalecimento da governança pública e privada.</p>
+                            <a href="#"
+                                style="margin-top: auto; color: var(--azul-institucional); font-weight: 700; text-decoration: none; font-size: 0.9rem;">Ler
+                                mais <i class="fas fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notícia 2 -->
+                <div class="col-lg-4 reveal-on-scroll delay-1">
+                    <div class="news-card"
+                        style="background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 100%; display: flex; flex-direction: column;">
+                        <div
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1454165833767-13a6ad0a6060?auto=format&fit=crop&q=80&w=800'); background-size: cover; background-position: center;">
+                        </div>
+                        <div style="padding: 25px; flex-grow: 1; display: flex; flex-direction: column;">
+                            <span
+                                style="color: var(--terracota-institucional); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">Inovação</span>
+                            <h4 style="margin: 15px 0; font-size: 1.25rem; color: var(--azul-institucional);">Novo
+                                Portal de Transparência é lançado para ampliar prestação de contas</h4>
+                            <p style="font-size: 0.95rem; color: #666; line-height: 1.6;">Tecnologia e transparência
+                                ativa para garantir que a sociedade acompanhe cada investimento realizado.</p>
+                            <a href="#"
+                                style="margin-top: auto; color: var(--azul-institucional); font-weight: 700; text-decoration: none; font-size: 0.9rem;">Ler
+                                mais <i class="fas fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notícia 3 -->
+                <div class="col-lg-4 reveal-on-scroll delay-2">
+                    <div class="news-card"
+                        style="background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: 100%; display: flex; flex-direction: column;">
+                        <div
+                            style="height: 220px; background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800'); background-size: cover; background-position: center;">
+                        </div>
+                        <div style="padding: 25px; flex-grow: 1; display: flex; flex-direction: column;">
+                            <span
+                                style="color: var(--terracota-institucional); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">Território</span>
+                            <h4 style="margin: 15px 0; font-size: 1.25rem; color: var(--azul-institucional);">Parceria
+                                com municípios da região amplia impacto cultural e econômico</h4>
+                            <p style="font-size: 0.95rem; color: #666; line-height: 1.6;">Projetos de lei de incentivo e
+                                suporte ao microempreendedor chegam a novas localidades.</p>
+                            <a href="#"
+                                style="margin-top: auto; color: var(--azul-institucional); font-weight: 700; text-decoration: none; font-size: 0.9rem;">Ler
+                                mais <i class="fas fa-arrow-right" style="font-size: 0.8rem; margin-left: 5px;"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Instagram Feed -->
+    <section class="instagram-section" id="instagram">
+        <div class="container">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-8">
+                    <h2 class="display-title">
+                        <span>CONECTE-SE NO</span>
+                        INSTAGRAM
+                    </h2>
+                    <p class="section-desc" style="color: var(--terracota-institucional); font-weight: 700;">
+                        @Adesiap.itabirito</p>
+                </div>
+                <div class="col-lg-4 d-flex justify-content-lg-end mt-4 mt-lg-0">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" class="btn-primary">Seguir no
+                        Instagram</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <!-- Elfsight Instagram Feed -->
+                    <script src="https://elfsightcdn.com/platform.js" async></script>
+                    <div class="elfsight-app-055553c3-5e72-4ee0-910d-5e17e8e291b9" data-elfsight-app-lazy></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
+
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ADESIAP Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i
+                            class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico"
+                        target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"
+                            style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // 1. Inicializar Lenis (Smooth Scroll Moderno)
+        let lenis;
+
+        const initSmoothScroll = () => {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+                smoothTouch: false,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            // Lógica do Botão Voltar ao Topo
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                lenis.scrollTo(0);
+            });
+        };
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Classe Reutilizável de Partículas Interativas (Canvas)
+        class ParticleNetwork {
+            constructor(canvasId, particleCount = 70) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.mouse = { x: -9999, y: -9999 };
+                this.particleCount = particleCount;
+
+                this.resize = this.resize.bind(this);
+                window.addEventListener('resize', this.resize);
+                this.resize();
+
+                this.canvas.addEventListener('mousemove', (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.mouse.x = e.clientX - rect.left;
+                    this.mouse.y = e.clientY - rect.top;
+                });
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.mouse.x = -9999;
+                    this.mouse.y = -9999;
+                });
+
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push(this.createParticle());
+                }
+                this.animate = this.animate.bind(this);
+                this.animate();
+            }
+            createParticle() {
+                return {
+                    x: Math.random() * this.width,
+                    y: Math.random() * this.height,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: (Math.random() - 0.5) * 1.2,
+                    radius: Math.random() * 2 + 1
+                };
+            }
+            resize() {
+                this.width = this.canvas.width = this.canvas.offsetWidth;
+                this.height = this.canvas.height = this.canvas.offsetHeight;
+            }
+            animate() {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                for (let i = 0; i < this.particles.length; i++) {
+                    let p = this.particles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0 || p.x > this.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > this.height) p.vy *= -1;
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = 'rgba(26, 26, 26, 0.4)';
+                    this.ctx.fill();
+
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        let p2 = this.particles[j];
+                        let dx = p.x - p2.x;
+                        let dy = p.y - p2.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            this.ctx.beginPath();
+                            this.ctx.strokeStyle = `rgba(150, 150, 150, ${0.5 - dist / 240})`;
+                            this.ctx.lineWidth = 0.5;
+                            this.ctx.moveTo(p.x, p.y);
+                            this.ctx.lineTo(p2.x, p2.y);
+                            this.ctx.stroke();
+                        }
+                    }
+
+                    let dxMouse = p.x - this.mouse.x;
+                    let dyMouse = p.y - this.mouse.y;
+                    let distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                    if (distMouse < 150) {
+                        this.ctx.beginPath();
+                        this.ctx.strokeStyle = `rgba(184, 92, 56, ${1 - distMouse / 150})`;
+                        this.ctx.lineWidth = 1;
+                        this.ctx.moveTo(p.x, p.y);
+                        this.ctx.lineTo(this.mouse.x, this.mouse.y);
+                        this.ctx.stroke();
+                    }
+                }
+                this.animationFrameId = requestAnimationFrame(this.animate);
+            }
+            destroy() {
+                cancelAnimationFrame(this.animationFrameId);
+                window.removeEventListener('resize', this.resize);
+            }
+        }
+
+        // Instancia as partículas nos dois blocos
+        const preloaderParticles = new ParticleNetwork('preloader-canvas', 70);
+        new ParticleNetwork('impact-canvas', 80); // Fundo do gráfico radial com mais partículas
+
+        // Script para remover o preloader após a animação (4.6 segundos)
+        setTimeout(() => {
+            const preloader = document.getElementById('custom-preloader');
+            if (preloader) {
+                preloader.style.opacity = '0'; // Fade out suave
+                preloader.style.visibility = 'hidden';
+                document.body.classList.remove('preloader-active'); // Libera o scroll
+
+                // Remove do DOM após a transição e cancela animação
+                setTimeout(() => {
+                    if (preloaderParticles) preloaderParticles.destroy();
+                    preloader.remove();
+
+                    // Sincronização crítica após remover preloader
+                    window.dispatchEvent(new Event('resize'));
+                    ScrollTrigger.refresh();
+                    if (lenis) lenis.scrollTo(0, { immediate: true });
+                }, 800);
+            }
+        }, 4600);
+
+        // 2. Lógica Principal de Animações (Inicia após o load completo)
+        window.addEventListener('load', () => {
+            initSmoothScroll();
+            initAnimations();
+        });
+
+        function initAnimations() {
+            // Registrar plugin
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Reveal (Animando DESDE o estado oculto para o visível)
+            gsap.from(".hero .col-lg-8 > *", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                delay: 0.2,
+                ease: "power3.out"
+            });
+
+            // Reveal on Scroll (Mesmo efeito de Quem Somos - Seguro)
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                if (el.classList.contains('delay-2')) delay = 0.4;
+                if (el.classList.contains('delay-3')) delay = 0.6;
+
+                gsap.from(el, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    delay: delay,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        once: true
+                    }
+                });
+            });
+
+            // Efeitos de movimento em imagens removidos para estabilidade total
+
+            initRadialChart();
+        }
+
+        function initRadialChart() {
+            const radialChart = document.getElementById('radial-chart');
+            const radialContainer = document.querySelector('.radial-impact-container');
+            const counters = document.querySelectorAll('.counter');
+
+            if (!radialChart) return;
+
+            const arcs = radialChart.querySelectorAll('.arc');
+            const bgArcs = radialChart.querySelectorAll('.bg-arc');
+
+            bgArcs.forEach(bg => {
+                const len = bg.getTotalLength();
+                bg.style.strokeDasharray = len;
+                bg.style.strokeDashoffset = 0;
+            });
+
+            const targets = [
+                { x2: 95, y2: 85, delay: 1.0 },   // Superior Esquerdo
+                { x2: 95, y2: 315, delay: 0.8 },  // Inferior Esquerdo
+                { x2: 305, y2: 315, delay: 0.6 }, // Inferior Direito
+                { x2: 305, y2: 85, delay: 0.4 }   // Superior Direito
+            ];
+
+            arcs.forEach((arc, index) => {
+                const len = arc.getTotalLength();
+                arc.style.strokeDasharray = len;
+                arc.style.strokeDashoffset = len;
+
+                const percent = parseFloat(arc.getAttribute('data-percent'));
+                const filledLength = len * (percent / 100);
+                const finalOffset = len - filledLength;
+
+                const point = arc.getPointAtLength(filledLength);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', point.x);
+                line.setAttribute('y1', point.y);
+                line.setAttribute('x2', targets[index].x2);
+                line.setAttribute('y2', targets[index].y2);
+                line.setAttribute('stroke', arc.getAttribute('stroke'));
+                line.classList.add('svg-dotted-line');
+
+                radialChart.insertBefore(line, arc);
+
+                gsap.to(arc, {
+                    strokeDashoffset: finalOffset,
+                    duration: 2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: radialChart,
+                        start: "top 75%",
+                    }
+                });
+
+                gsap.to(line, {
+                    opacity: 1,
+                    duration: 1,
+                    delay: targets[index].delay,
+                    scrollTrigger: {
+                        trigger: radialChart,
+                        start: "top 75%",
+                    }
+                });
+            });
+
+            counters.forEach(counter => {
+                const targetValue = +counter.getAttribute('data-target');
+                gsap.to(counter, {
+                    innerText: targetValue,
+                    duration: 2,
+                    snap: { innerText: 1 },
+                    scrollTrigger: {
+                        trigger: radialChart,
+                        start: "top 75%",
+                    },
+                    onUpdate: function () {
+                        counter.innerText = Math.ceil(this.targets()[0].innerText);
+                    }
+                });
+            });
+
+            ScrollTrigger.create({
+                trigger: radialChart,
+                start: "top 75%",
+                onEnter: () => radialContainer.classList.add('active')
+            });
+        }
+        // Script do Menu Mobile
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.getElementById('main-menu');
+
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            const menuLinks = mainMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mainMenu.classList.remove('active');
+                    const icon = mobileBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+

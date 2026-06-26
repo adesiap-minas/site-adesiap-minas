@@ -1,0 +1,10 @@
+(function($){$.fn.stretch=function(opts){opts=$.extend({},$.fn.stretch.defaults,opts);if(!(opts.max>=0)||!(opts.min>=0))
+opts.min=opts.max=0;this.each(function(){var container=$(this),contents=container.find("> .stretch--handle");if(!container.hasClass("stretch--resizer")||!contents){contents=$(this).wrap("<span class='stretch--handle' />").parent();container=contents.wrap("<div class='stretch--resizer' />").parent();contents.css("margin","0").css("padding","0");container.css("margin","0").css("padding","0");container.css("white-space","nowrap").css("overflow","hidden")}
+var idealWidth=container.width(),width,min=opts.min||1,max=min;if(!opts.max){do{min=max;max*=2;container.css("font-size",max+"px");var realWidth=contents.width();width=realWidth<=width?idealWidth:realWidth}while(width<idealWidth);}else{max=opts.max;if(min==max)
+container.css("font-size",max+"px")}
+if(width==idealWidth)
+return;while(min<max){var c=Math.floor((min+max)/2);container.css("font-size",c+"px");width=contents.width();if(width==idealWidth)
+break;if(width<idealWidth)
+min=c+1;else max=c}
+if(width>idealWidth)
+container.css("font-size",(max-1)+"px");var spacing=0,origWidth=contents.width(),maxSpacing=opts.maxSpacing;do{spacing+=1;container.css("word-spacing",spacing+"px");width=contents.width()}while(spacing<=maxSpacing&&width<=idealWidth&&width>origWidth);container.css("word-spacing",(spacing-1)+"px")});return this};$.fn.stretch.defaults={min:0,max:0,maxSpacing:0}})(jQuery)
