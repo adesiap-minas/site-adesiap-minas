@@ -10,9 +10,9 @@
     }
 
     function odsImg(num) {
-        const p = String(num).padStart(2, '0');
-        return `<img src="ODS/${p}_0.webp" class="ods-icon" alt="ODS ${num}" title="ODS ${num}" loading="lazy"
-                     onerror="this.src='ODS/${num}_0.webp'">`;
+        const p   = String(num).padStart(2, '0');
+        const sfx = num === 1 ? '1' : '0';
+        return `<img src="ODS/${p}_${sfx}.webp" class="ods-icon" alt="ODS ${num}" title="ODS ${num}" loading="lazy">`;
     }
 
     function cardHtml(p, cat, idx) {

@@ -18,9 +18,9 @@
     }
 
     function odsImg(num) {
-        const p = String(num).padStart(2, '0');
-        return `<img src="./ODS/${p}_0.webp" class="ods-icon" alt="ODS ${num}" title="ODS ${num}" loading="lazy"
-                     onerror="this.src='./ODS/${num}_0.webp'">`;
+        const p   = String(num).padStart(2, '0');
+        const sfx = num === 1 ? '1' : '0';
+        return `<img src="./ODS/${p}_${sfx}.webp" class="ods-icon" alt="ODS ${num}" title="ODS ${num}" loading="lazy">`;
     }
 
     // ── CARD HTML ──────────────────────────────────────
@@ -170,8 +170,8 @@
         if (odsNums.length) {
             odsEl.innerHTML = odsNums.map(n => {
                 const pad = String(n).padStart(2, '0');
-                return `<img src="./ODS/${pad}_0.webp" alt="ODS ${n}" title="ODS ${n}" loading="lazy"
-                             onerror="this.src='./ODS/${n}_0.webp'">`;
+                const sfx = n === 1 ? '1' : '0';
+                return `<img src="./ODS/${pad}_${sfx}.webp" alt="ODS ${n}" title="ODS ${n}" loading="lazy">`;
             }).join('');
             odsSection.style.display = '';
         } else {
