@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -19,11 +19,13 @@ export default async function handler(req, res) {
 
     if (error) return res.status(500).json({ error: 'Erro ao registrar fornecedor' });
 
+    const emailDestino = await getEmailDestino('email_fornecedores');
+
     try {
         const transport = mailer();
         await transport.sendMail({
             from: `"Site ADESIAP" <${process.env.SMTP_USER}>`,
-            to: process.env.EMAIL_DESTINO,
+            to: emailDestino,
             subject: `[Fornecedores] Novo cadastro — ${razao_social}`,
             html: `
                 <h2>Novo Cadastro de Fornecedor</h2>

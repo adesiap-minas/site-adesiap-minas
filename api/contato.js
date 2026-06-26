@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -19,11 +19,13 @@ export default async function handler(req, res) {
 
     if (error) return res.status(500).json({ error: 'Erro ao salvar mensagem' });
 
+    const emailDestino = await getEmailDestino('email_contato');
+
     try {
         const transport = mailer();
         await transport.sendMail({
             from: `"Site ADESIAP" <${process.env.SMTP_USER}>`,
-            to: process.env.EMAIL_DESTINO,
+            to: emailDestino,
             subject: `[Fale Conosco] ${assunto || 'Nova mensagem'} — ${nome}`,
             html: `
                 <h2>Nova mensagem — Fale Conosco</h2>

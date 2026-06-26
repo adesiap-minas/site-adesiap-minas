@@ -38,3 +38,19 @@ export function corsHeaders() {
         'Content-Type': 'application/json',
     };
 }
+
+export async function getConfig(chave) {
+    const sb = supabase();
+    const { data } = await sb
+        .from('configuracoes')
+        .select('valor')
+        .eq('chave', chave)
+        .single();
+    return data?.valor || null;
+}
+
+export async function getEmailDestino(chave_routing) {
+    const especifico = await getConfig(chave_routing);
+    if (especifico) return especifico;
+    return process.env.EMAIL_DESTINO || 'comercial@adesiap.org.br';
+}

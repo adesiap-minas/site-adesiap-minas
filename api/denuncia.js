@@ -1,4 +1,4 @@
-import { supabase, mailer, gerarProtocolo, corsHeaders } from './_lib.js';
+import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -21,11 +21,13 @@ export default async function handler(req, res) {
 
     if (error) return res.status(500).json({ error: 'Erro ao registrar denúncia' });
 
+    const emailDestino = await getEmailDestino('email_denuncias');
+
     try {
         const transport = mailer();
         await transport.sendMail({
             from: `"Site ADESIAP" <${process.env.SMTP_USER}>`,
-            to: process.env.EMAIL_DESTINO,
+            to: emailDestino,
             subject: `[Canal de Denúncias] Nova denúncia — Protocolo ${protocolo}`,
             html: `
                 <h2>Nova Denúncia — Canal de Denúncias</h2>

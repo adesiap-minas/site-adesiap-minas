@@ -1,7 +1,8 @@
-import { supabase, mailer, gerarProtocolo, corsHeaders } from './_lib.js';
+import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino } from './_lib.js';
 
-const PREFIXOS = { reclamacao: 'RCL', sugestao: 'SUG', elogio: 'ELG' };
-const LABELS = { reclamacao: 'Reclamação', sugestao: 'Sugestão', elogio: 'Elogio' };
+const PREFIXOS   = { reclamacao: 'RCL', sugestao: 'SUG', elogio: 'ELG' };
+const LABELS     = { reclamacao: 'Reclamação', sugestao: 'Sugestão', elogio: 'Elogio' };
+const EMAIL_KEYS = { reclamacao: 'email_ouvidoria_reclamacao', sugestao: 'email_ouvidoria_sugestao', elogio: 'email_ouvidoria_elogio' };
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -24,11 +25,13 @@ export default async function handler(req, res) {
 
     if (error) return res.status(500).json({ error: 'Erro ao registrar manifestação' });
 
+    const emailDestino = await getEmailDestino(EMAIL_KEYS[tipo] || 'email_ouvidoria_reclamacao');
+
     try {
         const transport = mailer();
         await transport.sendMail({
             from: `"Site ADESIAP" <${process.env.SMTP_USER}>`,
-            to: process.env.EMAIL_DESTINO,
+            to: emailDestino,
             subject: `[Ouvidoria] ${LABELS[tipo]} — Protocolo ${protocolo}`,
             html: `
                 <h2>Nova ${LABELS[tipo]} — Ouvidoria</h2>
