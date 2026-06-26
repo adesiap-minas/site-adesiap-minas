@@ -199,6 +199,55 @@
         .save-msg { font-size: 0.82rem; color: var(--verde); font-weight: 600; opacity: 0; transition: opacity 0.3s; }
         .save-msg.show { opacity: 1; }
 
+        /* WhatsApp section */
+        .wa-section { margin-bottom: 28px; }
+        .wa-section-title {
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.8px; color: var(--texto-leve);
+            padding-bottom: 10px; border-bottom: 1px solid var(--borda);
+            margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .wa-section-title i { color: #25D366; }
+        .wa-slot {
+            background: #F8FFF9; border: 1.5px solid #D1FAE5;
+            border-radius: 10px; padding: 18px 20px; margin-bottom: 12px;
+        }
+        .wa-slot-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .wa-slot-num {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #25D366; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+        }
+        .wa-slot-header h4 { font-size: 0.9rem; color: var(--azul); margin: 0; }
+        .wa-fields { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 12px; }
+        .wa-fields-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+        .wa-field label {
+            font-size: 0.75rem; font-weight: 600; color: var(--texto-leve);
+            text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 5px;
+        }
+        .wa-cta-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;
+        }
+        .wa-cta-card {
+            background: #fff; border: 1.5px solid var(--borda); border-radius: 10px;
+            overflow: hidden;
+        }
+        .wa-cta-card-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; background: #FAFBFC; border-bottom: 1px solid var(--borda);
+        }
+        .wa-cta-card-header .wa-icon {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: #25D366; color: #fff; display: flex; align-items: center;
+            justify-content: center; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .wa-cta-card-header h4 { font-size: 0.88rem; color: var(--azul); margin: 0; }
+        .wa-cta-card-header p { font-size: 0.72rem; color: var(--texto-leve); margin: 2px 0 0; }
+        .wa-cta-card-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+
         /* Form fields comuns */
         input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
             width: 100%; border: 1.5px solid var(--borda); border-radius: 8px;
@@ -349,6 +398,142 @@
                     <i class="fas fa-flask"></i> Testar envio
                 </button>
                 <span class="save-msg" id="saveMsg-email"><i class="fas fa-check"></i> Salvo!</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: WHATSAPP -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon" style="background:#25D366"><i class="fab fa-whatsapp"></i></div>
+                <div>
+                    <h3>WhatsApp — Topbar e CTAs</h3>
+                    <p>Configure os números e mensagens de cada botão WhatsApp do site</p>
+                </div>
+            </div>
+            <div class="section-body">
+
+                <!-- TOPBAR -->
+                <div class="wa-section">
+                    <div class="wa-section-title"><i class="fab fa-whatsapp"></i> Topbar — aparece em todas as páginas</div>
+
+                    <div class="wa-slot">
+                        <div class="wa-slot-header"><div class="wa-slot-num">1</div><h4 id="wa-topbar-1-preview">CAMPE</h4></div>
+                        <div class="wa-fields">
+                            <div class="wa-field"><label>Rótulo</label><input type="text" id="wa_topbar_1_label" placeholder="CAMPE" oninput="document.getElementById('wa-topbar-1-preview').textContent=this.value||'Topbar 1'"></div>
+                            <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_topbar_1_numero" placeholder="553184271617"></div>
+                            <div class="wa-field"><label>Mensagem automática</label><input type="text" id="wa_topbar_1_msg" placeholder="Olá! Vim pelo site..."></div>
+                        </div>
+                    </div>
+
+                    <div class="wa-slot">
+                        <div class="wa-slot-header"><div class="wa-slot-num">2</div><h4 id="wa-topbar-2-preview">SÓ POR HOJE</h4></div>
+                        <div class="wa-fields">
+                            <div class="wa-field"><label>Rótulo</label><input type="text" id="wa_topbar_2_label" placeholder="SÓ POR HOJE" oninput="document.getElementById('wa-topbar-2-preview').textContent=this.value||'Topbar 2'"></div>
+                            <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_topbar_2_numero" placeholder="553196288671"></div>
+                            <div class="wa-field"><label>Mensagem automática</label><input type="text" id="wa_topbar_2_msg" placeholder="Olá! Vim pelo site..."></div>
+                        </div>
+                    </div>
+
+                    <div class="wa-slot">
+                        <div class="wa-slot-header"><div class="wa-slot-num">3</div><h4 id="wa-topbar-3-preview">ADESIAP</h4></div>
+                        <div class="wa-fields">
+                            <div class="wa-field"><label>Rótulo</label><input type="text" id="wa_topbar_3_label" placeholder="ADESIAP" oninput="document.getElementById('wa-topbar-3-preview').textContent=this.value||'Topbar 3'"></div>
+                            <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_topbar_3_numero" placeholder="553184011390"></div>
+                            <div class="wa-field"><label>Mensagem automática</label><input type="text" id="wa_topbar_3_msg" placeholder="Olá! Vim pelo site..."></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FALE CONOSCO -->
+                <div class="wa-section">
+                    <div class="wa-section-title"><i class="fab fa-whatsapp"></i> Card WhatsApp — Fale Conosco</div>
+                    <div class="wa-slot">
+                        <div class="wa-fields-2">
+                            <div class="wa-field"><label>Número exibido</label><input type="text" id="wa_fale_conosco_label" placeholder="(31) 3563-1958"></div>
+                            <div class="wa-field"><label>Número para link (com DDI)</label><input type="text" id="wa_fale_conosco_numero" placeholder="553135631958"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTAs POR PÁGINA -->
+                <div class="wa-section">
+                    <div class="wa-section-title"><i class="fab fa-whatsapp"></i> Botões CTA — número e mensagem por página</div>
+                    <div class="wa-cta-grid">
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-home"></i></div>
+                                <div><h4>Início</h4><p>index.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_inicio_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_inicio_msg" placeholder="Olá! Gostaria de mais informações..."></div>
+                            </div>
+                        </div>
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-users"></i></div>
+                                <div><h4>Quem Somos</h4><p>quem-somos.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_quem_somos_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_quem_somos_msg" placeholder="Olá! Vi a história da ADESIAP..."></div>
+                            </div>
+                        </div>
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-landmark"></i></div>
+                                <div><h4>Governança</h4><p>governanca.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_governanca_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_governanca_msg" placeholder="Olá! Gostaria de saber sobre governança..."></div>
+                            </div>
+                        </div>
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-globe-americas"></i></div>
+                                <div><h4>Agenda 2030</h4><p>agenda-2030.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_agenda_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_agenda_msg" placeholder="Olá! Gostaria de saber sobre ESG e ODS..."></div>
+                            </div>
+                        </div>
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-briefcase"></i></div>
+                                <div><h4>Serviços</h4><p>servicos.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_servicos_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_servicos_msg" placeholder="Olá! Gostaria de conhecer os serviços..."></div>
+                            </div>
+                        </div>
+
+                        <div class="wa-cta-card">
+                            <div class="wa-cta-card-header">
+                                <div class="wa-icon"><i class="fas fa-project-diagram"></i></div>
+                                <div><h4>Projetos</h4><p>projetos.html</p></div>
+                            </div>
+                            <div class="wa-cta-card-body">
+                                <div class="wa-field"><label>Número (com DDI)</label><input type="text" id="wa_cta_projetos_numero" placeholder="553184011390"></div>
+                                <div class="wa-field"><label>Mensagem</label><input type="text" id="wa_cta_projetos_msg" placeholder="Olá! Gostaria de falar com um especialista..."></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="salvarGrupo('whatsapp')">
+                    <i class="fab fa-whatsapp"></i> Salvar WhatsApp
+                </button>
+                <span class="save-msg" id="saveMsg-whatsapp"><i class="fas fa-check"></i> Salvo! Alterações ativas em até 1 minuto.</span>
             </div>
         </div>
 
@@ -671,6 +856,16 @@
             'email_contato','email_fornecedores',
             'email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio',
             'email_denuncias','email_candidaturas',
+            'wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg',
+            'wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg',
+            'wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg',
+            'wa_fale_conosco_numero','wa_fale_conosco_label',
+            'wa_cta_inicio_numero','wa_cta_inicio_msg',
+            'wa_cta_quem_somos_numero','wa_cta_quem_somos_msg',
+            'wa_cta_governanca_numero','wa_cta_governanca_msg',
+            'wa_cta_agenda_numero','wa_cta_agenda_msg',
+            'wa_cta_servicos_numero','wa_cta_servicos_msg',
+            'wa_cta_projetos_numero','wa_cta_projetos_msg',
             'site_nome','site_url',
             'ouvidoria_prazo','ouvidoria_email'
         ];
@@ -685,6 +880,7 @@
         const mapa = {
             email:     ['smtp_host','smtp_port','smtp_user','smtp_pass','email_destino','email_remetente'],
             routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas'],
+            whatsapp:  ['wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg','wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg','wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg','wa_fale_conosco_numero','wa_fale_conosco_label','wa_cta_inicio_numero','wa_cta_inicio_msg','wa_cta_quem_somos_numero','wa_cta_quem_somos_msg','wa_cta_governanca_numero','wa_cta_governanca_msg','wa_cta_agenda_numero','wa_cta_agenda_msg','wa_cta_servicos_numero','wa_cta_servicos_msg','wa_cta_projetos_numero','wa_cta_projetos_msg'],
             site:      ['site_nome','site_url'],
             ouvidoria: ['ouvidoria_prazo','ouvidoria_email'],
         };
