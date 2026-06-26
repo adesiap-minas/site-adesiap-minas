@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda 2030 e Pacto Global | Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        h2 { font-size: 2.5rem; line-height: 1.2; }
+        h3 { font-size: 1.8rem; }
+        
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .section-padding { padding: 100px 0; }
+        .bg-light { background-color: var(--areia-fundo); }
+
+        .display-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 40px;
+            letter-spacing: -1.5px;
+            color: var(--azul-institucional);
+        }
+
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 767px) {
+            .display-title { font-size: 2.8rem; }
+            .display-title span { font-size: 0.7em; }
+        }
+
+        /* Header / Menu */
+        header {
+            position: fixed; top: var(--topbar-height); left: 0; width: 100%; height: var(--header-height);
+            background-color: #fff; z-index: 1000; display: flex; align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+        .header-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 50px; width: auto; }
+        
+        .mobile-menu-btn {
+            display: none; background: none; border: none; font-size: 1.8rem;
+            cursor: pointer; color: var(--azul-institucional); padding: 5px;
+        }
+
+        .main-menu { display: flex; list-style: none; gap: 30px; }
+        .main-menu a {
+            font-size: 0.95rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--azul-institucional); transition: color 0.3s ease;
+            position: relative; padding: 10px 0; display: inline-block;
+        }
+        .main-menu > li > a:hover { color: var(--terracota-institucional); }
+        .main-menu > li > a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0;
+            height: 2px; background-color: var(--terracota-institucional); transition: width 0.3s ease;
+        }
+        .main-menu > li > a:hover::after { width: 100%; }
+
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            display: none; position: absolute; top: 100%; left: 0; background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); list-style: none; padding: 10px 0;
+            min-width: 260px; border-radius: 4px; z-index: 1000; flex-direction: column; gap: 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu li { margin: 0; }
+        .dropdown-menu li a {
+            display: block; padding: 12px 20px; text-transform: none; font-size: 0.95rem;
+            color: var(--texto-secundario); font-weight: 500; border-bottom: 1px solid var(--areia-fundo);
+        }
+        .dropdown-menu li:last-child a { border-bottom: none; }
+        .dropdown-menu li a::after { display: none; }
+        .dropdown-menu li a:hover { background-color: var(--areia-fundo); color: var(--terracota-institucional); }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            .main-menu {
+                display: flex; flex-direction: column; position: fixed; top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff; transition: left 0.3s ease; padding: 40px 20px;
+                overflow-y: auto; gap: 0;
+            }
+            .main-menu.active { left: 0; }
+            .main-menu li a { font-size: 1.2rem; padding: 15px 0; display: block; border-bottom: 1px solid var(--areia-fundo); }
+            .dropdown-menu { display: flex; position: relative; box-shadow: none; padding-left: 20px; min-width: 100%; border-radius: 0; }
+            .dropdown-menu li a { font-size: 1.1rem; padding: 10px 0; border-bottom: 1px dashed var(--areia-fundo); }
+        }
+
+        /* Hero */
+        .hero-qs {
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 80px); padding-bottom: 80px; min-height: 450px;
+            background: linear-gradient(rgba(11, 31, 51, 0.88), rgba(11, 31, 51, 0.88)), url('Fotos/Hello Quem somos/quem-somos-hello.webp') center/cover no-repeat;
+            display: flex; align-items: center; color: #fff;
+        }
+        .hero-qs h1 { color: #fff; font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; }
+        .hero-qs p { color: rgba(255, 255, 255, 0.85); font-size: 1.25rem; max-width: 800px; }
+
+        /* Block text */
+        .info-block {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border-left: 5px solid var(--terracota-institucional);
+            margin-bottom: 40px;
+        }
+        .info-block.verde {
+            border-left-color: var(--verde-sustentabilidade);
+        }
+        .info-block h3 { margin-bottom: 20px; }
+
+        /* Pacto Global Cards */
+        .pacto-card {
+            background: var(--areia-fundo);
+            border-radius: 8px;
+            padding: 30px;
+            height: 100%;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .pacto-card:hover {
+            transform: translateY(-5px);
+            background: #fff;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+        .pacto-card i {
+            font-size: 2.5rem;
+            color: var(--azul-institucional);
+            margin-bottom: 15px;
+        }
+
+        /* ODS Grid */
+        .ods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .ods-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .ods-item:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        .ods-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* CTA */
+        .cta-banner {
+            background-color: var(--azul-profundo); border-radius: 20px;
+            padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+        }
+        .cta-banner::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%); z-index: 1;
+        }
+        .cta-banner * { position: relative; z-index: 2; }
+        .btn-primary {
+            display: inline-block; background-color: var(--terracota-institucional); color: #fff;
+            padding: 14px 34px; font-weight: 600; border-radius: 4px; transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional); cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-primary:hover {
+            background-color: var(--ambar-impacto); border-color: var(--ambar-impacto);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+    
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root { --topbar-height: 36px; }
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        </style>
+</head>
+
+<body>
+
+    
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="agenda-2030.html" style="color: var(--terracota-institucional);">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-qs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1>Nosso Compromisso com o Futuro</h1>
+                    <p style="margin-bottom: 20px;">A ADESIAP Minas baseia suas ações e projetos no desenvolvimento sustentável e na responsabilidade social, alinhando-se às maiores diretrizes globais de transformação: a Agenda 2030 e o Pacto Global da ONU.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- O que é o Pacto Global -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row mb-5 reveal-on-scroll">
+                <div class="col-lg-6">
+                    <h2 class="display-title">
+                        <span>Pacto</span>
+                        Global da ONU
+                    </h2>
+                </div>
+                <div class="col-lg-6">
+                    <div class="info-block">
+                        <p>O <strong>Pacto Global da ONU</strong> é a maior iniciativa de sustentabilidade corporativa do mundo. Ele atua como um mecanismo de engajamento para que organizações alinhem suas estratégias e operações a Dez Princípios universais, promovendo um crescimento ético e responsável.</p>
+                        <p style="margin-bottom: 0;">A ADESIAP incorpora esses preceitos em suas parcerias e na execução de seus serviços técnicos, mobilizando governos locais, empresas e a sociedade civil em direção a práticas mais responsáveis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 reveal-on-scroll delay-1">
+                    <div class="pacto-card">
+                        <i class="fas fa-hands"></i>
+                        <h4>Direitos Humanos</h4>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Apoiar e respeitar a proteção de direitos humanos reconhecidos internacionalmente.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 reveal-on-scroll delay-2">
+                    <div class="pacto-card">
+                        <i class="fas fa-hard-hat"></i>
+                        <h4>Trabalho</h4>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Apoiar a liberdade de associação e a eliminação de todas as formas de trabalho forçado.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 reveal-on-scroll delay-3">
+                    <div class="pacto-card">
+                        <i class="fas fa-leaf"></i>
+                        <h4>Meio Ambiente</h4>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Apoiar uma abordagem preventiva aos desafios ambientais e promover a responsabilidade ambiental.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 reveal-on-scroll delay-4">
+                    <div class="pacto-card">
+                        <i class="fas fa-balance-scale"></i>
+                        <h4>Anticorrupção</h4>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Combater a corrupção em todas as suas formas, inclusive extorsão e suborno, promovendo a transparência.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agenda 2030 e ODS -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row mb-5 text-center reveal-on-scroll">
+                <div class="col-12">
+                    <h2 class="display-title">
+                        <span>A Agenda</span>
+                        2030
+                    </h2>
+                    <p style="max-width: 800px; margin: 0 auto;">Adotada pelos 193 Estados-membros da ONU, a Agenda 2030 é um plano de ação focado nas <strong>pessoas</strong>, no <strong>planeta</strong> e na <strong>prosperidade</strong>. O coração da Agenda 2030 são os 17 Objetivos de Desenvolvimento Sustentável (ODS), com o lema "Não deixar ninguém para trás".</p>
+                </div>
+            </div>
+
+            <div class="row reveal-on-scroll">
+                <div class="col-12">
+                    <div class="info-block verde">
+                        <h3 style="color: var(--verde-sustentabilidade);">Nossa Atuação nos ODS</h3>
+                        <p>Através dos nossos 6 eixos estratégicos de serviços — incluindo Gestão de Projetos Sociais, Desenvolvimento Econômico, Recuperação Ambiental e Cidades Inteligentes — a ADESIAP Minas trabalha diariamente para implementar e tangibilizar os 17 ODS nas comunidades em que atua. Cada projeto que gerenciamos é desenhado para maximizar o impacto positivo e sustentável a longo prazo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Imagens ODS -->
+            <div class="row reveal-on-scroll delay-1">
+                <div class="col-12">
+                    <div class="ods-grid">
+                        <div class="ods-item" title="Erradicação da Pobreza"><img src="ODS/01_1.webp" alt="ODS 1"></div>
+                        <div class="ods-item" title="Fome Zero e Agricultura Sustentável"><img src="ODS/02_0.webp" alt="ODS 2"></div>
+                        <div class="ods-item" title="Saúde e Bem-Estar"><img src="ODS/03_0.webp" alt="ODS 3"></div>
+                        <div class="ods-item" title="Educação de Qualidade"><img src="ODS/04_0.webp" alt="ODS 4"></div>
+                        <div class="ods-item" title="Igualdade de Gênero"><img src="ODS/05_0.webp" alt="ODS 5"></div>
+                        <div class="ods-item" title="Água Potável e Saneamento"><img src="ODS/06_0.webp" alt="ODS 6"></div>
+                        <div class="ods-item" title="Energia Limpa e Acessível"><img src="ODS/07_0.webp" alt="ODS 7"></div>
+                        <div class="ods-item" title="Trabalho Decente e Crescimento Econômico"><img src="ODS/08_0.webp" alt="ODS 8"></div>
+                        <div class="ods-item" title="Indústria, Inovação e Infraestrutura"><img src="ODS/09_0.webp" alt="ODS 9"></div>
+                        <div class="ods-item" title="Redução das Desigualdades"><img src="ODS/10_0.webp" alt="ODS 10"></div>
+                        <div class="ods-item" title="Cidades e Comunidades Sustentáveis"><img src="ODS/11_0.webp" alt="ODS 11"></div>
+                        <div class="ods-item" title="Consumo e Produção Responsáveis"><img src="ODS/12_0.webp" alt="ODS 12"></div>
+                        <div class="ods-item" title="Ação Contra a Mudança Global do Clima"><img src="ODS/13_0.webp" alt="ODS 13"></div>
+                        <div class="ods-item" title="Vida na Água"><img src="ODS/14_0.webp" alt="ODS 14"></div>
+                        <div class="ods-item" title="Vida Terrestre"><img src="ODS/15_0.webp" alt="ODS 15"></div>
+                        <div class="ods-item" title="Paz, Justiça e Instituições Eficazes"><img src="ODS/16_0.webp" alt="ODS 16"></div>
+                        <div class="ods-item" title="Parcerias e Meios de Implementação"><img src="ODS/17_0.webp" alt="ODS 17"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 reveal-on-scroll">
+                    <div class="cta-banner">
+                        <h2 class="display-title light" style="font-size: 3rem; margin-bottom: 20px; color: #fff;">VAMOS IMPACTAR JUNTOS?</h2>
+                        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 35px; color: rgba(255,255,255,0.9);">
+                            Traga seu projeto para a ADESIAP e garanta a conformidade com as exigências ESG, os ODS e o Pacto Global da ONU.
+                        </p>
+                        <a href="index.html#contato" class="btn-primary" style="background: var(--ambar-impacto); border-color: var(--ambar-impacto);">Fale com nossa equipe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile Script
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.querySelector('.main-menu');
+
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Initialize Smooth Scroll and Animations
+        window.addEventListener('load', () => {
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            gsap.registerPlugin(ScrollTrigger);
+            
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            gsap.from(".hero-qs h1, .hero-qs p", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, delay: 0.2 });
+            
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                if (el.classList.contains('delay-2')) delay = 0.4;
+                if (el.classList.contains('delay-3')) delay = 0.6;
+                if (el.classList.contains('delay-4')) delay = 0.8;
+
+                gsap.from(el, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: delay,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        // Lógica do Botão Voltar ao Topo
+        (function () {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
+
+
+
+
+
+

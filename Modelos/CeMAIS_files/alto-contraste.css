@@ -1,0 +1,411 @@
+.alto-contraste {
+    color: #fff !important;
+    background-color: #000;
+}
+.alto-contraste a {
+    color: #fff;
+}
+.alto-contraste a:hover {
+    color: #fff;
+}
+.alto-contraste .barra-topo {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .barra-topo .custom-control-label::before {
+    border-color: #2e3338;
+}
+.alto-contraste .barra-topo .custom-switch .custom-control-label::after {
+    background-color: #2e3338;
+}
+@media (min-width: 992px) {
+    .alto-contraste .barra-topo .btn {
+        background-color: #000;
+        border-color: #fff;
+        color: #fff;
+    }
+    .alto-contraste .barra-topo a {
+        color: #fff;
+        text-decoration: none;
+    }
+}
+.alto-contraste .barra-topo form .input-group .input-group-text,
+.alto-contraste .barra-topo form .input-group .form-control {
+    background-color: #000;
+    border-color: #fff;
+    color: #fff;
+}
+.alto-contraste .navbar {
+    background-color: #111;
+}
+.alto-contraste .navbar .navbar-nav .nav-link {
+    color: #fff;
+}
+.alto-contraste .navbar .navbar-nav .active > .nav-link, .alto-contraste .navbar .navbar-nav .nav-link.active, .alto-contraste .navbar .navbar-nav .nav-link.show, 
+.alto-contraste .navbar .navbar-nav .show > .nav-link, .alto-contraste .navbar .navbar-nav .nav-link:focus, .alto-contraste .navbar .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+.alto-contraste .navbar-toggler img {
+    filter: invert(100%) sepia(100%) saturate(100%) hue-rotate(217deg) brightness(100%) contrast(100%);
+}
+.alto-contraste .carousel .carousel-indicators li {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .carousel .botoes-slider {
+    background-color: #000;
+}
+.alto-contraste .carousel .botoes-slider .carousel-control-prev, 
+.alto-contraste .carousel .botoes-slider .carousel-control-next {
+    background-color: #111;
+    color: #fff;
+}
+.alto-contraste .carousel .botoes-slider .carousel-control-prev {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .btn-primary {
+    color: #fff !important;
+    background-color: #000 !important;
+    border-color: #fff !important;
+}
+.alto-contraste .btn-secondary {
+    color: #fff !important;
+    background-color: #111 !important;
+    border-color: #fff !important;
+}
+.alto-contraste .titulo {
+    color: #fff;
+}
+.alto-contraste .conheca-cemais {
+    position: relative;
+}
+.alto-contraste .conheca-cemais::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .95);
+}
+.alto-contraste .seu-perfil h3 {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .seu-perfil h3 > a {
+    border: 1px solid #fff;
+    background-color: #111;
+    color: #fff;
+}
+.alto-contraste .slider-perfil .perfil {
+    background-color: #000;
+}
+.alto-contraste .servicos {
+    position: relative;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    background-color: #000;
+}
+.alto-contraste .servicos::before {
+    background-color: #fff;
+}
+.alto-contraste .servicos h5 {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .servicos h5 > a {
+    border: 1px solid #fff;
+    background-color: #111;
+    color: #fff;
+}
+.alto-contraste .servicos .servico::before {
+    background-color: #fff;
+}
+.alto-contraste .servicos .servico > div {
+    background-color: #000;
+}
+.alto-contraste .servicos .servico h4 {
+    color: #fff;
+}
+.alto-contraste .projetos {
+    background: #111;
+}
+.alto-contraste .projetos .areas-atuacao {
+    background-color: #000;
+}
+.alto-contraste .projetos .areas-atuacao h4 {
+    color: #fff;
+}
+.alto-contraste .box-filtros {
+    border: 1px solid #fff;
+    background-color: #000;
+}
+.alto-contraste .box-filtros > .btn {
+    border-color: #000 !important;
+    background-color: #000 !important;
+    color: #fff;
+}
+.alto-contraste .box-filtros > .btn.active {
+    border-color: #fff !important;
+    background-color: #000 !important;
+    color: #fff;
+}
+.alto-contraste .projeto {
+    border-color: #fff;
+    background-color: #000;
+}
+.alto-contraste .projeto .projeto-foto {
+    border-color: #fff;
+}
+.alto-contraste .projeto .projeto-descricao + .projeto-descricao {
+    border-color: #fff;
+}
+.alto-contraste .projeto .projeto-descricao h3 {
+    color: #fff;
+}
+.alto-contraste .projeto .projeto-descricao p {
+    color: #fff;
+}
+.alto-contraste .podcasts {
+    background: transparent;
+}
+.alto-contraste .podcast {
+    border-color: #fff;
+    background-color: #000;
+}
+.alto-contraste .podcast .podcast-descricao + .podcast-descricao {
+    border-color: #fff;
+}
+.alto-contraste .podcast .podcast-descricao h3 {
+    color: #fff;
+}
+.alto-contraste .podcast .podcast-descricao p {
+    color: #fff
+}
+.alto-contraste .noticias {
+    background-color: #111;
+}
+.alto-contraste .noticia h4 {
+    color: #fff;
+}
+.alto-contraste .noticia hr {
+    border-color: #fff;
+}
+.alto-contraste .noticia p {
+    color: #fff;
+}
+.alto-contraste .noticias .publicacoes h3 {
+    color: #fff;
+}
+.alto-contraste .valor-compartilhado {
+    background: #000;
+}
+.alto-contraste .valor-compartilhado img:not(.img-fluid) {
+    filter: invert(1);
+}
+.alto-contraste .valor-compartilhado h2 {
+    color: #fff;
+}
+.alto-contraste .vc-destaque h3 {
+    color: #fff;
+}
+.alto-contraste .boletins {
+    background: #111;
+}
+.alto-contraste .videos {
+    background-color: transparent;
+}
+.alto-contraste .video .video-descricao + .video-descricao {
+    border-color: #fff;
+}
+.alto-contraste .video .video-descricao h3 {
+    color: #fff;
+}
+.alto-contraste .video .video-descricao p {
+    color: #fff;
+}
+.alto-contraste .depoimentos {
+    background: #111;
+}
+.alto-contraste .depoimento {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .slider-depoimentos-seta-l {
+    background-color: #111 !important;
+    border-color: #111 !important;
+    color: #fff !important;
+}
+.alto-contraste .slider-depoimentos-seta-r {
+    border-color: #000 !important;
+}
+.alto-contraste .nav-pills-projeto .nav-link {
+    background-color: #000;
+    border: 2px solid #fff;
+}
+.alto-contraste .nav-pills-projeto .nav-link.active, .nav-pills-projeto .show > .nav-link {
+    background-color: #000;
+}
+.alto-contraste .publicacao {
+    border: 2px solid #fff;
+    background-color: transparent;
+}
+.alto-contraste .publicacao .publicacao-descricao {
+    background-color: transparent;
+}
+.alto-contraste .publicacao .publicacao-descricao h3 {
+    color: #fff;
+}
+.alto-contraste .equipe h4 {
+    color: #fff;
+}
+.alto-contraste .precisa-ajuda {
+    background-color: #111;
+}
+.alto-contraste .galeria .botoes-galeria {
+    background-color: transparent;
+    border: 2px solid #fff;
+}
+.alto-contraste .galeria .botoes-galeria .botao-galeria-prev {
+    background-color: transparent;
+    color: #fff;
+}
+.alto-contraste .galeria .botoes-galeria .botao-galeria-next {
+    background-color: #111;
+}
+.alto-contraste .publicacoes-vc .container-fluid {
+    background-color: #222;
+}
+.alto-contraste .publicacoes-vc .nav-pills .nav-link {
+    color: #fff;
+}
+.alto-contraste .publicacoes-vc .nav-pills .nav-link.active, .alto-contraste .publicacoes-vc .nav-pills .show > .nav-link {
+    background-color: #111;
+}
+.alto-contraste .pag-boletins .container-fluid {
+    background-color: #222;
+}
+.alto-contraste .pag-boletins .nav-pills .nav-link {
+    color: #fff;
+}
+.alto-contraste .pag-boletins .nav-pills .nav-link.active, .alto-contraste .pag-boletins .nav-pills .show > .nav-link {
+    background-color: #111;
+}
+.alto-contraste .pag-boletins h5 {
+    color: #fff;
+}
+.alto-contraste .boletim {
+    color: #c2c9cf;
+}
+.alto-contraste .newsletter-boletim {
+    background: #111;
+}
+.alto-contraste .transparencia {
+    background: #000;
+}
+.alto-contraste .transparencia .nav-pills .nav-link {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .transparencia .nav-pills .nav-link.active, .alto-contraste .transparencia .nav-pills .show > .nav-link {
+    background-color: #111;
+}
+.alto-contraste .pag-doacao .doacao {
+    background-color: #000;
+}
+.alto-contraste .pag-doacao .doacao h5 {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .pag-doacao .doacao h5 > a {
+    border: 1px solid #fff;
+    background-color: #111;
+    color: #fff;
+}
+.alto-contraste .pag-doacao .doacao h4 {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .pag-doacao .doacao .doacao-pix {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .pag-doacao .doacao-ir .container-fluid {
+    background-color: #222;
+}
+.alto-contraste .pag-doacao .doacao-ir .nav-pills .nav-link {
+    background-color: #222;
+    color: #fff;
+}
+.alto-contraste .pag-doacao .doacao-ir .nav-pills .nav-link.active, .alto-contraste .pag-doacao .doacao-ir .nav-pills .show > .nav-link {
+    background-color: #111;
+}
+.alto-contraste .pag-doacao .doacao-projetos {
+    background: #0a0a0a;
+}
+.alto-contraste .participacao-social {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .participacao-social h3 {
+    color: #fff;
+}
+.alto-contraste .conselho .conselho-foto {
+    background-color: #000;
+}
+.alto-contraste .conselho h4 {
+    color: #fff;
+}
+.alto-contraste .premios {
+    background-color: #000;
+}
+.alto-contraste .whatsapp-flutuante .fa-stack-2x {
+    color: #000;
+}
+.alto-contraste .whatsapp-flutuante .fa-whatsapp {
+    color: #fff;
+}
+.alto-contraste .faixa-rodape-cima {
+    background-color: #000;
+    border-color: #fff;
+}
+.alto-contraste .faixa-rodape-cima .container > .row > div + div {
+    border-color: #fff;
+}
+@media (min-width: 992px) {
+    .alto-contraste .faixa-rodape-cima .container > .row > div + div {
+        border-color: #fff;
+    }
+}
+.alto-contraste .faixa-rodape-cima a {
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+}
+.alto-contraste .faixa-rodape-cima a > span {
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .rodape {
+    background-color: #111;
+    color: #fff;
+}
+@media (min-width: 992px) {
+    .alto-contraste .rodape {
+        padding-bottom: 3rem;
+    }
+}
+.alto-contraste .faixa-rodape {
+    background-color: #000;
+    color: #fff;
+}
+.alto-contraste .faixa-rodape a {
+    color: #fff;
+}

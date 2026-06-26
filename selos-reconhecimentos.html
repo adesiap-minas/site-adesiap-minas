@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selos e Reconhecimentos | Adesiap Minas</title>
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+            --topbar-height: 36px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--texto-principal); background-color: var(--branco); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        h1, h2, h3, h4 { font-family: 'Inter', sans-serif; font-weight: 700; margin-bottom: 20px; color: var(--azul-institucional); }
+        h2 { font-size: 2.5rem; line-height: 1.2; }
+        p { font-family: 'Roboto', sans-serif; font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 15px; }
+        .section-padding { padding: 100px 0; }
+        .bg-light { background-color: var(--areia-fundo); }
+        .text-center { text-align: center; }
+
+        .section-tag { display: inline-block; background-color: rgba(184,92,56,0.1); color: var(--terracota-institucional); padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 25px; }
+
+        .display-title { font-size: 5rem; font-weight: 900; text-transform: uppercase; line-height: 0.85; margin-bottom: 40px; letter-spacing: -2px; color: var(--azul-institucional); }
+        .display-title span { display: block; opacity: 0.4; font-size: 0.8em; }
+        .display-title.light { color: #fff; }
+        .display-title.light span { opacity: 0.5; }
+        @media (max-width: 767px) { .display-title { font-size: 3.2rem; } .display-title span { font-size: 0.7em; } }
+
+        /* Topbar */
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; }
+        .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        /* Header */
+        header { position: fixed; top: var(--topbar-height); left: 0; width: 100%; height: var(--header-height); background-color: #fff; z-index: 1000; display: flex; align-items: center; box-shadow: 0 2px 20px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--azul-institucional); padding: 5px; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 50px; width: auto; }
+        .main-menu { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
+        .main-menu li a { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; position: relative; padding: 10px 0; transition: color 0.3s; color: var(--azul-institucional); }
+        .main-menu li a:hover { color: var(--terracota-institucional); }
+        .main-menu li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background-color: var(--terracota-institucional); transition: width 0.3s; }
+        .main-menu li a:hover::after { width: 100%; }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); list-style: none; padding: 10px 0; min-width: 220px; border-radius: 4px; z-index: 1000; flex-direction: column; gap: 0; }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu li { margin: 0; }
+        .dropdown-menu li a { display: block; padding: 12px 20px; text-transform: none; font-size: 0.95rem; color: var(--texto-secundario); font-weight: 500; }
+        .dropdown-menu li a::after { display: none; }
+        .dropdown-menu li a:hover { background-color: var(--areia-fundo); color: var(--terracota-institucional); }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            nav { position: fixed; top: calc(var(--header-height) + var(--topbar-height)); left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height)); background-color: #fff; transition: left 0.3s ease; display: flex; align-items: center; justify-content: center; }
+            nav.active { left: 0; }
+            nav ul { flex-direction: column; text-align: center; gap: 30px; }
+            nav a { font-size: 1.5rem; }
+        }
+
+        /* Hero */
+        .hero-qs { padding-top: calc(var(--header-height) + var(--topbar-height) + 120px); padding-bottom: 120px; }
+
+        /* ===== SEAL TABLE LAYOUT ===== */
+        .seals-table { display: flex; flex-direction: column; gap: 20px; }
+
+        .seal-row {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(18, 57, 93, 0.07);
+            overflow: hidden;
+            display: flex;
+            align-items: stretch;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid var(--terracota-institucional);
+        }
+        .seal-row:hover {
+            transform: translateX(6px);
+            box-shadow: 0 10px 40px rgba(18, 57, 93, 0.12);
+        }
+
+        .seal-row-img {
+            background: #fff;
+            padding: 35px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 190px;
+            flex-shrink: 0;
+            border-right: 1px solid var(--areia-fundo);
+        }
+        .seal-row-img img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 14px rgba(0,0,0,0.1));
+            transition: transform 0.4s ease;
+        }
+        .seal-row:hover .seal-row-img img { transform: scale(1.07); }
+
+        .seal-row-body {
+            padding: 30px 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .seal-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+
+        .seal-category { display: inline-block; background: rgba(184,92,56,0.1); color: var(--terracota-institucional); padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+        .seal-year { display: inline-block; background: var(--azul-institucional); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+
+        .seal-row-body h3 { font-size: 1.35rem; color: var(--azul-institucional); margin-bottom: 12px; line-height: 1.3; }
+
+        .seal-row-body p { font-size: 0.95rem; color: var(--texto-secundario); line-height: 1.75; margin-bottom: 8px; }
+        .seal-row-body p:last-of-type { margin-bottom: 0; }
+
+        .seal-issuer { display: flex; align-items: center; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--areia-fundo); font-size: 0.85rem; color: var(--texto-secundario); font-family: 'Roboto', sans-serif; }
+        .seal-issuer i { color: var(--terracota-institucional); font-size: 1rem; }
+        .seal-issuer strong { color: var(--azul-institucional); }
+
+        @media (max-width: 767px) {
+            .seal-row { flex-direction: column; border-left: none; border-top: 5px solid var(--terracota-institucional); }
+            .seal-row-img { min-width: unset; border-right: none; border-bottom: 1px solid var(--areia-fundo); padding: 30px; }
+            .seal-row-body { padding: 25px; }
+            .seal-row:hover { transform: translateY(-4px); }
+        }
+
+        /* Back to Top */
+        .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; background-color: var(--terracota-institucional); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:not(.visible) { transform: translateY(20px); }
+        .back-to-top:hover { background-color: var(--azul-institucional); transform: translateY(-5px); }
+        .back-to-top i { font-size: 1.2rem; }
+
+        /* Footer */
+        footer { background-color: var(--azul-profundo); color: #fff; padding: 100px 0 30px; position: relative; z-index: 10; }
+        footer h4 { color: #fff; margin-bottom: 25px; font-size: 1.2rem; }
+        footer p { color: rgba(255,255,255,0.6); line-height: 1.7; font-size: 1.1rem; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-logo { height: 60px; margin-bottom: 30px; }
+        .footer-links a { color: rgba(255,255,255,0.6); transition: all 0.3s; }
+        .footer-links a:hover { color: var(--terracota-institucional); padding-left: 5px; }
+        .footer-bottom { margin-top: 80px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 0.9rem; color: rgba(255,255,255,0.4); }
+        .footer-bottom a { color: rgba(255,255,255,0.4); transition: all 0.3s; }
+        .footer-bottom a:hover { color: var(--terracota-institucional); }
+        .footer-seals { display: flex; gap: 12px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
+        .footer-seals img { height: 48px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); transition: transform 0.3s ease; }
+        .footer-seals img:hover { transform: scale(1.1); }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header id="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown">
+                        <a href="quem-somos.html" style="color: var(--terracota-institucional);">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quem-somos.html">Quem Somos</a></li>
+                            <li><a href="selos-reconhecimentos.html" style="color: var(--terracota-institucional);">Selos e Reconhecimentos</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-qs" style="background: linear-gradient(rgba(11,31,51,0.88), rgba(11,31,51,0.96)), url('Fotos/Hello Quem somos/quem-somos-hello.webp') center/cover no-repeat;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 reveal-on-scroll">
+                    <span class="section-tag" style="background: rgba(255,255,255,0.1); color: var(--ambar-impacto);">Credibilidade & Excelência</span>
+                    <h1 class="display-title light" style="font-size: 4rem; line-height: 1; margin-bottom: 25px;">
+                        <span>SELOS E</span>
+                        RECONHECIMENTOS
+                    </h1>
+                    <p style="font-size: 1.2rem; max-width: 700px; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 0;">
+                        Certificações e reconhecimentos que atestam a qualidade, a transparência e o compromisso da ADESIAP Minas com a excelência na gestão e no atendimento.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEALS TABLE -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12 reveal-on-scroll">
+                    <h2 class="display-title" style="font-size: 3rem;">
+                        <span>NOSSA</span>
+                        CREDIBILIDADE
+                    </h2>
+                    <p style="max-width: 620px; margin: 0 auto;">Cada certificação é resultado de processos rigorosos de avaliação que comprovam nossa conformidade institucional e a qualidade dos serviços prestados.</p>
+                </div>
+            </div>
+
+            <div class="seals-table">
+
+                <!-- 1. ONG Verificada — 2026 -->
+                <div class="seal-row reveal-on-scroll">
+                    <div class="seal-row-img">
+                        <img src="Selos/selo-ong-verificada.webp" alt="Selo ONG Verificada">
+                    </div>
+                    <div class="seal-row-body">
+                        <div class="seal-badges">
+                            <span class="seal-category">Certificação Social</span>
+                            <span class="seal-year">2026</span>
+                        </div>
+                        <h3>ONG Verificada</h3>
+                        <p>O Selo ONG Verificada é concedido a organizações da sociedade civil que comprovam sua conformidade jurídica, contábil e documental, por meio do envio de três evidências essenciais. A certificação reforça a credibilidade da ONG, assegura sua transparência institucional e facilita o acesso a recursos, parcerias e reconhecimento público.</p>
+                        <div class="seal-issuer">
+                            <i class="fas fa-award"></i>
+                            <span>Concedido por: <strong>Certificadora Social</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Diamante SEBRAE — 2025 -->
+                <div class="seal-row reveal-on-scroll delay-1">
+                    <div class="seal-row-img">
+                        <img src="Selos/sebrae-diamante-2025-g.png" alt="Selo Sebrae Diamante 2025">
+                    </div>
+                    <div class="seal-row-body">
+                        <div class="seal-badges">
+                            <span class="seal-category">Referência em Atendimento</span>
+                            <span class="seal-year">2025</span>
+                        </div>
+                        <h3>Selo Diamante SEBRAE</h3>
+                        <p>O Selo Sebrae de Referência em Atendimento é um reconhecimento nacional concedido pelo Sebrae às instituições parceiras que se destacam pela excelência no atendimento e na prestação de serviços aos empreendedores.</p>
+                        <p>A certificação evidencia o compromisso com a qualidade, a eficiência e a inovação no apoio aos pequenos negócios, reconhecendo organizações que atuam como referência em atendimento em todo o país. O selo fortalece a rede de apoio ao empreendedorismo e contribui para a ampliação do acesso a soluções, orientações e ferramentas de gestão empresarial.</p>
+                        <div class="seal-issuer">
+                            <i class="fas fa-award"></i>
+                            <span>Concedido por: <strong>SEBRAE</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Fundo Social Sicredi — 2025 -->
+                <div class="seal-row reveal-on-scroll">
+                    <div class="seal-row-img">
+                        <img src="Selos/fundo-social-sicoob-2025.webp" alt="Fundo Social Sicredi 2025">
+                    </div>
+                    <div class="seal-row-body">
+                        <div class="seal-badges">
+                            <span class="seal-category">Reconhecimento Social</span>
+                            <span class="seal-year">2025</span>
+                        </div>
+                        <h3>Fundo Social Sicredi</h3>
+                        <p>Em 2025, a ADESIAP foi contemplada pelo Fundo Social Sicredi Essência, iniciativa que apoia projetos de impacto social e desenvolvimento comunitário. A conquista reforça o compromisso da instituição com a promoção de ações que geram transformação, fortalecem o empreendedorismo, ampliam oportunidades e contribuem para o desenvolvimento econômico e social dos municípios atendidos.</p>
+                        <div class="seal-issuer">
+                            <i class="fas fa-award"></i>
+                            <span>Concedido por: <strong>Fundo Social Sicredi Essência</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Ouro SEBRAE — 2024 -->
+                <div class="seal-row reveal-on-scroll">
+                    <div class="seal-row-img">
+                        <img src="Selos/sebrae-ouro-2024-g.png" alt="Selo Sebrae Ouro 2024">
+                    </div>
+                    <div class="seal-row-body">
+                        <div class="seal-badges">
+                            <span class="seal-category">Reconhecimento Estadual</span>
+                            <span class="seal-year">2024</span>
+                        </div>
+                        <h3>Selo Ouro SEBRAE</h3>
+                        <p>O Selo Ouro de Referência em Atendimento é um reconhecimento concedido pelo Sebrae às instituições parceiras que se destacam pela qualidade dos atendimentos e serviços oferecidos aos empreendedores. Em âmbito estadual, a certificação reconhece organizações que demonstram excelência na orientação, no suporte e no fortalecimento dos pequenos negócios.</p>
+                        <p>A conquista do Selo Ouro evidencia o compromisso da instituição com a melhoria contínua, a qualificação dos serviços prestados e a promoção de um ambiente favorável ao empreendedorismo. Esse reconhecimento reforça a credibilidade da instituição e sua atuação como agente de desenvolvimento econômico e apoio aos empreendedores em sua região.</p>
+                        <div class="seal-issuer">
+                            <i class="fas fa-award"></i>
+                            <span>Concedido por: <strong>SEBRAE Minas Gerais</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Diamante SEBRAE — 2023 -->
+                <div class="seal-row reveal-on-scroll delay-1">
+                    <div class="seal-row-img">
+                        <img src="Selos/sebrae-diamante-2023-g.png" alt="Selo Sebrae Diamante 2023">
+                    </div>
+                    <div class="seal-row-body">
+                        <div class="seal-badges">
+                            <span class="seal-category">Referência em Atendimento</span>
+                            <span class="seal-year">2023</span>
+                        </div>
+                        <h3>Selo Diamante SEBRAE</h3>
+                        <p>O Selo Sebrae de Referência em Atendimento é um reconhecimento nacional concedido pelo Sebrae às instituições parceiras que se destacam pela excelência no atendimento e na prestação de serviços aos empreendedores.</p>
+                        <p>A certificação evidencia o compromisso com a qualidade, a eficiência e a inovação no apoio aos pequenos negócios, reconhecendo organizações que atuam como referência em atendimento em todo o país. O selo fortalece a rede de apoio ao empreendedorismo e contribui para a ampliação do acesso a soluções, orientações e ferramentas de gestão empresarial.</p>
+                        <div class="seal-issuer">
+                            <i class="fas fa-award"></i>
+                            <span>Concedido por: <strong>SEBRAE</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div class="footer-seals">
+                        <img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada">
+                        <img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025">
+                        <img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024">
+                        <img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023">
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="quem-somos.html">Quem Somos</a></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        let lenis;
+        const initSmoothScroll = () => {
+            lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+        };
+        const initAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+            document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                gsap.from(el, { y: 50, opacity: 0, duration: 1, delay, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" } });
+            });
+        };
+        const initMobileMenu = () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('main-menu');
+            if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('active'));
+        };
+        const initBackToTop = () => {
+            const btn = document.getElementById('backToTop');
+            if (btn) {
+                window.addEventListener('scroll', () => btn.classList.toggle('visible', window.scrollY > 400));
+                btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            }
+        };
+        window.onload = () => { initSmoothScroll(); initAnimations(); initMobileMenu(); initBackToTop(); };
+    </script>
+</body>
+
+</html>
+
+
+

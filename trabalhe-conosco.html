@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabalhe Conosco | Adesiap Minas</title>
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+            --topbar-height: 36px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--texto-principal); background-color: var(--areia-fundo); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        h1, h2, h3, h4 { font-family: 'Inter', sans-serif; font-weight: 700; margin-bottom: 20px; color: var(--azul-institucional); }
+        p { font-family: 'Roboto', sans-serif; font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 15px; }
+
+        /* Topbar */
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; }
+        .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        /* Header */
+        header { position: fixed; top: var(--topbar-height); left: 0; width: 100%; height: var(--header-height); background-color: #fff; z-index: 1000; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .header-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { max-height: 50px; width: auto; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--azul-institucional); padding: 5px; }
+        .main-menu { display: flex; list-style: none; gap: 30px; }
+        .main-menu li a { font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; position: relative; padding: 10px 0; transition: color 0.3s; color: var(--azul-institucional); }
+        .main-menu li a:hover { color: var(--terracota-institucional); }
+        .main-menu li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background-color: var(--terracota-institucional); transition: width 0.3s; }
+        .main-menu li a:hover::after { width: 100%; }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); list-style: none; padding: 10px 0; min-width: 220px; border-radius: 4px; z-index: 1000; flex-direction: column; gap: 0; }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu li { margin: 0; }
+        .dropdown-menu li a { display: block; padding: 12px 20px; text-transform: none; font-size: 0.95rem; color: var(--texto-secundario); font-weight: 500; }
+        .dropdown-menu li a::after { display: none; }
+        .dropdown-menu li a:hover { background-color: var(--areia-fundo); color: var(--terracota-institucional); }
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            .main-menu { display: flex; flex-direction: column; position: fixed; top: calc(var(--header-height) + var(--topbar-height)); left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height)); background-color: #fff; transition: left 0.3s ease; padding: 40px 20px; box-shadow: 0 10px 10px rgba(0,0,0,0.05); overflow-y: auto; gap: 0; }
+            .main-menu.active { left: 0; }
+            .main-menu li a { font-size: 1.2rem; padding: 15px 0; display: block; border-bottom: 1px solid var(--areia-fundo); }
+        }
+
+        /* Hero */
+        .hero-tc {
+            margin-top: calc(var(--header-height) + var(--topbar-height));
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-institucional));
+            color: #fff;
+            text-align: center;
+        }
+        .hero-tc h1 { color: #fff; font-size: 3rem; margin-bottom: 15px; }
+        .hero-tc p { color: rgba(255,255,255,0.8); font-size: 1.2rem; max-width: 700px; margin: 0 auto; }
+
+        /* Diferenciais da empresa */
+        .why-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 60px 0 40px;
+        }
+        .why-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .why-card:hover { transform: translateY(-6px); }
+        .why-card i { font-size: 2.2rem; color: var(--terracota-institucional); margin-bottom: 14px; display: block; }
+        .why-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .why-card p { font-size: 0.88rem; margin: 0; }
+
+        /* Form */
+        .form-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            padding: 55px 60px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.07);
+            max-width: 860px;
+            margin: 0 auto 80px;
+        }
+        @media (max-width: 767px) { .form-wrapper { padding: 35px 24px; } }
+
+        .form-title {
+            font-size: 1.8rem;
+            color: var(--azul-institucional);
+            margin-bottom: 8px;
+        }
+        .form-subtitle {
+            font-size: 1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 35px;
+        }
+        .form-divider {
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--terracota-institucional);
+            border-bottom: 2px solid var(--areia-fundo);
+            padding-bottom: 8px;
+            margin: 30px 0 22px;
+        }
+        .form-group { margin-bottom: 22px; }
+        .form-label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 7px; color: var(--azul-institucional); }
+        .form-label span { font-weight: 400; color: var(--texto-secundario); font-size: 0.82rem; }
+        .form-control { width: 100%; padding: 14px 16px; border: 1.5px solid #e2e2e2; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; background: #fafafa; transition: border-color 0.3s, background 0.3s; color: var(--texto-principal); }
+        .form-control:focus { outline: none; border-color: var(--terracota-institucional); background: #fff; }
+        textarea.form-control { resize: vertical; min-height: 130px; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .row-2, .row-3 { grid-template-columns: 1fr; } }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 1.5px dashed #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #fafafa;
+            transition: border-color 0.3s, background 0.3s;
+            font-size: 0.92rem;
+            color: var(--texto-secundario);
+        }
+        .file-label:hover { border-color: var(--terracota-institucional); background: #fff; color: var(--terracota-institucional); }
+        .file-label i { font-size: 1.4rem; color: var(--terracota-institucional); }
+        input[type="file"] { display: none; }
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--terracota-institucional); flex-shrink: 0; cursor: pointer; }
+        .checkbox-group label { font-size: 0.88rem; color: var(--texto-secundario); cursor: pointer; line-height: 1.5; }
+        .checkbox-group label a { color: var(--terracota-institucional); text-decoration: underline; }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+        .btn-submit:hover { background-color: var(--azul-institucional); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(18,57,93,0.2); }
+
+        /* Success */
+        .success-box { text-align: center; padding: 60px 40px; display: none; }
+        .success-box i { font-size: 5rem; color: var(--verde-sustentabilidade); margin-bottom: 20px; display: block; }
+        .success-box h3 { color: var(--azul-institucional); font-size: 1.8rem; margin-bottom: 15px; }
+
+        /* Footer */
+        footer { background-color: var(--azul-profundo); color: #fff; padding: 100px 0 30px; position: relative; z-index: 10; }
+        footer h4 { color: #fff; margin-bottom: 25px; font-size: 1.2rem; }
+        footer p { color: rgba(255,255,255,0.6); line-height: 1.7; font-size: 1.1rem; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-logo { height: 60px; margin-bottom: 30px; }
+        .footer-links a { color: rgba(255,255,255,0.6); transition: all 0.3s; }
+        .footer-links a:hover { color: var(--terracota-institucional); padding-left: 5px; }
+        .footer-bottom { margin-top: 80px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 0.9rem; color: rgba(255,255,255,0.4); }
+        .footer-bottom a { color: rgba(255,255,255,0.4); transition: all 0.3s; }
+        .footer-bottom a:hover { color: var(--terracota-institucional); }
+
+        /* Back to top */
+        .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; background-color: var(--terracota-institucional); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; text-decoration: none; }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:not(.visible) { transform: translateY(20px); }
+        .back-to-top:hover { background-color: var(--azul-institucional); transform: translateY(-5px); }
+        .back-to-top i { font-size: 1.2rem; }
+    </style>
+</head>
+
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li>
+                            <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html" style="color: var(--terracota-institucional);">Contato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                            <li><a href="trabalhe-conosco.html" style="color: var(--terracota-institucional);">Trabalhe Conosco</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero-tc">
+        <div class="container">
+            <h1>Trabalhe Conosco</h1>
+            <p>Faça parte de uma equipe multidisciplinar comprometida com o desenvolvimento econômico e social do território. Envie seu currículo e venha crescer com a ADESIAP Minas.</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Por que trabalhar na ADESIAP -->
+        <div class="why-cards reveal-on-scroll">
+            <div class="why-card">
+                <i class="fas fa-map-marked-alt"></i>
+                <h4>Projetos de Impacto</h4>
+                <p>Atuação em projetos reais que transformam territórios e comunidades em todo o Brasil.</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-users"></i>
+                <h4>Equipe Multidisciplinar</h4>
+                <p>Ambiente colaborativo com profissionais de diversas áreas e formações.</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-chart-line"></i>
+                <h4>Desenvolvimento Profissional</h4>
+                <p>Oportunidades de crescimento em uma organização em constante expansão.</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-globe-americas"></i>
+                <h4>Propósito e Impacto Social</h4>
+                <p>Trabalhe com propósito, contribuindo para o desenvolvimento sustentável do território.</p>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <div class="form-wrapper reveal-on-scroll">
+            <div id="form-area">
+                <h3 class="form-title">Candidate-se a uma vaga</h3>
+                <p class="form-subtitle">Preencha o formulário abaixo. Analisamos todos os currículos recebidos e entraremos em contato quando surgir uma oportunidade compatível com seu perfil.</p>
+
+                <form id="form-candidatura" onsubmit="submitCandidatura(event)">
+
+                    <div class="form-divider">Dados Pessoais</div>
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Nome completo *</label>
+                            <input type="text" class="form-control" placeholder="Seu nome completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">E-mail *</label>
+                            <input type="email" class="form-control" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Telefone / WhatsApp *</label>
+                            <input type="tel" class="form-control" placeholder="(00) 00000-0000" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LinkedIn <span>(opcional)</span></label>
+                            <input type="url" class="form-control" placeholder="linkedin.com/in/seuperfil">
+                        </div>
+                    </div>
+
+                    <div class="form-divider">Perfil Profissional</div>
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Área de interesse *</label>
+                            <select class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option>Gestão de Projetos</option>
+                                <option>Financeiro / Contabilidade</option>
+                                <option>Jurídico</option>
+                                <option>Recursos Humanos / Depto. Pessoal</option>
+                                <option>Comunicação e Marketing</option>
+                                <option>Engenharia Civil</option>
+                                <option>Meio Ambiente</option>
+                                <option>Suprimentos</option>
+                                <option>CAMPE / Desenvolvimento Econômico</option>
+                                <option>Comercial</option>
+                                <option>Tecnologia da Informação</option>
+                                <option>Outra</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nível de experiência *</label>
+                            <select class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option>Estágio</option>
+                                <option>Júnior (até 2 anos)</option>
+                                <option>Pleno (2 a 5 anos)</option>
+                                <option>Sênior (acima de 5 anos)</option>
+                                <option>Especialista / Consultor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label class="form-label">Escolaridade *</label>
+                            <select class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option>Ensino Médio Completo</option>
+                                <option>Ensino Superior em Andamento</option>
+                                <option>Ensino Superior Completo</option>
+                                <option>Pós-Graduação / MBA</option>
+                                <option>Mestrado / Doutorado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Disponibilidade *</label>
+                            <select class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option>Imediata</option>
+                                <option>Em até 15 dias</option>
+                                <option>Em até 30 dias</option>
+                                <option>Acima de 30 dias</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-divider">Currículo e Apresentação</div>
+                    <div class="form-group">
+                        <label class="form-label">Currículo *</label>
+                        <label class="file-label" for="curriculo-file">
+                            <i class="fas fa-paperclip"></i>
+                            <span id="file-name-label">Clique para anexar seu currículo (PDF, DOC ou DOCX — máx. 5MB)</span>
+                        </label>
+                        <input type="file" id="curriculo-file" accept=".pdf,.doc,.docx" onchange="updateFileName(this)" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Carta de apresentação <span>(opcional)</span></label>
+                        <textarea class="form-control" placeholder="Conte um pouco sobre você, suas experiências e por que deseja fazer parte da ADESIAP Minas..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 10px;">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="lgpd" required>
+                            <label for="lgpd">Autorizo o uso dos meus dados pessoais pela ADESIAP Minas para fins de seleção de candidatos, conforme a <a href="#">Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)</a>. Os dados serão mantidos por até 12 meses e utilizados exclusivamente para processos seletivos.</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane" style="margin-right: 10px;"></i>Enviar Candidatura
+                    </button>
+                </form>
+            </div>
+
+            <!-- Sucesso -->
+            <div class="success-box" id="success-box">
+                <i class="fas fa-check-circle"></i>
+                <h3>Candidatura Enviada!</h3>
+                <p>Recebemos seu currículo com sucesso. Analisaremos seu perfil e, caso haja uma oportunidade compatível, entraremos em contato pelo e-mail ou telefone informados.</p>
+                <p style="font-size: 0.95rem; margin-top: 10px;">Agradecemos seu interesse em fazer parte da equipe ADESIAP Minas!</p>
+                <a href="index.html" style="display: inline-block; margin-top: 25px; background: var(--terracota-institucional); color: #fff; padding: 12px 30px; border-radius: 6px; font-weight: 600; transition: background 0.3s;" onmouseover="this.style.background='var(--azul-institucional)'" onmouseout="this.style.background='var(--terracota-institucional)'">Voltar ao Início</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile menu
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.getElementById('main-menu');
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+        }
+
+        // Back to top
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTopBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // File name display
+        function updateFileName(input) {
+            const label = document.getElementById('file-name-label');
+            label.textContent = input.files[0] ? input.files[0].name : 'Clique para anexar seu currículo (PDF, DOC ou DOCX — máx. 5MB)';
+        }
+
+        // Form submit
+        function submitCandidatura(e) {
+            e.preventDefault();
+            document.getElementById('form-area').style.display = 'none';
+            const box = document.getElementById('success-box');
+            box.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // GSAP animations
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                gsap.from(el, { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' } });
+            });
+        });
+    </script>
+</body>
+
+</html>

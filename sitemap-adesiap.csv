@@ -1,0 +1,87 @@
+NOME DA PÁGINA;ARQUIVO;SEÇÃO;DESCRIÇÃO
+Início;index.html;Hero – Apresentação;Chamada principal com proposta de valor institucional. Botões para Projetos e Portal de Transparência.
+Início;index.html;Nossa Essência;Texto sobre história (+20 anos) e posicionamento. Conecta para quem-somos.html.
+Início;index.html;Quem Caminha Conosco (Parceiros);Mosaico animado com logos de parceiros: Vale, Gerdau, Sebrae, Coca-Cola Femsa, Caixa, BB, Sicoob, Sicredi e outros.
+Início;index.html;Sem Fronteiras (Onde Estamos);Mapa do Brasil com pins de atuação (Amapá/PA, DF, MG, RS) e lista de 8 capacidades operacionais.
+Início;index.html;Impacto que Transforma;Indicadores animados: +900 mil beneficiados, +203 projetos, +20 municípios atendidos, +R$123 mi gerenciados.
+Início;index.html;Governança Sólida;4 cards institucionais: Programa de Integridade, Transparência Ativa, Segurança Jurídica, Prestação de Contas. Botão para transparencia.html.
+Início;index.html;O Que Fazemos (Serviços);6 cards com os eixos estratégicos de atuação. Botão "Saiba mais sobre nossos serviços" para servicos.html.
+Início;index.html;Projetos que Marcam;6 cards de projetos em destaque com categoria, descrição e ODS. Botão "Ver Todos os Projetos" para projetos.html.
+Início;index.html;Últimas Notícias;3 cards de notícias institucionais (conteúdo placeholder). Botão "Ver Todas as Notícias" (sem destino definido).
+Início;index.html;Instagram;Feed do Instagram @Adesiap.itabirito via Elfsight. Botão "Seguir no Instagram".
+Início;index.html;Rodapé;Links institucionais, endereço (Rua Dr. Guilherme 44, Itabirito/MG), e-mail, telefone, Instagram e LinkedIn.
+;;;
+Quem Somos;quem-somos.html;Hero;Apresentação com indicadores de impacto no topo e chamada "mais de duas décadas transformando investimentos em benefícios".
+Quem Somos;quem-somos.html;Evolução Institucional;Linha do tempo textual da história: ADESITA (2003) → ADESIAP → ADESIAP Minas. Contexto da mudança de nome e missão.
+Quem Somos;quem-somos.html;Nossa Trajetória (Timeline);Timeline visual com 4 marcos: Fundação 2003, Expansão 2015, Transformação 2020, Consolidação 2024.
+Quem Somos;quem-somos.html;Nossa Essência (Missão, Visão e Valores);Missão e Visão em cards + grid radial com 10 valores: Inovação, Empatia, Responsabilidade, entre outros.
+Quem Somos;quem-somos.html;Atuação Intersetorial;Diagrama de Venn visual ilustrando a interseção entre Governo, Iniciativa Privada e OSCs.
+Quem Somos;quem-somos.html;Governança Ética e Transparência;6 princípios em cards: Legalidade, Transparência, Eficiência, Moralidade, Economicidade, Impessoalidade.
+Quem Somos;quem-somos.html;Corpo Técnico;Grid com pills coloridas representando as especialidades da equipe (Direito, Economia, Engenharia, etc.).
+Quem Somos;quem-somos.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Governança;governanca.html;Hero;Apresentação do compromisso ético e da estrutura de governança da ADESIAP.
+Governança;governanca.html;Nossa Natureza (OSCIP);Explicação jurídica: qualificação OSCIP pela Lei 9.790/99, modelo sem fins lucrativos com reinvestimento 100%.
+Governança;governanca.html;Estrutura de Decisão;3 blocos: Comitê de Parceiros (deliberativo), Equipe Executiva (operacional), Conselho Fiscal (fiscalizador).
+Governança;governanca.html;Organograma Institucional;Diagrama hierárquico visual com nós coloridos e linhas de reporte entre os órgãos da instituição.
+Governança;governanca.html;Prestação de Contas;Checklist com 3 itens: Auditorias Externas Independentes, Publicidade Ativa e Compliance regulatório.
+Governança;governanca.html;Agenda 2030 e ESG;Dois blocos: conformidade LGPD/Ética e alinhamento com os 17 ODS da ONU. Link para agenda-2030.html.
+Governança;governanca.html;Call to Action;Banner "Segurança Para a Sua Parceria" com fundo âmbar. Convite para iniciar um projeto.
+Governança;governanca.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Agenda 2030 e Pacto Global;agenda-2030.html;Hero;Apresentação do compromisso com a Agenda 2030 da ONU e alinhamento com os ODS.
+Agenda 2030 e Pacto Global;agenda-2030.html;Pacto Global da ONU;Explicação dos 10 princípios + 4 cards dos pilares: Direitos Humanos, Trabalho, Meio Ambiente, Anticorrupção.
+Agenda 2030 e Pacto Global;agenda-2030.html;A Agenda 2030;Descrição dos Objetivos de Desenvolvimento Sustentável + grid visual com os 17 ícones ODS oficiais.
+Agenda 2030 e Pacto Global;agenda-2030.html;Nossa Atuação nos ODS;Bloco verde descrevendo como os 6 eixos estratégicos da ADESIAP se alinham a ODS específicos.
+Agenda 2030 e Pacto Global;agenda-2030.html;Call to Action;Banner "Vamos Impactar Juntos?" com fundo azul profundo. Chamada para parceria.
+Agenda 2030 e Pacto Global;agenda-2030.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Transparência;transparencia.html;Hero;Apresentação do compromisso com a transparência ativa como prática institucional permanente.
+Transparência;transparencia.html;Documentos Institucionais (aba);Estatuto Social e Portfólio Institucional disponíveis para download.
+Transparência;transparencia.html;Prestação de Contas (aba);Documentos de 2024 e 2023: Prestação Anual e Balanço Financeiro por exercício.
+Transparência;transparencia.html;Relatórios e Atas (aba);Relatório de Gestão 1º Semestre 2024 e Relatório Anual de Atividades 2023.
+Transparência;transparencia.html;Chamamentos Públicos (aba);Editais de chamamento público por ano. Chamamento 01/2024 disponível.
+Transparência;transparencia.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Serviços;servicos.html;Hero;Apresentação dos 6 eixos estratégicos. Destaques: +20 anos de atuação e R$120 mi em projetos gerenciados.
+Serviços;servicos.html;Como Organizamos – Eixo 1;Gestão de Projetos e Programas: PMO terceirizado, termos de parceria (Lei 13.019/2014), captação, monitoramento e gestão de convênios.
+Serviços;servicos.html;Como Organizamos – Eixo 2;Desenvolvimento Econômico e Empreendedorismo: CAMPE (Selo Ouro Sebrae 2025), SDE, fóruns, qualificação profissional e diagnóstico territorial.
+Serviços;servicos.html;Como Organizamos – Eixo 3;Meio Ambiente e Instrumentos Legais: gestão de TCAs, TCCEs, TACs, programas de recuperação ambiental e assessoria ESG.
+Serviços;servicos.html;Como Organizamos – Eixo 4;Infraestrutura, Obras e Mobilidade Urbana: obras públicas, mobilidade, resposta a desastres e iluminação pública inteligente (PDIP).
+Serviços;servicos.html;Como Organizamos – Eixo 5;Desenvolvimento Social, Cultural e Humano: APAC, saúde comunitária, projetos culturais, logística humanitária e gestão de programas sociais.
+Serviços;servicos.html;Como Organizamos – Eixo 6;Tecnologia, Inovação e Cidades Inteligentes: videomonitoramento, inclusão digital e defesa civil com sensores e alertas.
+Serviços;servicos.html;Nossos Diferenciais;8 diferenciais: OSCIP qualificada, expertise TCA/TAC (+15 anos), PMO estruturado, transparência total, atuação nacional, ODS/ESG, rede de parceiros.
+Serviços;servicos.html;Público-Alvo;6 grupos: Municípios e Prefeituras, Mineração e Infraestrutura, Empresas com RSE, Órgãos Estaduais/Federais, OSCs, Consórcios Intermunicipais.
+Serviços;servicos.html;Call to Action (Fale com a ADESIAP);Banner âmbar com chamada para transformar investimento em impacto. Botão para contato.
+Serviços;servicos.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Projetos;projetos.html;Hero;Apresentação do portfólio como legado institucional. Título "O Nosso Legado – Portfólio de Impacto".
+Projetos;projetos.html;Expertise Multissetorial;8 cards de áreas: Desenvolvimento Econômico, Tecnologia, Iluminação Pública, Segurança, Meio Ambiente, Social/Cultural, Infraestrutura, Capacitação.
+Projetos;projetos.html;Portfólio – Desenvolvimento Econômico;SDE (19 edições), SDE Minas, CAMPE, FNEC Congonhas, Fórum Mariana, Feirão de Veículos.
+Projetos;projetos.html;Portfólio – Social e Geração de Renda;Só Por Hoje, Tamo Junto e Qualificado, SOS RS (cestas Gerdau), Feirão SEDESE.
+Projetos;projetos.html;Portfólio – Sustentabilidade e Infraestrutura;TCAs/TACs, Desassoreamento Rio Itabirito, AGIR Congonhas, APAC Itabirito, UBS Ouro Branco, Lab UFLA, SOS RS (casas), TAC Pavimentação (R$4,7mi), Ponte Agudo/RS (R$8,7mi), Calçadão Divinópolis.
+Projetos;projetos.html;Portfólio – Cultura, Educação e Eventos;Natal de Nova Lima, Festival da Batata, Cerâmica Saramenha, Carnaval Itabirito, Carnaval Mariana, Corrida Só Por Hoje.
+Projetos;projetos.html;Call to Action;Banner "Seu Projeto Pode Ser o Próximo" com fundo azul profundo.
+Projetos;projetos.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Fale Conosco;fale-conosco.html;Hero;Apresentação dos canais de atendimento e convite para contato.
+Fale Conosco;fale-conosco.html;Informações de Contato;Endereço sede, e-mail (contato@adesiap.org.br), telefone ((31) 3563-1958), WhatsApp e redes sociais.
+Fale Conosco;fale-conosco.html;Formulário de Contato;Campos: nome, e-mail, telefone, empresa, assunto (select), mensagem e aceite LGPD.
+Fale Conosco;fale-conosco.html;Confirmação de Envio;Tela exibida após envio com protocolo de atendimento gerado automaticamente (CONT-XXXXX).
+Fale Conosco;fale-conosco.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Cadastro de Fornecedores;cadastro-fornecedores.html;Hero;Apresentação do portal de homologação de fornecedores e parceiros da ADESIAP.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Formulário – Dados Cadastrais;Razão social, nome fantasia, CNPJ e inscrição estadual.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Formulário – Segmento de Atuação;Tipo de fornecimento (produtos/serviços/ambos), categoria principal e descrição do que oferece.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Formulário – Localização;CEP, cidade, estado e endereço completo (logradouro e bairro).
+Cadastro de Fornecedores;cadastro-fornecedores.html;Formulário – Contato Comercial;Nome do responsável, cargo, e-mail e telefone/WhatsApp para contato.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Formulário – Portfólio e Links;Upload de portfólio (PDF/DOCX), website e perfil LinkedIn da empresa.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Confirmação de Cadastro;Tela com protocolo FORN-XXXXX e opções de cadastrar nova empresa ou retornar ao site.
+Cadastro de Fornecedores;cadastro-fornecedores.html;Rodapé;Links institucionais e contato (padrão sitewide).
+;;;
+Canal de Denúncias;canal-denuncias.html;Hero;"Portal de Integridade e Denúncias". Destaque para sigilo, segurança e proteção ao denunciante.
+Canal de Denúncias;canal-denuncias.html;Painel Principal;4 opções de acesso: Fazer Denúncia, Acompanhar Denúncia, Dúvidas e Sugestões (em desenvolvimento), Ouvidoria (em desenvolvimento).
+Canal de Denúncias;canal-denuncias.html;Formulário de Denúncia;Campos: identificação (anônimo ou identificado), natureza do relato (fraude, assédio, discriminação, violação do código, outros), descrição detalhada e upload de evidências (opcional).
+Canal de Denúncias;canal-denuncias.html;Confirmação de Denúncia;Protocolo PRT-XXXXX com alertas de sigilo e prazo estimado de retorno.
+Canal de Denúncias;canal-denuncias.html;Acompanhar Solicitação;Campo para inserir número de protocolo e consultar status e data de atualização.
+Canal de Denúncias;canal-denuncias.html;Rodapé;Links institucionais e contato (padrão sitewide).

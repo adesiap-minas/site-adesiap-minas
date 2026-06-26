@@ -1,0 +1,928 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Fornecedores - Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--areia-fundo);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            border-color: var(--azul-institucional);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--azul-institucional);
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 4px;
+            border: 2px solid var(--azul-institucional);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--terracota-institucional);
+            color: var(--terracota-institucional);
+        }
+
+        /* Header (mesmo do index) */
+        header {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-menu li a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 10px 0;
+            transition: color 0.3s;
+            color: var(--azul-institucional);
+        }
+
+        .main-menu li a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .main-menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: var(--terracota-institucional);
+            transition: width 0.3s;
+        }
+
+        .main-menu li a:hover::after {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--azul-institucional);
+            padding: 5px;
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                padding: 40px 20px;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+                overflow-y: auto;
+            }
+
+            .main-menu.active {
+                left: 0;
+            }
+
+            .main-menu li a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+        }
+
+        /* Hero */
+        .forn-header {
+            margin-top: calc(var(--header-height) + var(--topbar-height));
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, var(--azul-profundo), var(--azul-institucional));
+            color: #fff;
+            text-align: center;
+        }
+
+        .forn-header h1 {
+            color: #fff;
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .forn-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Formulario Fornecedores */
+        .form-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 45px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(18, 57, 93, 0.05);
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .form-section-title {
+            font-size: 1.3rem;
+            color: var(--terracota-institucional);
+            border-bottom: 2px solid var(--areia-fundo);
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section-title i {
+            font-size: 1.1rem;
+        }
+
+        .form-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--azul-institucional);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            background: #fcfcfc;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--terracota-institucional);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(184, 92, 56, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .alert-info {
+            background-color: #eaf3fb;
+            color: #1a5c94;
+            border-left: 4px solid #1a5c94;
+        }
+
+        .alert-info i {
+            color: #1a5c94;
+        }
+
+        /* Sucesso */
+        .success-box {
+            text-align: center;
+            padding: 50px 40px;
+        }
+
+        .success-box i {
+            font-size: 5rem;
+            color: var(--verde-sustentabilidade);
+            margin-bottom: 20px;
+        }
+
+        .protocol-box {
+            background: var(--areia-fundo);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--azul-institucional);
+            margin: 25px 0;
+            letter-spacing: 2px;
+            border: 2px dashed #ccc;
+            display: inline-block;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+            margin-top: 80px;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+    
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root { --topbar-height: 36px; }
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        </style>
+</head>
+
+<body>
+
+    <!-- Header / Menu -->
+    
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html" style="color: var(--terracota-institucional);">Contato <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html" style="color: var(--terracota-institucional);">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Header do Fornecedor -->
+    <div class="forn-header">
+        <div class="container">
+            <h1>Cadastro de Fornecedores</h1>
+            <p>Seja um parceiro homologado. Cadastre sua empresa e faça parte do banco de cotações para produtos e serviços da Adesiap Minas.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="form-container" id="form-block">
+            <div class="alert alert-info">
+                <i class="fas fa-shield-alt fa-2x"></i>
+                <div>
+                    <strong>Portal de Compliance e Homologação:</strong> O cadastramento é o primeiro passo para futuras contratações. Avaliamos todas as propostas com base em critérios técnicos, comerciais, fiscais e éticos (transparência e conformidade).
+                </div>
+            </div>
+
+            <form id="form-fornecedor" onsubmit="submitFornecedor(event)">
+                
+                <!-- SEÇÃO 1: Dados da Empresa -->
+                <div class="form-section-title">
+                    <i class="fas fa-building"></i> Dados Cadastrais da Empresa
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="razao_social">Razão Social *</label>
+                        <input type="text" id="razao_social" class="form-control" placeholder="Razão Social completa" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="nome_fantasia">Nome Fantasia</label>
+                        <input type="text" id="nome_fantasia" class="form-control" placeholder="Como sua empresa é conhecida">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="cnpj">CNPJ *</label>
+                        <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
+                        <input type="text" id="inscricao_estadual" class="form-control" placeholder="Isento ou nº da inscrição">
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 2: Segmento de Atuação -->
+                <div class="form-section-title">
+                    <i class="fas fa-boxes-stacked"></i> Segmento de Atuação e Categoria
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="tipo_fornecimento">Tipo de Fornecimento *</label>
+                        <select id="tipo_fornecimento" class="form-control" required>
+                            <option value="">Selecione...</option>
+                            <option value="produtos">Produtos / Bens</option>
+                            <option value="servicos">Serviços / Mão de Obra</option>
+                            <option value="ambos">Ambos (Produtos e Serviços)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="categoria">Categoria Principal *</label>
+                        <select id="categoria" class="form-control" required>
+                            <option value="">Selecione a categoria principal...</option>
+                            <option value="ti">Tecnologia, Software e Infraestrutura de TI</option>
+                            <option value="limpeza">Serviços de Limpeza, Conservação e Portaria</option>
+                            <option value="consultoria">Consultoria, Treinamento e Auditoria</option>
+                            <option value="alimentacao">Alimentação, Buffet e Coffee Break</option>
+                            <option value="eventos">Eventos, Cerimonial, Som e Iluminação</option>
+                            <option value="escritorio">Mobiliário e Materiais de Escritório</option>
+                            <option value="manutencao">Obras civis, Reformas e Manutenção</option>
+                            <option value="outros">Outros Segmentos</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="descricao">Descrição dos Produtos/Serviços Oferecidos *</label>
+                    <textarea id="descricao" class="form-control" placeholder="Descreva brevemente os produtos, marcas, especialidades ou serviços que sua empresa realiza..." required></textarea>
+                </div>
+
+                <!-- SEÇÃO 3: Endereço -->
+                <div class="form-section-title">
+                    <i class="fas fa-map-location-dot"></i> Localização da Empresa
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label class="form-label" for="cep">CEP *</label>
+                        <input type="text" id="cep" class="form-control" placeholder="00000-000" required>
+                    </div>
+                    <div class="col-md-5 form-group">
+                        <label class="form-label" for="cidade">Cidade *</label>
+                        <input type="text" id="cidade" class="form-control" placeholder="Cidade Sede" required>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="form-label" for="uf">Estado (UF) *</label>
+                        <select id="uf" class="form-control" required>
+                            <option value="">UF</option>
+                            <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+                            <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+                            <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+                            <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                            <option value="MG" selected>MG</option><option value="PA">PA</option><option value="PB">PB</option>
+                            <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+                            <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                            <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                            <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 form-group">
+                        <label class="form-label" for="logradouro">Logradouro *</label>
+                        <input type="text" id="logradouro" class="form-control" placeholder="Rua, Avenida, nº, Complemento" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label class="form-label" for="bairro">Bairro *</label>
+                        <input type="text" id="bairro" class="form-control" placeholder="Bairro" required>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 4: Contato Comercial -->
+                <div class="form-section-title">
+                    <i class="fas fa-address-card"></i> Contato Comercial
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="contato_nome">Nome do Responsável Comercial *</label>
+                        <input type="text" id="contato_nome" class="form-control" placeholder="Nome do representante" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="contato_cargo">Cargo / Função *</label>
+                        <input type="text" id="contato_cargo" class="form-control" placeholder="Ex: Diretor Comercial, Gerente, etc." required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="contato_email">E-mail de Contato *</label>
+                        <input type="email" id="contato_email" class="form-control" placeholder="email@contato.com" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="contato_telefone">Telefone / WhatsApp Comercial *</label>
+                        <input type="tel" id="contato_telefone" class="form-control" placeholder="(00) 00000-0000" required>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 5: Portfólio e Links -->
+                <div class="form-section-title">
+                    <i class="fas fa-file-pdf"></i> Portfólio & Apresentação
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="portfolio">Anexar Portfólio / Catálogo de Serviços (Opcional)</label>
+                    <input type="file" id="portfolio" class="form-control" accept=".pdf,.doc,.docx,.zip">
+                    <p style="font-size: 0.85rem; margin-top: 5px; color: var(--texto-secundario);">Formatos aceitos: PDF, DOCX ou ZIP. Tamanho máximo: 10MB.</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="website">Website da Empresa</label>
+                        <input type="url" id="website" class="form-control" placeholder="https://suaempresa.com.br">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="linkedin">LinkedIn da Empresa</label>
+                        <input type="url" id="linkedin" class="form-control" placeholder="https://linkedin.com/company/suaempresa">
+                    </div>
+                </div>
+
+                <!-- Aceite LGPD -->
+                <div class="form-group" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 30px; margin-bottom: 25px;">
+                    <input type="checkbox" id="lgpd" required style="margin-top: 5px; cursor: pointer;">
+                    <label class="form-label" for="lgpd" style="font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario); cursor: pointer; margin-bottom: 0;">
+                        Declaramos que todas as informações prestadas são verdadeiras e que estamos cientes e de acordo com a <a href="transparencia.html" target="_blank" style="color: var(--terracota-institucional); font-weight: 600; text-decoration: underline;">Política de Privacidade</a> da Adesiap Minas, autorizando o tratamento de dados para fins de homologação e cotações.
+                    </label>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 35px 0;">
+
+                <div class="text-right" style="text-align: right;">
+                    <button type="button" class="btn-outline mr-2" onclick="window.history.back()" style="margin-right: 10px;">Cancelar</button>
+                    <button type="submit" class="btn-primary">Enviar Cadastro</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tela de Sucesso -->
+        <div id="success-block" class="form-container success-box" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <h2>Cadastro Recebido com Sucesso!</h2>
+            <p>Agradecemos o interesse em fazer parte da rede de fornecedores da Adesiap Minas.</p>
+            <p class="mt-3">Seus dados foram registrados com sucesso no comitê de suprimentos. Segue o seu número de protocolo de homologação:</p>
+            <div class="protocol-box" id="protocol-number">FORN-123456</div>
+            <p style="font-size: 0.95rem; color: var(--texto-secundario);" class="mt-2">Caso sua empresa seja pré-selecionada em nossos próximos processos de cotação ou chamamento, nossa equipe de compras entrará em contato.</p>
+            <div class="mt-4">
+                <button class="btn-primary" onclick="resetForm()">Cadastrar Outra Empresa</button>
+                <a href="index.html" class="btn-outline" style="margin-left: 10px;">Ir para o Início</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
+
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                        <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"
+                            style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"
+                            style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Lógica do Botão Voltar ao Topo
+        (function () {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        })();
+
+        // Lógica do Menu Mobile
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.getElementById('main-menu');
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Formulário de Cadastro de Fornecedor
+        function submitFornecedor(e) {
+            e.preventDefault();
+            
+            // Gerar protocolo de cadastro
+            const protocolo = 'FORN-' + Math.floor(100000 + Math.random() * 900000);
+            
+            // Salvar no LocalStorage
+            const data = {
+                razaoSocial: document.getElementById('razao_social').value,
+                nomeFantasia: document.getElementById('nome_fantasia').value,
+                cnpj: document.getElementById('cnpj').value,
+                inscricaoEstadual: document.getElementById('inscricao_estadual').value,
+                tipoFornecimento: document.getElementById('tipo_fornecimento').value,
+                categoria: document.getElementById('categoria').value,
+                descricao: document.getElementById('descricao').value,
+                cep: document.getElementById('cep').value,
+                cidade: document.getElementById('cidade').value,
+                uf: document.getElementById('uf').value,
+                logradouro: document.getElementById('logradouro').value,
+                bairro: document.getElementById('bairro').value,
+                contatoNome: document.getElementById('contato_nome').value,
+                contatoCargo: document.getElementById('contato_cargo').value,
+                contatoEmail: document.getElementById('contato_email').value,
+                contatoTelefone: document.getElementById('contato_telefone').value,
+                website: document.getElementById('website').value,
+                linkedin: document.getElementById('linkedin').value,
+                data: new Date().toLocaleDateString('pt-BR'),
+                status: 'Pendente de Homologação'
+            };
+            
+            localStorage.setItem(protocolo, JSON.stringify(data));
+            
+            // Exibir tela de sucesso
+            document.getElementById('protocol-number').innerText = protocolo;
+            document.getElementById('form-block').style.display = 'none';
+            document.getElementById('success-block').style.display = 'block';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('form-fornecedor').reset();
+            document.getElementById('success-block').style.display = 'none';
+            document.getElementById('form-block').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize smooth animations
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.from(".form-container", { y: 50, opacity: 0, duration: 0.8 });
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+

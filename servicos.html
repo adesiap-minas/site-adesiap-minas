@@ -1,0 +1,1209 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços | Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        /* Base e Variáveis */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .bg-light {
+            background-color: var(--areia-fundo);
+        }
+
+        .display-title {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 40px;
+            letter-spacing: -1.5px;
+            color: var(--azul-institucional);
+        }
+
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 767px) {
+            .display-title {
+                font-size: 3rem;
+            }
+
+            .display-title span {
+                font-size: 0.7em;
+            }
+        }
+
+        /* Header / Menu */
+        header {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background-color: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--azul-institucional);
+            padding: 5px;
+        }
+
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .main-menu a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--azul-institucional);
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .main-menu a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        .main-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--terracota-institucional);
+            transition: width 0.3s ease;
+        }
+
+        .main-menu a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+
+        .dropdown-menu li a::after {
+            display: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        @media (max-width: 991px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                padding: 40px 20px;
+                overflow-y: auto;
+                gap: 0;
+            }
+
+            .main-menu.active {
+                left: 0;
+            }
+
+            .main-menu li a {
+                font-size: 1.2rem;
+                padding: 15px 0;
+                display: block;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+        }
+
+        /* Hero */
+        .hero-qs {
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 80px);
+            padding-bottom: 80px;
+            min-height: 450px;
+            background: linear-gradient(rgba(11, 31, 51, 0.85), rgba(11, 31, 51, 0.85)), url('Fotos/Hello Quem somos/quem-somos-hello.webp') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .hero-qs h1 {
+            color: #fff;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero-qs p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.25rem;
+            max-width: 700px;
+        }
+
+        /* Serviços Block */
+        .eixo-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--areia-fundo);
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .eixo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(18, 57, 93, 0.1);
+            border-color: var(--terracota-institucional);
+        }
+
+        .eixo-icon {
+            font-size: 2.5rem;
+            color: var(--terracota-institucional);
+            margin-bottom: 20px;
+        }
+
+        .eixo-card h3 {
+            color: var(--azul-institucional);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .eixo-card .what-we-do {
+            font-size: 1rem;
+            color: var(--texto-principal);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .eixo-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .eixo-card ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            line-height: 1.5;
+        }
+
+        .eixo-card ul li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--terracota-institucional);
+            font-size: 0.9rem;
+        }
+
+        .eixo-meta {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--areia-fundo);
+            font-size: 0.9rem;
+        }
+
+        .eixo-meta p {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .eixo-meta strong {
+            color: var(--azul-institucional);
+        }
+
+        /* Diferenciais List */
+        .dif-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid var(--terracota-institucional);
+        }
+
+        .dif-item i {
+            font-size: 2rem;
+            color: var(--terracota-institucional);
+            margin-right: 20px;
+            margin-top: 5px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .dif-item h4 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .dif-item p {
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        /* Público-Alvo */
+        .target-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            border: 1px solid var(--areia-fundo);
+        }
+
+        .target-item:hover {
+            border-color: var(--terracota-institucional);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .target-item i {
+            font-size: 2.5rem;
+            color: var(--azul-institucional);
+            margin-bottom: 15px;
+        }
+
+        .target-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* CTA */
+        .cta-banner {
+            background-color: var(--ambar-impacto);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            z-index: 1;
+        }
+
+        .cta-banner * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            padding: 14px 34px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--azul-institucional);
+            border-color: var(--azul-institucional);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--terracota-institucional);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:not(.visible) {
+            transform: translateY(20px);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--azul-institucional);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-to-top i {
+            font-size: 1.2rem;
+        }
+    
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root { --topbar-height: 36px; }
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        </style>
+</head>
+
+<body>
+
+    
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html" style="color: var(--terracota-institucional);">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero-qs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1>Nossos Serviços</h1>
+                    <p style="margin-bottom: 20px;">A ADESIAP atua como gestora técnica qualificada e intermediadora
+                        intersetorial, conectando poder público, iniciativa privada e sociedade civil.</p>
+                    <p style="margin-bottom: 0;">Nossos serviços estão organizados em 6 eixos estratégicos, refletindo
+                        mais de 23 anos de atuação e R$ 120 milhões em projetos gerenciados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6 Eixos de Serviços -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row mb-5 text-center reveal-on-scroll">
+                <div class="col-12">
+                    <h2 class="display-title">
+                        <span>COMO</span>
+                        ORGANIZAMOS
+                    </h2>
+                    <p>Soluções estruturadas para municípios, empresas e investidores sociais.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Eixo 1 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-1">
+                    <div class="eixo-card">
+                        <i class="fas fa-project-diagram eixo-icon"></i>
+                        <h3>1. Gestão de Projetos e Programas</h3>
+                        <p class="what-we-do">Planejamos, executamos, monitoramos e prestamos contas de projetos
+                            multiclientes, multidisciplinares e intersetoriais — do diagnóstico inicial à entrega final,
+                            com conformidade legal e transparência total.</p>
+                        <ul>
+                            <li><strong>PMO Terceirizado:</strong> Estruturação e operação de escritório de projetos
+                                para municípios, consórcios e empresas</li>
+                            <li><strong>Gestão de Termos de Parceria:</strong> Termos de Colaboração, Termos de Fomento
+                                e Contratos de Gestão (Lei 13.019/2014)</li>
+                            <li><strong>Elaboração e Captação de Projetos:</strong> Identificação de editais, redação de
+                                propostas técnicas e planos de trabalho</li>
+                            <li><strong>Monitoramento e Avaliação:</strong> Indicadores de desempenho, relatórios de
+                                progresso e prestação de contas</li>
+                            <li><strong>Gestão de Convênios e Transferências:</strong> Plataformas Transferegov, SICONV
+                                e outros sistemas governamentais</li>
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Prefeituras, autarquias, consórcios intermunicipais, empresas
+                                com investimento social.</p>
+                            <p><strong>Portfólio:</strong> SDE Minas (CODEMGE/Gov. MG), AGIR (Congonhas), APAC
+                                (Itabirito)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eixo 2 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-2">
+                    <div class="eixo-card">
+                        <i class="fas fa-chart-line eixo-icon"></i>
+                        <h3>2. Desenvolvimento Econômico e Empreendedorismo</h3>
+                        <p class="what-we-do">Fomentamos ecossistemas locais de negócios, apoiamos micro e pequenas
+                            empresas e estruturamos eventos e plataformas de geração de riqueza nos territórios.</p>
+                        <ul>
+                            <li><strong>CAMPE:</strong> Centro de Apoio à MPE — Atendimento, consultoria, planos de
+                                negócios (Selo Ouro Sebrae Estadual 2025)</li>
+                            <li><strong>Semanas e Fóruns de Desenvolvimento Econômico:</strong> Concepção, gestão e
+                                execução de eventos de geração de negócios e capacitação</li>
+                            <li><strong>Programas de Qualificação Profissional:</strong> Cursos, workshops e trilhas de
+                                formação alinhadas à demanda local</li>
+                            <li><strong>Articulação de Ecossistemas de Inovação:</strong> Conexão entre startups,
+                                empresas, universidades e poder público</li>
+                            <li><strong>Diagnóstico Econômico Territorial:</strong> Mapeamento de potencialidades,
+                                vocações e gargalos locais</li>
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Prefeituras, secretarias de desenvolvimento, associações
+                                comerciais, SEBRAE, Sistema S.</p>
+                            <p><strong>Portfólio:</strong> SDE (19 edições), SDE Minas, FNEC Congonhas, Fórum Mariana,
+                                CAMPE</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eixo 3 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-3">
+                    <div class="eixo-card">
+                        <i class="fas fa-leaf eixo-icon"></i>
+                        <h3>3. Meio Ambiente e Instrumentos Legais</h3>
+                        <p class="what-we-do">Gerenciamos obrigações socioambientais de empresas e municípios,
+                            transformando passivos em projetos de impacto positivo para as comunidades e o território.
+                        </p>
+                        <ul>
+                            <li><strong>Gestão de TCAs:</strong> Planejamento, execução e prestação de contas perante
+                                órgãos ambientais e Ministério Público</li>
+                            <li><strong>Gestão de TCCEs:</strong> Projetos de compensação de impactos ambientais</li>
+                            <li><strong>Gestão de TACs:</strong> Estruturação e execução de compromissos perante MP</li>
+                            <li><strong>Programas de Recuperação Ambiental:</strong> Desassoreamento, revegetação,
+                                recuperação de áreas degradadas</li>
+                            <li><strong>Assessoria em ESG e Economia Circular:</strong> Planejamento estratégico, metas,
+                                relatórios e implementação</li>
+                            <li><strong>Gestão de Riscos Socioambientais:</strong> Monitoramento, engajamento
+                                comunitário e ações preventivas</li>
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Mineradoras, construtoras, empresas de infraestrutura,
+                                Ministério Público, órgãos ambientais.</p>
+                            <p><strong>Portfólio:</strong> +15 anos em TCA/TCCE/TAC (R$ 16 mi+ gerenciados), AGIR
+                                Congonhas, Desassoreamento Rio Itabirito</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eixo 4 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-1">
+                    <div class="eixo-card">
+                        <i class="fas fa-hard-hat eixo-icon"></i>
+                        <h3>4. Infraestrutura, Obras e Mobilidade Urbana</h3>
+                        <p class="what-we-do">Gerenciamos projetos de infraestrutura física com base em contratos públicos e privados — promovendo mobilidade, acessibilidade, reconstrução pós-eventos climáticos e a implantação de iluminação pública e segurança pública inteligente.</p>
+                        <ul>
+                            <li><strong>Gestão de Obras Públicas:</strong> Coordenação de construção e reforma de
+                                equipamentos públicos (UBS, laboratórios, centros comunitários)</li>
+                            <li><strong>Projetos de Mobilidade e Acessibilidade:</strong> Pavimentação, calçadão,
+                                drenagem e infraestrutura viária</li>
+                            <li><strong>Projetos de Reconstrução e Resiliência Climática:</strong> Atuação emergencial e
+                                reconstrução estruturada pós-eventos climáticos</li>
+                            <li><strong>Gestão de Iluminação Pública:</strong> Modernização, automação, telegestão,
+                                eficiência energética</li>
+                            <li><strong>Planos Diretores de Iluminação Pública (PDIP):</strong> Diagnóstico, projeto e
+                                implementação de sistemas LED com IoT</li>
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Prefeituras, consórcios, empresas de mineração com obrigações
+                                de TCA/TAC, órgãos de defesa civil.</p>
+                            <p><strong>Portfólio:</strong> Ponte Agudo/RS (R$ 8,7 mi), UBS Ouro Branco, TAC Pavimentação
+                                (R$ 4,7 mi), Calçadão Divinópolis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eixo 5 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-2">
+                    <div class="eixo-card">
+                        <i class="fas fa-hands-helping eixo-icon"></i>
+                        <h3>5. Desenvolvimento Social, Cultural e Humano</h3>
+                        <p class="what-we-do">Estruturamos e gerenciamos projetos de impacto social direto, conectando
+                            financiadores privados e públicos a populações vulneráveis.</p>
+                        <ul>
+                            <li><strong>Gestão de Projetos Sociais:</strong> Planejamento, execução e avaliação de
+                                programas de assistência social e inclusão</li>
+                            <li><strong>Programas de Reintegração Social:</strong> Implementação da metodologia APAC e
+                                modelos de reintegração de egressos</li>
+                            <li><strong>Projetos de Saúde Comunitária:</strong> Prevenção, tratamento de dependência
+                                química e saúde mental territorial</li>
+                            <li><strong>Gestão de Projetos Culturais:</strong> Execução de eventos, festivais,
+                                patrimônio imaterial e manifestações culturais</li>
+                            <li><strong>Logística Humanitária:</strong> Aquisição, distribuição e rastreabilidade de
+                                cestas básicas e kits emergenciais</li>
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Empresas com investimento social, fundações, prefeituras,
+                                Ministério Público, SEDESE.</p>
+                            <p><strong>Portfólio:</strong> APAC Itabirito, Só Por Hoje, Tamo Junto e Qualificado, SOS RS
+                                (cestas Gerdau), Festival da Batata</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eixo 6 -->
+                <div class="col-lg-4 col-md-6 mb-4 reveal-on-scroll delay-3">
+                    <div class="eixo-card">
+                        <i class="fas fa-city eixo-icon"></i>
+                        <h3>6. Tecnologia, Inovação e Cidades Inteligentes</h3>
+                        <p class="what-we-do">Estruturamos soluções tecnológicas integradas para gestão pública e
+                            privada, com foco em eficiência, segurança e qualidade de vida urbana.</p>
+                        <ul>
+                            <li><strong>Segurança Pública e Monitoramento:</strong> Sistemas de videomonitoramento,
+                                reconhecimento de imagens e centros de controle</li>
+                            <li><strong>Inclusão Digital:</strong> Programas de capacitação e acesso à tecnologia para
+                                populações vulneráveis</li>
+                            <li><strong>Defesa Civil Inteligente:</strong> Sistemas de alerta, sensores e prevenção de
+                                riscos climáticos e urbanos</li>
+
+                        </ul>
+                        <div class="eixo-meta">
+                            <p><strong>Para quem:</strong> Prefeituras, consórcios, empresas de tecnologia parceiras,
+                                órgãos de segurança pública.</p>
+                            <p><strong>Nota:</strong> Este eixo é estratégico e inovador, marcando nossa visão para o
+                                futuro da gestão inteligente.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12 text-center reveal-on-scroll">
+                    <h2 class="display-title">
+                        <span>NOSSOS</span>
+                        DIFERENCIAIS
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <div class="dif-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <div>
+                            <h4>OSCIP Qualificada</h4>
+                            <p>Segurança jurídica para parcerias com poder público.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-file-contract"></i>
+                        <div>
+                            <h4>Expertise em TCA/TAC</h4>
+                            <p>+15 anos gerenciando obrigações ambientais com grandes empresas.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-users-cog"></i>
+                        <div>
+                            <h4>Setor de Projetos Estruturado</h4>
+                            <p>Equipe multidisciplinar com especialistas, mestres e doutores.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-search-dollar"></i>
+                        <div>
+                            <h4>Transparência Total</h4>
+                            <p>Prestação de contas pública, auditada e acessível.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-percentage"></i>
+                        <div>
+                            <h4>Benefícios Fiscais com a Iniciativa Privada</h4>
+                            <p>Estruturamos projetos que permitem ao investidor privado captar recursos com abatimento fiscal, ampliando o impacto sem aumentar o custo.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <div class="dif-item">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <div>
+                            <h4>Atuação Nacional</h4>
+                            <p>Projetos em todo o país, do Amapá ao Rio Grande do Sul.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-globe-americas"></i>
+                        <div>
+                            <h4>Alinhamento ODS/ESG</h4>
+                            <p>Atuação pautada nos 17 ODS e Pacto Global da ONU.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h4>Rede de Parceiros</h4>
+                            <p>Gerdau, Vale, CSN, Samarco, Sebrae, CODEMGE e poder público de forma geral.</p>
+                        </div>
+                    </div>
+                    <div class="dif-item">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <h4>Captação e Elaboração de Projetos</h4>
+                            <p>Identificação de editais, redação de propostas técnicas e planos de trabalho para acesso a recursos públicos e privados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Público-Alvo -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row mb-5 text-center reveal-on-scroll">
+                <div class="col-12">
+                    <h2 class="display-title" style="font-size: 3.5rem;">Público-Alvo dos Serviços</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                    <div class="target-item">
+                        <i class="fas fa-city"></i>
+                        <h4>Municípios e Prefeituras</h4>
+                        <p style="font-size: 0.9rem;">Gestão de projetos, obras, eventos e políticas públicas.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-1">
+                    <div class="target-item">
+                        <i class="fas fa-industry"></i>
+                        <h4>Empresas de Mineração e Infraestrutura</h4>
+                        <p style="font-size: 0.9rem;">TCA, TAC, ESG e investimento social.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-2">
+                    <div class="target-item">
+                        <i class="fas fa-building"></i>
+                        <h4>Empresas com Responsabilidade Social</h4>
+                        <p style="font-size: 0.9rem;">Fundos de investimento, patrocínios e projetos culturais.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                    <div class="target-item">
+                        <i class="fas fa-landmark"></i>
+                        <h4>Órgãos de Governo (Estadual/Federal)</h4>
+                        <p style="font-size: 0.9rem;">Parcerias MROSC, convênios e programas integrados.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-1">
+                    <div class="target-item">
+                        <i class="fas fa-hands-helping"></i>
+                        <h4>Organizações da Sociedade Civil</h4>
+                        <p style="font-size: 0.9rem;">Cogestão, apoio técnico e fortalecimento institucional.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-2">
+                    <div class="target-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Consórcios Intermunicipais</h4>
+                        <p style="font-size: 0.9rem;">Gestão compartilhada de serviços e projetos regionais.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios Fiscais -->
+    <section class="section-padding" style="background: var(--azul-profundo); color: #fff; position: relative; overflow: hidden;">
+        <div style="position:absolute; top:-10%; right:-5%; width:450px; height:450px; background: radial-gradient(circle, rgba(217,144,47,0.07) 0%, transparent 70%); pointer-events:none;"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 reveal-on-scroll">
+                    <span style="display:inline-block; background:rgba(217,144,47,0.15); color:var(--ambar-impacto); padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:25px;">Vantagem Exclusiva</span>
+                    <h2 class="display-title" style="font-size: 3.5rem; margin-bottom: 25px; color: var(--ambar-impacto);">
+                        <span style="color: #fff; opacity: 1;">BENEFÍCIOS</span>
+                        FISCAIS
+                    </h2>
+                    <p style="color: rgba(255,255,255,0.75);">Empresas que investem em parceria com a ADESIAP Minas podem deduzir valores do Imposto de Renda e de outros tributos — sem abdicar do impacto social positivo no território onde estão inseridas.</p>
+                    <p style="color: rgba(255,255,255,0.75);">Previsto no <strong style="color:#fff;">art. 13, § 2º, III da Lei nº 9.249/1995</strong>, o benefício permite deduzir até <strong style="color: var(--ambar-impacto); font-size: 1.3rem;">2%</strong> do lucro operacional do imposto de renda devido.</p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">Acompanhe a aplicação dos recursos doados e fortaleça sua reputação de responsabilidade social no território — sem abrir mão do seu lucro.</p>
+                </div>
+
+                <div class="col-lg-6 offset-lg-1 reveal-on-scroll delay-1">
+                    <div style="margin-bottom: 28px;">
+                        <h4 style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">Tributos abrangidos pelo benefício</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">Imposto de Renda — IRPJ</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Dedução de até 2% do lucro operacional</span></div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">CSLL</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição Social sobre o Lucro Líquido</span></div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">COFINS</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição para o Financiamento do Seguro de Desemprego</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 28px;">
+                        <h4 style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">Documentos exigidos da empresa doadora</h4>
+                        <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px;">
+                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Recibo de doação emitido pela ADESIAP Minas</li>
+                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Declaração de Recebimento de Recursos por Doação — preenchida e assinada pela ADESIAP</li>
+                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Comprovantes de aplicação dos recursos doados pela OSCIP</li>
+                        </ul>
+                    </div>
+
+                    <div style="padding: 18px 20px; background: rgba(217,144,47,0.1); border-radius: 8px; border-left: 4px solid rgba(217,144,47,0.35);">
+                        <p style="color:rgba(255,255,255,0.6); font-size:0.87rem; margin:0; line-height:1.6;"><i class="fas fa-shield-alt" style="color:var(--ambar-impacto); margin-right:8px;"></i>A ADESIAP Minas é qualificada como OSCIP e reconhecida como Utilidade Pública, possuindo todas as certidões e documentações vigentes exigidas pela legislação.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 reveal-on-scroll">
+                    <div class="cta-banner">
+                        <h2 class="display-title light" style="font-size: 3rem; margin-bottom: 20px;">FALE COM A ADESIAP
+                        </h2>
+                        <p
+                            style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 35px; color: rgba(255,255,255,0.9);">
+                            Quer saber como podemos transformar seu investimento em impacto real e estruturar projetos
+                            com segurança jurídica e transparência?
+                        </p>
+                        <a href="index.html#contato" class="btn-primary"
+                            style="background: #fff; color: var(--ambar-impacto); border-color: #fff;">Faça um Projeto
+                            Conosco</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile Script
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mainMenu = document.querySelector('.main-menu');
+
+        if (mobileBtn && mainMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mainMenu.classList.toggle('active');
+                const icon = mobileBtn.querySelector('i');
+                if (mainMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Initialize Smooth Scroll and Animations
+        window.addEventListener('load', () => {
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+
+            gsap.from(".hero-qs h1, .hero-qs p", { y: 30, opacity: 0, duration: 0.8, stagger: 0.1, delay: 0.2 });
+
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            revealElements.forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                if (el.classList.contains('delay-2')) delay = 0.4;
+                if (el.classList.contains('delay-3')) delay = 0.6;
+
+                gsap.from(el, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 0.8,
+                    delay: delay,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- Botão Voltar ao Topo -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <script>
+        // Lógica do Botão Voltar ao Topo
+        (function () {
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+

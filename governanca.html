@@ -1,0 +1,825 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governança e Transparência | Adesiap Minas</title>
+    <!-- Grid System -->
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Smooth Scroll & Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    
+    <style>
+        /* Base e Variáveis */
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto-principal);
+            background-color: var(--branco);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        h1, h2, h3, h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--azul-institucional);
+        }
+        h2 { font-size: 2.5rem; line-height: 1.2; }
+        h3 { font-size: 2rem; }
+        
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .section-padding { padding: 100px 0; }
+        .bg-light { background-color: var(--areia-fundo); }
+        .bg-dark { background-color: var(--azul-profundo); color: #fff; }
+        .text-center { text-align: center; }
+        .accent-text { color: var(--terracota-institucional); }
+        
+        .section-tag {
+            display: inline-block;
+            background-color: rgba(184, 92, 56, 0.1);
+            color: var(--terracota-institucional);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .display-title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.85;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            color: var(--azul-institucional);
+        }
+        .display-title span {
+            display: block;
+            opacity: 0.4;
+            font-size: 0.8em;
+        }
+        .display-title.light { color: #fff; }
+        .display-title.light span { opacity: 0.5; }
+        @media (max-width: 767px) {
+            .display-title { font-size: 3.2rem; }
+            .display-title span { font-size: 0.7em; }
+        }
+
+        /* Header / Menu */
+        header {
+            position: fixed;
+            top: var(--topbar-height); left: 0; width: 100%; height: var(--header-height);
+            background-color: #fff; z-index: 1000;
+            display: flex; align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .mobile-menu-btn {
+            display: none; background: none; border: none; font-size: 1.8rem;
+            cursor: pointer; color: var(--azul-institucional); padding: 5px;
+        }
+        .header-container {
+            display: flex; justify-content: space-between; align-items: center; width: 100%;
+        }
+        .logo img { height: 50px; width: auto; }
+        .main-menu { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
+        .main-menu li a {
+            font-size: 0.95rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; position: relative; padding: 10px 0;
+            transition: color 0.3s; color: var(--azul-institucional);
+        }
+        .main-menu li a:hover { color: var(--terracota-institucional); }
+        .main-menu li a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0%;
+            height: 2px; background-color: var(--terracota-institucional); transition: width 0.3s;
+        }
+        .main-menu li a:hover::after { width: 100%; }
+
+        /* Dropdown Menu */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            list-style: none;
+            padding: 10px 0;
+            min-width: 220px;
+            border-radius: 4px;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 0;
+        }
+        .dropdown:hover .dropdown-menu { display: flex; }
+        .dropdown-menu li { margin: 0; }
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            text-transform: none;
+            font-size: 0.95rem;
+            color: var(--texto-secundario);
+            font-weight: 500;
+        }
+        .dropdown-menu li a::after { display: none; }
+        .dropdown-menu li a:hover {
+            background-color: var(--areia-fundo);
+            color: var(--terracota-institucional);
+        }
+
+        /* Botão Voltar ao Topo */
+        .back-to-top {
+            position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px;
+            background-color: var(--terracota-institucional); color: #fff;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 1000; opacity: 0; visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border: none; text-decoration: none;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:not(.visible) { transform: translateY(20px); }
+        .back-to-top:hover {
+            background-color: var(--azul-institucional); color: #fff; transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .back-to-top i { font-size: 1.2rem; }
+        
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            nav {
+                position: fixed; top: calc(var(--header-height) + var(--topbar-height)); left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff; transition: left 0.3s ease;
+                display: flex; align-items: center; justify-content: center;
+            }
+            nav.active { left: 0; }
+            nav ul { flex-direction: column; text-align: center; gap: 30px; }
+            nav a { font-size: 1.5rem; }
+        }
+
+        /* Hero */
+        .hero-qs {
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 120px); padding-bottom: 120px;
+            position: relative;
+        }
+
+        /* Layout Blocks */
+        .gov-block {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(18, 57, 93, 0.05);
+            height: 100%;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border-bottom: 4px solid var(--terracota-institucional);
+        }
+        .gov-block:hover { transform: translateY(-5px); }
+        .gov-block i {
+            font-size: 3rem; color: var(--terracota-institucional); margin-bottom: 25px; display: block;
+        }
+        .gov-block h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        
+        /* Círculo decorativo no gov-block */
+        .gov-block::before {
+            content: ''; position: absolute; top: -50px; right: -50px;
+            width: 150px; height: 150px; border-radius: 50%;
+            background: rgba(184, 92, 56, 0.03); z-index: -1;
+        }
+
+        /* Call to Action */
+        .cta-banner {
+            background-color: var(--ambar-impacto); border-radius: 20px;
+            padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+        }
+        .cta-banner::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%); z-index: 1;
+        }
+        .cta-banner * { position: relative; z-index: 2; }
+        .btn-primary {
+            display: inline-block; background-color: var(--terracota-institucional); color: #fff;
+            padding: 14px 34px; font-weight: 600; border-radius: 4px; transition: all 0.3s ease;
+            border: 2px solid var(--terracota-institucional); cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-primary:hover {
+            background-color: var(--azul-institucional); border-color: var(--azul-institucional);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--azul-profundo);
+            color: #fff;
+            padding: 100px 0 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h4 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota-institucional);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--terracota-institucional);
+        }
+
+        /* Organograma */
+        .org-tree-container { overflow-x: auto; padding: 60px 0 20px; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .org-tree { width: 1200px; margin: 0 auto; position: relative; font-family: 'Inter', sans-serif; }
+        .org-node {
+            width: 240px; padding: 14px 20px; text-align: center; font-weight: 700; font-size: 0.85rem;
+            z-index: 2; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-transform: uppercase;
+            letter-spacing: 0.5px; border-radius: 4px;
+        }
+        .c-red { background-color: #B21F1F; color: white; }
+        .c-darkgray { background-color: #7A7A7A; color: black; }
+        .c-medgray { background-color: #A6A6A6; color: black; }
+        .c-lightgray { background-color: #D9D9D9; color: black; }
+        .c-darkred { background-color: #8B0000; color: white; }
+        .c-white { background-color: #F8F9FA; color: black; border: 1px solid #E0E0E0; text-transform: none; font-weight: 600; }
+        .v-line { width: 2px; height: 35px; background-color: #B0B0B0; margin: 0 auto; z-index: 1; position: relative; }
+        .v-line-long { width: 2px; height: 65px; background-color: #B0B0B0; margin: 0 auto; z-index: 1; position: relative; }
+    
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root { --topbar-height: 36px; }
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
+
+        </style>
+</head>
+
+<body>
+    <!-- Header -->
+    
+    <!-- Topbar WhatsApp -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+        </div>
+    </div>
+
+    <header id="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                    <li class="dropdown">
+                        <a href="governanca.html" style="color: var(--terracota-institucional);">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html" style="color: var(--terracota-institucional);">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown">
+                        <a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 1. HERO NARRATIVA -->
+    <section class="hero-qs" style="background: linear-gradient(rgba(11, 31, 51, 0.85), rgba(11, 31, 51, 0.95)), url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 reveal-on-scroll">
+                    <span class="section-tag" style="background: rgba(255,255,255,0.1); color: var(--ambar-impacto);">Transparência & Ética</span>
+                    <h1 class="display-title light" style="font-size: 4rem; line-height: 1; margin-bottom: 25px;">
+                        <span>Nossa</span>
+                        Governança
+                    </h1>
+                    <p style="font-size: 1.25rem; max-width: 750px; margin-bottom: 35px; color: rgba(255,255,255,0.9); line-height: 1.7;">
+                        Compromisso inegociável com a ética, a legalidade e o impacto social sustentável. Na ADESIAP, a governança é a base sólida que garante a excelência, a transparência e a segurança jurídica em todas as nossas parcerias.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. NATUREZA JURÍDICA E PROPÓSITO -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 reveal-on-scroll">
+                    <h2 class="display-title" style="font-size: 3rem;">
+                        <span>NOSSA</span>
+                        NATUREZA
+                    </h2>
+                    <p>A ADESIAP Minas é uma Organização da Sociedade Civil de Interesse Público (OSCIP), constituída como pessoa jurídica de direito privado e <strong>sem fins lucrativos</strong>, qualificada nos termos da Lei Federal n° 9.790/99.</p>
+                    <p>Nosso modelo institucional proíbe qualquer distribuição de resultados, dividendos ou bonificações. <strong>100% dos recursos captados e dos eventuais excedentes operacionais são reinvestidos integralmente</strong> na comunidade e na continuidade dos nossos projetos socioeconômicos e ambientais, garantindo que o impacto seja real e contínuo.</p>
+                </div>
+                <div class="col-lg-5 offset-lg-1 mt-5 mt-lg-0 reveal-on-scroll delay-1">
+                    <div style="background-color: var(--areia-fundo); padding: 40px; border-radius: 12px; border-left: 5px solid var(--terracota-institucional);">
+                        <i class="fas fa-balance-scale mb-3" style="font-size: 2.5rem; color: var(--terracota-institucional);"></i>
+                        <h4 style="font-size: 1.3rem; margin-bottom: 15px;">Legalidade e Confiança</h4>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Agimos rigorosamente dentro dos princípios da Administração Pública: legalidade, impessoalidade, moralidade, publicidade, economicidade e eficiência. Estabelecemos relações idôneas com a esfera pública e a iniciativa privada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ESTRUTURA DE GOVERNANÇA (PILARES) -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12 reveal-on-scroll">
+                    <h2 class="display-title" style="font-size: 3.5rem;">
+                        <span>ESTRUTURA DE</span>
+                        DECISÃO
+                    </h2>
+                    <p class="section-desc mx-auto mt-3" style="max-width: 700px;">Nossa gestão é segregada em três pilares independentes para garantir fiscalização, pluralidade de ideias e eficiência executiva.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <!-- Comitê -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                    <div class="gov-block">
+                        <i class="fas fa-users"></i>
+                        <h3>Comitê de Parceiros</h3>
+                        <p>Órgão de poder máximo da ADESIAP, formado pelas organizações associadas (públicas e privadas). Responsável por ditar as diretrizes estratégicas, eleger diretorias, aprovar contas, alterar o estatuto e nortear o desenvolvimento da Agência.</p>
+                        <span class="project-tag mt-3" style="display:inline-block; font-size:0.8rem; font-weight:bold; color:var(--azul-institucional); background: rgba(18,57,93,0.1); padding:5px 12px; border-radius:20px;">Atuação Voluntária</span>
+                    </div>
+                </div>
+                <!-- Executiva -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-1">
+                    <div class="gov-block" style="border-bottom-color: var(--azul-institucional);">
+                        <i class="fas fa-briefcase" style="color: var(--azul-institucional);"></i>
+                        <h3>Equipe Executiva</h3>
+                        <p>Liderada pela Diretoria Executiva, é o pilar responsável por "fazer acontecer". Executa a programação anual aprovada, realiza a gestão rigorosa de recursos, atua na captação de projetos e lidera o portfólio técnico nas filiais e territórios.</p>
+                        <span class="project-tag mt-3" style="display:inline-block; font-size:0.8rem; font-weight:bold; color:var(--azul-institucional); background: rgba(18,57,93,0.1); padding:5px 12px; border-radius:20px;">Corpo Técnico</span>
+                    </div>
+                </div>
+                <!-- Fiscal -->
+                <div class="col-lg-4 col-md-6 reveal-on-scroll delay-2">
+                    <div class="gov-block" style="border-bottom-color: var(--ambar-impacto);">
+                        <i class="fas fa-search-dollar" style="color: var(--ambar-impacto);"></i>
+                        <h3>Conselho Fiscal</h3>
+                        <p>Nosso pilar de segurança e auditoria. Composto por membros eleitos, analisa e examina periodicamente livros, contas, registros contábeis e a aplicação de todos os recursos financeiros da instituição, garantindo integridade e conformidade.</p>
+                        <span class="project-tag mt-3" style="display:inline-block; font-size:0.8rem; font-weight:bold; color:var(--azul-institucional); background: rgba(18,57,93,0.1); padding:5px 12px; border-radius:20px;">Órgão de Controle</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organograma Visual -->
+            <div class="row mt-5 pt-5 reveal-on-scroll">
+                <div class="col-12 text-center mb-4">
+                    <h3 style="color: var(--azul-institucional); font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px;">Organograma Institucional</h3>
+                </div>
+                <div class="col-12">
+                    <div class="org-tree-container">
+                        <div class="org-tree">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                
+                                <!-- COMITÊ -->
+                                <div class="org-node c-red">COMITÊ DE PARCEIROS</div>
+                                
+                                <div class="v-line" style="position: relative;">
+                                    <!-- Branch right to Conselho Fiscal -->
+                                    <div style="position: absolute; top: 17px; left: 0; width: 180px; height: 2px; background: #B0B0B0;"></div>
+                                    <div class="org-node c-white" style="position: absolute; top: -5px; left: 180px; width: 200px;">Conselho Fiscal</div>
+                                </div>
+                                
+                                <!-- PRESIDENTE -->
+                                <div class="org-node c-darkgray">PRESIDENTE DO COMITÊ</div>
+                                
+                                <div class="v-line"></div>
+                                
+                                <!-- VICE -->
+                                <div class="org-node c-medgray">VICE PRESIDÊNCIA DO COMITÊ</div>
+                                
+                                <div class="v-line-long" style="position: relative; height: 60px;">
+                                    <!-- Branch right and up to Consultoria Jurídica -->
+                                    <div style="position: absolute; top: 30px; left: 0; width: 240px; height: 2px; background: #B0B0B0;"></div>
+                                    <div style="position: absolute; bottom: 30px; left: 240px; width: 2px; height: 60px; background: #B0B0B0;"></div>
+                                    <div style="position: absolute; bottom: 90px; left: 240px; width: 20px; height: 2px; background: #B0B0B0;"></div>
+                                    <div class="org-node c-white" style="position: absolute; bottom: 70px; left: 260px; width: 180px; text-align: center;">Consultoria Jurídica</div>
+                                </div>
+                                
+                                <!-- DIRETORIA EXECUTIVA -->
+                                <div style="position: relative; display: flex; justify-content: center; width: 100%;">
+                                    <div class="org-node c-lightgray" style="margin: 0 auto;">DIRETORIA EXECUTIVA</div>
+                                    
+                                    <!-- Line directly right to DIRETORIA DE SEGURANÇA -->
+                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 80px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    
+                                    <div style="position: absolute; top: 0; left: calc(50% + 200px);">
+                                        <div class="org-node c-lightgray">DIRETORIA DE SEGURANÇA</div>
+                                        <div class="v-line" style="height: 35px;"></div>
+                                        <div class="org-node c-white">Consultor de Segurança</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="v-line-long" style="position: relative; height: 70px;"></div>
+                                
+                                <!-- GERÊNCIA EXECUTIVA -->
+                                <div class="org-node c-darkred">GERÊNCIA EXECUTIVA</div>
+                                
+                                <div class="v-line"></div>
+                                
+                                <!-- EQUIPE EXECUTIVA -->
+                                <div class="org-node c-white" style="text-transform: uppercase;">EQUIPE EXECUTIVA</div>
+
+                                <!-- Conector vertical -->
+                                <div style="width: 2px; height: 30px; background: #B0B0B0; margin: 0 auto;"></div>
+
+                                <!-- DEPARTAMENTOS -->
+                                <div style="position: relative; width: 100%;">
+                                    <div style="position: absolute; top: 0; left: 65px; right: 65px; height: 2px; background: #B0B0B0;"></div>
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Projetos</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Suprimentos</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">CAMPE</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">RH / Depto. Pessoal</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Prestação de Contas</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Financeiro</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Comercial</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Jurídico</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. TRANSPARÊNCIA E COMPLIANCE -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row align-items-center flex-row-reverse">
+                <div class="col-lg-6 reveal-on-scroll delay-1">
+                    <h2 class="display-title" style="font-size: 3rem;">
+                        <span>PRESTAÇÃO</span>
+                        DE CONTAS
+                    </h2>
+                    <p>A transparência é um compromisso estatutário. A ADESIAP obedece aos Princípios Fundamentais de Contabilidade e às Normas Brasileiras (Resolução CFC 1.252/2010).</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                        <li style="margin-bottom: 15px; display: flex; align-items: flex-start;">
+                            <i class="fas fa-check-circle mt-1 mr-3" style="color: var(--verde-sustentabilidade); margin-right: 15px; font-size: 1.2rem;"></i>
+                            <span style="color: var(--texto-secundario);"><strong>Auditorias Externas Independentes</strong> para recursos aplicados através de Termos de Parceria.</span>
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: flex-start;">
+                            <i class="fas fa-check-circle mt-1 mr-3" style="color: var(--verde-sustentabilidade); margin-right: 15px; font-size: 1.2rem;"></i>
+                            <span style="color: var(--texto-secundario);"><strong>Publicidade irrestrita</strong> dos relatórios de atividades e das demonstrações financeiras no encerramento de cada exercício.</span>
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: flex-start;">
+                            <i class="fas fa-check-circle mt-1 mr-3" style="color: var(--verde-sustentabilidade); margin-right: 15px; font-size: 1.2rem;"></i>
+                            <span style="color: var(--texto-secundario);"><strong>Compliance total</strong> com a legislação previdenciária e trabalhista, mantendo disponíveis certidões negativas do INSS e FGTS.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5 reveal-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800" alt="Auditoria e Transparência" style="width: 100%; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ÉTICA, ODS E FUTURO -->
+    <section class="section-padding bg-light" style="border-top: 1px solid rgba(0,0,0,0.05);">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto reveal-on-scroll">
+                    <h2 class="display-title" style="font-size: 3rem;">
+                        <span>AGENDA 2030</span>
+                        & IMPACTO GLOBAIS
+                    </h2>
+                    <p class="section-desc mt-4 mx-auto" style="color: var(--texto-secundario);">Nosso estatuto oficializa o alinhamento de todas as nossas atividades à Agenda 2030 da Organização das Nações Unidas (ONU) e às diretrizes ESG.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 reveal-on-scroll">
+                    <div style="background: #fff; padding: 40px; border-radius: 12px; height: 100%;">
+                        <i class="fas fa-shield-alt mb-3" style="font-size: 2rem; color: var(--azul-institucional);"></i>
+                        <h4 style="font-size: 1.2rem; color: var(--azul-institucional);">Ética e Dados (LGPD)</h4>
+                        <p style="font-size: 1rem;">Implementamos práticas rigorosas para coibir a obtenção de vantagens indevidas nos processos decisórios e atuamos em total conformidade com a Lei Geral de Proteção de Dados (Lei 13.709/2018), garantindo o sigilo e o uso ético da informação.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 reveal-on-scroll delay-1 mt-4 mt-md-0">
+                    <div style="background: #fff; padding: 40px; border-radius: 12px; height: 100%;">
+                        <i class="fas fa-globe-americas mb-3" style="font-size: 2rem; color: var(--verde-sustentabilidade);"></i>
+                        <h4 style="font-size: 1.2rem; color: var(--azul-institucional);">Os 17 ODS da ONU</h4>
+                        <p style="font-size: 1rem;">Nossas ações combatem a pobreza, promovem inovação, sustentam cidades inteligentes e preservam o meio ambiente, estando cada projeto diretamente atrelado a um ou mais Objetivos de Desenvolvimento Sustentável.</p>
+                        <a href="#" class="accent-text mt-3 d-inline-block" style="font-weight: bold;">Conheça nossa atuação nos ODS <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. CALL TO ACTION -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 reveal-on-scroll">
+                    <div class="cta-banner">
+                        <h2 class="display-title light" style="font-size: 3rem; margin-bottom: 20px;">SEGURANÇA PARA A SUA PARCERIA</h2>
+                        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 35px; color: rgba(255,255,255,0.9);">
+                            Trabalhe com uma organização cuja prestação de contas, governança e corpo técnico são auditados e validados por grandes players do mercado e órgãos públicos.
+                        </p>
+                        <a href="index.html#contato" class="btn-primary" style="background: #fff; color: var(--ambar-impacto); border-color: #fff;">Faça um Projeto Conosco</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li><a href="governanca.html" style="color: var(--terracota-institucional);">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display: flex; gap: 15px;">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Inicialização de Smooth Scroll (Lenis)
+        let lenis;
+        const initSmoothScroll = () => {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0);
+        };
+
+        // Animações de Scroll com GSAP
+        const initAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            
+            revealElements.forEach((el) => {
+                let delay = 0;
+                if (el.classList.contains('delay-1')) delay = 0.2;
+                if (el.classList.contains('delay-2')) delay = 0.4;
+                if (el.classList.contains('delay-3')) delay = 0.6;
+
+                gsap.from(el, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    delay: delay,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+        };
+
+        // Mobile Menu
+        const initMobileMenu = () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('main-menu');
+            if(btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('active');
+                });
+            }
+        };
+
+        // Lógica do Botão Voltar ao Topo
+        const initBackToTop = () => {
+            const backToTopBtn = document.getElementById('backToTop');
+            if(backToTopBtn) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 400) {
+                        backToTopBtn.classList.add('visible');
+                    } else {
+                        backToTopBtn.classList.remove('visible');
+                    }
+                });
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        };
+
+        window.onload = () => {
+            initSmoothScroll();
+            initAnimations();
+            initMobileMenu();
+            initBackToTop();
+        };
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
