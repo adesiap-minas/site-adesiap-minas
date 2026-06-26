@@ -715,14 +715,14 @@ function buildOdsGrid() {
     for (let n = 1; n <= 17; n++) {
         // Try both filename patterns
         const padded = String(n).padStart(2, '0');
+        const sfx    = n === 1 ? '1' : '0';
         const div = document.createElement('div');
         div.className = 'ods-item';
         div.title = `ODS ${n} – ${ODS_LABELS[n]}`;
         div.innerHTML = `
             <input type="checkbox" id="ods${n}" value="${n}">
             <label for="ods${n}">
-                <img src="../ODS/${padded}_0.webp" alt="ODS ${n}"
-                     onerror="this.src='../ODS/${n}_0.webp'"
+                <img src="../ODS/${padded}_${sfx}.webp" alt="ODS ${n}"
                      loading="lazy">
             </label>`;
         grid.appendChild(div);
