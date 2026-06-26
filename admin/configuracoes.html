@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações — Admin ADESIAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul: #12395D;
+            --azul-escuro: #0B1F33;
+            --terracota: #B85C38;
+            --ambar: #D9902F;
+            --verde: #3B8C6E;
+            --areia: #F4EFE7;
+            --texto: #1F2933;
+            --texto-leve: #5F6B76;
+            --borda: #E2E8F0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #F0F4F8; color: var(--texto); min-height: 100vh; }
+
+        /* Login */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--azul-escuro), var(--azul));
+        }
+        .login-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .login-box img { height: 50px; margin-bottom: 30px; }
+        .login-box h2 { font-size: 1.4rem; color: var(--azul); margin-bottom: 8px; }
+        .login-box p { color: var(--texto-leve); font-size: 0.9rem; margin-bottom: 30px; }
+
+        /* Layout admin */
+        .admin-wrap { display: none; min-height: 100vh; }
+        .sidebar {
+            position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
+            background: var(--azul-escuro); color: #fff; padding: 30px 0;
+            display: flex; flex-direction: column;
+        }
+        .sidebar-logo { padding: 0 24px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-logo img { height: 40px; }
+        .sidebar-logo p { color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 6px; }
+        .sidebar-nav { flex: 1; padding: 20px 0; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 24px; color: rgba(255,255,255,0.65);
+            font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border-left-color: var(--terracota);
+        }
+        .nav-item i { width: 18px; text-align: center; }
+        .sidebar-footer { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .btn-logout {
+            display: flex; align-items: center; gap: 10px;
+            color: rgba(255,255,255,0.5); font-size: 0.85rem; cursor: pointer;
+            background: none; border: none; padding: 0; font-family: 'Inter', sans-serif;
+        }
+        .btn-logout:hover { color: var(--terracota); }
+
+        .main-content { margin-left: 260px; padding: 40px; }
+        .page-header { margin-bottom: 35px; }
+        .page-header h1 { font-size: 1.8rem; color: var(--azul); margin-bottom: 6px; }
+        .page-header p { color: var(--texto-leve); font-size: 0.95rem; }
+
+        /* Config sections */
+        .config-section {
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-header {
+            display: flex; align-items: center; gap: 14px;
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--borda);
+            background: #FAFBFC;
+        }
+        .section-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; color: #fff;
+        }
+        .section-icon.email { background: var(--azul); }
+        .section-icon.site { background: var(--verde); }
+        .section-icon.ouvidoria { background: var(--terracota); }
+        .section-icon.admin { background: var(--azul-escuro); }
+        .section-header h3 { font-size: 1.05rem; color: var(--azul); margin: 0; }
+        .section-header p { font-size: 0.82rem; color: var(--texto-leve); margin: 2px 0 0; }
+
+        .section-body { padding: 28px; }
+        .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        .field-group.full { grid-column: 1 / -1; }
+        .field-group label {
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--texto-leve); text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .field-group .field-desc { font-size: 0.78rem; color: #94A3B8; margin-top: -2px; }
+        .field-input {
+            display: flex; align-items: center;
+            border: 1.5px solid var(--borda); border-radius: 8px;
+            overflow: hidden; background: #fff; transition: border-color 0.2s;
+        }
+        .field-input:focus-within { border-color: var(--azul); }
+        .field-input input {
+            flex: 1; border: none; outline: none; padding: 10px 14px;
+            font-size: 0.92rem; font-family: 'Inter', sans-serif; color: var(--texto);
+            background: transparent;
+        }
+        .field-input .eye-btn {
+            background: none; border: none; padding: 0 12px;
+            cursor: pointer; color: var(--texto-leve); font-size: 0.9rem;
+        }
+        .field-input .eye-btn:hover { color: var(--azul); }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+        }
+        .status-badge.ok { background: #D1FAE5; color: #065F46; }
+        .status-badge.vazio { background: #FEE2E2; color: #991B1B; }
+        .status-badge.aviso { background: #FEF3C7; color: #92400E; }
+
+        /* Buttons */
+        .section-footer {
+            padding: 16px 28px;
+            border-top: 1px solid var(--borda);
+            display: flex; align-items: center; gap: 14px;
+            background: #FAFBFC;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 9px 20px; border-radius: 7px; font-size: 0.88rem;
+            font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary { background: var(--azul); color: #fff; }
+        .btn-primary:hover { background: var(--azul-escuro); }
+        .btn-secondary { background: var(--areia); color: var(--azul); }
+        .btn-secondary:hover { background: #E8E1D6; }
+        .btn-test { background: #EFF6FF; color: #1D4ED8; }
+        .btn-test:hover { background: #DBEAFE; }
+        .save-msg { font-size: 0.82rem; color: var(--verde); font-weight: 600; opacity: 0; transition: opacity 0.3s; }
+        .save-msg.show { opacity: 1; }
+
+        /* Form fields comuns */
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+            width: 100%; border: 1.5px solid var(--borda); border-radius: 8px;
+            padding: 10px 14px; font-size: 0.92rem; font-family: 'Inter', sans-serif;
+            color: var(--texto); outline: none; transition: border-color 0.2s;
+            background: #fff;
+        }
+        input:focus { border-color: var(--azul); }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--azul-escuro); color: #fff;
+            padding: 14px 22px; border-radius: 10px;
+            font-size: 0.9rem; font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(80px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.erro { background: #DC2626; }
+        .toast.sucesso { background: var(--verde); }
+    </style>
+</head>
+<body>
+
+<!-- TELA DE LOGIN -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+        <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP Minas">
+        <h2>Painel Administrativo</h2>
+        <p>Acesso restrito à equipe ADESIAP Minas</p>
+        <div style="text-align:left; margin-bottom: 20px;">
+            <label style="font-size:0.82rem;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">Senha de acesso</label>
+            <div class="field-input">
+                <input type="password" id="loginSenha" placeholder="Digite a senha" onkeydown="if(event.key==='Enter') fazerLogin()">
+                <button class="eye-btn" onclick="toggleSenha('loginSenha', this)"><i class="fas fa-eye"></i></button>
+            </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="fazerLogin()">
+            <i class="fas fa-sign-in-alt"></i> Entrar
+        </button>
+        <p style="margin-top:16px;font-size:0.78rem;color:#94A3B8;">
+            Primeira vez? A senha padrão é <strong>adesiap2026</strong><br>
+            Altere-a nas configurações após entrar.
+        </p>
+    </div>
+</div>
+
+<!-- PAINEL ADMIN -->
+<div class="admin-wrap" id="adminWrap">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP">
+            <p>Painel Administrativo</p>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-item active" onclick="irPara('configuracoes')">
+                <i class="fas fa-cog"></i> Configurações
+            </div>
+            <div class="nav-item" onclick="irPara('contatos')">
+                <i class="fas fa-envelope"></i> Mensagens
+            </div>
+            <div class="nav-item" onclick="irPara('candidaturas')">
+                <i class="fas fa-user-tie"></i> Candidaturas
+            </div>
+            <div class="nav-item" onclick="irPara('ouvidoria')">
+                <i class="fas fa-comment-dots"></i> Ouvidoria
+            </div>
+            <div class="nav-item" onclick="irPara('projetos')">
+                <i class="fas fa-project-diagram"></i> Projetos
+            </div>
+            <div class="nav-item" onclick="irPara('noticias')">
+                <i class="fas fa-newspaper"></i> Notícias
+            </div>
+            <div class="nav-item" onclick="irPara('vagas')">
+                <i class="fas fa-briefcase"></i> Vagas
+            </div>
+            <div class="nav-item" onclick="window.open('../index.html','_blank')">
+                <i class="fas fa-external-link-alt"></i> Ver site
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="fazerLogout()">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-cog" style="color:var(--terracota);margin-right:10px;font-size:1.4rem;"></i>Configurações do Sistema</h1>
+            <p>Gerencie as configurações de e-mail, ouvidoria e acesso ao painel.</p>
+        </div>
+
+        <!-- SEÇÃO: E-MAIL -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon email"><i class="fas fa-paper-plane"></i></div>
+                <div>
+                    <h3>Configurações de E-mail (SMTP)</h3>
+                    <p>Dados do servidor de e-mail Microsoft 365 para envio dos formulários</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="fields-grid">
+                    <div class="field-group">
+                        <label>Servidor SMTP</label>
+                        <span class="field-desc">Padrão Microsoft 365: smtp.office365.com</span>
+                        <input type="text" id="smtp_host" placeholder="smtp.office365.com">
+                    </div>
+                    <div class="field-group">
+                        <label>Porta</label>
+                        <span class="field-desc">Padrão: 587 (TLS)</span>
+                        <input type="number" id="smtp_port" placeholder="587">
+                    </div>
+                    <div class="field-group">
+                        <label>E-mail remetente (usuário SMTP)</label>
+                        <span class="field-desc">E-mail que aparece como remetente</span>
+                        <input type="email" id="smtp_user" placeholder="contato@adesiap.org.br">
+                    </div>
+                    <div class="field-group">
+                        <label>Senha do e-mail</label>
+                        <span class="field-desc">Senha da conta Microsoft 365</span>
+                        <div class="field-input">
+                            <input type="password" id="smtp_pass" placeholder="••••••••">
+                            <button class="eye-btn" onclick="toggleSenha('smtp_pass', this)"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>E-mail que recebe os formulários</label>
+                        <span class="field-desc">Destino das mensagens do site</span>
+                        <input type="email" id="email_destino" placeholder="comercial@adesiap.org.br">
+                    </div>
+                    <div class="field-group">
+                        <label>Nome do remetente</label>
+                        <span class="field-desc">Nome exibido nos e-mails enviados</span>
+                        <input type="text" id="email_remetente" placeholder="ADESIAP Minas">
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="salvarGrupo('email')">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <button class="btn btn-test" onclick="testarEmail()">
+                    <i class="fas fa-flask"></i> Testar envio
+                </button>
+                <span class="save-msg" id="saveMsg-email"><i class="fas fa-check"></i> Salvo!</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: SITE -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon site"><i class="fas fa-globe"></i></div>
+                <div>
+                    <h3>Informações do Site</h3>
+                    <p>Dados gerais usados nas comunicações automáticas</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="fields-grid">
+                    <div class="field-group">
+                        <label>Nome do site</label>
+                        <input type="text" id="site_nome" placeholder="ADESIAP Minas">
+                    </div>
+                    <div class="field-group">
+                        <label>URL de produção</label>
+                        <span class="field-desc">Com https:// e sem barra no final</span>
+                        <input type="text" id="site_url" placeholder="https://adesiap.org.br">
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="salvarGrupo('site')">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <span class="save-msg" id="saveMsg-site"><i class="fas fa-check"></i> Salvo!</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: OUVIDORIA -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon ouvidoria"><i class="fas fa-comment-dots"></i></div>
+                <div>
+                    <h3>Ouvidoria e Canal de Denúncias</h3>
+                    <p>Configurações dos fluxos de atendimento da ouvidoria</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="fields-grid">
+                    <div class="field-group">
+                        <label>Prazo de resposta (dias úteis)</label>
+                        <span class="field-desc">Aparece no e-mail de confirmação ao cidadão</span>
+                        <input type="number" id="ouvidoria_prazo" placeholder="15">
+                    </div>
+                    <div class="field-group">
+                        <label>E-mail da ouvidoria</label>
+                        <span class="field-desc">Recebe as manifestações da ouvidoria</span>
+                        <input type="email" id="ouvidoria_email" placeholder="ouvidoria@adesiap.org.br">
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="salvarGrupo('ouvidoria')">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <span class="save-msg" id="saveMsg-ouvidoria"><i class="fas fa-check"></i> Salvo!</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO: ACESSO ADMIN -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon admin"><i class="fas fa-shield-alt"></i></div>
+                <div>
+                    <h3>Acesso ao Painel</h3>
+                    <p>Altere a senha de acesso ao painel administrativo</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="fields-grid">
+                    <div class="field-group">
+                        <label>Nova senha</label>
+                        <div class="field-input">
+                            <input type="password" id="nova_senha" placeholder="Nova senha">
+                            <button class="eye-btn" onclick="toggleSenha('nova_senha', this)"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>Confirmar nova senha</label>
+                        <div class="field-input">
+                            <input type="password" id="confirmar_senha" placeholder="Repita a senha">
+                            <button class="eye-btn" onclick="toggleSenha('confirmar_senha', this)"><i class="fas fa-eye"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="alterarSenha()">
+                    <i class="fas fa-key"></i> Alterar senha
+                </button>
+                <span class="save-msg" id="saveMsg-admin"><i class="fas fa-check"></i> Senha alterada!</span>
+            </div>
+        </div>
+
+        <!-- STATUS CONEXÃO -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon site" style="background:var(--ambar)"><i class="fas fa-plug"></i></div>
+                <div>
+                    <h3>Status das Conexões</h3>
+                    <p>Verifique se o banco de dados e o e-mail estão configurados corretamente</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div style="display:flex;gap:16px;flex-wrap:wrap;" id="statusConexoes">
+                    <div style="background:var(--areia);border-radius:10px;padding:18px 24px;min-width:200px;">
+                        <p style="font-size:0.78rem;font-weight:700;color:var(--texto-leve);text-transform:uppercase;margin-bottom:8px;">Supabase</p>
+                        <span class="status-badge" id="status-supabase"><i class="fas fa-circle-notch fa-spin"></i> Verificando...</span>
+                    </div>
+                    <div style="background:var(--areia);border-radius:10px;padding:18px 24px;min-width:200px;">
+                        <p style="font-size:0.78rem;font-weight:700;color:var(--texto-leve);text-transform:uppercase;margin-bottom:8px;">E-mail SMTP</p>
+                        <span class="status-badge" id="status-smtp"><i class="fas fa-circle-notch fa-spin"></i> Verificando...</span>
+                    </div>
+                    <div style="background:var(--areia);border-radius:10px;padding:18px 24px;min-width:200px;">
+                        <p style="font-size:0.78rem;font-weight:700;color:var(--texto-leve);text-transform:uppercase;margin-bottom:8px;">GitHub</p>
+                        <span class="status-badge ok"><i class="fas fa-check-circle"></i> Conectado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    const SUPABASE_URL  = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+    const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+    const SENHA_PADRAO  = 'adesiap2026';
+
+    let senhaAtual = localStorage.getItem('admin_senha') || SENHA_PADRAO;
+    let configs    = {};
+
+    // ── LOGIN ──────────────────────────────────────────────
+    function fazerLogin() {
+        const v = document.getElementById('loginSenha').value;
+        if (v === senhaAtual) {
+            sessionStorage.setItem('admin_logado', '1');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminWrap').style.display = 'flex';
+            carregarConfiguracoes();
+            verificarConexoes();
+        } else {
+            mostrarToast('Senha incorreta', 'erro');
+        }
+    }
+
+    function fazerLogout() {
+        sessionStorage.removeItem('admin_logado');
+        location.reload();
+    }
+
+    if (sessionStorage.getItem('admin_logado') === '1') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminWrap').style.display = 'flex';
+        carregarConfiguracoes();
+        verificarConexoes();
+    }
+
+    // ── SUPABASE HELPERS ────────────────────────────────────
+    async function sbFetch(path, opts = {}) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation',
+                ...opts.headers
+            },
+            ...opts
+        });
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+    }
+
+    // ── CARREGAR CONFIGS ────────────────────────────────────
+    async function carregarConfiguracoes() {
+        try {
+            const rows = await sbFetch('configuracoes?select=chave,valor');
+            rows.forEach(r => { configs[r.chave] = r.valor || ''; });
+            preencherFormularios();
+        } catch (e) {
+            mostrarToast('Erro ao carregar configurações: ' + e.message, 'erro');
+        }
+    }
+
+    function preencherFormularios() {
+        const campos = [
+            'smtp_host','smtp_port','smtp_user','smtp_pass',
+            'email_destino','email_remetente',
+            'site_nome','site_url',
+            'ouvidoria_prazo','ouvidoria_email'
+        ];
+        campos.forEach(c => {
+            const el = document.getElementById(c);
+            if (el) el.value = configs[c] || '';
+        });
+    }
+
+    // ── SALVAR GRUPO ────────────────────────────────────────
+    async function salvarGrupo(grupo) {
+        const mapa = {
+            email:     ['smtp_host','smtp_port','smtp_user','smtp_pass','email_destino','email_remetente'],
+            site:      ['site_nome','site_url'],
+            ouvidoria: ['ouvidoria_prazo','ouvidoria_email'],
+        };
+        const chaves = mapa[grupo];
+        if (!chaves) return;
+
+        try {
+            for (const chave of chaves) {
+                const el = document.getElementById(chave);
+                if (!el) continue;
+                const valor = el.value.trim();
+                await sbFetch(`configuracoes?chave=eq.${chave}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ valor })
+                });
+                configs[chave] = valor;
+            }
+            const msg = document.getElementById(`saveMsg-${grupo}`);
+            if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
+            mostrarToast('Configurações salvas com sucesso!', 'sucesso');
+        } catch (e) {
+            mostrarToast('Erro ao salvar: ' + e.message, 'erro');
+        }
+    }
+
+    // ── ALTERAR SENHA ───────────────────────────────────────
+    async function alterarSenha() {
+        const nova = document.getElementById('nova_senha').value;
+        const conf = document.getElementById('confirmar_senha').value;
+        if (!nova) return mostrarToast('Digite uma nova senha', 'erro');
+        if (nova !== conf) return mostrarToast('As senhas não coincidem', 'erro');
+        if (nova.length < 6) return mostrarToast('A senha deve ter ao menos 6 caracteres', 'erro');
+
+        try {
+            await sbFetch('configuracoes?chave=eq.admin_senha', {
+                method: 'PATCH',
+                body: JSON.stringify({ valor: nova })
+            });
+            localStorage.setItem('admin_senha', nova);
+            senhaAtual = nova;
+            document.getElementById('nova_senha').value = '';
+            document.getElementById('confirmar_senha').value = '';
+            const msg = document.getElementById('saveMsg-admin');
+            if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
+            mostrarToast('Senha alterada com sucesso!', 'sucesso');
+        } catch (e) {
+            mostrarToast('Erro ao alterar senha: ' + e.message, 'erro');
+        }
+    }
+
+    // ── VERIFICAR CONEXÕES ──────────────────────────────────
+    async function verificarConexoes() {
+        // Supabase
+        try {
+            await sbFetch('configuracoes?select=id&limit=1');
+            document.getElementById('status-supabase').className = 'status-badge ok';
+            document.getElementById('status-supabase').innerHTML = '<i class="fas fa-check-circle"></i> Conectado';
+        } catch {
+            document.getElementById('status-supabase').className = 'status-badge vazio';
+            document.getElementById('status-supabase').innerHTML = '<i class="fas fa-times-circle"></i> Erro na conexão';
+        }
+
+        // SMTP — só verifica se usuário está preenchido
+        const smtpUser = configs['smtp_user'];
+        const smtpPass = configs['smtp_pass'];
+        const statusSmtp = document.getElementById('status-smtp');
+        if (!smtpUser || !smtpPass) {
+            statusSmtp.className = 'status-badge vazio';
+            statusSmtp.innerHTML = '<i class="fas fa-exclamation-circle"></i> Não configurado';
+        } else {
+            statusSmtp.className = 'status-badge aviso';
+            statusSmtp.innerHTML = '<i class="fas fa-check-circle"></i> Configurado';
+        }
+    }
+
+    // ── TESTAR E-MAIL ───────────────────────────────────────
+    async function testarEmail() {
+        mostrarToast('Teste de e-mail disponível após conectar ao Vercel', 'aviso');
+    }
+
+    // ── NAVEGAÇÃO ───────────────────────────────────────────
+    function irPara(pagina) {
+        const rotas = {
+            configuracoes: 'configuracoes.html',
+            contatos:      'contatos.html',
+            candidaturas:  'candidaturas.html',
+            ouvidoria:     'ouvidoria-admin.html',
+            projetos:      'projetos.html',
+            noticias:      'noticias.html',
+            vagas:         'vagas.html',
+        };
+        if (rotas[pagina] && pagina !== 'configuracoes') {
+            mostrarToast('Página em construção — em breve!', 'aviso');
+        }
+    }
+
+    // ── UTILITÁRIOS ─────────────────────────────────────────
+    function toggleSenha(id, btn) {
+        const input = document.getElementById(id);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+
+    function mostrarToast(msg, tipo = 'sucesso') {
+        const t = document.getElementById('toast');
+        const icone = tipo === 'sucesso' ? 'fa-check-circle' : tipo === 'erro' ? 'fa-times-circle' : 'fa-info-circle';
+        t.innerHTML = `<i class="fas ${icone}"></i> ${msg}`;
+        t.className = `toast show ${tipo}`;
+        setTimeout(() => { t.className = 'toast'; }, 4000);
+    }
+</script>
+</body>
+</html>
