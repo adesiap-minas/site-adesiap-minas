@@ -1111,7 +1111,70 @@
                 padding: 14px 10px;
             }
         }
-    
+
+        /* ===== GALERIA MODAL ===== */
+        .modal-galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .modal-gal-item {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: zoom-in;
+            background: var(--areia-fundo);
+        }
+
+        .modal-gal-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .modal-gal-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .modal-galeria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ===== VÍDEO EMBED MODAL ===== */
+        .modal-video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #000;
+        }
+
+        .modal-video-embed iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        .modal-video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--azul-institucional);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
         /* ===== TOPBAR DE ATENDIMENTO ===== */
         :root { --topbar-height: 36px; }
         .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
@@ -1312,11 +1375,24 @@
                 </div>
             </div>
 
-            <!-- Categoria: Desenvolvimento Econômico -->
-            <div class="category-header reveal-on-scroll">
-                <i class="fas fa-chart-line" style="color: var(--azul-institucional);"></i>
-                <h3 style="margin: 0; color: var(--azul-institucional);">Desenvolvimento Econômico</h3>
+            <!-- Projetos dinâmicos — carregados pelo js/projetos-loader.js -->
+            <div id="projetos-container">
+                <!-- Skeleton de carregamento -->
+                <div class="category-header reveal-on-scroll">
+                    <i class="fas fa-chart-line" style="color:var(--azul-institucional)"></i>
+                    <h3 style="margin:0;color:var(--azul-institucional)">Desenvolvimento Econômico</h3>
+                </div>
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-4 col-md-6"><div style="height:360px;border-radius:16px;background:#f0f2f5;animation:pulse 1.5s infinite"></div></div>
+                    <div class="col-lg-4 col-md-6"><div style="height:360px;border-radius:16px;background:#f0f2f5;animation:pulse 1.5s infinite .2s"></div></div>
+                    <div class="col-lg-4 col-md-6"><div style="height:360px;border-radius:16px;background:#f0f2f5;animation:pulse 1.5s infinite .4s"></div></div>
+                </div>
             </div>
+            <!-- /projetos-container -->
+            <style>@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}</style>
+
+            <!-- FIM DOS PROJETOS DINÂMICOS -->
+            <div id="static-projetos"><!-- conteúdo estático legado — removido pelo loader quando Supabase carrega -->
             <div class="row g-4 mb-5 category-row">
                 <!-- SDE -->
                 <div class="col-lg-4 col-md-6 reveal-on-scroll">
@@ -1856,6 +1932,7 @@
                     </div>
                 </div>
             </div>
+            </div><!-- /static-projetos -->
 
         </div>
     </section>
@@ -1911,6 +1988,14 @@
                 <div class="modal-section" id="modalOdsSection">
                     <span class="modal-section-label">Alinhamento com os ODS</span>
                     <div class="modal-ods-grid" id="modalOds"></div>
+                </div>
+                <div class="modal-section" id="modalGaleriaSection" style="display:none">
+                    <span class="modal-section-label">Galeria de Fotos</span>
+                    <div class="modal-galeria-grid" id="modalGaleria"></div>
+                </div>
+                <div class="modal-section" id="modalVideoSection" style="display:none">
+                    <span class="modal-section-label">Vídeos</span>
+                    <div id="modalVideos"></div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -2688,6 +2773,7 @@
             });
         }
     </script>
+<script src="./js/projetos-loader.js" defer></script>
 <script src="./js/wa-config.js" defer></script>
 </body>
 
