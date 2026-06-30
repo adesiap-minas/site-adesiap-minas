@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
-    --azul:#12395D; --azul-claro:#1a4f82; --verde:#3B8C6E; --terracota:#B85C38;
+    --azul:#12395D; --azul-prof:#0B1F33; --azul-claro:#1a4f82; --verde:#3B8C6E; --terracota:#B85C38;
     --ambar:#F4A261; --cinza-bg:#f4f6f9; --cinza-card:#ffffff; --borda:#e2e8f0;
     --texto:#1e293b; --texto-sec:#64748b; --texto-leve:#94a3b8;
     --sidebar-w:240px; --radius:10px; --shadow:0 2px 12px rgba(0,0,0,.08);
@@ -21,7 +21,7 @@ body{font-family:'Inter',sans-serif;background:var(--cinza-bg);color:var(--texto
 a{text-decoration:none;color:inherit}
 
 /* ── LOGIN ── */
-#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-claro) 100%)}
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--azul-prof)}
 .login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .login-logo{text-align:center;margin-bottom:28px}
 .login-logo img{height:48px}
@@ -37,23 +37,24 @@ a{text-decoration:none;color:inherit}
 #appShell{display:flex;min-height:100vh}
 
 /* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);background:var(--azul);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
-.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar{width:var(--sidebar-w);background:var(--azul-prof);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
 .sidebar-logo img{height:36px}
-.sidebar-logo span{display:block;font-size:.7rem;color:rgba(255,255,255,.5);margin-top:4px;letter-spacing:.5px;text-transform:uppercase}
-.nav-section{padding:14px 12px 6px;font-size:.65rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;font-weight:600}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;margin:2px 8px;cursor:pointer;font-size:.87rem;font-weight:500;color:rgba(255,255,255,.75);transition:all .15s}
-.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.12);color:#fff}
-.nav-item.active{background:rgba(255,255,255,.18)}
-.nav-item i{width:18px;text-align:center;font-size:.9rem}
-.nav-item .badge-new{font-size:.6rem;background:var(--ambar);color:#fff;padding:1px 5px;border-radius:10px;margin-left:auto}
-.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,.1);font-size:.78rem;color:rgba(255,255,255,.4)}
+.sidebar-nav{padding:16px 0;flex:1}
+.nav-section-label{display:block;padding:16px 20px 6px;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;transition:all .2s;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
+.nav-item i{width:18px;text-align:center;font-size:.95rem}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-footer a{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px}
+.sidebar-footer a:hover{color:#fff}
 
 /* ── MAIN ── */
-.main-content{margin-left:var(--sidebar-w);flex:1;padding:28px;min-width:0}
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.page-header h1{font-size:1.4rem;font-weight:700;color:var(--azul)}
-.page-header p{font-size:.85rem;color:var(--texto-sec);margin-top:2px}
+.main-content{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--borda);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:1.15rem;font-weight:700;color:var(--azul)}
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.content{padding:28px;flex:1}
 
 /* ── STATS ── */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
@@ -272,28 +273,37 @@ tr:hover td{background:#f8fafc}
 <div id="appShell" style="display:none">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <nav class="sidebar">
     <div class="sidebar-logo">
-      <img src="../assets/images/logo-adesiap-branca.png" alt="ADESIAP" onerror="this.innerHTML='<strong style=color:#fff>ADESIAP</strong>'">
-      <span>Painel Administrativo</span>
+      <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.style.height='28px';this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
     </div>
-    <div class="nav-section">Comercial</div>
-    <a class="nav-item active" href="bpc.html"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
-    <div class="nav-section">Institucional</div>
-    <a class="nav-item" href="projetos.html"><i class="fas fa-project-diagram"></i> Projetos do Site</a>
-    <a class="nav-item" href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a>
-    <div class="sidebar-footer">BPC v1.0 — ADESIAP Minas</div>
-  </aside>
+    <div class="sidebar-nav">
+      <span class="nav-section-label">Comercial</span>
+      <a href="bpc.html" class="nav-item active"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+      <span class="nav-section-label">Conteúdo</span>
+      <a href="configuracoes.html" class="nav-item"><i class="fas fa-cog"></i> Configurações</a>
+      <a href="projetos.html" class="nav-item"><i class="fas fa-project-diagram"></i> Projetos</a>
+      <a href="#" class="nav-item"><i class="fas fa-newspaper"></i> Notícias</a>
+      <a href="#" class="nav-item"><i class="fas fa-briefcase"></i> Vagas</a>
+      <span class="nav-section-label">Formulários</span>
+      <a href="#" class="nav-item"><i class="fas fa-envelope"></i> Mensagens</a>
+      <a href="#" class="nav-item"><i class="fas fa-user-tie"></i> Candidaturas</a>
+      <a href="#" class="nav-item"><i class="fas fa-bullhorn"></i> Ouvidoria</a>
+    </div>
+    <div class="sidebar-footer">
+      <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+    </div>
+  </nav>
 
   <!-- MAIN -->
   <main class="main-content">
-    <div class="page-header">
-      <div>
-        <h1><i class="fas fa-briefcase" style="color:var(--azul);margin-right:8px"></i>Banco de Projetos Comercial</h1>
-        <p>Gestão e acompanhamento do portfólio de projetos</p>
+    <div class="topbar">
+      <h1><i class="fas fa-briefcase" style="color:var(--terracota);margin-right:8px"></i> Banco de Projetos Comercial</h1>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" onclick="abrirDrawer()"><i class="fas fa-plus"></i> Novo Projeto</button>
       </div>
-      <button class="btn btn-primary" onclick="abrirDrawer()"><i class="fas fa-plus"></i> Novo Projeto</button>
     </div>
+    <div class="content">
 
     <!-- STATS -->
     <div class="stats-grid">
@@ -364,6 +374,7 @@ tr:hover td{background:#f8fafc}
         </table>
       </div>
     </div>
+    </div><!-- /.content -->
   </main>
 </div>
 
