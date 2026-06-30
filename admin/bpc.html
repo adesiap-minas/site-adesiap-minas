@@ -847,9 +847,22 @@ async function salvarEntradaDiario() {
     } catch(e) { showToast('Erro ao salvar: ' + e.message, 'error'); }
 }
 
+// ── MATURIDADE (calculada no JS, não depende da coluna GENERATED) ─────────
+const MAT_FIELDS = ['mat_diagnostico','mat_justificativa','mat_objetivos','mat_metas',
+                    'mat_indicadores','mat_metodologia','mat_cronograma','mat_orcamento',
+                    'mat_plano_trabalho','mat_apresentacao'];
+function calcMat(p) { return MAT_FIELDS.filter(f => p[f]).length * 10; }
+
 // ── CARREGAR PROJETOS ─────────────────────────────
 async function carregarProjetos() {
-    allProjetos = await sbFetch('projetos_comerciais?order=created_at.desc&select=id,codigo,nome,ano,eixo_id,status_pipeline,situacao_comercial,valor_estimado,maturidade_pct,publicar_captacao,responsavel');
+    allProjetos = await sbFetch(
+        'projetos_comerciais?order=created_at.desc' +
+        '&select=id,codigo,nome,ano,responsavel,eixo_id,' +
+        'status_pipeline,situacao_comercial,valor_estimado,' +
+        'mat_diagnostico,mat_justificativa,mat_objetivos,mat_metas,' +
+        'mat_indicadores,mat_metodologia,mat_cronograma,mat_orcamento,' +
+        'mat_plano_trabalho,mat_apresentacao,publicar_captacao'
+    );
     renderTabela(allProjetos);
     atualizarStats(allProjetos);
 }
@@ -859,7 +872,7 @@ function atualizarStats(lista) {
     document.getElementById('statProntos').textContent = lista.filter(p => p.status_pipeline === 'PRONTO PARA CAPTAÇÃO').length;
     const vt = lista.reduce((s,p) => s + (p.valor_estimado || 0), 0);
     document.getElementById('statValor').textContent = moeda(vt);
-    const mm = lista.length ? Math.round(lista.reduce((s,p) => s + (p.maturidade_pct || 0), 0) / lista.length) : 0;
+    const mm = lista.length ? Math.round(lista.reduce((s,p) => s + calcMat(p), 0) / lista.length) : 0;
     document.getElementById('statMaturidade').textContent = mm + '%';
 }
 
@@ -872,7 +885,7 @@ function renderTabela(lista) {
     }
     tbody.innerHTML = lista.map(p => {
         const eixo = allEixos.find(e => e.id === p.eixo_id);
-        const pct  = p.maturidade_pct || 0;
+        const pct  = calcMat(p);
         const cor  = matColor(pct);
         return `
         <tr>
