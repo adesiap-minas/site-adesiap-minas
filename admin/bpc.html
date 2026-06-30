@@ -249,7 +249,10 @@ tr:hover td{background:#f8fafc}
     .mat-checklist{grid-template-columns:1fr}
     .ods-grid{grid-template-columns:repeat(6,1fr)}
 }
+html[data-auth] #loginScreen{display:none!important}
+html[data-auth] #appShell{display:flex!important}
 </style>
+<script>if(localStorage.getItem('admin_logado')==='1')document.documentElement.dataset.auth='1'</script>
 </head>
 <body>
 

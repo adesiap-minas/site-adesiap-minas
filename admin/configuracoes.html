@@ -332,7 +332,10 @@
             border-radius:7px; cursor:pointer; padding:2px 4px; background:#fff;
         }
         .color-item .hex-input { font-size:0.82rem; padding:6px 10px; text-transform:uppercase; }
+    html[data-auth] #loginScreen{display:none!important}
+    html[data-auth] #appShell{display:flex!important}
     </style>
+<script>if(localStorage.getItem('admin_logado')==='1')document.documentElement.dataset.auth='1'</script>
 </head>
 <body>
 
