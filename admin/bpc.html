@@ -1134,11 +1134,24 @@ async function excluirProjeto(id, nome) {
 // ── INIT ──────────────────────────────────────────
 async function init() {
     buildOdsGrid();
+    // Eixos e projetos com try/catch independentes para erros visíveis
     try {
         await carregarEixos();
+    } catch(e) {
+        console.error('Erro eixos:', e);
+        document.getElementById('filterEixo').innerHTML += `<option disabled>Erro: ${e.message}</option>`;
+    }
+    try {
         await carregarProjetos();
     } catch(e) {
-        showToast('Erro ao carregar dados', 'error');
+        console.error('Erro projetos:', e);
+        document.getElementById('bpcBody').innerHTML =
+            `<tr><td colspan="8" style="text-align:center;padding:40px;color:#dc2626;font-size:.85rem">
+             <i class="fas fa-exclamation-triangle" style="display:block;font-size:1.8rem;margin-bottom:8px"></i>
+             Erro ao carregar projetos:<br><strong>${e.message}</strong><br>
+             <small style="color:#64748b;margin-top:6px;display:block">Verifique o console do navegador (F12) para detalhes.</small>
+             </td></tr>`;
+        document.getElementById('statTotal').textContent = 'Erro';
     }
 }
 </script>
