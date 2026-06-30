@@ -408,6 +408,9 @@
             <div class="nav-item" onclick="irPara('vagas')">
                 <i class="fas fa-briefcase"></i> Vagas
             </div>
+            <div class="nav-item" onclick="irPara('bpc')">
+                <i class="fas fa-briefcase"></i> Banco de Projetos
+            </div>
             <div class="nav-item" onclick="window.open('../index.html','_blank')">
                 <i class="fas fa-external-link-alt"></i> Ver site
             </div>
@@ -1161,9 +1164,10 @@
             projetos:      'projetos.html',
             noticias:      'noticias.html',
             vagas:         'vagas.html',
+            bpc:           'bpc.html',
         };
         // Páginas já implementadas — navegar diretamente
-        const prontas = ['configuracoes', 'projetos'];
+        const prontas = ['configuracoes', 'projetos', 'bpc'];
         if (prontas.includes(pagina)) {
             if (pagina !== 'configuracoes') window.location.href = rotas[pagina];
         } else if (rotas[pagina]) {
