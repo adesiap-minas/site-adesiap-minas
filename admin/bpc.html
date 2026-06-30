@@ -331,7 +331,7 @@ html[data-auth] #appShell{display:flex!important}
 
     <!-- FILTERS -->
     <div class="filter-bar">
-      <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por nome ou código..." oninput="filtrarTabela()">
+      <input type="text" id="searchInput" class="filter-input" placeholder="Buscar por nome, código, resumo, município, público-alvo..." oninput="filtrarTabela()">
       <select id="filterEixo" class="filter-input" onchange="filtrarTabela()" style="min-width:170px">
         <option value="">Todos os eixos</option>
       </select>
@@ -966,6 +966,7 @@ async function carregarProjetos() {
         'projetos_comerciais?order=created_at.desc' +
         '&select=id,codigo,nome,ano,responsavel,eixo_id,' +
         'status_pipeline,situacao_comercial,valor_estimado,' +
+        'resumo,publico_alvo,municipio,estado,areas_tematicas,sub_eixos,' +
         'mat_diagnostico,mat_justificativa,mat_objetivos,mat_metas,' +
         'mat_indicadores,mat_metodologia,mat_cronograma,mat_orcamento,' +
         'mat_plano_trabalho,mat_apresentacao,publicar_captacao'
@@ -1027,7 +1028,10 @@ function filtrarTabela() {
     const status = document.getElementById('filterStatus').value;
     const sit    = document.getElementById('filterSit').value;
     const f = allProjetos.filter(p =>
-        (!q      || p.nome.toLowerCase().includes(q) || (p.codigo||'').toLowerCase().includes(q)) &&
+        (!q      || [p.nome, p.codigo, p.resumo, p.responsavel, p.publico_alvo, p.municipio, p.estado,
+                     ...(Array.isArray(p.areas_tematicas) ? p.areas_tematicas : []),
+                     ...(Array.isArray(p.sub_eixos) ? p.sub_eixos : [])]
+                    .filter(Boolean).join(' ').toLowerCase().includes(q)) &&
         (!eixo   || p.eixo_id === eixo) &&
         (!status || p.status_pipeline === status) &&
         (!sit    || p.situacao_comercial === sit)
