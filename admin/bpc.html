@@ -697,7 +697,7 @@ async function fazerLogin() {
         const rows = await sbFetch('configuracoes?chave=eq.admin_senha&select=valor');
         const senhaCorreta = rows?.[0]?.valor || localStorage.getItem('admin_senha') || 'adesiap2026';
         if (senha === senhaCorreta) {
-            sessionStorage.setItem('admin_logado', '1');
+            localStorage.setItem('admin_logado', '1');
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('appShell').style.display = 'flex';
             init();
@@ -707,7 +707,7 @@ async function fazerLogin() {
     } catch(e) { showToast('Erro ao conectar ao servidor', 'error'); }
 }
 
-if (sessionStorage.getItem('admin_logado')) {
+if (localStorage.getItem('admin_logado')) {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appShell').style.display = 'flex';
     init();

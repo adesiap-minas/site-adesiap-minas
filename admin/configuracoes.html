@@ -992,7 +992,7 @@
     function fazerLogin() {
         const v = document.getElementById('loginSenha').value;
         if (v === senhaAtual) {
-            sessionStorage.setItem('admin_logado', '1');
+            localStorage.setItem('admin_logado', '1');
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminWrap').style.display = 'flex';
             carregarConfiguracoes();
@@ -1003,11 +1003,11 @@
     }
 
     function fazerLogout() {
-        sessionStorage.removeItem('admin_logado');
+        localStorage.removeItem('admin_logado');
         location.reload();
     }
 
-    if (sessionStorage.getItem('admin_logado') === '1') {
+    if (localStorage.getItem('admin_logado') === '1') {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminWrap').style.display = 'flex';
         carregarConfiguracoes();
