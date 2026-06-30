@@ -677,7 +677,9 @@ async function sbFetch(path, opts = {}) {
     const r = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HEADERS, ...opts });
     if (!r.ok) { const e = await r.text(); throw new Error(e); }
     if (r.status === 204) return null;
-    return r.json();
+    const text = await r.text();
+    if (!text) return null;
+    return JSON.parse(text);
 }
 
 // ── AUTH ──────────────────────────────────────────
