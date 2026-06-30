@@ -27,7 +27,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--azul-escuro), var(--azul));
+            background: var(--azul-escuro);
         }
         .login-box {
             background: #fff;
@@ -44,36 +44,20 @@
 
         /* Layout admin */
         .admin-wrap { display: none; min-height: 100vh; }
-        .sidebar {
-            position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
-            background: var(--azul-escuro); color: #fff; padding: 30px 0;
-            display: flex; flex-direction: column;
-        }
-        .sidebar-logo { padding: 0 24px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .sidebar-logo img { height: 40px; }
-        .sidebar-logo p { color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 6px; }
-        .sidebar-nav { flex: 1; padding: 20px 0; }
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 24px; color: rgba(255,255,255,0.65);
-            font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-            border-left-color: var(--terracota);
-        }
-        .nav-item i { width: 18px; text-align: center; }
-        .sidebar-footer { padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .btn-logout {
-            display: flex; align-items: center; gap: 10px;
-            color: rgba(255,255,255,0.5); font-size: 0.85rem; cursor: pointer;
-            background: none; border: none; padding: 0; font-family: 'Inter', sans-serif;
-        }
+        .sidebar{width:240px;background:var(--azul-escuro);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100}
+        .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .sidebar-logo img{height:36px}
+        .sidebar-nav{padding:16px 0;flex:1}
+        .nav-section-label{display:block;padding:16px 20px 6px;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+        .nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+        .nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
+        .nav-item i{width:18px;text-align:center;font-size:.95rem}
+        .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px}
+        .sidebar-footer a,.btn-logout{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0}
+        .sidebar-footer a:hover,.btn-logout:hover{color:#fff}
         .btn-logout:hover { color: var(--terracota); }
 
-        .main-content { margin-left: 260px; padding: 40px; }
+        .main-content { margin-left: 240px; padding: 40px; }
         .page-header { margin-bottom: 35px; }
         .page-header h1 { font-size: 1.8rem; color: var(--azul); margin-bottom: 6px; }
         .page-header p { color: var(--texto-leve); font-size: 0.95rem; }
@@ -383,42 +367,24 @@
 <div class="admin-wrap" id="adminWrap">
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP">
-            <p>Painel Administrativo</p>
+            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.style.height='28px';this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
         </div>
         <nav class="sidebar-nav">
-            <div class="nav-item active" onclick="irPara('configuracoes')">
-                <i class="fas fa-cog"></i> Configurações
-            </div>
-            <div class="nav-item" onclick="irPara('contatos')">
-                <i class="fas fa-envelope"></i> Mensagens
-            </div>
-            <div class="nav-item" onclick="irPara('candidaturas')">
-                <i class="fas fa-user-tie"></i> Candidaturas
-            </div>
-            <div class="nav-item" onclick="irPara('ouvidoria')">
-                <i class="fas fa-comment-dots"></i> Ouvidoria
-            </div>
-            <div class="nav-item" onclick="irPara('projetos')">
-                <i class="fas fa-project-diagram"></i> Projetos
-            </div>
-            <div class="nav-item" onclick="irPara('noticias')">
-                <i class="fas fa-newspaper"></i> Notícias
-            </div>
-            <div class="nav-item" onclick="irPara('vagas')">
-                <i class="fas fa-briefcase"></i> Vagas
-            </div>
-            <div class="nav-item" onclick="irPara('bpc')">
-                <i class="fas fa-briefcase"></i> Banco de Projetos
-            </div>
-            <div class="nav-item" onclick="window.open('../index.html','_blank')">
-                <i class="fas fa-external-link-alt"></i> Ver site
-            </div>
+            <span class="nav-section-label">Comercial</span>
+            <a href="bpc.html" class="nav-item"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+            <span class="nav-section-label">Conteúdo</span>
+            <a href="configuracoes.html" class="nav-item active"><i class="fas fa-cog"></i> Configurações</a>
+            <a href="projetos.html" class="nav-item"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <div class="nav-item" onclick="irPara('noticias')"><i class="fas fa-newspaper"></i> Notícias</div>
+            <div class="nav-item" onclick="irPara('vagas')"><i class="fas fa-briefcase"></i> Vagas</div>
+            <span class="nav-section-label">Formulários</span>
+            <div class="nav-item" onclick="irPara('contatos')"><i class="fas fa-envelope"></i> Mensagens</div>
+            <div class="nav-item" onclick="irPara('candidaturas')"><i class="fas fa-user-tie"></i> Candidaturas</div>
+            <div class="nav-item" onclick="irPara('ouvidoria')"><i class="fas fa-comment-dots"></i> Ouvidoria</div>
         </nav>
         <div class="sidebar-footer">
-            <button class="btn-logout" onclick="fazerLogout()">
-                <i class="fas fa-sign-out-alt"></i> Sair
-            </button>
+            <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+            <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
         </div>
     </aside>
 

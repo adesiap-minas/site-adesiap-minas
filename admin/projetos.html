@@ -38,9 +38,9 @@ body { font-family: 'Inter', sans-serif; background: #F0F2F5; color: var(--texto
 .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,.06); border-left-color: var(--terracota); }
 .nav-item i { width: 18px; text-align: center; font-size: 0.95rem; }
 .nav-section-label { padding: 16px 20px 6px; color: rgba(255,255,255,.3); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); }
-.sidebar-footer a { color: rgba(255,255,255,.45); font-size: 0.82rem; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.sidebar-footer a:hover { color: #fff; }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 10px; }
+.sidebar-footer a, .btn-logout { color: rgba(255,255,255,.45); font-size: 0.82rem; text-decoration: none; display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+.sidebar-footer a:hover, .btn-logout:hover { color: #fff; }
 
 /* ── MAIN ────────────────────────────────────────── */
 .main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
@@ -245,7 +245,8 @@ tr:hover td { background: #F8FAFC; }
         <a href="#" class="nav-item"><i class="fas fa-bullhorn"></i> Ouvidoria</a>
     </div>
     <div class="sidebar-footer">
-        <a href="../projetos.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+        <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+        <button class="btn-logout" onclick="localStorage.removeItem('admin_logado');location.reload()"><i class="fas fa-sign-out-alt"></i> Sair</button>
     </div>
 </nav>
 

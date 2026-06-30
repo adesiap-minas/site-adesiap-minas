@@ -45,9 +45,9 @@ a{text-decoration:none;color:inherit}
 .nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;transition:all .2s;border-left:3px solid transparent}
 .nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
 .nav-item i{width:18px;text-align:center;font-size:.95rem}
-.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08)}
-.sidebar-footer a{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px}
-.sidebar-footer a:hover{color:#fff}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px}
+.sidebar-footer a,.btn-logout{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0}
+.sidebar-footer a:hover,.btn-logout:hover{color:#fff}
 
 /* ── MAIN ── */
 .main-content{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
@@ -292,6 +292,7 @@ tr:hover td{background:#f8fafc}
     </div>
     <div class="sidebar-footer">
       <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+      <button class="btn-logout" onclick="localStorage.removeItem('admin_logado');location.reload()"><i class="fas fa-sign-out-alt"></i> Sair</button>
     </div>
   </nav>
 
