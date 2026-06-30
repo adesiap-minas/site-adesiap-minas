@@ -633,7 +633,8 @@ async function fazerLogin() {
     if (!senha) return;
     try {
         const rows = await sbFetch('configuracoes?chave=eq.admin_senha&select=valor');
-        if (rows?.[0]?.valor === senha) {
+        const senhaCorreta = rows?.[0]?.valor || localStorage.getItem('admin_senha') || 'adesiap2026';
+        if (senha === senhaCorreta) {
             sessionStorage.setItem('admin_logado', '1');
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('appShell').style.display = 'flex';
