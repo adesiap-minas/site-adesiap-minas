@@ -257,8 +257,8 @@ tr:hover td{background:#f8fafc}
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <img src="../assets/images/logo-adesiap.png" alt="ADESIAP" onerror="this.style.display='none'">
-      <h2>Banco de Projetos Comercial</h2>
+      <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'">
+      <h2>Painel Administrativo</h2>
     </div>
     <div class="form-group">
       <label>Senha de acesso</label>
@@ -292,7 +292,7 @@ tr:hover td{background:#f8fafc}
     </div>
     <div class="sidebar-footer">
       <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
-      <button class="btn-logout" onclick="localStorage.removeItem('admin_logado');location.reload()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+      <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
     </div>
   </nav>
 
@@ -699,30 +699,6 @@ async function sbFetch(path, opts = {}) {
     const text = await r.text();
     if (!text) return null;
     return JSON.parse(text);
-}
-
-// ── AUTH ──────────────────────────────────────────
-async function fazerLogin() {
-    const senha = document.getElementById('senhaInput').value.trim();
-    if (!senha) return;
-    try {
-        const rows = await sbFetch('configuracoes?chave=eq.admin_senha&select=valor');
-        const senhaCorreta = rows?.[0]?.valor || localStorage.getItem('admin_senha') || 'adesiap2026';
-        if (senha === senhaCorreta) {
-            localStorage.setItem('admin_logado', '1');
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appShell').style.display = 'flex';
-            init();
-        } else {
-            document.getElementById('loginError').style.display = 'block';
-        }
-    } catch(e) { showToast('Erro ao conectar ao servidor', 'error'); }
-}
-
-if (localStorage.getItem('admin_logado')) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appShell').style.display = 'flex';
-    init();
 }
 
 // ── TOAST ─────────────────────────────────────────
@@ -1292,5 +1268,6 @@ async function init() {
     }
 }
 </script>
+<script src="auth.js"></script>
 </body>
 </html>
