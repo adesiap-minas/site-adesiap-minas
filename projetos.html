@@ -2707,7 +2707,8 @@
                 if (!data) return;
 
                 // Popula hero com a mesma imagem de capa do card
-                document.getElementById('modalHero').style.backgroundImage = card.style.backgroundImage;
+                const cardImg = card.querySelector('.project-img');
+                document.getElementById('modalHero').style.backgroundImage = cardImg ? cardImg.style.backgroundImage : '';
                 document.getElementById('modalTag').textContent = data.tag;
                 document.getElementById('modalTag').className = `project-tag ${data.catClass}`;
                 document.getElementById('modalTitle').textContent = title;
