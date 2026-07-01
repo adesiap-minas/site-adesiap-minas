@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferramentas – Admin ADESIAP</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --azul:#12395D; --azul-prof:#0B1F33; --azul-claro:#1a4f82; --terracota:#B85C38;
+    --verde:#3B8C6E; --vermelho:#DC2626; --ambar:#F4A261;
+    --cinza-bg:#f4f6f9; --borda:#e2e8f0;
+    --texto:#1e293b; --texto-sec:#64748b; --texto-leve:#94a3b8;
+    --sidebar-w:240px; --radius:10px; --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--cinza-bg);color:var(--texto);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+html[data-auth] #loginScreen{display:none!important}
+html[data-auth] #appShell{display:flex!important}
+
+/* ── LOGIN ── */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--azul-prof)}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo img{height:48px}
+.login-logo h2{font-size:1.1rem;color:var(--azul);margin-top:10px;font-weight:600}
+.login-box .form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:0}
+.login-box label{display:block;font-size:.8rem;font-weight:600;color:var(--texto-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.login-box input{width:100%;padding:11px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.95rem;outline:none;transition:border-color .2s}
+.login-box input:focus{border-color:var(--azul)}
+.login-box .btn-login{width:100%;margin-top:20px;padding:12px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s}
+.login-box .btn-login:hover{background:var(--azul-claro)}
+.login-error{color:#e53e3e;font-size:.83rem;margin-top:10px;text-align:center;display:none}
+
+/* ── SHELL ── */
+#appShell{display:none;width:100%;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--azul-prof);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo img{height:36px}
+.sidebar-nav{padding:16px 0;flex:1}
+.nav-section-label{display:block;padding:16px 20px 6px;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
+.nav-item i{width:18px;text-align:center;font-size:.95rem}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px}
+.sidebar-footer a,.btn-logout{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0}
+.sidebar-footer a:hover,.btn-logout:hover{color:#fff}
+
+/* ── MAIN ── */
+main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{padding:24px 32px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.topbar h1{font-size:1.45rem;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:10px}
+.topbar h1 i{color:var(--terracota)}
+.topbar p{font-size:.88rem;color:var(--texto-sec);margin-top:4px}
+.content{padding:24px 32px 48px}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+.card + .card{margin-top:24px}
+.card-title{font-size:1rem;font-weight:700;color:var(--azul);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title i{color:var(--terracota);font-size:.95rem}
+
+/* ── DROP ZONE ── */
+.drop-zone{border:2.5px dashed var(--borda);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--azul);background:rgba(18,57,93,.03)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-zone i{font-size:2.2rem;color:var(--texto-leve);margin-bottom:12px;display:block}
+.drop-zone p{color:var(--texto-sec);font-size:.95rem}
+.drop-zone span{font-size:.8rem;color:var(--texto-leve);margin-top:6px;display:block}
+
+/* ── CONTROLES ── */
+.controles{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin:20px 0 0;padding:16px 20px;background:var(--cinza-bg);border-radius:10px}
+.ctrl-group{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--texto-sec)}
+.ctrl-group label{font-weight:600;white-space:nowrap}
+.ctrl-group input[type=range]{width:120px;accent-color:var(--azul)}
+.ctrl-group select,.ctrl-group input[type=number]{padding:6px 10px;border:1.5px solid var(--borda);border-radius:7px;font-size:.88rem;font-family:'Inter',sans-serif;color:var(--texto);outline:none;background:#fff}
+.ctrl-group input[type=number]{width:80px}
+.qualidade-val{font-weight:700;color:var(--azul);min-width:36px}
+
+/* ── BOTÕES ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:background .2s,opacity .2s;font-family:'Inter',sans-serif}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--azul);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--azul-claro)}
+.btn-verde{background:var(--verde);color:#fff}
+.btn-verde:hover:not(:disabled){background:#2e7259}
+.btn-outline{background:#fff;color:var(--azul);border:1.5px solid var(--borda)}
+.btn-outline:hover:not(:disabled){border-color:var(--azul)}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-icon{padding:6px 10px}
+.acoes-bar{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* ── TABELA RESULTADOS ── */
+.resultados-wrap{margin-top:24px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead th{text-align:left;padding:10px 12px;color:var(--texto-sec);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--borda)}
+tbody tr{border-bottom:1px solid var(--borda);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f8fafc}
+td{padding:10px 12px;vertical-align:middle}
+.td-preview{width:52px}
+.td-preview img{width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--borda)}
+.td-nome{max-width:200px;word-break:break-all;font-weight:500}
+.badge-saving{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.75rem;font-weight:700}
+.badge-saving.good{background:#d1fae5;color:#065f46}
+.badge-saving.ok{background:#fef9c3;color:#713f12}
+.badge-saving.bad{background:#fee2e2;color:#991b1b}
+.status-pill{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;padding:3px 10px;border-radius:99px;font-weight:600}
+.status-pill.aguardando{background:#f1f5f9;color:var(--texto-sec)}
+.status-pill.processando{background:#dbeafe;color:#1e40af}
+.status-pill.pronto{background:#d1fae5;color:#065f46}
+.status-pill.erro{background:#fee2e2;color:#991b1b}
+
+/* ── VAZIA ── */
+.empty-results{text-align:center;padding:40px;color:var(--texto-leve)}
+.empty-results i{font-size:2rem;display:block;margin-bottom:10px;opacity:.4}
+
+/* ── PROGRESS ── */
+.progress-bar-wrap{height:4px;background:var(--borda);border-radius:99px;margin-top:8px;overflow:hidden;display:none}
+.progress-bar-fill{height:100%;background:var(--azul);border-radius:99px;transition:width .3s}
+</style>
+<script>if(localStorage.getItem('admin_logado')==='1')document.documentElement.dataset.auth='1'</script>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'">
+      <h2>Painel Administrativo</h2>
+    </div>
+    <div class="form-group">
+      <label>Senha de acesso</label>
+      <input type="password" id="senhaInput" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')fazerLogin()">
+    </div>
+    <button class="btn-login" onclick="fazerLogin()">Entrar</button>
+    <div class="login-error" id="loginError">Senha incorreta. Tente novamente.</div>
+  </div>
+</div>
+
+<div id="appShell">
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.style.height='28px';this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
+    </div>
+    <div class="sidebar-nav">
+      <span class="nav-section-label">Comercial</span>
+      <a href="bpc.html" class="nav-item"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+      <span class="nav-section-label">Conteúdo</span>
+      <a href="configuracoes.html" class="nav-item"><i class="fas fa-cog"></i> Configurações</a>
+      <a href="projetos.html" class="nav-item"><i class="fas fa-project-diagram"></i> Projetos</a>
+      <a href="#" class="nav-item"><i class="fas fa-newspaper"></i> Notícias</a>
+      <a href="#" class="nav-item"><i class="fas fa-briefcase"></i> Vagas</a>
+      <span class="nav-section-label">Ferramentas</span>
+      <a href="ferramentas.html" class="nav-item active"><i class="fas fa-tools"></i> Conversor de Imagens</a>
+      <span class="nav-section-label">Formulários</span>
+      <a href="#" class="nav-item"><i class="fas fa-envelope"></i> Mensagens</a>
+      <a href="#" class="nav-item"><i class="fas fa-user-tie"></i> Candidaturas</a>
+      <a href="#" class="nav-item"><i class="fas fa-comment-dots"></i> Ouvidoria</a>
+    </div>
+    <div class="sidebar-footer">
+      <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+      <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1><i class="fas fa-compress-arrows-alt"></i> Conversor de Imagens</h1>
+        <p>Converta e comprima imagens para WebP diretamente no navegador — sem enviar arquivos para nenhum servidor.</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="card-title"><i class="fas fa-cloud-upload-alt"></i> Selecionar Imagens</div>
+
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/*" multiple>
+          <i class="fas fa-images"></i>
+          <p>Arraste imagens aqui ou <strong>clique para selecionar</strong></p>
+          <span>PNG, JPG, JPEG, GIF, BMP, SVG — múltiplos arquivos suportados</span>
+        </div>
+
+        <div class="controles">
+          <div class="ctrl-group">
+            <label><i class="fas fa-sliders-h"></i> Qualidade</label>
+            <input type="range" id="qualidade" min="1" max="100" value="82" oninput="document.getElementById('qualVal').textContent=this.value+'%'">
+            <span class="qualidade-val" id="qualVal">82%</span>
+          </div>
+          <div class="ctrl-group">
+            <label><i class="fas fa-expand-arrows-alt"></i> Largura máx.</label>
+            <input type="number" id="maxWidth" value="1920" min="100" max="8000" step="100">
+            <span>px</span>
+          </div>
+          <div class="ctrl-group">
+            <label><i class="fas fa-file-image"></i> Formato</label>
+            <select id="formato">
+              <option value="image/webp" selected>WebP</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="progress-bar-wrap" id="progressWrap">
+          <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+        </div>
+
+        <div class="acoes-bar">
+          <button class="btn btn-primary" id="btnConverter" onclick="converterTodas()" disabled>
+            <i class="fas fa-bolt"></i> Converter tudo
+          </button>
+          <button class="btn btn-verde" id="btnBaixarTudo" onclick="baixarTodas()" disabled>
+            <i class="fas fa-download"></i> Baixar todos
+          </button>
+          <button class="btn btn-outline" onclick="limpar()">
+            <i class="fas fa-trash"></i> Limpar
+          </button>
+          <span id="resumoTexto" style="font-size:.82rem;color:var(--texto-sec);margin-left:auto"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fas fa-list"></i> Resultados</div>
+        <div class="resultados-wrap">
+          <div class="empty-results" id="emptyResults">
+            <i class="fas fa-image"></i>
+            Nenhuma imagem selecionada ainda.
+          </div>
+          <table id="tabelaResultados" style="display:none">
+            <thead>
+              <tr>
+                <th class="td-preview"></th>
+                <th>Arquivo</th>
+                <th>Original</th>
+                <th>Convertido</th>
+                <th>Economia</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tabelaBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ── ESTADO ─────────────────────────────────────────────
+let arquivos = [];   // { file, blob, objectUrl, status }
+
+// ── DRAG & DROP ────────────────────────────────────────
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    adicionarArquivos([...e.dataTransfer.files]);
+});
+fileInput.addEventListener('change', () => adicionarArquivos([...fileInput.files]));
+
+function adicionarArquivos(lista) {
+    const imgs = lista.filter(f => f.type.startsWith('image/'));
+    if (!imgs.length) return;
+    imgs.forEach(f => {
+        if (arquivos.find(a => a.file.name === f.name && a.file.size === f.size)) return;
+        arquivos.push({ file: f, blob: null, objectUrl: null, status: 'aguardando' });
+    });
+    renderTabela();
+    document.getElementById('btnConverter').disabled = false;
+    fileInput.value = '';
+}
+
+// ── CONVERSÃO ──────────────────────────────────────────
+async function converterArquivo(item) {
+    item.status = 'processando';
+    renderLinha(item);
+    try {
+        const qualidade = parseInt(document.getElementById('qualidade').value) / 100;
+        const maxWidth  = parseInt(document.getElementById('maxWidth').value) || 1920;
+        const formato   = document.getElementById('formato').value;
+
+        const blob = await imagemParaBlob(item.file, formato, qualidade, maxWidth);
+        if (item.objectUrl) URL.revokeObjectURL(item.objectUrl);
+        item.blob      = blob;
+        item.objectUrl = URL.createObjectURL(blob);
+        item.status    = 'pronto';
+    } catch(e) {
+        item.status = 'erro';
+        item.erro   = e.message;
+    }
+    renderLinha(item);
+}
+
+async function converterTodas() {
+    const btn = document.getElementById('btnConverter');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Convertendo...';
+
+    const wrap = document.getElementById('progressWrap');
+    const fill = document.getElementById('progressFill');
+    wrap.style.display = 'block';
+
+    let done = 0;
+    for (const item of arquivos) {
+        await converterArquivo(item);
+        done++;
+        fill.style.width = Math.round(done / arquivos.length * 100) + '%';
+    }
+
+    wrap.style.display = 'none';
+    fill.style.width = '0%';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-bolt"></i> Converter tudo';
+
+    const prontos = arquivos.filter(a => a.status === 'pronto');
+    document.getElementById('btnBaixarTudo').disabled = prontos.length === 0;
+    atualizarResumo();
+}
+
+function imagemParaBlob(file, formato, qualidade, maxWidth) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
+        reader.onload = e => {
+            const img = new Image();
+            img.onerror = () => reject(new Error('Imagem inválida'));
+            img.onload = () => {
+                let w = img.naturalWidth;
+                let h = img.naturalHeight;
+                if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+
+                const canvas = document.createElement('canvas');
+                canvas.width  = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+
+                canvas.toBlob(blob => {
+                    if (blob) resolve(blob);
+                    else reject(new Error('Conversão falhou — formato não suportado pelo navegador'));
+                }, formato, qualidade);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// ── DOWNLOAD ───────────────────────────────────────────
+function baixarArquivo(item) {
+    if (!item.blob || !item.objectUrl) return;
+    const ext = extensao(document.getElementById('formato').value);
+    const nome = item.file.name.replace(/\.[^.]+$/, '') + '.' + ext;
+    const a = document.createElement('a');
+    a.href = item.objectUrl;
+    a.download = nome;
+    a.click();
+}
+
+async function baixarTodas() {
+    const prontos = arquivos.filter(a => a.status === 'pronto');
+    for (const item of prontos) {
+        baixarArquivo(item);
+        await new Promise(r => setTimeout(r, 120));
+    }
+}
+
+function extensao(mime) {
+    return { 'image/webp':'webp', 'image/jpeg':'jpg', 'image/png':'png' }[mime] || 'webp';
+}
+
+// ── RENDER ─────────────────────────────────────────────
+function renderTabela() {
+    const tbody = document.getElementById('tabelaBody');
+    const table = document.getElementById('tabelaResultados');
+    const empty = document.getElementById('emptyResults');
+
+    if (!arquivos.length) {
+        table.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+    table.style.display = 'table';
+    empty.style.display = 'none';
+    tbody.innerHTML = '';
+    arquivos.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.id = 'row-' + item.file.name + '-' + item.file.size;
+        tbody.appendChild(tr);
+        renderLinha(item);
+    });
+}
+
+function renderLinha(item) {
+    const id = 'row-' + item.file.name + '-' + item.file.size;
+    let tr = document.getElementById(id);
+    if (!tr) return;
+
+    const ext   = extensao(document.getElementById('formato').value);
+    const nomeConv = item.file.name.replace(/\.[^.]+$/, '') + '.' + ext;
+    const origTxt  = formatBytes(item.file.size);
+    const convTxt  = item.blob ? formatBytes(item.blob.size) : '—';
+    const saving   = item.blob ? Math.round((1 - item.blob.size / item.file.size) * 100) : null;
+    const savingBadge = saving !== null
+        ? `<span class="badge-saving ${saving >= 30 ? 'good' : saving >= 0 ? 'ok' : 'bad'}">${saving >= 0 ? '-' : '+'}${Math.abs(saving)}%</span>`
+        : '—';
+
+    const preview = item.objectUrl
+        ? `<img src="${item.objectUrl}" alt="">`
+        : `<div style="width:44px;height:44px;background:var(--cinza-bg);border-radius:6px;border:1px solid var(--borda)"></div>`;
+
+    const statusMap = {
+        aguardando:  '<span class="status-pill aguardando"><i class="fas fa-clock"></i> Aguardando</span>',
+        processando: '<span class="status-pill processando"><i class="fas fa-spinner fa-spin"></i> Processando</span>',
+        pronto:      '<span class="status-pill pronto"><i class="fas fa-check"></i> Pronto</span>',
+        erro:        `<span class="status-pill erro" title="${item.erro||''}"><i class="fas fa-times"></i> Erro</span>`
+    };
+
+    const dlBtn = item.status === 'pronto'
+        ? `<button class="btn btn-verde btn-sm btn-icon" onclick="baixarArquivo(arquivos[${arquivos.indexOf(item)}])" title="Baixar"><i class="fas fa-download"></i></button>`
+        : '';
+    const rmBtn = `<button class="btn btn-outline btn-sm btn-icon" onclick="remover(${arquivos.indexOf(item)})" title="Remover"><i class="fas fa-times"></i></button>`;
+
+    tr.innerHTML = `
+        <td class="td-preview">${preview}</td>
+        <td class="td-nome">
+            <div style="font-weight:500">${item.file.name}</div>
+            <div style="font-size:.75rem;color:var(--texto-leve)">${item.status==='pronto'?nomeConv:''}</div>
+        </td>
+        <td>${origTxt}<br><small style="color:var(--texto-leve)">${item.file.type||'?'}</small></td>
+        <td>${convTxt}</td>
+        <td>${savingBadge}</td>
+        <td>${statusMap[item.status]||''}</td>
+        <td style="display:flex;gap:6px;align-items:center">${dlBtn}${rmBtn}</td>`;
+}
+
+function remover(idx) {
+    const item = arquivos[idx];
+    if (item?.objectUrl) URL.revokeObjectURL(item.objectUrl);
+    arquivos.splice(idx, 1);
+    renderTabela();
+    if (!arquivos.length) {
+        document.getElementById('btnConverter').disabled = true;
+        document.getElementById('btnBaixarTudo').disabled = true;
+        document.getElementById('resumoTexto').textContent = '';
+    }
+    atualizarResumo();
+}
+
+function limpar() {
+    arquivos.forEach(a => { if (a.objectUrl) URL.revokeObjectURL(a.objectUrl); });
+    arquivos = [];
+    renderTabela();
+    document.getElementById('btnConverter').disabled = true;
+    document.getElementById('btnBaixarTudo').disabled = true;
+    document.getElementById('resumoTexto').textContent = '';
+}
+
+function atualizarResumo() {
+    const prontos = arquivos.filter(a => a.status === 'pronto');
+    if (!prontos.length) { document.getElementById('resumoTexto').textContent = ''; return; }
+    const origTotal = prontos.reduce((s,a) => s + a.file.size, 0);
+    const convTotal = prontos.reduce((s,a) => s + a.blob.size, 0);
+    const pct = Math.round((1 - convTotal / origTotal) * 100);
+    document.getElementById('resumoTexto').textContent =
+        `${prontos.length} arquivo${prontos.length>1?'s':''} · ${formatBytes(origTotal)} → ${formatBytes(convTotal)} (${pct >= 0 ? '-' : '+'}${Math.abs(pct)}% economia)`;
+}
+
+function formatBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+    return (b/1024/1024).toFixed(2) + ' MB';
+}
+
+// ── INIT ───────────────────────────────────────────────
+async function init() {
+    renderTabela();
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
