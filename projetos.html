@@ -2706,8 +2706,8 @@
                 const data = PROJECTS_DATA[title];
                 if (!data) return;
 
-                // Popula hero
-                document.getElementById('modalHero').style.backgroundImage = `url('${data.image}')`;
+                // Popula hero com a mesma imagem de capa do card
+                document.getElementById('modalHero').style.backgroundImage = card.style.backgroundImage;
                 document.getElementById('modalTag').textContent = data.tag;
                 document.getElementById('modalTag').className = `project-tag ${data.catClass}`;
                 document.getElementById('modalTitle').textContent = title;
