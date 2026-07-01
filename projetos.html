@@ -2753,10 +2753,12 @@
                 if (typeof lenis !== 'undefined') lenis.start();
             }
 
-            // Delegação de eventos: qualquer .open-modal dentro dos cards
+            // Delegação de eventos: qualquer .open-modal dentro dos cards estáticos
+            // Botões com data-project-id são tratados pelo projetos-loader.js (dados do Supabase)
             document.addEventListener('click', function (e) {
                 const btn = e.target.closest('.open-modal');
                 if (!btn) return;
+                if (btn.dataset.projectId) return;
                 openModal(btn);
             });
 
