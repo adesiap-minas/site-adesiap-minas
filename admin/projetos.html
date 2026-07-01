@@ -794,17 +794,18 @@ function removerParceiro(idx) {
 
 // ── UPLOAD DE IMAGEM (Supabase Storage) ─────────────
 async function uploadImagem(file, prefix = '') {
-    const ext = file.name.split('.').pop().toLowerCase();
-    const nomeFinal = `${prefix}${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    let blob = file;
+    try { blob = await toWebP(file); } catch(e) { /* fallback: envia original */ }
+    const nomeFinal = `${prefix}${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
     const r = await fetch(`${SB_URL}/storage/v1/object/imagens-projetos/${nomeFinal}`, {
         method: 'POST',
         headers: {
             'apikey': SB_KEY,
             'Authorization': `Bearer ${SB_KEY}`,
-            'Content-Type': file.type,
+            'Content-Type': 'image/webp',
             'x-upsert': 'true'
         },
-        body: file
+        body: blob
     });
     if (!r.ok) { showToast('Erro no upload: ' + await r.text(), 'error'); return null; }
     return `${SB_URL}/storage/v1/object/public/imagens-projetos/${nomeFinal}`;
@@ -946,6 +947,7 @@ function showToast(msg, type = 'success') {
 
 // ── START ──────────────────────────────────────────────
 </script>
+<script src="imgconvert.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

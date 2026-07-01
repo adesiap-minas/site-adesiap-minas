@@ -330,33 +330,9 @@ async function converterTodas() {
     atualizarResumo();
 }
 
+// conversão delegada ao imgconvert.js compartilhado
 function imagemParaBlob(file, formato, qualidade, maxWidth) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = () => reject(new Error('Erro ao ler arquivo'));
-        reader.onload = e => {
-            const img = new Image();
-            img.onerror = () => reject(new Error('Imagem inválida'));
-            img.onload = () => {
-                let w = img.naturalWidth;
-                let h = img.naturalHeight;
-                if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
-
-                const canvas = document.createElement('canvas');
-                canvas.width  = w;
-                canvas.height = h;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, w, h);
-
-                canvas.toBlob(blob => {
-                    if (blob) resolve(blob);
-                    else reject(new Error('Conversão falhou — formato não suportado pelo navegador'));
-                }, formato, qualidade);
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+    return convertImage(file, formato, qualidade, maxWidth);
 }
 
 // ── DOWNLOAD ───────────────────────────────────────────
@@ -490,6 +466,7 @@ async function init() {
     renderTabela();
 }
 </script>
+<script src="imgconvert.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>
