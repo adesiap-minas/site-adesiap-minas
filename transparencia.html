@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -473,7 +473,14 @@
         .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
         @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
 
-        </style>
+        
+        @media (max-width: 640px) {
+            .topbar-inner { justify-content: center; }
+            .section-padding { padding: 60px 0; }
+            .hero-qs h1 { font-size: 2.2rem !important; }
+            .hero-qs { padding-top: calc(var(--header-height) + var(--topbar-height) + 50px) !important; padding-bottom: 60px !important; }
+            h1.display-title, h2.display-title, h3.display-title { font-size: 2.2rem !important; line-height: 1.1 !important; }
+        }    </style>
 </head>
 
 <body>

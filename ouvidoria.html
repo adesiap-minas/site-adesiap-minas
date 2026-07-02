@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -218,7 +218,12 @@
         .back-to-top:not(.visible) { transform: translateY(20px); }
         .back-to-top:hover { background-color: var(--azul-institucional); transform: translateY(-5px); }
         .back-to-top i { font-size: 1.2rem; }
-    </style>
+    
+        @media (max-width: 640px) {
+            .topbar-inner { justify-content: center; }
+            h1 { font-size: 2rem !important; }
+            .form-container { padding: 24px 16px; }
+        }    </style>
 </head>
 
 <body>

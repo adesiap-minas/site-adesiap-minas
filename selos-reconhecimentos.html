@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -189,7 +189,12 @@
         .footer-seals { display: flex; gap: 12px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
         .footer-seals img { height: 48px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); transition: transform 0.3s ease; }
         .footer-seals img:hover { transform: scale(1.1); }
-    </style>
+    
+        @media (max-width: 640px) {
+            .topbar-inner { justify-content: center; }
+            .hero-qs { padding-top: calc(var(--header-height) + var(--topbar-height) + 50px) !important; padding-bottom: 60px !important; }
+            h1.display-title, h2.display-title, h3.display-title { font-size: 2.2rem !important; line-height: 1.1 !important; }
+        }    </style>
 </head>
 
 <body>
