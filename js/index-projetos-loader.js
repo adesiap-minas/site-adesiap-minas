@@ -18,7 +18,7 @@
     function cardHtml(p, cat, idx) {
         const catSlug = cat?.slug || 'economico';
         const img     = p.imagem_url || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800';
-        const ods     = (p.ods || []).slice(0, 2).map(odsImg).join('');
+        const ods     = (p.ods || []).map(odsImg).join('');
         const delays  = ['', ' delay-1', ' delay-2'];
         const delay   = delays[idx % 3];
         return `
