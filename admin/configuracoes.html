@@ -1011,13 +1011,6 @@
 
     // ── SALVAR GRUPO ────────────────────────────────────────
     async function salvarGrupo(grupo) {
-        const grupoMap = {
-            email:     'email',
-            routing:   'email_routing',
-            whatsapp:  'whatsapp',
-            site:      'site',
-            ouvidoria: 'ouvidoria',
-        };
         const mapa = {
             email:     ['smtp_host','smtp_port','smtp_user','smtp_pass','email_destino','email_remetente'],
             routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas'],
@@ -1029,22 +1022,16 @@
         if (!chaves) return;
 
         try {
-            // UPSERT em lote — cria a linha se não existir, atualiza se existir
-            const payloads = chaves
-                .map(chave => {
-                    const el = document.getElementById(chave);
-                    if (!el) return null;
-                    return { chave, valor: el.value.trim(), grupo: grupoMap[grupo] || 'geral' };
-                })
-                .filter(Boolean);
-
-            await sbFetch('configuracoes', {
-                method: 'POST',
-                headers: { 'Prefer': 'return=representation,resolution=merge-duplicates' },
-                body: JSON.stringify(payloads)
-            });
-
-            payloads.forEach(({ chave, valor }) => { configs[chave] = valor; });
+            for (const chave of chaves) {
+                const el = document.getElementById(chave);
+                if (!el) continue;
+                const valor = el.value.trim();
+                await sbFetch(`configuracoes?chave=eq.${chave}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ valor })
+                });
+                configs[chave] = valor;
+            }
             const msg = document.getElementById(`saveMsg-${grupo}`);
             if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
             mostrarToast('Configurações salvas com sucesso!', 'sucesso');
