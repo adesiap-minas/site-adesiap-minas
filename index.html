@@ -533,7 +533,8 @@
                 overflow-y: auto;
             }
 
-            .main-menu.active {
+            .main-menu.active,
+            #main-menu.active > .main-menu {
                 left: 0;
             }
 
@@ -2003,6 +2004,7 @@
 
             .topbar-inner {
                 gap: 8px;
+                justify-content: center;
             }
         }
     </style>
@@ -3138,7 +3140,7 @@
         }
         // Script do Menu Mobile
         const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mainMenu = document.getElementById('main-menu');
+        const mainMenu = document.querySelector('.main-menu');
 
         if (mobileBtn && mainMenu) {
             mobileBtn.addEventListener('click', () => {

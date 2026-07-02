@@ -583,37 +583,120 @@
         .back-to-top i {
             font-size: 1.2rem;
         }
-    
-        /* ===== TOPBAR DE ATENDIMENTO ===== */
-        :root { --topbar-height: 36px; }
-        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
-        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
-        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
-        .topbar-link:hover { color: #fff; }
-        .topbar-link i { color: #25D366; font-size: 0.9rem; }
-        .topbar-link strong { font-weight: 700; color: #fff; }
-        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; } .tb-short { display: none; }
-        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; letter-spacing: 0; } .topbar-inner { gap: 8px; } }
 
-        </style>
+        /* ===== TOPBAR DE ATENDIMENTO ===== */
+        :root {
+            --topbar-height: 36px;
+        }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--topbar-height);
+            background-color: var(--azul-institucional);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar-inner {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .topbar-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.72rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .topbar-link:hover {
+            color: #fff;
+        }
+
+        .topbar-link i {
+            color: #25D366;
+            font-size: 0.9rem;
+        }
+
+        .topbar-link strong {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .topbar-sep {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .tb-short {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .topbar-link strong {
+                display: none;
+            }
+
+            .tb-full {
+                display: none;
+            }
+
+            .tb-short {
+                display: inline;
+            }
+
+            .topbar-link {
+                font-size: 0.62rem;
+                letter-spacing: 0;
+            }
+
+            .topbar-inner {
+                gap: 8px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    
+
     <!-- Topbar WhatsApp -->
     <div class="topbar">
         <div class="topbar-inner">
-            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20CAMPE."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO CAMPE</span><span
+                    class="tb-short">CAMPE</span>&ensp;<strong>(31) 98427-1617</strong>
             </a>
             <span class="topbar-sep">|</span>
-            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span
+                    class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
             </a>
             <span class="topbar-sep">|</span>
-            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span
+                    class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
             </a>
         </div>
     </div>
@@ -627,11 +710,19 @@
             <nav id="main-menu">
                 <ul class="main-menu">
                     <li><a href="index.html">Início</a></li>
-                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
-                    <li class="dropdown">
-                        <a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                            <li><a href="quem-somos.html">Quem Somos</a></li>
+                            <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="governanca.html">Governança <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li>
+                            <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
                         </ul>
                     </li>
                     <li><a href="transparencia.html">Transparência</a></li>
@@ -644,7 +735,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="fale-conosco.html">Fale Conosco</a></li>
                             <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
-                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                            <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
@@ -770,7 +863,9 @@
                     <div class="eixo-card">
                         <i class="fas fa-hard-hat eixo-icon"></i>
                         <h3>4. Infraestrutura, Obras e Mobilidade Urbana</h3>
-                        <p class="what-we-do">Gerenciamos projetos de infraestrutura física com base em contratos públicos e privados — promovendo mobilidade, acessibilidade, reconstrução pós-eventos climáticos e a implantação de iluminação pública e segurança pública inteligente.</p>
+                        <p class="what-we-do">Gerenciamos projetos de infraestrutura física com base em contratos
+                            públicos e privados — promovendo mobilidade, acessibilidade, reconstrução pós-eventos
+                            climáticos e a implantação de iluminação pública e segurança pública inteligente.</p>
                         <ul>
                             <li><strong>Gestão de Obras Públicas:</strong> Coordenação de construção e reforma de
                                 equipamentos públicos (UBS, laboratórios, centros comunitários)</li>
@@ -894,7 +989,8 @@
                         <i class="fas fa-percentage"></i>
                         <div>
                             <h4>Benefícios Fiscais com a Iniciativa Privada</h4>
-                            <p>Estruturamos projetos que permitem ao investidor privado captar recursos com abatimento fiscal, ampliando o impacto sem aumentar o custo.</p>
+                            <p>Estruturamos projetos que permitem ao investidor privado captar recursos com abatimento
+                                fiscal, ampliando o impacto sem aumentar o custo.</p>
                         </div>
                     </div>
                 </div>
@@ -924,7 +1020,8 @@
                         <i class="fas fa-file-alt"></i>
                         <div>
                             <h4>Captação e Elaboração de Projetos</h4>
-                            <p>Identificação de editais, redação de propostas técnicas e planos de trabalho para acesso a recursos públicos e privados.</p>
+                            <p>Identificação de editais, redação de propostas técnicas e planos de trabalho para acesso
+                                a recursos públicos e privados.</p>
                         </div>
                     </div>
                 </div>
@@ -988,51 +1085,97 @@
     </section>
 
     <!-- Benefícios Fiscais -->
-    <section class="section-padding" style="background: var(--azul-profundo); color: #fff; position: relative; overflow: hidden;">
-        <div style="position:absolute; top:-10%; right:-5%; width:450px; height:450px; background: radial-gradient(circle, rgba(217,144,47,0.07) 0%, transparent 70%); pointer-events:none;"></div>
+    <section class="section-padding"
+        style="background: var(--azul-profundo); color: #fff; position: relative; overflow: hidden;">
+        <div
+            style="position:absolute; top:-10%; right:-5%; width:450px; height:450px; background: radial-gradient(circle, rgba(217,144,47,0.07) 0%, transparent 70%); pointer-events:none;">
+        </div>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-5 reveal-on-scroll">
-                    <span style="display:inline-block; background:rgba(217,144,47,0.15); color:var(--ambar-impacto); padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:25px;">Vantagem Exclusiva</span>
-                    <h2 class="display-title" style="font-size: 3.5rem; margin-bottom: 25px; color: var(--ambar-impacto);">
+                    <span
+                        style="display:inline-block; background:rgba(217,144,47,0.15); color:var(--ambar-impacto); padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:25px;">Vantagem
+                        Exclusiva</span>
+                    <h2 class="display-title"
+                        style="font-size: 3.5rem; margin-bottom: 25px; color: var(--ambar-impacto);">
                         <span style="color: #fff; opacity: 1;">BENEFÍCIOS</span>
                         FISCAIS
                     </h2>
-                    <p style="color: rgba(255,255,255,0.75);">Empresas que investem em parceria com a ADESIAP Minas podem deduzir valores do Imposto de Renda e de outros tributos — sem abdicar do impacto social positivo no território onde estão inseridas.</p>
-                    <p style="color: rgba(255,255,255,0.75);">Previsto no <strong style="color:#fff;">art. 13, § 2º, III da Lei nº 9.249/1995</strong>, o benefício permite deduzir até <strong style="color: var(--ambar-impacto); font-size: 1.3rem;">2%</strong> do lucro operacional do imposto de renda devido.</p>
-                    <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">Acompanhe a aplicação dos recursos doados e fortaleça sua reputação de responsabilidade social no território — sem abrir mão do seu lucro.</p>
+                    <p style="color: rgba(255,255,255,0.75);">Empresas que investem em parceria com a ADESIAP Minas
+                        poderão deduzir valores do Imposto de Renda e de outros tributos — sem abdicar do impacto social
+                        positivo no território onde estão inseridas.</p>
+                    <p style="color: rgba(255,255,255,0.75);">Previsto no <strong style="color:#fff;">art. 13, § 2º, III
+                            da Lei nº 9.249/1995</strong>, o benefício permite deduzir até <strong
+                            style="color: var(--ambar-impacto); font-size: 1.3rem;">2%</strong> do lucro operacional do
+                        imposto de renda devido. Para empresas optantes do Regime Lucro Real.</p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">Acompanhe a aplicação dos recursos
+                        doados e fortaleça sua reputação de responsabilidade social no território — sem abrir mão do seu
+                        lucro.</p>
                 </div>
 
                 <div class="col-lg-6 offset-lg-1 reveal-on-scroll delay-1">
                     <div style="margin-bottom: 28px;">
-                        <h4 style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">Tributos abrangidos pelo benefício</h4>
+                        <h4
+                            style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">
+                            Tributos abrangidos pelo benefício</h4>
                         <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
-                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
-                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">Imposto de Renda — IRPJ</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Dedução de até 2% do lucro operacional</span></div>
+                            <div
+                                style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar"
+                                    style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">Imposto de Renda —
+                                        IRPJ</strong><span
+                                        style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Dedução de até 2% do
+                                        lucro operacional</span></div>
                             </div>
-                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
-                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
-                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">CSLL</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição Social sobre o Lucro Líquido</span></div>
+                            <div
+                                style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar"
+                                    style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">CSLL</strong><span
+                                        style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição Social
+                                        sobre o Lucro Líquido</span></div>
                             </div>
-                            <div style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
-                                <i class="fas fa-file-invoice-dollar" style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
-                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">COFINS</strong><span style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição para o Financiamento do Seguro de Desemprego</span></div>
+                            <div
+                                style="display:flex; align-items:center; gap:15px; background:rgba(255,255,255,0.05); padding:16px 20px; border-radius:8px; border-left:4px solid var(--ambar-impacto);">
+                                <i class="fas fa-file-invoice-dollar"
+                                    style="color:var(--ambar-impacto); font-size:1.4rem; flex-shrink:0;"></i>
+                                <div><strong style="color:#fff; display:block; font-size:0.95rem;">COFINS</strong><span
+                                        style="color:rgba(255,255,255,0.55); font-size:0.85rem;">Contribuição para o
+                                        Financiamento do Seguro de Desemprego</span></div>
                             </div>
                         </div>
                     </div>
 
                     <div style="margin-bottom: 28px;">
-                        <h4 style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">Documentos exigidos da empresa doadora</h4>
+                        <h4
+                            style="color: var(--ambar-impacto); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 700;">
+                            Documentos exigidos da empresa doadora</h4>
                         <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px;">
-                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Recibo de doação emitido pela ADESIAP Minas</li>
-                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Declaração de Recebimento de Recursos por Doação — preenchida e assinada pela ADESIAP</li>
-                            <li style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;"><i class="fas fa-check-circle" style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Comprovantes de aplicação dos recursos doados pela OSCIP</li>
+                            <li
+                                style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Recibo de
+                                doação emitido pela ADESIAP Minas</li>
+                            <li
+                                style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Declaração
+                                de Recebimento de Recursos por Doação — preenchida e assinada pela ADESIAP</li>
+                            <li
+                                style="display:flex; align-items:flex-start; gap:12px; color:rgba(255,255,255,0.72); font-size:0.92rem;">
+                                <i class="fas fa-check-circle"
+                                    style="color:var(--ambar-impacto); margin-top:3px; flex-shrink:0;"></i> Comprovantes
+                                de aplicação dos recursos doados pela OSCIP</li>
                         </ul>
                     </div>
 
-                    <div style="padding: 18px 20px; background: rgba(217,144,47,0.1); border-radius: 8px; border-left: 4px solid rgba(217,144,47,0.35);">
-                        <p style="color:rgba(255,255,255,0.6); font-size:0.87rem; margin:0; line-height:1.6;"><i class="fas fa-shield-alt" style="color:var(--ambar-impacto); margin-right:8px;"></i>A ADESIAP Minas é qualificada como OSCIP e reconhecida como Utilidade Pública, possuindo todas as certidões e documentações vigentes exigidas pela legislação.</p>
+                    <div
+                        style="padding: 18px 20px; background: rgba(217,144,47,0.1); border-radius: 8px; border-left: 4px solid rgba(217,144,47,0.35);">
+                        <p style="color:rgba(255,255,255,0.6); font-size:0.87rem; margin:0; line-height:1.6;"><i
+                                class="fas fa-shield-alt" style="color:var(--ambar-impacto); margin-right:8px;"></i>A
+                            ADESIAP Minas é qualificada como OSCIP e reconhecida como Utilidade Pública, possuindo todas
+                            as certidões e documentações vigentes exigidas pela legislação.</p>
                     </div>
                 </div>
             </div>
@@ -1052,7 +1195,8 @@
                             Quer saber como podemos transformar seu investimento em impacto real e estruturar projetos
                             com segurança jurídica e transparência?
                         </p>
-                        <a data-wa-cta="servicos" href="https://wa.me/553184011390" target="_blank" rel="noopener" class="btn-primary"
+                        <a data-wa-cta="servicos" href="https://wa.me/553184011390" target="_blank" rel="noopener"
+                            class="btn-primary"
                             style="background: #fff; color: var(--ambar-impacto); border-color: #fff;">Faça um Projeto
                             Conosco</a>
                     </div>
@@ -1067,19 +1211,44 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
-                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
                     <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png"
+                                alt="Sebrae Diamante 2025"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png"
+                                alt="Sebrae Diamante 2023"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
                     <h4>Institucional</h4>
                     <ul>
                         <li><a href="index.html">Início</a></li>
-                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li></ul></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down"
+                                    style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="quem-somos.html">Quem Somos</a></li>
+                                <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                            </ul>
+                        </li>
                         <li><a href="governanca.html">Governança</a></li>
                         <li><a href="agenda-2030.html">Agenda 2030</a></li>
                     </ul>
@@ -1090,13 +1259,18 @@
                         <li><a href="servicos.html">Serviços</a></li>
                         <li><a href="projetos.html">Projetos</a></li>
                         <li><a href="transparencia.html">Transparência</a></li>
-                        <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                        <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
+                    </ul>
                 </div>
                 <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
                     <h4>Contato</h4>
                     <ul>
-                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
-                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
                         <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
                     </ul>
                 </div>
@@ -1104,8 +1278,11 @@
             <div class="footer-bottom">
                 <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
                 <div style="display: flex; gap: 15px;">
-                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
-                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i
+                            class="fab fa-instagram" style="font-size: 1.2rem;"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico"
+                        target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"
+                            style="font-size: 1.2rem;"></i></a>
                 </div>
             </div>
         </div>
@@ -1197,16 +1374,7 @@
             }
         })();
     </script>
-<script src="./js/wa-config.js" defer></script>
+    <script src="./js/wa-config.js" defer></script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
