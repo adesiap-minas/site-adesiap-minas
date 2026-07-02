@@ -956,15 +956,16 @@
 
     // ── SUPABASE HELPERS ────────────────────────────────────
     async function sbFetch(path, opts = {}) {
+        const { headers: extraHeaders = {}, ...restOpts } = opts;
         const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`,
                 'Content-Type': 'application/json',
                 'Prefer': 'return=representation',
-                ...opts.headers
+                ...extraHeaders
             },
-            ...opts
+            ...restOpts
         });
         if (!res.ok) throw new Error(await res.text());
         return res.json();
