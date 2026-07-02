@@ -181,14 +181,36 @@
         
         @media (max-width: 991px) {
             .mobile-menu-btn { display: block; }
-            nav {
-                position: fixed; top: calc(var(--header-height) + var(--topbar-height)); left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height));
-                background-color: #fff; transition: left 0.3s ease;
-                display: flex; align-items: center; justify-content: center;
+            .main-menu {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: calc(var(--header-height) + var(--topbar-height));
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height) - var(--topbar-height));
+                background-color: #fff;
+                transition: left 0.3s ease;
+                text-align: center;
+                gap: 30px;
+                padding: 40px 20px;
+                overflow-y: auto;
             }
-            nav.active { left: 0; }
-            nav ul { flex-direction: column; text-align: center; gap: 30px; }
-            nav a { font-size: 1.5rem; }
+            .main-menu.active { left: 0; }
+            .main-menu li a { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 640px) {
+            h1.display-title { font-size: 2.4rem !important; line-height: 1.1 !important; }
+            h2.display-title { font-size: 2rem !important; }
+            .hero-qs { padding-top: calc(var(--header-height) + var(--topbar-height) + 50px) !important; padding-bottom: 60px !important; }
+            .hero-qs p { font-size: 1rem !important; }
+            .gov-block { padding: 30px 20px; }
+            .org-tree-container { padding: 30px 0 15px; box-shadow: inset -12px 0 16px -8px rgba(0,0,0,0.08); }
+            .topbar-inner { justify-content: center; }
+            section.section-padding { padding: 60px 0; }
         }
 
         /* Hero */
