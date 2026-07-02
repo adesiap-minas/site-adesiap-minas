@@ -2150,7 +2150,10 @@
                 const menuLinks = mainMenu.querySelectorAll('a');
                 menuLinks.forEach(link => {
                     link.addEventListener('click', () => {
+                        // Dropdown parents handled by mobile-dropdown.js
+                        if (window.innerWidth <= 991 && link.closest('.dropdown') && !link.closest('.dropdown-menu')) return;
                         mainMenu.classList.remove('active');
+                        mainMenu.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
                         const icon = mobileBtn.querySelector('i');
                         icon.classList.remove('fa-times');
                         icon.classList.add('fa-bars');
