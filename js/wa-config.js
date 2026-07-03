@@ -24,9 +24,9 @@
         const el = topbarLinks[idx];
         if (!el) return;
         const num = cfg[`wa_topbar_${i}_numero`];
-        const msg = cfg[`wa_topbar_${i}_msg`];
+        const msg = cfg[`wa_topbar_${i}_msg`] || '';
         const label = cfg[`wa_topbar_${i}_label`];
-        if (num && msg) el.href = waUrl(num, msg);
+        if (num) el.href = waUrl(num, msg);
         if (label) {
             const full = el.querySelector('.tb-full');
             const short = el.querySelector('.tb-short');
@@ -47,8 +47,8 @@
     document.querySelectorAll('[data-wa-cta]').forEach(el => {
         const key = el.getAttribute('data-wa-cta');
         const num = cfg[`wa_cta_${key}_numero`];
-        const msg = cfg[`wa_cta_${key}_msg`];
-        if (num && msg) {
+        const msg = cfg[`wa_cta_${key}_msg`] || '';
+        if (num) {
             el.href = waUrl(num, msg);
             el.target = '_blank';
             el.rel = 'noopener';
