@@ -20,7 +20,7 @@
 
     // ── TOPBAR ──────────────────────────────────────────────────────────────
     const topbarLinks = document.querySelectorAll('.topbar-link');
-    [1, 2, 3].forEach((i, idx) => {
+    [3, 1, 2].forEach((i, idx) => {
         const el = topbarLinks[idx];
         if (!el) return;
         const num = cfg[`wa_topbar_${i}_numero`];
