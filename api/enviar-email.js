@@ -1,4 +1,4 @@
-const SUPABASE_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+﻿const SUPABASE_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
 
 const TIPO_LABELS = {
@@ -162,6 +162,11 @@ async function handler(req, res) {
             const fn = dados._portfolioNome || 'portfolio.pdf';
             attachments.push({ filename: fn, content: dados._portfolio, content_type: getMimeType(fn) });
         }
+        if (Array.isArray(dados._arquivos)) {
+            dados._arquivos.forEach(arq => {
+                if (arq.base64) attachments.push({ filename: arq.nome || 'arquivo', content: arq.base64, content_type: getMimeType(arq.nome) });
+            });
+        }
         if (attachments.length) {
             payload.attachments = attachments;
             console.log('Attachments:', attachments.map(a => `${a.filename}(${a.content.length}b)`).join(', '));
@@ -187,15 +192,7 @@ async function handler(req, res) {
         }
 
         console.log('Resend response:', JSON.stringify(sendBody));
-        res.status(200).json({
-            ok: true,
-            _debug: {
-                cvRecebido: !!dados._curriculo,
-                cvBytes: dados._curriculo?.length || 0,
-                to,
-                resend: sendBody,
-            },
-        });
+        res.status(200).json({ ok: true });
     } catch (err) {
         console.error('Handler error:', err);
         res.status(500).json({ error: 'Erro interno no servidor', detalhe: err.message });

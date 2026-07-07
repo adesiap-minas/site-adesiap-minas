@@ -390,11 +390,7 @@
                     <div class="form-divider">Currículo e Apresentação</div>
                     <div class="form-group">
                         <label class="form-label">Currículo *</label>
-                        <label class="file-label" for="curriculo-file">
-                            <i class="fas fa-paperclip"></i>
-                            <span id="file-name-label">Clique para anexar seu currículo (PDF, DOC ou DOCX — máx. 5MB)</span>
-                        </label>
-                        <input type="file" id="curriculo-file" accept=".pdf,.doc,.docx" onchange="updateFileName(this)" required>
+                        <input type="file" id="curriculo-file" accept=".pdf,.doc,.docx">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Carta de apresentação <span>(opcional)</span></label>
@@ -501,12 +497,6 @@
         });
         backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // File name display
-        function updateFileName(input) {
-            const label = document.getElementById('file-name-label');
-            label.textContent = input.files[0] ? input.files[0].name : 'Clique para anexar seu currículo (PDF, DOC ou DOCX — máx. 5MB)';
-        }
-
         // Form submit
         async function submitCandidatura(e) {
             e.preventDefault();
@@ -522,18 +512,11 @@
                 if (label && input?.value) dados[label] = input.value;
             });
 
-            // Anexa currículo como base64
-            const fileInput = document.getElementById('curriculo-file');
-            if (fileInput?.files[0]) {
-                const file = fileInput.files[0];
-                const base64 = await new Promise(resolve => {
-                    const r = new FileReader();
-                    r.onload = () => resolve(r.result.split(',')[1]);
-                    r.readAsDataURL(file);
-                });
-                dados._curriculo = base64;
-                dados._curriculoNome = file.name;
-            }
+            // Valida e coleta arquivos via uploader
+            const uploader = window._fuReg?.['curriculo-file'];
+            if (uploader && !uploader.validar()) return;
+            const arquivos = uploader?.getArquivos() || [];
+            if (arquivos.length) dados._arquivos = arquivos;
 
             const txtOrig = btn.textContent;
             btn.disabled = true;
@@ -547,8 +530,6 @@
                 });
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok) throw new Error(data.detalhe || data.error || 'Erro ' + res.status);
-                // DEBUG temporário — mostra se CV chegou no servidor
-                if (data._debug) console.log('[DEBUG candidatura]', JSON.stringify(data._debug));
             } catch (err) {
                 btn.disabled = false;
                 btn.textContent = txtOrig;
@@ -561,14 +542,23 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // GSAP animations
+        // GSAP animations + uploads
         window.addEventListener('load', () => {
+            if (typeof initUpload === 'function') {
+                initUpload('curriculo-file', {
+                    maxArquivos: 3, maxMB: 10,
+                    label: 'Clique ou arraste para anexar seu curriculo',
+                    sublabel: 'PDF, DOC ou DOCX — até 3 arquivos — máx. 10MB cada',
+                    required: true,
+                });
+            }
             gsap.registerPlugin(ScrollTrigger);
             document.querySelectorAll('.reveal-on-scroll').forEach(el => {
                 gsap.from(el, { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' } });
             });
         });
     </script>
+<script src="./js/file-upload.js" defer></script>
 <script src="./js/wa-config.js" defer></script>
 <script src="./js/mobile-dropdown.js" defer></script>
 </body>

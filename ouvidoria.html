@@ -520,7 +520,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Anexar evidências (Opcional)</label>
-                        <input type="file" class="form-control">
+                        <input type="file" id="evidencias-ouvidoria" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                     </div>
                     <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 30px 0;">
                     <div style="text-align: right; display: flex; gap: 12px; justify-content: flex-end;">
@@ -727,6 +727,9 @@
             btn.textContent = 'Enviando...';
 
             try {
+                const uploader = window._fuReg?.['evidencias-ouvidoria'];
+                const arquivos = uploader?.getArquivos() || [];
+                if (arquivos.length) dados._arquivos = arquivos;
                 const res = await fetch('/api/enviar-email', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -761,7 +764,13 @@
                 resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle fa-2x"></i><div><strong>Protocolo não encontrado.</strong> Verifique se você digitou corretamente.</div></div>`;
             }
         }
+        window.addEventListener('load', () => {
+            if (window.initUpload) {
+                initUpload('evidencias-ouvidoria', { maxArquivos: 5, maxMB: 10, label: 'Clique para anexar evidências ou arraste aqui', sublabel: 'PDF, DOC, DOCX, JPG, PNG — máx. 10 MB por arquivo, até 5 arquivos' });
+            }
+        });
     </script>
+<script src="./js/file-upload.js" defer></script>
 <script src="./js/wa-config.js" defer></script>
 <script src="./js/mobile-dropdown.js" defer></script>
 </body>
