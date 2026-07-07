@@ -66,6 +66,22 @@ function buildEmail(tipo, dados, protocolo) {
     return { subject, html };
 }
 
+// Lê body da request de forma segura (Vercel pode não fazer parse automático)
+async function parseBody(req) {
+    if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
+        return req.body;
+    }
+    return new Promise((resolve) => {
+        let raw = '';
+        req.on('data', chunk => { raw += chunk.toString(); });
+        req.on('end', () => {
+            try { resolve(raw ? JSON.parse(raw) : {}); }
+            catch { resolve({}); }
+        });
+        req.on('error', () => resolve({}));
+    });
+}
+
 module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -74,12 +90,15 @@ module.exports = async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     if (!process.env.RESEND_API_KEY) {
+        console.error('RESEND_API_KEY não definida');
         return res.status(500).json({ error: 'RESEND_API_KEY não configurada no servidor' });
     }
 
     try {
-        const body = req.body || {};
+        const body = await parseBody(req);
         const { tipo, dados = {}, protocolo = '' } = body;
+
+        console.log('Recebido tipo:', tipo, '| protocolo:', protocolo);
 
         // Lê roteamento do Supabase
         const cfgRes = await fetch(
@@ -104,6 +123,8 @@ module.exports = async function handler(req, res) {
         const fromName = cfg.email_remetente || 'ADESIAP Minas';
         const from = process.env.RESEND_FROM || `${fromName} <onboarding@resend.dev>`;
 
+        console.log('Enviando de:', from, '| para:', to);
+
         const { subject, html } = buildEmail(tipo, dados, protocolo);
 
         const payload = { from, to: [to], subject, html };
@@ -123,15 +144,20 @@ module.exports = async function handler(req, res) {
             body: JSON.stringify(payload),
         });
 
+        const sendBody = await sendRes.json();
+
         if (!sendRes.ok) {
-            const err = await sendRes.text();
-            console.error('Resend error:', err);
-            return res.status(500).json({ error: 'Falha no envio do e-mail' });
+            console.error('Resend HTTP', sendRes.status, JSON.stringify(sendBody));
+            return res.status(500).json({
+                error: 'Falha no envio do e-mail',
+                detalhe: sendBody?.message || sendBody?.name || JSON.stringify(sendBody),
+            });
         }
 
+        console.log('E-mail enviado. ID Resend:', sendBody.id);
         res.status(200).json({ ok: true });
     } catch (err) {
         console.error('Handler error:', err);
-        res.status(500).json({ error: 'Erro interno no servidor' });
+        res.status(500).json({ error: 'Erro interno no servidor', detalhe: err.message });
     }
 };
