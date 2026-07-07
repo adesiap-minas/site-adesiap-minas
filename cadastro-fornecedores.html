@@ -894,18 +894,10 @@
                 linkedin:         document.getElementById('linkedin').value,
             };
 
-            // Anexa portfólio/catálogo como base64 (opcional)
-            const portfolioInput = document.getElementById('portfolio');
-            if (portfolioInput?.files[0]) {
-                const file = portfolioInput.files[0];
-                const base64 = await new Promise(resolve => {
-                    const r = new FileReader();
-                    r.onload = () => resolve(r.result.split(',')[1]);
-                    r.readAsDataURL(file);
-                });
-                dados._portfolio = base64;
-                dados._portfolioNome = file.name;
-            }
+            // Coleta arquivos via uploader
+            const uploader = window._fuReg?.['portfolio'];
+            const arquivos = uploader?.getArquivos() || [];
+            if (arquivos.length) dados._arquivos = arquivos;
 
             localStorage.setItem(protocolo, JSON.stringify({ status: 'Pendente de Homologação', data: new Date().toLocaleDateString('pt-BR') }));
 
