@@ -1010,6 +1010,11 @@
         campos.forEach(c => {
             const el = document.getElementById(c);
             if (el) el.value = configs[c] || '';
+        // Política de privacidade: usa padrão embutido quando Supabase retorna vazio
+        const ppEl = document.getElementById('politica_privacidade');
+        if (ppEl && !configs['politica_privacidade']) {
+            ppEl.value = window._politicaPrivacidadePadrao || '';
+        }
         });
     }
 
@@ -1340,6 +1345,7 @@
         setTimeout(() => { t.className = 'toast'; }, 4000);
     }
 </script>
+<script src="../js/modal-privacidade.js"></script>
 <script src="auth.js"></script>
 </body>
 </html>

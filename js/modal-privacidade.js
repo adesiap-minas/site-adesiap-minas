@@ -53,6 +53,8 @@
 <p>O titular de dados poderá entrar em contato por: <strong>E-mail:</strong> <a href="mailto:sac@adesiap.org.br">sac@adesiap.org.br</a></p>
 <p style="font-size:0.82rem;color:#9ca3af;margin-top:16px;">Atualizada em 10 de dezembro de 2024.</p>`;
 
+    window._politicaPrivacidadePadrao = TEXTO_PADRAO;
+
     let textoCarregado = null;
 
     async function carregarTexto() {
