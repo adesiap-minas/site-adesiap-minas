@@ -174,7 +174,7 @@ async function handler(req, res) {
         }
 
         console.log('E-mail enviado. ID Resend:', sendBody.id);
-        res.status(200).json({ ok: true });
+        res.status(200).json({ ok: true, _debug: { cvRecebido: !!dados._curriculo, cvBytes: dados._curriculo?.length || 0 } });
     } catch (err) {
         console.error('Handler error:', err);
         res.status(500).json({ error: 'Erro interno no servidor', detalhe: err.message });

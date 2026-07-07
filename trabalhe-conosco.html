@@ -545,11 +545,14 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tipo: 'candidaturas', dados, protocolo: 'CAND-' + Math.floor(100000 + Math.random() * 900000) }),
                 });
-                if (!res.ok) throw new Error();
-            } catch {
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.detalhe || data.error || 'Erro ' + res.status);
+                // DEBUG temporário — mostra se CV chegou no servidor
+                if (data._debug) console.log('[DEBUG candidatura]', JSON.stringify(data._debug));
+            } catch (err) {
                 btn.disabled = false;
                 btn.textContent = txtOrig;
-                alert('Não foi possível enviar o e-mail. Tente novamente ou entre em contato pelo WhatsApp.');
+                alert('Não foi possível enviar o e-mail.\n\nDetalhe: ' + err.message + '\n\nTente novamente ou entre em contato pelo WhatsApp.');
                 return;
             }
 
