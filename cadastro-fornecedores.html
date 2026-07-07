@@ -940,7 +940,7 @@
             gsap.registerPlugin(ScrollTrigger);
             gsap.from(".form-container", { y: 50, opacity: 0, duration: 0.8 });
             if (window.initUpload) {
-                initUpload('portfolio', { maxArquivos: 3, maxMB: 15, label: 'Clique para selecionar ou arraste seu portfólio/catálogo', sublabel: 'PDF, DOC, DOCX ou ZIP — máx. 15 MB por arquivo, até 3 arquivos' });
+                initUpload('portfolio', { maxArquivos: 1, maxMB: 3, label: 'Clique para selecionar ou arraste seu portfólio/catálogo', sublabel: 'PDF, DOC, DOCX ou ZIP — máx. 3 MB. Para arquivos maiores, cole o link no campo Website.' });
             }
         });
     </script>

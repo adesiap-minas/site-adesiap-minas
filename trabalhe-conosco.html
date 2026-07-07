@@ -545,12 +545,7 @@
         // GSAP animations + uploads
         window.addEventListener('load', () => {
             if (typeof initUpload === 'function') {
-                initUpload('curriculo-file', {
-                    maxArquivos: 3, maxMB: 10,
-                    label: 'Clique ou arraste para anexar seu curriculo',
-                    sublabel: 'PDF, DOC ou DOCX — até 3 arquivos — máx. 10MB cada',
-                    required: true,
-                });
+                initUpload('curriculo-file', { maxArquivos: 1, maxMB: 3, label: 'Clique para selecionar ou arraste seu currículo', sublabel: 'PDF, DOC ou DOCX — máx. 3 MB. CV maior? Cole o link na Carta de Apresentação.', required: true });
             }
             gsap.registerPlugin(ScrollTrigger);
             document.querySelectorAll('.reveal-on-scroll').forEach(el => {
