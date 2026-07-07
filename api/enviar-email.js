@@ -66,12 +66,21 @@ function buildEmail(tipo, dados, protocolo) {
     return { subject, html };
 }
 
-// Desativa o body parser automático do Vercel para garantir acesso ao stream
-// Necessário para corpos grandes (CVs em base64)
 const handlerConfig = { api: { bodyParser: false } };
 
-// Lê body como Buffer para suportar payloads grandes com segurança
 async function parseBody(req) {
+    // 1. Vercel auto-parseou o body como objeto → usa direto
+    if (req.body !== undefined) {
+        if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
+            console.log('parseBody: via req.body (auto-parsed), keys:', Object.keys(req.body));
+            return req.body;
+        }
+        if (Buffer.isBuffer(req.body)) {
+            try { return JSON.parse(req.body.toString('utf8')); } catch { return {}; }
+        }
+    }
+    // 2. bodyParser desabilitado ou runtime sem auto-parse → lê stream
+    console.log('parseBody: via stream');
     return new Promise((resolve) => {
         const chunks = [];
         req.on('data', chunk => {
@@ -80,6 +89,7 @@ async function parseBody(req) {
         req.on('end', () => {
             try {
                 const raw = Buffer.concat(chunks).toString('utf8');
+                console.log('parseBody: stream bytes:', raw.length);
                 resolve(raw ? JSON.parse(raw) : {});
             } catch (e) {
                 console.error('JSON parse error:', e.message);
