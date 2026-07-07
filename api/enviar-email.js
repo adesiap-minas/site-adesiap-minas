@@ -9,6 +9,8 @@ const TIPO_LABELS = {
     ouvidoria_elogio:     'Ouvidoria — Elogio',
     denuncias:            'Canal de Denúncias',
     candidaturas:         'Trabalhe Conosco',
+    confirmacao_protocolo: 'Confirmação de Protocolo',
+    resposta_protocolo:    'Atualização de Protocolo',
 };
 
 const FIELD_LABELS = {
@@ -34,6 +36,67 @@ function getMimeType(filename) {
 
 function labelFor(key) {
     return FIELD_LABELS[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
+}
+
+function buildConfirmacaoEmail(protocolo, tipo, nome) {
+    const tipoLabel = TIPO_LABELS[tipo] || tipo;
+    const subject = `Protocolo ${protocolo} — Recebemos sua mensagem`;
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:#f0f4f8;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.09);">
+    <div style="background:#12395D;padding:28px 32px 24px;">
+      <p style="margin:0 0 4px;color:rgba(255,255,255,.6);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">ADESIAP Minas</p>
+      <h1 style="margin:0 0 8px;color:#fff;font-size:21px;font-weight:700;">Mensagem Recebida</h1>
+    </div>
+    <div style="padding:28px 32px;">
+      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + nome + '</strong>' : ''},</p>
+      <p style="font-size:14px;color:#374151;">Sua <strong>${tipoLabel}</strong> foi recebida com sucesso e está sendo analisada pela nossa equipe.</p>
+      <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:20px 24px;margin:20px 0;text-align:center;">
+        <p style="margin:0 0 6px;font-size:12px;color:#6b7280;letter-spacing:1px;text-transform:uppercase;">Seu número de protocolo</p>
+        <p style="margin:0;font-family:monospace;font-size:28px;font-weight:700;color:#12395D;letter-spacing:2px;">${protocolo}</p>
+      </div>
+      <p style="font-size:13px;color:#6b7280;">Guarde este número — ele é a única forma de acompanhar o andamento da sua solicitação. Você será notificado por e-mail caso haja atualizações.</p>
+      <p style="font-size:13px;color:#6b7280;margin-top:16px;">Para consultar o status, acesse o site da ADESIAP e use a opção "Acompanhar Protocolo" na seção de Ouvidoria.</p>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+      <p style="font-size:11px;color:#9ca3af;text-align:center;">ADESIAP Minas · <a href="mailto:sac@adesiap.org.br" style="color:#B85C38;">sac@adesiap.org.br</a></p>
+    </div>
+  </div>
+</body>
+</html>`;
+    return { subject, html };
+}
+
+function buildRespostaEmail(protocolo, tipo, nome, status, resposta) {
+    const tipoLabel = TIPO_LABELS[tipo] || tipo;
+    const subject = `Protocolo ${protocolo} — Atualização de status`;
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background:#f0f4f8;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.09);">
+    <div style="background:#12395D;padding:28px 32px 24px;">
+      <p style="margin:0 0 4px;color:rgba(255,255,255,.6);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">ADESIAP Minas</p>
+      <h1 style="margin:0 0 8px;color:#fff;font-size:21px;font-weight:700;">Protocolo Atualizado</h1>
+      <p style="margin:0;color:rgba(255,255,255,.55);font-size:12px;">Protocolo: <strong style="color:#fff;font-family:monospace;">${protocolo}</strong></p>
+    </div>
+    <div style="padding:28px 32px;">
+      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + nome + '</strong>' : ''},</p>
+      <p style="font-size:14px;color:#374151;">Há uma atualização sobre sua <strong>${tipoLabel}</strong>.</p>
+      <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin:20px 0;">
+        <p style="margin:0 0 4px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Status atual</p>
+        <p style="margin:0;font-size:16px;font-weight:700;color:#12395D;">${status}</p>
+      </div>
+      ${resposta ? `<div style="background:#fff9f5;border-left:4px solid #B85C38;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
+        <p style="margin:0 0 8px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Mensagem da equipe</p>
+        <p style="margin:0;font-size:14px;color:#1f2937;line-height:1.6;">${resposta.replace(/\n/g, '<br>')}</p>
+      </div>` : ''}
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+      <p style="font-size:11px;color:#9ca3af;text-align:center;">ADESIAP Minas · <a href="mailto:sac@adesiap.org.br" style="color:#B85C38;">sac@adesiap.org.br</a></p>
+    </div>
+  </div>
+</body>
+</html>`;
+    return { subject, html };
 }
 
 function buildEmail(tipo, dados, protocolo) {
@@ -144,13 +207,23 @@ async function handler(req, res) {
             candidaturas:         cfg.email_candidaturas,
         };
 
-        const to = destMap[tipo] || cfg.email_destino || 'comercial@adesiap.org.br';
+        const isUserEmail = tipo === 'confirmacao_protocolo' || tipo === 'resposta_protocolo';
+        const to = isUserEmail
+            ? (dados.email || dados._emailUsuario || cfg.email_destino || 'comercial@adesiap.org.br')
+            : (destMap[tipo] || cfg.email_destino || 'comercial@adesiap.org.br');
         const fromName = cfg.email_remetente || 'ADESIAP Minas';
         const from = process.env.RESEND_FROM || `${fromName} <onboarding@resend.dev>`;
 
         console.log('Enviando de:', from, '| para:', to);
 
-        const { subject, html } = buildEmail(tipo, dados, protocolo);
+        let subject, html;
+        if (tipo === 'confirmacao_protocolo') {
+            ({ subject, html } = buildConfirmacaoEmail(protocolo, dados._tipoOrigem || 'denuncias', dados.nome || ''));
+        } else if (tipo === 'resposta_protocolo') {
+            ({ subject, html } = buildRespostaEmail(protocolo, dados._tipoOrigem || 'denuncias', dados.nome || '', dados._status || '', dados._resposta || ''));
+        } else {
+            ({ subject, html } = buildEmail(tipo, dados, protocolo));
+        }
 
         const payload = { from, to: [to], subject, html };
         const attachments = [];

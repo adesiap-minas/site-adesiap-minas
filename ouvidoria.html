@@ -653,6 +653,18 @@
             document.getElementById('email').required = val === 'identificado';
         }
 
+        const SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+
+        async function sbInsertDenuncia(row) {
+            const res = await fetch(`${SB_URL}/rest/v1/denuncias`, {
+                method: 'POST',
+                headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+                body: JSON.stringify(row)
+            });
+            if (!res.ok) console.warn('Supabase insert error', await res.text());
+        }
+
         // Submit genérico (reclamação, sugestão, elogio)
         const labels = {
             RCL: { title: 'Reclamação Registrada!', msg: 'Sua reclamação foi recebida e será analisada em até 15 dias úteis.', tipo: 'ouvidoria_reclamacao' },
@@ -674,19 +686,36 @@
                 if (label && input?.value) dados[label] = input.value;
             });
 
-            localStorage.setItem(protocolo, JSON.stringify({ status: 'Recebido — Em análise', data: new Date().toLocaleDateString('pt-BR') }));
+            const emailUsuario = dados['E-mail'] || dados['Email'] || '';
+            const nomeUsuario  = dados['Nome'] || '';
+            const tipoEmail = labels[prefix].tipo;
 
             const txtOrig = btn.textContent;
             btn.disabled = true;
             btn.textContent = 'Enviando...';
 
             try {
+                await sbInsertDenuncia({
+                    protocolo, tipo: tipoEmail, dados,
+                    email_usuario: emailUsuario || null,
+                    nome_usuario:  nomeUsuario  || null,
+                    status: 'Em análise'
+                });
+
                 const res = await fetch('/api/enviar-email', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tipo: labels[prefix].tipo, dados, protocolo }),
+                    body: JSON.stringify({ tipo: tipoEmail, dados, protocolo }),
                 });
                 if (!res.ok) throw new Error();
+
+                if (emailUsuario) {
+                    fetch('/api/enviar-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tipo: 'confirmacao_protocolo', dados: { email: emailUsuario, nome: nomeUsuario, _tipoOrigem: tipoEmail }, protocolo }),
+                    }).catch(() => {});
+                }
             } catch {
                 btn.disabled = false;
                 btn.textContent = txtOrig;
@@ -708,10 +737,12 @@
             const btn = form.querySelector('[type="submit"]');
             const protocolo = 'PRT-' + Math.floor(100000 + Math.random() * 900000);
 
+            const emailUsuario = document.getElementById('email')?.value || '';
+            const nomeUsuario  = document.getElementById('nome')?.value || '';
             const dados = {
                 identificacao: document.getElementById('identificacao').value === 'identificado' ? 'Identificado' : 'Anônimo',
-                nome:  document.getElementById('nome')?.value || '',
-                email: document.getElementById('email')?.value || '',
+                nome:  nomeUsuario,
+                email: emailUsuario,
             };
             form.querySelectorAll('.form-group').forEach(group => {
                 const label = group.querySelector('.form-label')?.textContent
@@ -719,8 +750,6 @@
                 const input = group.querySelector('select:not(#identificacao), textarea');
                 if (label && input?.value) dados[label] = input.value;
             });
-
-            localStorage.setItem(protocolo, JSON.stringify({ status: 'Em Análise pelo Comitê de Ética', data: new Date().toLocaleDateString('pt-BR') }));
 
             const txtOrig = btn.textContent;
             btn.disabled = true;
@@ -730,12 +759,28 @@
                 const uploader = window._fuReg?.['evidencias-ouvidoria'];
                 const arquivos = uploader?.getArquivos() || [];
                 if (arquivos.length) dados._arquivos = arquivos;
+
+                await sbInsertDenuncia({
+                    protocolo, tipo: 'denuncias', dados,
+                    email_usuario: emailUsuario || null,
+                    nome_usuario:  nomeUsuario  || null,
+                    status: 'Em análise'
+                });
+
                 const res = await fetch('/api/enviar-email', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tipo: 'denuncias', dados, protocolo }),
                 });
                 if (!res.ok) throw new Error();
+
+                if (emailUsuario) {
+                    fetch('/api/enviar-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tipo: 'confirmacao_protocolo', dados: { email: emailUsuario, nome: nomeUsuario, _tipoOrigem: 'denuncias' }, protocolo }),
+                    }).catch(() => {});
+                }
             } catch {
                 btn.disabled = false;
                 btn.textContent = txtOrig;
@@ -751,17 +796,34 @@
             toggleIdentificacao();
         }
 
-        // Track protocol
-        function trackProtocol(e) {
+        // Track protocol — consulta Supabase
+        async function trackProtocol(e) {
             e.preventDefault();
             const proto = document.getElementById('search-protocol').value.trim().toUpperCase();
             const resultDiv = document.getElementById('status-result');
-            const saved = localStorage.getItem(proto);
-            if (saved) {
-                const data = JSON.parse(saved);
-                resultDiv.innerHTML = `<div class="alert alert-success"><i class="fas fa-check-circle fa-2x"></i><div><strong>Protocolo:</strong> ${proto}<br><strong>Status:</strong> ${data.status}<br><small>Recebido em: ${data.data}</small></div></div>`;
-            } else {
-                resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle fa-2x"></i><div><strong>Protocolo não encontrado.</strong> Verifique se você digitou corretamente.</div></div>`;
+            resultDiv.innerHTML = '<p style="color:#6b7280;text-align:center"><i class="fas fa-spinner fa-spin"></i> Consultando...</p>';
+
+            try {
+                const res = await fetch(
+                    `${SB_URL}/rest/v1/denuncias?protocolo=eq.${encodeURIComponent(proto)}&select=protocolo,status,resposta_admin,created_at,atualizado_em&limit=1`,
+                    { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+                );
+                const rows = await res.json();
+                if (Array.isArray(rows) && rows.length > 0) {
+                    const d = rows[0];
+                    const dataCriacao = new Date(d.created_at).toLocaleDateString('pt-BR');
+                    const dataAtualizacao = d.atualizado_em ? new Date(d.atualizado_em).toLocaleDateString('pt-BR') : null;
+                    resultDiv.innerHTML = `<div class="alert alert-success"><i class="fas fa-check-circle fa-2x"></i><div>
+                        <strong>Protocolo:</strong> ${d.protocolo}<br>
+                        <strong>Status:</strong> ${d.status}<br>
+                        <small>Recebido em: ${dataCriacao}${dataAtualizacao ? ' · Atualizado em: ' + dataAtualizacao : ''}</small>
+                        ${d.resposta_admin ? `<div style="margin-top:10px;padding:10px 14px;background:#f0f9ff;border-left:3px solid #12395D;border-radius:4px;font-size:0.88rem"><strong>Resposta:</strong><br>${d.resposta_admin.replace(/\n/g,'<br>')}</div>` : ''}
+                    </div></div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle fa-2x"></i><div><strong>Protocolo não encontrado.</strong> Verifique se você digitou corretamente.</div></div>`;
+                }
+            } catch {
+                resultDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-triangle fa-2x"></i><div>Erro ao consultar. Tente novamente.</div></div>`;
             }
         }
         window.addEventListener('load', () => {
