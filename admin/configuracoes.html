@@ -744,6 +744,32 @@
             </div>
         </div>
 
+        <!-- SEÇÃO: POLÍTICA DE PRIVACIDADE -->
+        <div class="config-section">
+            <div class="section-header">
+                <div class="section-icon" style="background:#B85C38"><i class="fas fa-shield-alt"></i></div>
+                <div>
+                    <h3>Política de Privacidade</h3>
+                    <p>Texto exibido no modal dos formulários do site quando o usuário clica em "Política de Privacidade"</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="fields-grid" style="grid-template-columns:1fr">
+                    <div class="field-group">
+                        <label>Texto da política (HTML permitido)</label>
+                        <span class="field-desc">Suporta tags HTML como &lt;h3&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;. Use &lt;h3&gt; para seções e &lt;p&gt; para parágrafos.</span>
+                        <textarea id="politica_privacidade" rows="20" style="width:100%;font-family:monospace;font-size:0.82rem;line-height:1.5;border:1px solid #d1d5db;border-radius:6px;padding:10px;resize:vertical;margin-top:6px" placeholder="Cole o HTML da política de privacidade aqui..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn btn-primary" onclick="salvarPrivacidade()">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                <span class="save-msg" id="saveMsg-privacidade"><i class="fas fa-check"></i> Salvo!</span>
+            </div>
+        </div>
+
         <!-- SEÇÃO: ACESSO ADMIN -->
         <div class="config-section">
             <div class="section-header">
@@ -979,7 +1005,7 @@
             'wa_cta_servicos_numero','wa_cta_servicos_msg',
             'wa_cta_projetos_numero','wa_cta_projetos_msg',
             'site_nome','site_url',
-            'ouvidoria_prazo','ouvidoria_email'
+            'ouvidoria_prazo','ouvidoria_email','politica_privacidade'
         ];
         campos.forEach(c => {
             const el = document.getElementById(c);
@@ -994,7 +1020,7 @@
             routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas'],
             whatsapp:  ['wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg','wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg','wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg','wa_fale_conosco_numero','wa_fale_conosco_label','wa_cta_inicio_numero','wa_cta_inicio_msg','wa_cta_quem_somos_numero','wa_cta_quem_somos_msg','wa_cta_governanca_numero','wa_cta_governanca_msg','wa_cta_agenda_numero','wa_cta_agenda_msg','wa_cta_servicos_numero','wa_cta_servicos_msg','wa_cta_projetos_numero','wa_cta_projetos_msg'],
             site:      ['site_nome','site_url'],
-            ouvidoria: ['ouvidoria_prazo','ouvidoria_email'],
+            ouvidoria: ['ouvidoria_prazo','ouvidoria_email','politica_privacidade'],
         };
         const chaves = mapa[grupo];
         if (!chaves) return;
@@ -1013,6 +1039,26 @@
             const msg = document.getElementById(`saveMsg-${grupo}`);
             if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
             mostrarToast('Configurações salvas com sucesso!', 'sucesso');
+        } catch (e) {
+            mostrarToast('Erro ao salvar: ' + e.message, 'erro');
+        }
+    }
+
+    // ── SALVAR POLÍTICA DE PRIVACIDADE ───────────────────
+    async function salvarPrivacidade() {
+        const el = document.getElementById('politica_privacidade');
+        if (!el) return;
+        const valor = el.value;
+        try {
+            await sbFetch('configuracoes?on_conflict=chave', {
+                method: 'POST',
+                headers: { 'Prefer': 'resolution=merge-duplicates' },
+                body: JSON.stringify([{ grupo: 'conteudo', chave: 'politica_privacidade', valor }])
+            });
+            configs['politica_privacidade'] = valor;
+            const msg = document.getElementById('saveMsg-privacidade');
+            if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
+            mostrarToast('Política de privacidade salva!', 'sucesso');
         } catch (e) {
             mostrarToast('Erro ao salvar: ' + e.message, 'erro');
         }
