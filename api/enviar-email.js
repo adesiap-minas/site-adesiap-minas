@@ -66,23 +66,31 @@ function buildEmail(tipo, dados, protocolo) {
     return { subject, html };
 }
 
-// Lê body da request de forma segura (Vercel pode não fazer parse automático)
+// Desativa o body parser automático do Vercel para garantir acesso ao stream
+// Necessário para corpos grandes (CVs em base64)
+const handlerConfig = { api: { bodyParser: false } };
+
+// Lê body como Buffer para suportar payloads grandes com segurança
 async function parseBody(req) {
-    if (req.body && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) {
-        return req.body;
-    }
     return new Promise((resolve) => {
-        let raw = '';
-        req.on('data', chunk => { raw += chunk.toString(); });
+        const chunks = [];
+        req.on('data', chunk => {
+            chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        });
         req.on('end', () => {
-            try { resolve(raw ? JSON.parse(raw) : {}); }
-            catch { resolve({}); }
+            try {
+                const raw = Buffer.concat(chunks).toString('utf8');
+                resolve(raw ? JSON.parse(raw) : {});
+            } catch (e) {
+                console.error('JSON parse error:', e.message);
+                resolve({});
+            }
         });
         req.on('error', () => resolve({}));
     });
 }
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -99,6 +107,7 @@ module.exports = async function handler(req, res) {
         const { tipo, dados = {}, protocolo = '' } = body;
 
         console.log('Recebido tipo:', tipo, '| protocolo:', protocolo);
+        console.log('CV presente:', !!dados._curriculo, '| tamanho base64:', dados._curriculo?.length || 0);
 
         // Lê roteamento do Supabase
         const cfgRes = await fetch(
@@ -160,4 +169,7 @@ module.exports = async function handler(req, res) {
         console.error('Handler error:', err);
         res.status(500).json({ error: 'Erro interno no servidor', detalhe: err.message });
     }
-};
+}
+
+module.exports = handler;
+handler.config = handlerConfig;
