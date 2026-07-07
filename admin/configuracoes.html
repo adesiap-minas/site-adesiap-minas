@@ -393,43 +393,29 @@
             <div class="section-header">
                 <div class="section-icon email"><i class="fas fa-paper-plane"></i></div>
                 <div>
-                    <h3>Configurações de E-mail (SMTP)</h3>
-                    <p>Dados do servidor de e-mail Microsoft 365 para envio dos formulários</p>
+                    <h3>Configurações de E-mail</h3>
+                    <p>Remetente e destino padrão para os formulários do site (envio via Resend)</p>
                 </div>
             </div>
             <div class="section-body">
+                <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:0.85rem;color:#1e40af;display:flex;gap:12px;align-items:flex-start;">
+                    <i class="fas fa-info-circle" style="margin-top:2px;flex-shrink:0;"></i>
+                    <div>
+                        <strong>Como configurar o envio:</strong> o serviço de e-mail usa a plataforma <strong>Resend</strong>.
+                        A chave de API deve ser adicionada como variável de ambiente <code style="background:#dbeafe;padding:1px 5px;border-radius:3px;">RESEND_API_KEY</code> no painel do Vercel
+                        (Settings → Environment Variables). Opcionalmente, configure <code style="background:#dbeafe;padding:1px 5px;border-radius:3px;">RESEND_FROM</code> com o endereço remetente após verificar o domínio no Resend.
+                        <br><a href="https://resend.com" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:underline;">resend.com</a>
+                    </div>
+                </div>
                 <div class="fields-grid">
                     <div class="field-group">
-                        <label>Servidor SMTP</label>
-                        <span class="field-desc">Padrão Microsoft 365: smtp.office365.com</span>
-                        <input type="text" id="smtp_host" placeholder="smtp.office365.com">
-                    </div>
-                    <div class="field-group">
-                        <label>Porta</label>
-                        <span class="field-desc">Padrão: 587 (TLS)</span>
-                        <input type="number" id="smtp_port" placeholder="587">
-                    </div>
-                    <div class="field-group">
-                        <label>E-mail remetente (usuário SMTP)</label>
-                        <span class="field-desc">E-mail que aparece como remetente</span>
-                        <input type="email" id="smtp_user" placeholder="contato@adesiap.org.br">
-                    </div>
-                    <div class="field-group">
-                        <label>Senha do e-mail</label>
-                        <span class="field-desc">Senha da conta Microsoft 365</span>
-                        <div class="field-input">
-                            <input type="password" id="smtp_pass" placeholder="••••••••">
-                            <button class="eye-btn" onclick="toggleSenha('smtp_pass', this)"><i class="fas fa-eye"></i></button>
-                        </div>
-                    </div>
-                    <div class="field-group">
-                        <label>E-mail que recebe os formulários</label>
-                        <span class="field-desc">Destino das mensagens do site</span>
+                        <label>E-mail destino padrão</label>
+                        <span class="field-desc">Usado quando nenhum roteamento específico está definido</span>
                         <input type="email" id="email_destino" placeholder="comercial@adesiap.org.br">
                     </div>
                     <div class="field-group">
                         <label>Nome do remetente</label>
-                        <span class="field-desc">Nome exibido nos e-mails enviados</span>
+                        <span class="field-desc">Nome exibido nos e-mails enviados pelo site</span>
                         <input type="text" id="email_remetente" placeholder="ADESIAP Minas">
                     </div>
                 </div>
@@ -437,9 +423,6 @@
             <div class="section-footer">
                 <button class="btn btn-primary" onclick="salvarGrupo('email')">
                     <i class="fas fa-save"></i> Salvar
-                </button>
-                <button class="btn btn-test" onclick="testarEmail()">
-                    <i class="fas fa-flask"></i> Testar envio
                 </button>
                 <span class="save-msg" id="saveMsg-email"><i class="fas fa-check"></i> Salvo!</span>
             </div>
@@ -985,7 +968,6 @@
 
     function preencherFormularios() {
         const campos = [
-            'smtp_host','smtp_port','smtp_user','smtp_pass',
             'email_destino','email_remetente',
             'email_contato','email_fornecedores',
             'email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio',
@@ -1012,7 +994,7 @@
     // ── SALVAR GRUPO ────────────────────────────────────────
     async function salvarGrupo(grupo) {
         const mapa = {
-            email:     ['smtp_host','smtp_port','smtp_user','smtp_pass','email_destino','email_remetente'],
+            email:     ['email_destino','email_remetente'],
             routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas'],
             whatsapp:  ['wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg','wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg','wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg','wa_fale_conosco_numero','wa_fale_conosco_label','wa_cta_inicio_numero','wa_cta_inicio_msg','wa_cta_quem_somos_numero','wa_cta_quem_somos_msg','wa_cta_governanca_numero','wa_cta_governanca_msg','wa_cta_agenda_numero','wa_cta_agenda_msg','wa_cta_servicos_numero','wa_cta_servicos_msg','wa_cta_projetos_numero','wa_cta_projetos_msg'],
             site:      ['site_nome','site_url'],

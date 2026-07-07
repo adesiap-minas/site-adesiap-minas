@@ -508,11 +508,53 @@
         }
 
         // Form submit
-        function submitCandidatura(e) {
+        async function submitCandidatura(e) {
             e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('[type="submit"]');
+
+            // Coleta campos pelo label de cada .form-group
+            const dados = {};
+            form.querySelectorAll('.form-group').forEach(group => {
+                const label = group.querySelector('.form-label')?.textContent
+                    ?.replace(/\s*\*\s*/g, '').replace(/\s*\(opcional\)\s*/g, '').trim();
+                const input = group.querySelector('input:not([type=file]):not([type=checkbox]), select, textarea');
+                if (label && input?.value) dados[label] = input.value;
+            });
+
+            // Anexa currículo como base64
+            const fileInput = document.getElementById('curriculo-file');
+            if (fileInput?.files[0]) {
+                const file = fileInput.files[0];
+                const base64 = await new Promise(resolve => {
+                    const r = new FileReader();
+                    r.onload = () => resolve(r.result.split(',')[1]);
+                    r.readAsDataURL(file);
+                });
+                dados._curriculo = base64;
+                dados._curriculoNome = file.name;
+            }
+
+            const txtOrig = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const res = await fetch('/api/enviar-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tipo: 'candidaturas', dados, protocolo: 'CAND-' + Math.floor(100000 + Math.random() * 900000) }),
+                });
+                if (!res.ok) throw new Error();
+            } catch {
+                btn.disabled = false;
+                btn.textContent = txtOrig;
+                alert('Não foi possível enviar o e-mail. Tente novamente ou entre em contato pelo WhatsApp.');
+                return;
+            }
+
             document.getElementById('form-area').style.display = 'none';
-            const box = document.getElementById('success-box');
-            box.style.display = 'block';
+            document.getElementById('success-box').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 

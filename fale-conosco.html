@@ -862,31 +862,43 @@
         }
 
         // Formulário de Contato
-        function submitContato(e) {
+        async function submitContato(e) {
             e.preventDefault();
-            
-            // Gerar protocolo de atendimento
+            const btn = e.target.querySelector('[type="submit"]');
             const protocolo = 'CONT-' + Math.floor(100000 + Math.random() * 900000);
-            
-            // Salvar no LocalStorage
-            const data = {
-                nome: document.getElementById('nome').value,
-                email: document.getElementById('email').value,
+
+            const dados = {
+                nome:     document.getElementById('nome').value,
+                email:    document.getElementById('email').value,
                 telefone: document.getElementById('telefone').value,
-                empresa: document.getElementById('empresa').value,
-                assunto: document.getElementById('assunto').value,
+                empresa:  document.getElementById('empresa').value,
+                assunto:  document.getElementById('assunto').value,
                 mensagem: document.getElementById('mensagem').value,
-                data: new Date().toLocaleDateString('pt-BR'),
-                status: 'Recebido / Em Fila de Atendimento'
             };
-            
-            localStorage.setItem(protocolo, JSON.stringify(data));
-            
-            // Exibir tela de sucesso
+
+            localStorage.setItem(protocolo, JSON.stringify({ status: 'Recebido — Em fila de atendimento', data: new Date().toLocaleDateString('pt-BR') }));
+
+            const txtOrig = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const res = await fetch('/api/enviar-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tipo: 'contato', dados, protocolo }),
+                });
+                if (!res.ok) throw new Error();
+            } catch {
+                btn.disabled = false;
+                btn.textContent = txtOrig;
+                alert('Não foi possível enviar o e-mail. Tente novamente ou entre em contato pelo WhatsApp.');
+                return;
+            }
+
             document.getElementById('protocol-number').innerText = protocolo;
             document.getElementById('form-block').style.display = 'none';
             document.getElementById('success-block').style.display = 'block';
-            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 

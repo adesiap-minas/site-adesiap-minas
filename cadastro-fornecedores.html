@@ -869,43 +869,55 @@
         }
 
         // Formulário de Cadastro de Fornecedor
-        function submitFornecedor(e) {
+        async function submitFornecedor(e) {
             e.preventDefault();
-            
-            // Gerar protocolo de cadastro
+            const btn = e.target.querySelector('[type="submit"]');
             const protocolo = 'FORN-' + Math.floor(100000 + Math.random() * 900000);
-            
-            // Salvar no LocalStorage
-            const data = {
-                razaoSocial: document.getElementById('razao_social').value,
-                nomeFantasia: document.getElementById('nome_fantasia').value,
-                cnpj: document.getElementById('cnpj').value,
-                inscricaoEstadual: document.getElementById('inscricao_estadual').value,
+
+            const dados = {
+                razaoSocial:      document.getElementById('razao_social').value,
+                nomeFantasia:     document.getElementById('nome_fantasia').value,
+                cnpj:             document.getElementById('cnpj').value,
+                inscricaoEstadual:document.getElementById('inscricao_estadual').value,
                 tipoFornecimento: document.getElementById('tipo_fornecimento').value,
-                categoria: document.getElementById('categoria').value,
-                descricao: document.getElementById('descricao').value,
-                cep: document.getElementById('cep').value,
-                cidade: document.getElementById('cidade').value,
-                uf: document.getElementById('uf').value,
-                logradouro: document.getElementById('logradouro').value,
-                bairro: document.getElementById('bairro').value,
-                contatoNome: document.getElementById('contato_nome').value,
-                contatoCargo: document.getElementById('contato_cargo').value,
-                contatoEmail: document.getElementById('contato_email').value,
-                contatoTelefone: document.getElementById('contato_telefone').value,
-                website: document.getElementById('website').value,
-                linkedin: document.getElementById('linkedin').value,
-                data: new Date().toLocaleDateString('pt-BR'),
-                status: 'Pendente de Homologação'
+                categoria:        document.getElementById('categoria').value,
+                descricao:        document.getElementById('descricao').value,
+                cep:              document.getElementById('cep').value,
+                logradouro:       document.getElementById('logradouro').value,
+                bairro:           document.getElementById('bairro').value,
+                cidade:           document.getElementById('cidade').value,
+                uf:               document.getElementById('uf').value,
+                contatoNome:      document.getElementById('contato_nome').value,
+                contatoCargo:     document.getElementById('contato_cargo').value,
+                contatoEmail:     document.getElementById('contato_email').value,
+                contatoTelefone:  document.getElementById('contato_telefone').value,
+                website:          document.getElementById('website').value,
+                linkedin:         document.getElementById('linkedin').value,
             };
-            
-            localStorage.setItem(protocolo, JSON.stringify(data));
-            
-            // Exibir tela de sucesso
+
+            localStorage.setItem(protocolo, JSON.stringify({ status: 'Pendente de Homologação', data: new Date().toLocaleDateString('pt-BR') }));
+
+            const txtOrig = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            try {
+                const res = await fetch('/api/enviar-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tipo: 'fornecedores', dados, protocolo }),
+                });
+                if (!res.ok) throw new Error();
+            } catch {
+                btn.disabled = false;
+                btn.textContent = txtOrig;
+                alert('Não foi possível enviar o e-mail. Tente novamente ou entre em contato pelo WhatsApp.');
+                return;
+            }
+
             document.getElementById('protocol-number').innerText = protocolo;
             document.getElementById('form-block').style.display = 'none';
             document.getElementById('success-block').style.display = 'block';
-            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
