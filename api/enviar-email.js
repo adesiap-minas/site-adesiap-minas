@@ -26,6 +26,12 @@ const FIELD_LABELS = {
     website: 'Website',
 };
 
+function getMimeType(filename) {
+    if (!filename) return 'application/octet-stream';
+    const ext = (filename || '').toLowerCase().split('.').pop();
+    return { pdf: 'application/pdf', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }[ext] || 'application/octet-stream';
+}
+
 function labelFor(key) {
     return FIELD_LABELS[key] || key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
 }
@@ -147,11 +153,18 @@ async function handler(req, res) {
         const { subject, html } = buildEmail(tipo, dados, protocolo);
 
         const payload = { from, to: [to], subject, html };
+        const attachments = [];
         if (dados._curriculo) {
-            payload.attachments = [{
-                filename: dados._curriculoNome || 'curriculo.pdf',
-                content: dados._curriculo,
-            }];
+            const fn = dados._curriculoNome || 'curriculo.pdf';
+            attachments.push({ filename: fn, content: dados._curriculo, content_type: getMimeType(fn) });
+        }
+        if (dados._portfolio) {
+            const fn = dados._portfolioNome || 'portfolio.pdf';
+            attachments.push({ filename: fn, content: dados._portfolio, content_type: getMimeType(fn) });
+        }
+        if (attachments.length) {
+            payload.attachments = attachments;
+            console.log('Attachments:', attachments.map(a => `${a.filename}(${a.content.length}b)`).join(', '));
         }
 
         const sendRes = await fetch('https://api.resend.com/emails', {
@@ -173,8 +186,16 @@ async function handler(req, res) {
             });
         }
 
-        console.log('E-mail enviado. ID Resend:', sendBody.id);
-        res.status(200).json({ ok: true, _debug: { cvRecebido: !!dados._curriculo, cvBytes: dados._curriculo?.length || 0 } });
+        console.log('Resend response:', JSON.stringify(sendBody));
+        res.status(200).json({
+            ok: true,
+            _debug: {
+                cvRecebido: !!dados._curriculo,
+                cvBytes: dados._curriculo?.length || 0,
+                to,
+                resend: sendBody,
+            },
+        });
     } catch (err) {
         console.error('Handler error:', err);
         res.status(500).json({ error: 'Erro interno no servidor', detalhe: err.message });
