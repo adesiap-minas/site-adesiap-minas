@@ -672,6 +672,12 @@
             ELG: { title: 'Elogio Registrado!', msg: 'Seu elogio foi recebido e será compartilhado com a equipe envolvida.', tipo: 'ouvidoria_elogio' },
         };
 
+        function inputVal(el) {
+            if (!el) return '';
+            if (el.tagName === 'SELECT') return el.value ? (el.options[el.selectedIndex]?.text || el.value) : '';
+            return el.value || '';
+        }
+
         async function submitForm(e, prefix) {
             e.preventDefault();
             const form = e.target;
@@ -683,7 +689,8 @@
                 const label = group.querySelector('.form-label')?.textContent
                     ?.replace(/\s*\*\s*/g, '').replace(/\s*\(opcional\)\s*/g, '').trim();
                 const input = group.querySelector('input:not([type=submit]), select, textarea');
-                if (label && input?.value) dados[label] = input.value;
+                const val = inputVal(input);
+                if (label && val) dados[label] = val;
             });
 
             const emailUsuario = dados['E-mail'] || dados['Email'] || '';
@@ -748,7 +755,8 @@
                 const label = group.querySelector('.form-label')?.textContent
                     ?.replace(/\s*\*\s*/g, '').replace(/\s*\(opcional\)\s*/g, '').trim();
                 const input = group.querySelector('select:not(#identificacao), textarea');
-                if (label && input?.value) dados[label] = input.value;
+                const val = inputVal(input);
+                if (label && val) dados[label] = val;
             });
 
             const txtOrig = btn.textContent;

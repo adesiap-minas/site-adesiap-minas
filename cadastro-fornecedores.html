@@ -868,6 +868,13 @@
         }
 
         // Formulário de Cadastro de Fornecedor
+        function selText(id) {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            if (el.tagName === 'SELECT') return el.value ? (el.options[el.selectedIndex]?.text || el.value) : '';
+            return el.value || '';
+        }
+
         async function submitFornecedor(e) {
             e.preventDefault();
             const btn = e.target.querySelector('[type="submit"]');
@@ -878,8 +885,8 @@
                 nomeFantasia:     document.getElementById('nome_fantasia').value,
                 cnpj:             document.getElementById('cnpj').value,
                 inscricaoEstadual:document.getElementById('inscricao_estadual').value,
-                tipoFornecimento: document.getElementById('tipo_fornecimento').value,
-                categoria:        document.getElementById('categoria').value,
+                tipoFornecimento: selText('tipo_fornecimento'),
+                categoria:        selText('categoria'),
                 descricao:        document.getElementById('descricao').value,
                 cep:              document.getElementById('cep').value,
                 logradouro:       document.getElementById('logradouro').value,

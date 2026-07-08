@@ -862,6 +862,13 @@
         }
 
         // Formulário de Contato
+        function selText(id) {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            if (el.tagName === 'SELECT') return el.value ? (el.options[el.selectedIndex]?.text || el.value) : '';
+            return el.value || '';
+        }
+
         async function submitContato(e) {
             e.preventDefault();
             const btn = e.target.querySelector('[type="submit"]');
@@ -872,7 +879,7 @@
                 email:    document.getElementById('email').value,
                 telefone: document.getElementById('telefone').value,
                 empresa:  document.getElementById('empresa').value,
-                assunto:  document.getElementById('assunto').value,
+                assunto:  selText('assunto'),
                 mensagem: document.getElementById('mensagem').value,
             };
 
