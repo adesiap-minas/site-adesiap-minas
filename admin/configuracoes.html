@@ -1036,16 +1036,17 @@
         if (!chaves) return;
 
         try {
-            for (const chave of chaves) {
-                const el = document.getElementById(chave);
-                if (!el) continue;
-                const valor = el.value.trim();
-                await sbFetch(`configuracoes?chave=eq.${chave}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify({ valor })
-                });
-                configs[chave] = valor;
-            }
+            const rows = chaves
+                .map(chave => ({ grupo, chave, valor: (document.getElementById(chave)?.value || '').trim() }))
+                .filter(r => document.getElementById(r.chave));
+
+            await sbFetch('configuracoes?on_conflict=chave', {
+                method: 'POST',
+                headers: { 'Prefer': 'resolution=merge-duplicates' },
+                body: JSON.stringify(rows)
+            });
+
+            rows.forEach(r => { configs[r.chave] = r.valor; });
             const msg = document.getElementById(`saveMsg-${grupo}`);
             if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 3000); }
             mostrarToast('Configurações salvas com sucesso!', 'sucesso');
