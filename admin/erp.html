@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Projetos — Admin ADESIAP</title>
+    <title>Projetos TOTVS — Admin ADESIAP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -11,133 +11,193 @@
             --azul: #12395D; --azul-escuro: #0B1F33; --azul-claro: #1a4f82;
             --terracota: #B85C38; --ambar: #D9902F; --verde: #3B8C6E;
             --texto: #1F2933; --texto-leve: #5F6B76; --borda: #E2E8F0;
+            --bg: #F0F4F8;
+            --s-none:   #9CA3AF;
+            --s-pend:   #F59E0B;
+            --s-cot:    #6366F1;
+            --s-oc:     #0EA5E9;
+            --s-rec:    #10B981;
+            --s-direta: #8B5CF6;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:#F0F4F8; color:var(--texto); min-height:100vh; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--texto); min-height:100vh; }
 
-        /* Login */
+        /* LOGIN */
         #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--azul-escuro)}
         .login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-        .login-logo{text-align:center;margin-bottom:28px}
-        .login-logo img{height:48px}
-        .login-logo h2{font-size:1.1rem;color:var(--azul);margin-top:10px;font-weight:600}
         .login-box label{display:block;font-size:.8rem;font-weight:600;color:var(--texto-leve);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
         .login-box input{width:100%;padding:11px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.95rem;outline:none}
+        .login-logo{text-align:center;margin-bottom:28px}
+        .login-logo h2{font-size:1.1rem;color:var(--azul);margin-top:10px;font-weight:600}
         .btn-login{width:100%;margin-top:20px;padding:12px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
         .btn-login:hover{background:var(--azul-claro)}
         .login-error{color:#e53e3e;font-size:.83rem;margin-top:10px;text-align:center;display:none}
 
-        /* Layout */
-        .admin-wrap{display:none;min-height:100vh}
+        /* SHELL */
+        .admin-wrap{display:none;min-height:100vh;flex-direction:row}
         .sidebar{width:240px;background:var(--azul-escuro);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100}
         .sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
         .sidebar-logo img{height:36px}
-        .sidebar-nav{padding:16px 0;flex:1}
+        .sidebar-nav{padding:16px 0;flex:1;overflow-y:auto}
         .nav-section-label{display:block;padding:16px 20px 6px;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
         .nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
         .nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
         .nav-item i{width:18px;text-align:center;font-size:.95rem}
         .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px}
         .sidebar-footer a,.btn-logout{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0}
-        .sidebar-footer a:hover,.btn-logout:hover{color:#fff}
+        .sidebar-footer a:hover{color:#fff}
         .btn-logout:hover{color:var(--terracota)}
 
-        .main-content{margin-left:240px;padding:40px}
-        .page-header{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
-        .page-header-text h1{font-size:1.8rem;color:var(--azul);margin-bottom:4px}
-        .page-header-text p{color:var(--texto-leve);font-size:.9rem}
-        .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-        .timestamp{font-size:.78rem;color:var(--texto-leve);display:flex;align-items:center;gap:6px}
+        /* ERP LAYOUT */
+        .erp-wrap{margin-left:240px;display:flex;height:100vh;overflow:hidden}
+
+        /* Left panel */
+        .proj-panel{width:300px;flex-shrink:0;background:#fff;border-right:1px solid var(--borda);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+        .proj-panel-header{padding:14px;border-bottom:1px solid var(--borda);flex-shrink:0}
+        .proj-panel-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+        .proj-panel-title h2{font-size:.9rem;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:6px}
+        .btn-refresh-sm{background:none;border:1px solid var(--borda);border-radius:6px;padding:4px 9px;font-size:.72rem;color:var(--texto-leve);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s}
+        .btn-refresh-sm:hover{border-color:var(--azul);color:var(--azul)}
+        .btn-refresh-sm:disabled{opacity:.5;cursor:not-allowed}
+        .search-proj{width:100%;padding:7px 11px;border:1.5px solid var(--borda);border-radius:7px;font-size:.82rem;outline:none}
+        .search-proj:focus{border-color:var(--azul)}
+        .proj-list{flex:1;overflow-y:auto;padding:6px}
+        .proj-card{padding:11px 13px;border-radius:8px;cursor:pointer;border:1.5px solid transparent;margin-bottom:3px;transition:all .15s}
+        .proj-card:hover{background:#f8fafc;border-color:var(--borda)}
+        .proj-card.active{background:#EFF6FF;border-color:#93C5FD}
+        .proj-codigo{font-size:.72rem;font-weight:700;color:var(--azul);font-family:monospace;margin-bottom:1px}
+        .proj-nome{font-size:.82rem;font-weight:600;color:var(--texto);line-height:1.3;margin-bottom:3px}
+        .proj-resp{font-size:.73rem;color:var(--texto-leve);margin-bottom:4px}
+        .proj-pills{display:flex;gap:3px;flex-wrap:wrap}
+        .pill{font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:7px}
+        .pill-rec{background:#D1FAE5;color:#065F46}
+        .pill-oc{background:#DBEAFE;color:#1E40AF}
+        .pill-cot{background:#EDE9FE;color:#5B21B6}
+        .pill-pend{background:#FEF3C7;color:#92400E}
+        .pill-none{background:#F3F4F6;color:#6B7280}
+        .proj-loading{padding:40px 12px;text-align:center;color:var(--texto-leve);font-size:.83rem}
+        .proj-loading i{display:block;font-size:1.6rem;margin-bottom:8px;opacity:.3}
+
+        /* Right panel */
+        .task-panel{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;background:var(--bg)}
+        .empty-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--texto-leve);gap:10px}
+        .empty-center i{font-size:2.5rem;opacity:.18}
+        .empty-center p{font-size:.88rem}
+        #taskView{display:none;flex-direction:column;height:100%;overflow:hidden}
+
+        /* Task header */
+        .task-header{background:#fff;border-bottom:1px solid var(--borda);padding:12px 20px;flex-shrink:0}
+        .th-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+        .th-name h2{font-size:1rem;font-weight:700;color:var(--azul);margin-bottom:2px}
+        .th-meta{font-size:.75rem;color:var(--texto-leve);display:flex;gap:12px;flex-wrap:wrap;margin-top:2px}
+        .th-meta span{display:flex;align-items:center;gap:4px}
+        .kpi-strip{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+        .kpi{background:var(--bg);border-radius:7px;padding:8px 14px;display:flex;flex-direction:column;min-width:120px}
+        .kpi-label{font-size:.65rem;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+        .kpi-value{font-size:.95rem;font-weight:700;color:var(--azul)}
+        .kpi-value.verde{color:var(--verde)}
+        .kpi-value.ambar{color:var(--ambar)}
+
+        /* Toolbar */
+        .tree-toolbar{padding:8px 20px;border-bottom:1px solid var(--borda);background:#fff;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap}
+        .search-task{padding:6px 11px;border:1.5px solid var(--borda);border-radius:7px;font-size:.8rem;outline:none;min-width:200px}
+        .search-task:focus{border-color:var(--azul)}
+        .legend{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap}
+        .leg{display:flex;align-items:center;gap:3px;font-size:.68rem;color:var(--texto-leve);cursor:default}
+        .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+        /* Tree */
+        .tree-body{flex:1;overflow-y:auto;padding:10px 14px}
+        .trf-group{margin-bottom:3px}
+
+        /* Level 1 */
+        .trf-l1{display:flex;align-items:center;gap:7px;padding:9px 12px;background:var(--azul-escuro);border-radius:7px;cursor:pointer;user-select:none;margin-bottom:2px}
+        .trf-l1 .chev{color:rgba(255,255,255,.4);font-size:.72rem;transition:transform .18s;flex-shrink:0;width:10px}
+        .trf-l1.open .chev{transform:rotate(90deg)}
+        .trf-l1 .l1-cod{font-size:.67rem;font-family:monospace;color:rgba(255,255,255,.4);flex-shrink:0}
+        .trf-l1 .l1-nom{font-size:.84rem;font-weight:600;color:#fff;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .trf-l1 .l1-r{display:flex;align-items:center;gap:7px;flex-shrink:0}
+        .trf-l1 .l1-vlr{font-size:.75rem;font-family:monospace;color:rgba(255,255,255,.6)}
+        .agg{display:flex;gap:2px}
+        .ap{width:7px;height:7px;border-radius:50%}
+        .trf-l1-ch{padding-left:12px;margin-bottom:2px}
+
+        /* Level 2 */
+        .trf-l2-wrap{margin-bottom:2px}
+        .trf-l2{display:flex;align-items:center;gap:7px;padding:7px 11px;background:#fff;border:1px solid var(--borda);border-radius:6px;cursor:pointer;user-select:none;transition:all .12s}
+        .trf-l2:hover,.trf-l2.open{border-color:#93C5FD;background:#F8FAFF}
+        .trf-l2 .chev{color:var(--texto-leve);font-size:.68rem;transition:transform .18s;flex-shrink:0;width:10px}
+        .trf-l2.open .chev{transform:rotate(90deg)}
+        .trf-l2 .l2-cod{font-size:.65rem;font-family:monospace;color:var(--texto-leve);flex-shrink:0}
+        .trf-l2 .l2-nom{font-size:.82rem;font-weight:600;color:var(--texto);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .trf-l2 .l2-r{display:flex;align-items:center;gap:7px;flex-shrink:0}
+        .trf-l2 .l2-cnt{font-size:.68rem;color:var(--texto-leve)}
+        .trf-l2 .l2-vlr{font-size:.73rem;font-family:monospace;color:var(--texto-leve)}
+        .trf-l2-ch{padding:3px 0 3px 14px;display:flex;flex-direction:column;gap:2px}
+
+        /* Level 3 (leaf) */
+        .trf-l3{display:flex;align-items:center;gap:7px;padding:7px 11px;background:#fff;border:1px solid var(--borda);border-radius:6px;cursor:pointer;transition:all .12s}
+        .trf-l3:hover{border-color:#93C5FD;box-shadow:0 1px 6px rgba(18,57,93,.07)}
+        .farole{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+        .l3-cod{font-size:.63rem;font-family:monospace;color:var(--texto-leve);flex-shrink:0}
+        .l3-nom{font-size:.8rem;color:var(--texto);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .l3-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
+        .l3-fornec{font-size:.7rem;color:var(--texto-leve);max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .l3-vlr{font-size:.72rem;font-family:monospace;color:var(--texto-leve);white-space:nowrap}
+        .l3-badge{font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:7px;white-space:nowrap}
+        .l3-chev{color:#CBD5E1;font-size:.65rem;flex-shrink:0}
+
+        /* Status */
+        .s-none  {background:var(--s-none)!important}
+        .s-pend  {background:var(--s-pend)!important}
+        .s-cot   {background:var(--s-cot)!important}
+        .s-oc    {background:var(--s-oc)!important}
+        .s-rec   {background:var(--s-rec)!important}
+        .s-direta{background:var(--s-direta)!important}
+        .bn{background:#F3F4F6;color:#6B7280}
+        .bp{background:#FEF3C7;color:#92400E}
+        .bc{background:#EDE9FE;color:#5B21B6}
+        .bo{background:#DBEAFE;color:#1E40AF}
+        .br{background:#D1FAE5;color:#065F46}
+        .bd{background:#F3E8FF;color:#7C3AED}
+
+        /* Drawer */
+        #overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;display:none}
+        #drawer{position:fixed;top:0;right:0;width:650px;max-width:100vw;height:100vh;background:#fff;z-index:201;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .25s ease}
+        #drawer.open{transform:translateX(0)}
+        .drw-hdr{padding:16px 20px;border-bottom:1px solid var(--borda);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
+        .drw-hdr h3{font-size:.9rem;color:var(--azul);margin:0 0 2px;font-weight:700}
+        .drw-hdr p{font-size:.73rem;color:var(--texto-leve);margin:0}
+        .drw-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;padding:0}
+        .drw-close:hover{color:var(--texto)}
+        .drw-body{flex:1;overflow-y:auto;padding:16px 20px}
+        .trf-info-box{background:#f8fafc;border-radius:7px;padding:10px 13px;margin-bottom:12px;font-size:.8rem}
+        .trf-info-row{display:flex;gap:8px;margin-bottom:3px}
+        .trf-info-lbl{color:var(--texto-leve);width:85px;flex-shrink:0;font-size:.75rem}
+        .no-compra{padding:20px;text-align:center;color:var(--texto-leve);font-size:.83rem}
+        .no-compra i{display:block;font-size:1.8rem;margin-bottom:6px;opacity:.22}
+        .flow{display:flex;flex-direction:column;gap:9px}
+        .flow-step{border-left:3px solid var(--borda);padding-left:12px;position:relative}
+        .flow-step::before{content:'';position:absolute;left:-5px;top:5px;width:7px;height:7px;border-radius:50%;background:var(--borda)}
+        .step-sc::before{background:var(--ambar)}
+        .step-cot::before{background:#6366F1}
+        .step-oc::before{background:var(--s-oc)}
+        .step-nf::before{background:var(--s-rec)}
+        .step-lbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--texto-leve);margin-bottom:2px}
+        .step-txt{font-size:.8rem;color:var(--texto);line-height:1.5}
+        .cot-tbl{width:100%;border-collapse:collapse;margin-top:5px;font-size:.76rem}
+        .cot-tbl th{padding:4px 7px;background:#f8fafc;font-size:.65rem;font-weight:600;color:var(--texto-leve);text-align:left;border:1px solid #eee}
+        .cot-tbl td{padding:4px 7px;border:1px solid #f1f5f9;vertical-align:middle}
+        .cot-tbl tr.v td:first-child::before{content:'★ ';color:#059669}
+        .cot-tbl tr.v{background:#f0fdf4}
+        .vb{background:#D1FAE5;color:#065F46;padding:1px 5px;border-radius:5px;font-size:.65rem;font-weight:700}
 
         /* Toast */
-        .toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:10px;font-size:.9rem;font-weight:600;color:#fff;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
+        .toast{position:fixed;bottom:22px;right:22px;padding:11px 16px;border-radius:8px;font-size:.85rem;font-weight:600;color:#fff;z-index:9999;opacity:0;transform:translateY(5px);transition:all .22s;pointer-events:none}
         .toast.show{opacity:1;transform:translateY(0)}
         .toast.sucesso{background:#3B8C6E}
         .toast.erro{background:#e53e3e}
         .toast.info{background:var(--azul)}
-
-        /* KPI Cards */
-        .kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
-        .kpi{background:#fff;border-radius:10px;padding:18px 20px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-        .kpi-label{font-size:.72rem;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-        .kpi-value{font-size:1.6rem;font-weight:700;color:var(--azul)}
-        .kpi-value.money{font-size:1.2rem}
-        .kpi-value.verde{color:var(--verde)}
-        .kpi-value.ambar{color:var(--ambar)}
-
-        /* Filtros */
-        .filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-        .search-box{flex:1;min-width:220px;padding:9px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.88rem;outline:none}
-        .search-box:focus{border-color:var(--azul)}
-        .filter-select{padding:9px 12px;border-radius:8px;border:1.5px solid var(--borda);background:#fff;font-size:.85rem;color:var(--texto);outline:none;cursor:pointer}
-
-        /* Tabela projetos */
-        .card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden}
-        .table-wrap{overflow-x:auto}
-        table{width:100%;border-collapse:collapse}
-        thead tr{background:#FAFBFC;border-bottom:2px solid var(--borda)}
-        th{padding:11px 14px;font-size:.74rem;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.4px;text-align:left;white-space:nowrap}
-        tbody tr{border-bottom:1px solid #f1f5f9;transition:background .15s;cursor:pointer}
-        tbody tr:hover{background:#f8fafc}
-        tbody tr:last-child{border-bottom:none}
-        td{padding:11px 14px;font-size:.85rem;color:var(--texto);vertical-align:middle}
-        .cod{font-family:monospace;font-weight:700;font-size:.8rem;color:var(--azul)}
-        .empty-state{padding:60px 20px;text-align:center;color:var(--texto-leve)}
-        .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block;opacity:.3}
-        .badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap}
-        .badge-oc{background:#DBEAFE;color:#1E40AF}
-        .badge-nf{background:#D1FAE5;color:#065F46}
-        .badge-sc{background:#FEF3C7;color:#92400E}
-        .badge-none{background:#F3F4F6;color:#9CA3AF}
-        .money-td{font-family:monospace;text-align:right;white-space:nowrap}
-        .chevron{color:#9ca3af;font-size:.8rem;transition:transform .2s}
-
-        /* Drawer */
-        #drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none}
-        #drawer{position:fixed;top:0;right:0;width:720px;max-width:100vw;height:100vh;background:#fff;z-index:201;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15);transform:translateX(100%);transition:transform .3s ease}
-        #drawer.open{transform:translateX(0)}
-        .drawer-header{padding:20px 24px;border-bottom:1px solid var(--borda);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
-        .drawer-header-text h3{font-size:1rem;color:var(--azul);margin:0 0 4px}
-        .drawer-header-text p{font-size:.8rem;color:var(--texto-leve);margin:0}
-        .drawer-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280;padding:0 4px;line-height:1}
-        .drawer-close:hover{color:var(--texto)}
-        .drawer-body{flex:1;overflow-y:auto;padding:20px 24px}
-
-        /* Pedido block */
-        .ped-block{border:1.5px solid var(--borda);border-radius:10px;margin-bottom:16px;overflow:hidden}
-        .ped-header{padding:12px 16px;background:#FAFBFC;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-        .ped-title{font-weight:700;font-size:.9rem;color:var(--azul)}
-        .ped-meta{font-size:.78rem;color:var(--texto-leve);margin-top:2px}
-        .ped-body{padding:14px 16px}
-
-        /* Flow steps */
-        .flow{display:flex;flex-direction:column;gap:12px}
-        .flow-step{border-left:3px solid var(--borda);padding-left:14px;position:relative}
-        .flow-step::before{content:'';position:absolute;left:-6px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--borda)}
-        .flow-step.step-sc::before{background:var(--ambar)}
-        .flow-step.step-cot::before{background:var(--azul-claro)}
-        .flow-step.step-oc::before{background:var(--verde)}
-        .flow-step.step-nf::before{background:#059669}
-        .step-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--texto-leve);margin-bottom:4px}
-        .step-content{font-size:.83rem;color:var(--texto)}
-
-        /* Cotação table */
-        .cot-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:.8rem}
-        .cot-table th{padding:5px 10px;background:#f8fafc;font-size:.7rem;font-weight:600;color:var(--texto-leve);text-align:left;border:1px solid #eee}
-        .cot-table td{padding:6px 10px;border:1px solid #f1f5f9;vertical-align:middle}
-        .cot-table tr.vencedor{background:#f0fdf4}
-        .cot-table tr.vencedor td:first-child::before{content:'★ ';color:#059669}
-        .venc-badge{background:#D1FAE5;color:#065F46;padding:1px 7px;border-radius:8px;font-size:.7rem;font-weight:700}
-
-        /* Btn */
-        .btn{padding:9px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
-        .btn-primary{background:var(--azul);color:#fff}
-        .btn-primary:hover{background:var(--azul-claro)}
-        .btn-primary:disabled{opacity:.6;cursor:not-allowed}
-
-        /* Sem itens de compra */
-        .no-purchase{padding:16px;text-align:center;color:var(--texto-leve);font-size:.85rem}
-        .no-purchase i{display:block;font-size:1.5rem;margin-bottom:6px;opacity:.3}
     </style>
 </head>
 <body>
@@ -146,7 +206,7 @@
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
-      <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'">
+      <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'" height="44">
       <h2>Painel Administrativo</h2>
     </div>
     <label>Senha de acesso</label>
@@ -160,7 +220,7 @@
 <div class="admin-wrap" id="appShell">
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
+            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.outerHTML='<span style=&quot;color:#fff;font-weight:700&quot;>ADESIAP</span>'">
         </div>
         <nav class="sidebar-nav">
             <span class="nav-section-label">Comercial</span>
@@ -183,431 +243,514 @@
         </div>
     </aside>
 
-    <main class="main-content">
-        <div class="page-header">
-            <div class="page-header-text">
-                <h1><i class="fas fa-database" style="color:var(--terracota);margin-right:10px;font-size:1.4rem"></i>Projetos TOTVS RM</h1>
-                <p>Dados em tempo real do ERP — projetos, solicitações, cotações e ordens de compra.</p>
+    <div class="erp-wrap">
+
+        <!-- ── COLUNA ESQUERDA: PROJETOS ── -->
+        <div class="proj-panel">
+            <div class="proj-panel-header">
+                <div class="proj-panel-title">
+                    <h2><i class="fas fa-folder-open" style="color:var(--terracota)"></i> Projetos</h2>
+                    <button class="btn-refresh-sm" id="btnAtualizar" onclick="carregarDados()">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+                <input class="search-proj" id="searchProj" placeholder="Buscar projeto..." oninput="renderProjetos()">
             </div>
-            <div class="header-actions">
-                <span class="timestamp" id="timestamp"><i class="fas fa-clock"></i> Não carregado</span>
-                <button class="btn btn-primary" id="btnAtualizar" onclick="carregarDados()">
-                    <i class="fas fa-sync-alt"></i> Atualizar
-                </button>
+            <div class="proj-list" id="projList">
+                <div class="proj-loading"><i class="fas fa-spinner fa-spin"></i>Carregando...</div>
             </div>
         </div>
 
-        <!-- KPIs -->
-        <div class="kpi-row" id="kpiRow">
-            <div class="kpi"><div class="kpi-label">Projetos</div><div class="kpi-value" id="kpi-projetos">—</div></div>
-            <div class="kpi"><div class="kpi-label">Com compras</div><div class="kpi-value ambar" id="kpi-compras">—</div></div>
-            <div class="kpi"><div class="kpi-label">Ordens de Compra</div><div class="kpi-value verde" id="kpi-oc">—</div></div>
-            <div class="kpi"><div class="kpi-label">Total OC (R$)</div><div class="kpi-value money" id="kpi-vlr-oc">—</div></div>
-            <div class="kpi"><div class="kpi-label">NF Recebidas</div><div class="kpi-value verde" id="kpi-nf">—</div></div>
-        </div>
+        <!-- ── COLUNA DIREITA: TAREFAS ── -->
+        <div class="task-panel">
 
-        <!-- Filtros -->
-        <div class="filters">
-            <input class="search-box" id="searchInput" placeholder="Buscar por código, descrição ou responsável..." oninput="renderTabela()">
-            <select class="filter-select" id="filterCompra" onchange="renderTabela()">
-                <option value="">Todos os projetos</option>
-                <option value="com">Com movimentação de compra</option>
-                <option value="sem">Sem movimentação</option>
-            </select>
-        </div>
+            <!-- Estado vazio -->
+            <div class="empty-center" id="emptyState">
+                <i class="fas fa-hand-pointer"></i>
+                <p>Selecione um projeto para ver as tarefas</p>
+                <span id="lastUpdate" style="font-size:.72rem"></span>
+            </div>
 
-        <!-- Tabela -->
-        <div class="card">
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Descrição</th>
-                            <th>Responsável</th>
-                            <th>Centro Custo</th>
-                            <th style="text-align:center">Pedidos</th>
-                            <th style="text-align:center">OC</th>
-                            <th style="text-align:right">Valor OC</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaBody">
-                        <tr><td colspan="8" class="empty-state"><i class="fas fa-sync-alt fa-spin"></i> Carregando dados do TOTVS RM...</td></tr>
-                    </tbody>
-                </table>
+            <!-- View de tarefas -->
+            <div id="taskView">
+                <div class="task-header">
+                    <div class="th-top">
+                        <div class="th-name">
+                            <h2 id="tv-nome"></h2>
+                            <div class="th-meta">
+                                <span><i class="fas fa-tag"></i> <b id="tv-codigo"></b></span>
+                                <span><i class="fas fa-user"></i> <span id="tv-resp"></span></span>
+                                <span><i class="fas fa-building"></i> CC <span id="tv-cc"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-strip" id="tvKpis"></div>
+                </div>
+
+                <div class="tree-toolbar">
+                    <input class="search-task" id="searchTask" placeholder="Filtrar tarefa..." oninput="filtrarTarefas()">
+                    <div class="legend">
+                        <div class="leg"><div class="dot" style="background:var(--s-none)"></div> Sem movim.</div>
+                        <div class="leg"><div class="dot" style="background:var(--s-pend)"></div> Aguardando</div>
+                        <div class="leg"><div class="dot" style="background:var(--s-cot)"></div> Em cotação</div>
+                        <div class="leg"><div class="dot" style="background:var(--s-oc)"></div> OC emitida</div>
+                        <div class="leg"><div class="dot" style="background:var(--s-rec)"></div> Recebido</div>
+                        <div class="leg"><div class="dot" style="background:var(--s-direta)"></div> Lançamento direto</div>
+                    </div>
+                </div>
+
+                <div class="tree-body" id="treeBody"></div>
             </div>
         </div>
-    </main>
+    </div>
 </div>
 
-<!-- Drawer detalhe projeto -->
-<div id="drawer-overlay" onclick="fecharDrawer()"></div>
+<!-- Overlay + Drawer -->
+<div id="overlay" onclick="fecharDrawer()"></div>
 <div id="drawer">
-    <div class="drawer-header">
-        <div class="drawer-header-text">
-            <h3 id="drawer-titulo">Projeto</h3>
-            <p id="drawer-subtitulo"></p>
+    <div class="drw-hdr">
+        <div>
+            <h3 id="drwTitulo"></h3>
+            <p id="drwSub"></p>
         </div>
-        <button class="drawer-close" onclick="fecharDrawer()">×</button>
+        <button class="drw-close" onclick="fecharDrawer()">×</button>
     </div>
-    <div class="drawer-body" id="drawer-body"></div>
+    <div class="drw-body" id="drwBody"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-    const SENHA_PADRAO = 'adesiap2026';
-    let senhaAtual = localStorage.getItem('admin_senha') || SENHA_PADRAO;
-    let projetos = [];   // projetos agrupados
-    let rawData  = [];   // resposta bruta do TOTVS
+// ── AUTH ──────────────────────────────────────────────────────────────
+const SENHA_PADRAO = 'adesiap2026';
+let senhaAtual = localStorage.getItem('admin_senha') || SENHA_PADRAO;
 
-    // ── AUTH ──────────────────────────────────────────────────
-    function fazerLogin() {
-        const v = document.getElementById('senhaInput').value;
-        if (v === senhaAtual) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appShell').style.display = 'flex';
-            carregarDados();
-        } else {
-            document.getElementById('loginError').style.display = 'block';
+function fazerLogin() {
+    if (document.getElementById('senhaInput').value === senhaAtual) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('appShell').style.display   = 'flex';
+        carregarDados();
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+    }
+}
+function fazerLogout() {
+    document.getElementById('appShell').style.display   = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('senhaInput').value = '';
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let projetos     = [];
+let projetoAtivo = null;
+const expanded   = {}; // codigo → bool (undefined = default open)
+
+// ── LOAD ──────────────────────────────────────────────────────────────
+async function carregarDados() {
+    const btn = document.getElementById('btnAtualizar');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    document.getElementById('projList').innerHTML =
+        '<div class="proj-loading"><i class="fas fa-spinner fa-spin"></i>Consultando TOTVS RM...</div>';
+
+    try {
+        const res = await fetch('/api/totvs');
+        if (!res.ok) {
+            const e = await res.json().catch(() => ({}));
+            throw new Error(e.detalhe || e.error || 'HTTP ' + res.status);
         }
+        const raw = await res.json();
+        if (!Array.isArray(raw)) throw new Error('Resposta inesperada da API');
+
+        projetos = agrupar(raw);
+        renderProjetos();
+
+        const agora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+        document.getElementById('lastUpdate').textContent = 'Atualizado em ' + agora;
+        mostrarToast(projetos.length + ' projeto(s) carregado(s)', 'sucesso');
+    } catch (err) {
+        document.getElementById('projList').innerHTML =
+            '<div class="proj-loading" style="color:#e53e3e"><i class="fas fa-exclamation-triangle"></i>' + escH(err.message) + '</div>';
+        mostrarToast('Erro: ' + err.message, 'erro');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sync-alt"></i> Atualizar';
     }
-    function fazerLogout() {
-        document.getElementById('appShell').style.display = 'none';
-        document.getElementById('loginScreen').style.display = 'flex';
-        document.getElementById('senhaInput').value = '';
-    }
+}
 
-    // ── CARREGAR ──────────────────────────────────────────────
-    async function carregarDados() {
-        const btn = document.getElementById('btnAtualizar');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
-        document.getElementById('tabelaBody').innerHTML =
-            '<tr><td colspan="8" class="empty-state"><i class="fas fa-sync-alt fa-spin"></i> Consultando TOTVS RM...</td></tr>';
+// ── AGRUPAR ───────────────────────────────────────────────────────────
+function agrupar(rows) {
+    const projMap = new Map();
 
-        try {
-            const res = await fetch('/api/totvs');
-            if (!res.ok) {
-                const e = await res.json().catch(() => ({}));
-                throw new Error(e.detalhe || e.error || 'HTTP ' + res.status);
-            }
-            rawData = await res.json();
-            if (!Array.isArray(rawData)) throw new Error('Resposta inesperada da API');
-
-            projetos = agrupar(rawData);
-            atualizarKPIs();
-            renderTabela();
-
-            const agora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-            document.getElementById('timestamp').innerHTML = `<i class="fas fa-check-circle" style="color:var(--verde)"></i> Atualizado em ${agora}`;
-            mostrarToast(`${rawData.length} registros carregados`, 'sucesso');
-        } catch (err) {
-            document.getElementById('tabelaBody').innerHTML =
-                `<tr><td colspan="8" class="empty-state"><i class="fas fa-exclamation-triangle"></i><br>Erro ao carregar: ${escHtml(err.message)}</td></tr>`;
-            document.getElementById('timestamp').innerHTML = `<i class="fas fa-times-circle" style="color:#e53e3e"></i> Falha`;
-            mostrarToast('Erro: ' + err.message, 'erro');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sync-alt"></i> Atualizar';
-        }
-    }
-
-    // ── AGRUPAR ───────────────────────────────────────────────
-    // Estrutura: projetos[PRJ_ID] → { info, pedidos: { PED_ID → { info, sc, cotacoes, oc, nf } } }
-    function agrupar(rows) {
-        const map = new Map();
-
-        rows.forEach(r => {
-            const pid = r.PRJ_ID;
-            if (!map.has(pid)) {
-                map.set(pid, {
-                    id:          pid,
-                    codigo:      r.PRJ_CODIGO || '',
-                    descricao:   r.PRJ_DESCRICAO || '',
-                    responsavel: r.PRJ_RESPONSAVEL || '',
-                    centroCusto: r.PRJ_CENTRO_CUSTO || '',
-                    pedidos:     new Map(),
-                    totalOC:     0,
-                    countOC:     0,
-                    countNF:     0,
-                });
-            }
-            const prj = map.get(pid);
-
-            if (!r.PED_ID) return; // sem movimento de compra
-
-            const pedKey = `${r.PED_ID}-${r.PED_ID_ITEM}`;
-            if (!prj.pedidos.has(pedKey)) {
-                prj.pedidos.set(pedKey, {
-                    id:          r.PED_ID,
-                    codigo:      r.PED_CODIGO || '',
-                    itemId:      r.PED_ID_ITEM,
-                    produto:     r.PED_PRODUTO_NOME || '',
-                    qtd:         r.PED_QTD,
-                    precoUnit:   r.PED_PRECO_UNIT,
-                    data:        r.PED_DATA,
-                    dataEntrega: r.PED_DATA_ENTREGA,
-                    observacao:  r.PED_OBSERVACAO || '',
-                    usuario:     r.PED_USUARIO_NOME || '',
-                    sc: r.SC_IDMOV ? {
-                        id:          r.SC_IDMOV,
-                        numero:      r.SC_NUMERO,
-                        status:      r.SC_STATUS_COMPRAS,
-                        data:        r.SC_DATA,
-                        centroCusto: r.SC_CENTRO_CUSTO_ITEM,
-                        qtd:         r.SC_QTD,
-                        usuario:     r.SC_USUARIO_NOME,
-                    } : null,
-                    cotacoes: [],
-                    oc: null,
-                    nf: null,
-                });
-            }
-
-            const ped = prj.pedidos.get(pedKey);
-
-            // Cotação — uma por linha por fornecedor
-            if (r.COT_CODIGO) {
-                const jaCot = ped.cotacoes.find(c =>
-                    c.codigo === r.COT_CODIGO && c.fornecedorCod === r.COT_FORNECEDOR_COD
-                );
-                if (!jaCot) {
-                    ped.cotacoes.push({
-                        codigo:          r.COT_CODIGO,
-                        fornecedorCod:   r.COT_FORNECEDOR_COD,
-                        fornecedor:      r.COT_FORNECEDOR_FANTASIA || r.COT_FORNECEDOR_RAZAO_SOCIAL || '',
-                        vencedor:        r.COT_VENCEDOR === 1,
-                        data:            r.COT_DATA,
-                        status:          r.COT_STATUS,
-                        qtd:             r.COT_QTD,
-                        vlrUnit:         r.COT_VLR_UNIT,
-                        vlrTotal:        r.COT_VLR_TOTAL,
-                        vlrUnitNeg:      r.COT_VLR_UNIT_NEG,
-                        vlrTotalNeg:     r.COT_VLR_TOTAL_NEG,
-                        usuario:         r.COT_USUARIO_NOME,
-                    });
-                }
-            }
-
-            // OC — pega a mais recente / única por item
-            if (r.OC_IDMOV && !ped.oc) {
-                ped.oc = {
-                    id:         r.OC_IDMOV,
-                    numero:     r.OC_NUMERO,
-                    fornecedor: r.OC_FORNECEDOR_RAZAO_SOCIAL || '',
-                    status:     r.OC_STATUS,
-                    data:       r.OC_DATA,
-                    qtd:        r.OC_QTD,
-                    vlrUnit:    r.OC_VLR_UNITARIO,
-                    vlrTotal:   r.OC_VLR_TOTAL,
-                    usuario:    r.OC_USUARIO_NOME,
-                };
-                prj.totalOC += (r.OC_VLR_TOTAL || 0);
-                prj.countOC += 1;
-            }
-
-            // NF
-            if (r.NF_ID && !ped.nf) {
-                ped.nf = {
-                    id:         r.NF_ID,
-                    numero:     r.NF_NUMERO,
-                    tipo:       r.NF_TIPO_DESCRICAO || r.NF_TIPO || '',
-                    fornecedor: r.NF_FORNECEDOR_RAZAO_SOCIAL || '',
-                    data:       r.NF_DATA,
-                    status:     r.NF_STATUS,
-                    qtdRecebida:r.NF_QTD_RECEBIDA,
-                    vlrUnit:    r.NF_VLR_UNITARIO,
-                    vlrTotal:   r.NF_VLR_TOTAL,
-                    usuario:    r.NF_USUARIO_NOME,
-                };
-                prj.countNF += 1;
-            }
-        });
-
-        return Array.from(map.values()).sort((a, b) => a.codigo.localeCompare(b.codigo));
-    }
-
-    // ── KPIs ──────────────────────────────────────────────────
-    function atualizarKPIs() {
-        const totalOC     = projetos.reduce((s, p) => s + p.totalOC, 0);
-        const comCompra   = projetos.filter(p => p.pedidos.size > 0).length;
-        const totalOCitens= projetos.reduce((s, p) => s + p.countOC, 0);
-        const totalNF     = projetos.reduce((s, p) => s + p.countNF, 0);
-
-        document.getElementById('kpi-projetos').textContent = projetos.length;
-        document.getElementById('kpi-compras').textContent  = comCompra;
-        document.getElementById('kpi-oc').textContent       = totalOCitens;
-        document.getElementById('kpi-vlr-oc').textContent   = fmtMoney(totalOC);
-        document.getElementById('kpi-nf').textContent       = totalNF;
-    }
-
-    // ── RENDER TABELA ─────────────────────────────────────────
-    function renderTabela() {
-        const busca  = document.getElementById('searchInput').value.toLowerCase();
-        const filtro = document.getElementById('filterCompra').value;
-
-        const filtrados = projetos.filter(p => {
-            if (filtro === 'com' && p.pedidos.size === 0) return false;
-            if (filtro === 'sem' && p.pedidos.size > 0)  return false;
-            if (busca) {
-                const hay = `${p.codigo} ${p.descricao} ${p.responsavel}`.toLowerCase();
-                if (!hay.includes(busca)) return false;
-            }
-            return true;
-        });
-
-        if (!filtrados.length) {
-            document.getElementById('tabelaBody').innerHTML =
-                '<tr><td colspan="8" class="empty-state"><i class="fas fa-search"></i><br>Nenhum projeto encontrado</td></tr>';
-            return;
-        }
-
-        document.getElementById('tabelaBody').innerHTML = filtrados.map(p => {
-            const nPed = p.pedidos.size;
-            const pedBadge = nPed > 0
-                ? `<span class="badge badge-sc">${nPed} pedido${nPed > 1 ? 's' : ''}</span>`
-                : `<span class="badge badge-none">—</span>`;
-            const ocBadge = p.countOC > 0
-                ? `<span class="badge badge-oc">${p.countOC} OC</span>`
-                : `<span class="badge badge-none">—</span>`;
-            return `<tr onclick="abrirDrawer(${p.id})">
-                <td class="cod">${escHtml(p.codigo)}</td>
-                <td style="max-width:280px">${escHtml(p.descricao)}</td>
-                <td style="max-width:160px;font-size:.8rem">${escHtml(p.responsavel) || '<span style="color:#9ca3af">—</span>'}</td>
-                <td class="cod" style="font-size:.76rem">${escHtml(p.centroCusto) || '—'}</td>
-                <td style="text-align:center">${pedBadge}</td>
-                <td style="text-align:center">${ocBadge}</td>
-                <td class="money-td">${p.totalOC > 0 ? fmtMoney(p.totalOC) : '<span style="color:#9ca3af">—</span>'}</td>
-                <td><i class="fas fa-chevron-right chevron"></i></td>
-            </tr>`;
-        }).join('');
-    }
-
-    // ── DRAWER ────────────────────────────────────────────────
-    function abrirDrawer(prjId) {
-        const p = projetos.find(x => x.id === prjId);
-        if (!p) return;
-
-        document.getElementById('drawer-titulo').textContent  = p.descricao;
-        document.getElementById('drawer-subtitulo').textContent = `${p.codigo}${p.responsavel ? ' · ' + p.responsavel : ''}${p.centroCusto ? ' · CC: ' + p.centroCusto : ''}`;
-
-        const peds = Array.from(p.pedidos.values());
-
-        let html = '';
-
-        if (peds.length === 0) {
-            html = `<div class="no-purchase"><i class="fas fa-box-open"></i>Nenhuma movimentação de compra registrada para este projeto.</div>`;
-        } else {
-            peds.forEach(ped => {
-                const cotVenc = ped.cotacoes.find(c => c.vencedor);
-
-                html += `<div class="ped-block">
-                    <div class="ped-header">
-                        <div>
-                            <div class="ped-title"><i class="fas fa-box" style="color:var(--ambar);margin-right:6px"></i>${escHtml(ped.produto)}</div>
-                            <div class="ped-meta">Ped. ${escHtml(ped.codigo)} · Qtd: ${ped.qtd} · Est. ${fmtMoney(ped.precoUnit)} un. · ${ped.usuario} · Entrega: ${fmtData(ped.dataEntrega)}</div>
-                        </div>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap">
-                            ${ped.oc  ? `<span class="badge badge-oc">OC ${escHtml(ped.oc.numero)}</span>` : ''}
-                            ${ped.nf  ? `<span class="badge badge-nf">NF ${escHtml(ped.nf.numero)}</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="ped-body">
-                        <div class="flow">`;
-
-                // SC
-                if (ped.sc) {
-                    html += `<div class="flow-step step-sc">
-                        <div class="step-label">Solicitação de Compra</div>
-                        <div class="step-content">SC nº ${escHtml(ped.sc.numero)} · ${escHtml(ped.sc.status || '—')} · ${fmtData(ped.sc.data)} · ${escHtml(ped.sc.usuario || '—')}</div>
-                    </div>`;
-                }
-
-                // Cotações
-                if (ped.cotacoes.length > 0) {
-                    html += `<div class="flow-step step-cot">
-                        <div class="step-label">Cotação ${ped.cotacoes[0]?.codigo ? '— ' + ped.cotacoes[0].codigo : ''}</div>
-                        <table class="cot-table">
-                            <thead><tr>
-                                <th>Fornecedor</th>
-                                <th style="text-align:right">Qtd</th>
-                                <th style="text-align:right">Vlr Unit</th>
-                                <th style="text-align:right">Vlr Total</th>
-                                <th>Data</th>
-                                <th>Responsável</th>
-                            </tr></thead>
-                            <tbody>`;
-                    ped.cotacoes.forEach(c => {
-                        html += `<tr class="${c.vencedor ? 'vencedor' : ''}">
-                            <td>${escHtml(c.fornecedor)}${c.vencedor ? ' <span class="venc-badge">Vencedor</span>' : ''}</td>
-                            <td style="text-align:right">${c.qtd}</td>
-                            <td style="text-align:right;font-family:monospace">${fmtMoney(c.vlrUnit)}</td>
-                            <td style="text-align:right;font-family:monospace">${fmtMoney(c.vlrTotal)}</td>
-                            <td>${fmtData(c.data)}</td>
-                            <td>${escHtml(c.usuario || '—')}</td>
-                        </tr>`;
-                    });
-                    html += `</tbody></table></div>`;
-                }
-
-                // OC
-                if (ped.oc) {
-                    html += `<div class="flow-step step-oc">
-                        <div class="step-label">Ordem de Compra</div>
-                        <div class="step-content">
-                            OC nº <strong>${escHtml(ped.oc.numero)}</strong> · ${escHtml(ped.oc.status || '—')} · ${fmtData(ped.oc.data)}<br>
-                            Fornecedor: ${escHtml(ped.oc.fornecedor)} · Valor: <strong>${fmtMoney(ped.oc.vlrTotal)}</strong> · ${escHtml(ped.oc.usuario || '—')}
-                        </div>
-                    </div>`;
-                }
-
-                // NF
-                if (ped.nf) {
-                    html += `<div class="flow-step step-nf">
-                        <div class="step-label">Nota Fiscal · ${escHtml(ped.nf.tipo)}</div>
-                        <div class="step-content">
-                            NF nº <strong>${escHtml(ped.nf.numero)}</strong> · Status: ${escHtml(ped.nf.status || '—')} · ${fmtData(ped.nf.data)}<br>
-                            Fornecedor: ${escHtml(ped.nf.fornecedor)} · Qtd recebida: ${ped.nf.qtdRecebida} · Valor: <strong>${fmtMoney(ped.nf.vlrTotal)}</strong> · ${escHtml(ped.nf.usuario || '—')}
-                        </div>
-                    </div>`;
-                }
-
-                html += `</div></div></div>`;
+    rows.forEach(r => {
+        if (!projMap.has(r.PRJ_ID)) {
+            projMap.set(r.PRJ_ID, {
+                id: r.PRJ_ID,
+                codigo:      r.PRJ_CODIGO || '',
+                descricao:   (r.PRJ_DESCRICAO || '').trim(),
+                responsavel: r.PRJ_RESPONSAVEL || '',
+                centroCusto: r.PRJ_CENTRO_CUSTO || '',
+                trfMap: new Map(),
             });
         }
+        const prj = projMap.get(r.PRJ_ID);
 
-        document.getElementById('drawer-body').innerHTML = html;
-        document.getElementById('drawer-overlay').style.display = 'block';
-        document.getElementById('drawer').classList.add('open');
+        const trfKey = r.TRF_CODIGO;
+        if (!prj.trfMap.has(trfKey)) {
+            prj.trfMap.set(trfKey, {
+                id:             r.TRF_ID,
+                codigo:         r.TRF_CODIGO || '',
+                nome:           (r.TRF_NOME || '').trim(),
+                descricao:      (r.TRF_DESCRICAO || '').trim(),
+                qtd:            r.TRF_QTD,
+                valorUnit:      r.TRF_VALOR_UNIT,
+                valorTotal:     r.TRF_VALOR_TOTAL,
+                unidade:        r.TRF_UNIDADE || '',
+                origemRegistro: r.ORIGEM_REGISTRO || '',
+                pedido: null, sc: null, cotacoes: [], oc: null, nf: null,
+            });
+        }
+        const trf = prj.trfMap.get(trfKey);
+
+        if (r.PED_ID) {
+            if (!trf.pedido) trf.pedido = {
+                id: r.PED_ID, codigo: r.PED_CODIGO, itemId: r.PED_ID_ITEM,
+                produto: r.PED_PRODUTO_NOME || '', qtd: r.PED_QTD, precoUnit: r.PED_PRECO_UNIT,
+                data: r.PED_DATA, dataEntrega: r.PED_DATA_ENTREGA,
+                observacao: r.PED_OBSERVACAO || '', usuario: r.PED_USUARIO_NOME || '',
+            };
+            if (r.SC_IDMOV && !trf.sc) trf.sc = {
+                id: r.SC_IDMOV, numero: r.SC_NUMERO, status: r.SC_STATUS_COMPRAS || '',
+                data: r.SC_DATA, qtd: r.SC_QTD, usuario: r.SC_USUARIO_NOME || '',
+                centroCusto: r.SC_CENTRO_CUSTO_ITEM,
+            };
+            if (r.COT_CODIGO && !trf.cotacoes.find(c => c.codigo === r.COT_CODIGO && c.fornecedorCod === r.COT_FORNECEDOR_COD)) {
+                trf.cotacoes.push({
+                    codigo: r.COT_CODIGO, fornecedorCod: r.COT_FORNECEDOR_COD,
+                    fornecedor: r.COT_FORNECEDOR_FANTASIA || r.COT_FORNECEDOR_RAZAO_SOCIAL || '',
+                    vencedor: r.COT_VENCEDOR === 1,
+                    data: r.COT_DATA, status: r.COT_STATUS, qtd: r.COT_QTD,
+                    vlrUnit: r.COT_VLR_UNIT, vlrTotal: r.COT_VLR_TOTAL,
+                    vlrUnitNeg: r.COT_VLR_UNIT_NEG, vlrTotalNeg: r.COT_VLR_TOTAL_NEG,
+                    usuario: r.COT_USUARIO_NOME || '',
+                });
+            }
+            if (r.OC_IDMOV && !trf.oc) trf.oc = {
+                id: r.OC_IDMOV, numero: r.OC_NUMERO,
+                fornecedor: r.OC_FORNECEDOR_RAZAO_SOCIAL || '',
+                status: r.OC_STATUS || '', data: r.OC_DATA,
+                qtd: r.OC_QTD, vlrUnit: r.OC_VLR_UNITARIO, vlrTotal: r.OC_VLR_TOTAL,
+                usuario: r.OC_USUARIO_NOME || '',
+            };
+            if (r.NF_ID && !trf.nf) trf.nf = {
+                id: r.NF_ID, numero: r.NF_NUMERO,
+                tipo: r.NF_TIPO_DESCRICAO || r.NF_TIPO || '',
+                fornecedor: r.NF_FORNECEDOR_RAZAO_SOCIAL || '',
+                data: r.NF_DATA, status: r.NF_STATUS || '',
+                qtdRecebida: r.NF_QTD_RECEBIDA, vlrUnit: r.NF_VLR_UNITARIO, vlrTotal: r.NF_VLR_TOTAL,
+                usuario: r.NF_USUARIO_NOME || '',
+            };
+        }
+    });
+
+    return Array.from(projMap.values()).map(prj => {
+        const trfList = Array.from(prj.trfMap.values()).sort((a,b) => a.codigo.localeCompare(b.codigo));
+        const trfTree = buildTree(trfList);
+        return { ...prj, trfList, trfTree };
+    }).sort((a,b) => a.codigo.localeCompare(b.codigo));
+}
+
+// ── BUILD TREE ────────────────────────────────────────────────────────
+function buildTree(trfList) {
+    const nodeMap = {};
+    trfList.forEach(t => { nodeMap[t.codigo] = { ...t, children: [], level: t.codigo.split('.').length }; });
+    const roots = [];
+    trfList.forEach(t => {
+        const parts = t.codigo.split('.');
+        if (parts.length === 1) { roots.push(nodeMap[t.codigo]); return; }
+        const parentCod = parts.slice(0,-1).join('.');
+        (nodeMap[parentCod] ? nodeMap[parentCod].children : roots).push(nodeMap[t.codigo]);
+    });
+    return roots;
+}
+
+// ── STATUS ────────────────────────────────────────────────────────────
+function getStatus(trf) {
+    if (trf.origemRegistro && trf.origemRegistro.startsWith('NF Direta')) return 'direta';
+    if (!trf.pedido) return 'none';
+    if (trf.nf || trf.oc?.status === 'Recebido') return 'rec';
+    if (trf.oc)  return 'oc';
+    if (trf.cotacoes.length > 0) return 'cot';
+    return 'pend';
+}
+
+const S = {
+    none:   { dot:'s-none',  badge:'bn', label:'Sem movimentação' },
+    pend:   { dot:'s-pend',  badge:'bp', label:'Aguardando' },
+    cot:    { dot:'s-cot',   badge:'bc', label:'Em cotação' },
+    oc:     { dot:'s-oc',    badge:'bo', label:'OC emitida' },
+    rec:    { dot:'s-rec',   badge:'br', label:'Recebido' },
+    direta: { dot:'s-direta',badge:'bd', label:'Lançamento direto' },
+};
+
+function leavesOf(node) {
+    if (!node.children || node.children.length === 0) return [node];
+    return node.children.flatMap(c => leavesOf(c));
+}
+
+function aggPills(leaves) {
+    const cnt = {};
+    leaves.map(getStatus).forEach(s => cnt[s] = (cnt[s]||0)+1);
+    return ['rec','oc','cot','pend','direta','none']
+        .filter(s => cnt[s])
+        .map(s => `<div class="ap ${S[s].dot}" title="${S[s].label}: ${cnt[s]}"></div>`)
+        .join('');
+}
+
+// ── RENDER PROJETOS ───────────────────────────────────────────────────
+function renderProjetos() {
+    const busca = document.getElementById('searchProj').value.toLowerCase();
+    const lista = projetos.filter(p =>
+        !busca || (p.codigo + ' ' + p.descricao + ' ' + p.responsavel).toLowerCase().includes(busca));
+
+    if (!lista.length) {
+        document.getElementById('projList').innerHTML = '<div class="proj-loading">Nenhum projeto encontrado</div>';
+        return;
     }
 
-    function fecharDrawer() {
-        document.getElementById('drawer').classList.remove('open');
-        document.getElementById('drawer-overlay').style.display = 'none';
+    document.getElementById('projList').innerHTML = lista.map(p => {
+        const leaves = p.trfTree.flatMap(n => leavesOf(n));
+        const cnt = {};
+        leaves.map(getStatus).forEach(s => cnt[s] = (cnt[s]||0)+1);
+        const pills = [
+            cnt.rec    ? `<span class="pill pill-rec">${cnt.rec} Recebido</span>` : '',
+            cnt.oc     ? `<span class="pill pill-oc">${cnt.oc} OC</span>` : '',
+            cnt.cot    ? `<span class="pill pill-cot">${cnt.cot} Cotação</span>` : '',
+            cnt.pend   ? `<span class="pill pill-pend">${cnt.pend} Aguardando</span>` : '',
+            cnt.direta ? `<span class="pill" style="background:#F3E8FF;color:#7C3AED">${cnt.direta} Direto</span>` : '',
+            cnt.none   ? `<span class="pill pill-none">${cnt.none} Sem mov.</span>` : '',
+        ].filter(Boolean).join('');
+
+        const active = projetoAtivo?.id === p.id ? 'active' : '';
+        return `<div class="proj-card ${active}" onclick="selecionarProjeto(${p.id})">
+            <div class="proj-codigo">${escH(p.codigo)}</div>
+            <div class="proj-nome">${escH(p.descricao)}</div>
+            <div class="proj-resp"><i class="fas fa-user" style="margin-right:3px;opacity:.45;font-size:.65rem"></i>${escH(p.responsavel)}</div>
+            <div class="proj-pills">${pills}</div>
+        </div>`;
+    }).join('');
+}
+
+// ── SELECIONAR PROJETO ────────────────────────────────────────────────
+function selecionarProjeto(id) {
+    projetoAtivo = projetos.find(p => p.id === id);
+    if (!projetoAtivo) return;
+    renderProjetos(); // update active highlight
+
+    // Header
+    document.getElementById('tv-nome').textContent   = projetoAtivo.descricao;
+    document.getElementById('tv-codigo').textContent = projetoAtivo.codigo;
+    document.getElementById('tv-resp').textContent   = projetoAtivo.responsavel;
+    document.getElementById('tv-cc').textContent     = projetoAtivo.centroCusto;
+
+    // KPIs
+    const allLeaves   = projetoAtivo.trfTree.flatMap(n => leavesOf(n));
+    const totalOrc    = projetoAtivo.trfList.reduce((s,t) => s + (t.valorTotal || 0), 0);
+    const totalOC     = allLeaves.reduce((s,t) => s + (t.oc?.vlrTotal || 0), 0);
+    const totalNF     = allLeaves.reduce((s,t) => s + (t.nf?.vlrTotal || 0), 0);
+    const nRec        = allLeaves.filter(t => getStatus(t) === 'rec').length;
+    document.getElementById('tvKpis').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Orçado (TRF)</div><div class="kpi-value">${fmtM(totalOrc)}</div></div>
+        <div class="kpi"><div class="kpi-label">Total OC</div><div class="kpi-value ambar">${fmtM(totalOC)}</div></div>
+        <div class="kpi"><div class="kpi-label">Total NF</div><div class="kpi-value verde">${fmtM(totalNF)}</div></div>
+        <div class="kpi"><div class="kpi-label">Itens recebidos</div><div class="kpi-value verde">${nRec} / ${allLeaves.length}</div></div>`;
+
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('taskView').style.display   = 'flex';
+    document.getElementById('searchTask').value = '';
+    renderTree();
+}
+
+// ── RENDER TREE ───────────────────────────────────────────────────────
+function renderTree() {
+    document.getElementById('treeBody').innerHTML =
+        projetoAtivo.trfTree.map(n => renderL1(n)).join('') ||
+        '<div style="padding:20px;text-align:center;color:var(--texto-leve)">Nenhuma tarefa</div>';
+}
+
+function isOpen(cod) { return expanded[cod] !== false; } // default = open
+
+function renderL1(node) {
+    const open   = isOpen(node.codigo);
+    const leaves = leavesOf(node);
+    return `<div class="trf-group">
+        <div class="trf-l1 ${open?'open':''}" onclick="toggle('${escA(node.codigo)}')">
+            <i class="fas fa-chevron-right chev"></i>
+            <span class="l1-cod">${escH(node.codigo)}</span>
+            <span class="l1-nom" title="${escA(node.nome)}">${escH(node.nome)}</span>
+            <div class="l1-r">
+                <div class="agg">${aggPills(leaves)}</div>
+                ${node.valorTotal ? `<span class="l1-vlr">${fmtM(node.valorTotal)}</span>` : ''}
+            </div>
+        </div>
+        <div class="trf-l1-ch" id="ch${escId(node.codigo)}" ${open?'':'style="display:none"'}>
+            ${node.children.map(c => c.children.length ? renderL2(c) : renderL3(c)).join('')}
+        </div>
+    </div>`;
+}
+
+function renderL2(node) {
+    const open   = isOpen(node.codigo);
+    const leaves = leavesOf(node);
+    return `<div class="trf-l2-wrap">
+        <div class="trf-l2 ${open?'open':''}" onclick="toggle('${escA(node.codigo)}')">
+            <i class="fas fa-chevron-right chev"></i>
+            <span class="l2-cod">${escH(node.codigo)}</span>
+            <span class="l2-nom" title="${escA(node.nome)}">${escH(node.nome)}</span>
+            <div class="l2-r">
+                <div class="agg">${aggPills(leaves)}</div>
+                <span class="l2-cnt">${leaves.length} item${leaves.length!==1?'s':''}</span>
+                ${node.valorTotal ? `<span class="l2-vlr">${fmtM(node.valorTotal)}</span>` : ''}
+            </div>
+        </div>
+        <div class="trf-l2-ch" id="ch${escId(node.codigo)}" ${open?'':'style="display:none"'}>
+            ${node.children.map(c => c.children.length ? renderL2(c) : renderL3(c)).join('')}
+        </div>
+    </div>`;
+}
+
+function renderL3(node) {
+    const st  = getStatus(node);
+    const cfg = S[st];
+    const fornec = node.cotacoes.find(c=>c.vencedor)?.fornecedor || node.oc?.fornecedor || '';
+    const vlr    = node.oc?.vlrTotal ?? node.pedido?.precoUnit ?? node.valorTotal ?? null;
+    const scSt   = node.sc?.status ? ` · ${escH(node.sc.status)}` : '';
+    return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
+        <div class="farole ${cfg.dot}"></div>
+        <span class="l3-cod">${escH(node.codigo)}</span>
+        <span class="l3-nom" title="${escA(node.nome)}">${escH(node.nome)}</span>
+        <div class="l3-r">
+            ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
+            ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
+            <span class="l3-badge ${cfg.badge}">${cfg.label}${scSt}</span>
+            <i class="fas fa-chevron-right l3-chev"></i>
+        </div>
+    </div>`;
+}
+
+function toggle(cod) {
+    expanded[cod] = !isOpen(cod);
+    const el = document.getElementById('ch' + escId(cod));
+    const row = el?.previousElementSibling;
+    if (el) el.style.display = isOpen(cod) ? '' : 'none';
+    if (row) { isOpen(cod) ? row.classList.add('open') : row.classList.remove('open'); }
+}
+
+function filtrarTarefas() {
+    const q = document.getElementById('searchTask').value.toLowerCase().trim();
+    if (!q) { renderTree(); return; }
+    // Show all parents, filter leaves
+    document.querySelectorAll('.trf-l1-ch, .trf-l2-ch').forEach(el => el.style.display = '');
+    document.querySelectorAll('.trf-l1, .trf-l2').forEach(el => { el.classList.add('open'); });
+    document.querySelectorAll('.trf-l3').forEach(el => {
+        const nom = (el.querySelector('.l3-nom')?.textContent || '').toLowerCase();
+        const cod = (el.querySelector('.l3-cod')?.textContent || '').toLowerCase();
+        el.style.display = (nom.includes(q) || cod.includes(q)) ? 'flex' : 'none';
+    });
+}
+
+// ── DRAWER ────────────────────────────────────────────────────────────
+function abrirDrawer(cod) {
+    const trf = projetoAtivo?.trfList.find(t => t.codigo === cod);
+    if (!trf) return;
+    document.getElementById('drwTitulo').textContent = trf.nome;
+    document.getElementById('drwSub').textContent    =
+        trf.codigo + (trf.unidade ? ' · ' + trf.unidade : '') + (trf.qtd ? ' · Qtd: ' + trf.qtd : '');
+
+    let h = `<div class="trf-info-box">`;
+    if (trf.valorTotal)  h += `<div class="trf-info-row"><span class="trf-info-lbl">Orçado</span><b>${fmtM(trf.valorTotal)}</b></div>`;
+    if (trf.qtd)         h += `<div class="trf-info-row"><span class="trf-info-lbl">Qtd</span><span>${trf.qtd} ${escH(trf.unidade)}</span></div>`;
+    if (trf.origemRegistro) h += `<div class="trf-info-row"><span class="trf-info-lbl">Origem</span><span>${escH(trf.origemRegistro)}</span></div>`;
+    if (trf.descricao)   h += `<div class="trf-info-row"><span class="trf-info-lbl">Descrição</span><span>${escH(trf.descricao)}</span></div>`;
+    h += `</div>`;
+
+    if (!trf.pedido) {
+        h += `<div class="no-compra"><i class="fas fa-box-open"></i>Sem movimentação de compra nesta tarefa.</div>`;
+    } else {
+        h += `<div style="font-size:.8rem;margin-bottom:10px;padding:8px 12px;background:#FFFBEB;border-radius:6px;border-left:3px solid var(--ambar)">
+            <b>Pedido ${escH(trf.pedido.codigo)}</b> — ${escH(trf.pedido.produto)}<br>
+            Qtd: ${trf.pedido.qtd} · Est.: ${fmtM(trf.pedido.precoUnit)}/un · Entrega: ${fmtD(trf.pedido.dataEntrega)} · ${escH(trf.pedido.usuario)}
+            ${trf.pedido.observacao ? `<br><span style="color:var(--texto-leve)">${escH(trf.pedido.observacao)}</span>` : ''}
+        </div>`;
+        h += '<div class="flow">';
+
+        if (trf.sc) h += `<div class="flow-step step-sc">
+            <div class="step-lbl">Solicitação de Compra</div>
+            <div class="step-txt">SC nº <b>${escH(trf.sc.numero)}</b> · ${escH(trf.sc.status)} · ${fmtD(trf.sc.data)} · ${escH(trf.sc.usuario)}</div>
+        </div>`;
+
+        if (trf.cotacoes.length) {
+            h += `<div class="flow-step step-cot">
+                <div class="step-lbl">Cotação ${trf.cotacoes[0]?.codigo ? '— ' + trf.cotacoes[0].codigo : ''}</div>
+                <table class="cot-tbl"><thead><tr>
+                    <th>Fornecedor</th><th style="text-align:right">Qtd</th>
+                    <th style="text-align:right">Vlr Unit</th><th style="text-align:right">Total Neg.</th>
+                    <th>Data</th><th>Responsável</th>
+                </tr></thead><tbody>
+                ${trf.cotacoes.map(c => `<tr class="${c.vencedor?'v':''}">
+                    <td>${escH(c.fornecedor)}${c.vencedor?' <span class="vb">Vencedor</span>':''}</td>
+                    <td style="text-align:right">${c.qtd}</td>
+                    <td style="text-align:right;font-family:monospace">${fmtM(c.vlrUnit)}</td>
+                    <td style="text-align:right;font-family:monospace">${fmtM(c.vlrTotalNeg ?? c.vlrTotal)}</td>
+                    <td>${fmtD(c.data)}</td><td>${escH(c.usuario)}</td>
+                </tr>`).join('')}
+                </tbody></table>
+            </div>`;
+        }
+
+        if (trf.oc) h += `<div class="flow-step step-oc">
+            <div class="step-lbl">Ordem de Compra</div>
+            <div class="step-txt">OC nº <b>${escH(trf.oc.numero)}</b> · ${escH(trf.oc.status)} · ${fmtD(trf.oc.data)}<br>
+            Fornecedor: ${escH(trf.oc.fornecedor)} · Valor: <b>${fmtM(trf.oc.vlrTotal)}</b> · ${escH(trf.oc.usuario)}</div>
+        </div>`;
+
+        if (trf.nf) h += `<div class="flow-step step-nf">
+            <div class="step-lbl">Nota Fiscal · ${escH(trf.nf.tipo)}</div>
+            <div class="step-txt">NF nº <b>${escH(trf.nf.numero)}</b> · ${escH(trf.nf.status)} · ${fmtD(trf.nf.data)}<br>
+            Fornecedor: ${escH(trf.nf.fornecedor)} · Qtd recebida: ${trf.nf.qtdRecebida} · Valor: <b>${fmtM(trf.nf.vlrTotal)}</b> · ${escH(trf.nf.usuario)}</div>
+        </div>`;
+
+        h += '</div>';
     }
 
-    // ── HELPERS ───────────────────────────────────────────────
-    function fmtMoney(v) {
-        if (v == null || v === 0) return 'R$ 0,00';
-        return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-    function fmtData(dt) {
-        if (!dt) return '—';
-        return new Date(dt).toLocaleDateString('pt-BR');
-    }
-    function escHtml(s) {
-        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-    function mostrarToast(msg, tipo) {
-        const t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = `toast ${tipo} show`;
-        setTimeout(() => t.classList.remove('show'), 3500);
-    }
+    document.getElementById('drwBody').innerHTML = h;
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('drawer').classList.add('open');
+}
+function fecharDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('overlay').style.display = 'none';
+}
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharDrawer(); });
+// ── HELPERS ───────────────────────────────────────────────────────────
+function fmtM(v) {
+    if (v == null || v === 0) return 'R$ 0,00';
+    return Number(v).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+function fmtD(dt) {
+    if (!dt) return '—';
+    const d = new Date(dt);
+    return isNaN(d) ? String(dt) : d.toLocaleDateString('pt-BR');
+}
+function escH(s)  { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escA(s)  { return escH(s); }
+function escId(s) { return String(s).replace(/\./g,'_'); }
+function mostrarToast(msg, tipo) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast ' + tipo + ' show';
+    setTimeout(() => t.classList.remove('show'), 3500);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharDrawer(); });
 </script>
 <script src="auth.js"></script>
 </body>
