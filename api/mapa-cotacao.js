@@ -39,19 +39,18 @@ module.exports = async function handler(req, res) {
         });
 
     const cols = ['E', 'F', 'G'];
-    const YELLOW   = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
-    const NO_FILL  = { type: 'pattern', pattern: 'none' };
-    const DATA_END = 19;
+    const YELLOW = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
+    const WHITE  = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
 
     // ── Find winner column index (0-2)
     const winnerIdx = suppliers.findIndex(s => s.vencedor);
 
-    // ── Clear any pre-existing fill from ALL supplier columns before writing
-    cols.forEach(col => {
-        for (let r = 7; r <= DATA_END; r++) {
-            ws.getCell(`${col}${r}`).fill = NO_FILL;
-        }
-    });
+    // ── Apply fills rows 7-18: white for all, then yellow over the winner column
+    for (let r = 7; r <= 18; r++) {
+        cols.forEach((col, i) => {
+            ws.getCell(`${col}${r}`).fill = (i === winnerIdx) ? YELLOW : WHITE;
+        });
+    }
 
     // ── Fill supplier names/CNPJ in rows 7-8 (increase height for readability)
     ws.getRow(7).height = 28;
@@ -100,13 +99,6 @@ module.exports = async function handler(req, res) {
         rowIdx++;
     });
 
-    // ── Apply yellow to the entire winner column (rows 7-19) only
-    if (winnerIdx >= 0) {
-        const winCol = cols[winnerIdx];
-        for (let r = 7; r <= DATA_END; r++) {
-            ws.getCell(`${winCol}${r}`).fill = YELLOW;
-        }
-    }
 
     // ── Format D column (rubrica) as currency
     for (let r = DATA_START; r <= DATA_START + 6; r++) {

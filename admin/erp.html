@@ -471,7 +471,7 @@ function agrupar(rows) {
                 id: r.PED_ID, codigo: r.PED_CODIGO, itemId: r.PED_ID_ITEM,
                 produto: r.PED_PRODUTO_NOME || '', qtd: r.PED_QTD, precoUnit: r.PED_PRECO_UNIT,
                 data: r.PED_DATA, dataEntrega: r.PED_DATA_ENTREGA,
-                observacao: r.PED_OBSERVACAO || '', usuario: r.PED_USUARIO_NOME || '',
+                detalhamento: r.PED_DETALHAMENTO || '', observacao: r.PED_OBSERVACAO || '', usuario: r.PED_USUARIO_NOME || '',
             };
             if (r.SC_IDMOV && !trf.sc) trf.sc = {
                 id: r.SC_IDMOV, numero: r.SC_NUMERO, status: r.SC_STATUS_COMPRAS || '',
@@ -693,7 +693,7 @@ function renderIrregulares(irrTrf, irrCC, irrTit) {
         rows += `<div class="trf-l3" onclick="abrirDrawer('${escA(trf.codigo)}')">
             <div class="farole ${cfg.dot}"></div>
             <span class="l3-cod">${escH(trf.codigo)}</span>
-            <span class="l3-nom" title="${escA(trf.nome)}">${escH(trf.nome)}</span>
+            <span class="l3-nom" title="${escA(trf.nome + (trf.pedido?.detalhamento ? ' - ' + trf.pedido.detalhamento : ''))}">${escH(trf.nome + (trf.pedido?.detalhamento ? ' - ' + trf.pedido.detalhamento : ''))}</span>
             <div class="l3-r">
                 ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
                 ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
@@ -806,7 +806,7 @@ function renderL3(node) {
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
         <span class="l3-cod">${escH(node.codigo)}</span>
-        <span class="l3-nom" title="${escA(node.nome)}">${escH(node.nome)}</span>
+        <span class="l3-nom" title="${escA(node.nome + (node.pedido?.detalhamento ? ' - ' + node.pedido.detalhamento : ''))}">${escH(node.nome + (node.pedido?.detalhamento ? ' - ' + node.pedido.detalhamento : ''))}</span>
         <div class="l3-r">
             ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
             ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
@@ -904,7 +904,7 @@ function abrirDrawerFin(idx) {
 function abrirDrawer(cod) {
     const trf = projetoAtivo?.trfList.find(t => t.codigo === cod);
     if (!trf) return;
-    document.getElementById('drwTitulo').textContent = trf.nome;
+    document.getElementById('drwTitulo').textContent = trf.nome + (trf.pedido?.detalhamento ? ' — ' + trf.pedido.detalhamento : '');
     document.getElementById('drwSub').textContent    =
         trf.codigo + (trf.unidade ? ' · ' + trf.unidade : '') + (trf.qtd ? ' · Qtd: ' + trf.qtd : '');
 
