@@ -435,6 +435,7 @@ function agrupar(rows) {
                         dataEmissao: r.FIN_DATA_EMISSAO, dataVencimento: r.FIN_DATA_VENCIMENTO,
                         dataPagamento: r.FIN_DATA_PAGAMENTO, conta: r.FIN_CONTA_PAGA,
                         vlrOriginal: r.FIN_VALOR_ORIGINAL, vlrPago: r.FIN_VALOR_PAGO,
+                        usuario: r.FIN_USUARIO_MODIFICACAO_COD || '',
                     },
                     ratCentroCusto: r.FIN_RATEIO_CENTRO_CUSTO || r.FIN_CENTRO_CUSTO,
                     ratValor: r.FIN_RATEIO_VALOR,
@@ -519,6 +520,7 @@ function agrupar(rows) {
                     dataPagamento: r.FIN_DATA_PAGAMENTO, conta: r.FIN_CONTA_PAGA,
                     vlrOriginal: r.FIN_VALOR_ORIGINAL, vlrPago: r.FIN_VALOR_PAGO,
                     rateioValor: r.FIN_RATEIO_VALOR,
+                    usuario: r.FIN_USUARIO_MODIFICACAO_COD || '',
                 });
             }
         }
@@ -884,6 +886,7 @@ function abrirDrawerFin(idx) {
             Emissão: ${fmtD(item.fin.dataEmissao)} · Vencimento: ${fmtD(item.fin.dataVencimento)}${item.fin.dataPagamento ? ` · Pago em: ${fmtD(item.fin.dataPagamento)}` : ''}<br>
             Valor: <b>${fmtM(item.fin.vlrOriginal)}</b>${diff ? ` · Valor pago: <b>${fmtM(item.fin.vlrPago)}</b>` : ''}
             ${item.ratValor ? ` · Rateio CC: ${fmtM(item.ratValor)}` : ''}
+            ${item.fin.usuario ? `<br>Responsável: ${escH(item.fin.usuario)}` : ''}
             </div>
         </div></div>`;
     }
@@ -992,7 +995,8 @@ function abrirDrawer(cod) {
             <div class="step-txt">Doc nº <b>${escH(fin.numero)}</b><span class="fin-id">(ID: ${fin.id})</span> · ${escH(fin.status)}<br>
             Fornecedor: ${escH(fin.fornecedor)} · Conta: ${escH(String(fin.conta || '—'))}<br>
             Emissão: ${fmtD(fin.dataEmissao)} · Vencimento: ${fmtD(fin.dataVencimento)}${fin.dataPagamento ? ` · Pago em: ${fmtD(fin.dataPagamento)}` : ''}<br>
-            Valor: <b>${fmtM(fin.vlrOriginal)}</b>${diferencaValor ? ` · Valor pago: <b>${fmtM(fin.vlrPago)}</b>` : ''}${rateioInfo}</div>
+            Valor: <b>${fmtM(fin.vlrOriginal)}</b>${diferencaValor ? ` · Valor pago: <b>${fmtM(fin.vlrPago)}</b>` : ''}${rateioInfo}
+            ${fin.usuario ? `<br>Responsável: ${escH(fin.usuario)}` : ''}</div>
         </div>`;
         });
 
