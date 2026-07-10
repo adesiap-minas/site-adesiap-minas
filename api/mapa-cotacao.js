@@ -41,19 +41,20 @@ module.exports = async function handler(req, res) {
     const cols = ['E', 'F', 'G'];
     const YELLOW = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
 
-    // ── Fill supplier names/CNPJ in rows 7-8
+    // ── Find winner column index (0-2)
+    const winnerIdx = suppliers.findIndex(s => s.vencedor);
+
+    // ── Fill supplier names/CNPJ in rows 7-8 (increase height for readability)
+    ws.getRow(7).height = 28;
+    ws.getRow(8).height = 22;
     suppliers.forEach((sup, i) => {
         if (i >= 3) return;
-        const nameCell = ws.getCell(`${cols[i]}7`);
-        nameCell.value = sup.fornecedor;
-        if (sup.vencedor) nameCell.fill = YELLOW;
+        ws.getCell(`${cols[i]}7`).value = sup.fornecedor;
         // CNPJ not available in our dataset; clear placeholder
         ws.getCell(`${cols[i]}8`).value = '';
     });
 
     // ── Data rows (9–15 in template)
-    // Group cotacoes by item: same cotacao code = same item, different supplier
-    // For one TRF there's typically one item; each row = one product line
     const itemMap = new Map();
     cotacoes.forEach(c => {
         const key = c.codigo || 'default';
@@ -70,6 +71,7 @@ module.exports = async function handler(req, res) {
     });
 
     const DATA_START = 9;
+    const DATA_END   = 19; // last row to yellow (total row)
     let rowIdx = 0;
     itemMap.forEach(item => {
         if (rowIdx >= 7) return; // template has 7 item rows (9-15)
@@ -85,13 +87,19 @@ module.exports = async function handler(req, res) {
             if (q) {
                 const cell = row.getCell(5 + i); // E/F/G
                 cell.value = q.vlrUnitNeg || q.vlrUnit || null;
-                if (sup.vencedor) cell.fill = YELLOW;
                 cell.numFmt = '"R$"#,##0.00';
             }
         });
-        // H/I already have MAX/MIN formulas in template — preserve them
         rowIdx++;
     });
+
+    // ── Apply yellow to the entire winner column (rows 7-19) only
+    if (winnerIdx >= 0) {
+        const winCol = cols[winnerIdx];
+        for (let r = 7; r <= DATA_END; r++) {
+            ws.getCell(`${winCol}${r}`).fill = YELLOW;
+        }
+    }
 
     // ── Format D column (rubrica) as currency
     for (let r = DATA_START; r <= DATA_START + 6; r++) {
