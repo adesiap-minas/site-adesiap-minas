@@ -693,7 +693,7 @@ function renderIrregulares(irrTrf, irrCC, irrTit) {
         rows += `<div class="trf-l3" onclick="abrirDrawer('${escA(trf.codigo)}')">
             <div class="farole ${cfg.dot}"></div>
             <span class="l3-cod">${escH(trf.codigo)}</span>
-            <span class="l3-nom" title="${escA(trf.nome + (trf.pedido?.detalhamento ? ' - ' + trf.pedido.detalhamento : ''))}">${escH(trf.nome + (trf.pedido?.detalhamento ? ' - ' + trf.pedido.detalhamento : ''))}</span>
+            <span class="l3-nom" title="${escA(trf.nome)}">${escH(trf.nome)}</span>
             <div class="l3-r">
                 ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
                 ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
@@ -806,7 +806,7 @@ function renderL3(node) {
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
         <span class="l3-cod">${escH(node.codigo)}</span>
-        <span class="l3-nom" title="${escA(node.nome + (node.pedido?.detalhamento ? ' - ' + node.pedido.detalhamento : ''))}">${escH(node.nome + (node.pedido?.detalhamento ? ' - ' + node.pedido.detalhamento : ''))}</span>
+        <span class="l3-nom" title="${escA(node.nome)}">${escH(node.nome)}</span>
         <div class="l3-r">
             ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
             ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
@@ -904,7 +904,7 @@ function abrirDrawerFin(idx) {
 function abrirDrawer(cod) {
     const trf = projetoAtivo?.trfList.find(t => t.codigo === cod);
     if (!trf) return;
-    document.getElementById('drwTitulo').textContent = trf.nome + (trf.pedido?.detalhamento ? ' — ' + trf.pedido.detalhamento : '');
+    document.getElementById('drwTitulo').textContent = trf.nome;
     document.getElementById('drwSub').textContent    =
         trf.codigo + (trf.unidade ? ' · ' + trf.unidade : '') + (trf.qtd ? ' · Qtd: ' + trf.qtd : '');
 
@@ -944,7 +944,7 @@ function abrirDrawer(cod) {
         if (trf.pedido) {
             h += `<div style="font-size:.8rem;margin-bottom:6px;padding:8px 12px;background:#FFFBEB;border-radius:6px;border-left:3px solid var(--ambar)">
                 <b>Pedido ${escH(trf.pedido.codigo)}</b> — ${escH(trf.pedido.produto)}<br>
-                Qtd: ${trf.pedido.qtd} · Est.: ${fmtM(trf.pedido.precoUnit)}/un · Entrega: ${fmtD(trf.pedido.dataEntrega)} · ${escH(trf.pedido.usuario)}
+                ${trf.pedido.detalhamento ? `<span style="color:var(--texto)">${escH(trf.pedido.detalhamento)}</span><br>` : ''}Qtd: ${trf.pedido.qtd} · Est.: ${fmtM(trf.pedido.precoUnit)}/un · Entrega: ${fmtD(trf.pedido.dataEntrega)} · ${escH(trf.pedido.usuario)}
                 ${trf.pedido.observacao ? `<br><span style="color:var(--texto-leve)">${escH(trf.pedido.observacao)}</span>` : ''}
             </div>`;
         }

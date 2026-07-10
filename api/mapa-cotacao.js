@@ -55,7 +55,7 @@ module.exports = async function handler(req, res) {
         const key = c.codigo || 'default';
         if (!itemMap.has(key)) {
             itemMap.set(key, {
-                descricao: trf.pedido?.produto || trf.nome,
+                descricao: [trf.nome, trf.pedido?.detalhamento].filter(Boolean).join(' - '),
                 qtd:       trf.qtd,
                 unidade:   trf.unidade,
                 rubrica:   trf.valorTotal,
