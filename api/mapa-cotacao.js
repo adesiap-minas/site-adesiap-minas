@@ -39,18 +39,6 @@ module.exports = async function handler(req, res) {
         });
 
     const cols = ['E', 'F', 'G'];
-    const YELLOW = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
-    const WHITE  = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
-
-    // ── Find winner column index (0-2)
-    const winnerIdx = suppliers.findIndex(s => s.vencedor);
-
-    // ── Apply fills rows 7-18: white for all, then yellow over the winner column
-    for (let r = 7; r <= 18; r++) {
-        cols.forEach((col, i) => {
-            ws.getCell(`${col}${r}`).fill = (i === winnerIdx) ? YELLOW : WHITE;
-        });
-    }
 
     // ── Fill supplier names/CNPJ in rows 7-8 (increase height for readability)
     ws.getRow(7).height = 28;
@@ -91,7 +79,7 @@ module.exports = async function handler(req, res) {
             if (i >= 3) return;
             const q = item.quotes[sup.fornecedorCod];
             if (q) {
-                const cell = row.getCell(5 + i); // E/F/G
+                const cell = row.getCell(5 + i);
                 cell.value = q.vlrUnitNeg || q.vlrUnit || null;
                 cell.numFmt = '"R$"#,##0.00';
             }
