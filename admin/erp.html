@@ -482,6 +482,7 @@ function agrupar(rows) {
                 trf.cotacoes.push({
                     codigo: r.COT_CODIGO, fornecedorCod: r.COT_FORNECEDOR_COD,
                     fornecedor: r.COT_FORNECEDOR_FANTASIA || r.COT_FORNECEDOR_RAZAO_SOCIAL || '',
+                    cnpj: r.COT_FORNECEDOR_CNPJCPF || '',
                     vencedor: r.COT_VENCEDOR === 1,
                     data: r.COT_DATA, status: r.COT_STATUS, qtd: r.COT_QTD,
                     vlrUnit: r.COT_VLR_UNIT, vlrTotal: r.COT_VLR_TOTAL,

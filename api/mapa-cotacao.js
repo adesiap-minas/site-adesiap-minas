@@ -39,10 +39,19 @@ module.exports = async function handler(req, res) {
         });
 
     const cols = ['E', 'F', 'G'];
-    const YELLOW = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
+    const YELLOW   = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFF00' } };
+    const NO_FILL  = { type: 'pattern', pattern: 'none' };
+    const DATA_END = 19;
 
     // ── Find winner column index (0-2)
     const winnerIdx = suppliers.findIndex(s => s.vencedor);
+
+    // ── Clear any pre-existing fill from ALL supplier columns before writing
+    cols.forEach(col => {
+        for (let r = 7; r <= DATA_END; r++) {
+            ws.getCell(`${col}${r}`).fill = NO_FILL;
+        }
+    });
 
     // ── Fill supplier names/CNPJ in rows 7-8 (increase height for readability)
     ws.getRow(7).height = 28;
@@ -50,8 +59,7 @@ module.exports = async function handler(req, res) {
     suppliers.forEach((sup, i) => {
         if (i >= 3) return;
         ws.getCell(`${cols[i]}7`).value = sup.fornecedor;
-        // CNPJ not available in our dataset; clear placeholder
-        ws.getCell(`${cols[i]}8`).value = '';
+        ws.getCell(`${cols[i]}8`).value = sup.cnpj || '';
     });
 
     // ── Data rows (9–15 in template)
@@ -71,7 +79,6 @@ module.exports = async function handler(req, res) {
     });
 
     const DATA_START = 9;
-    const DATA_END   = 19; // last row to yellow (total row)
     let rowIdx = 0;
     itemMap.forEach(item => {
         if (rowIdx >= 7) return; // template has 7 item rows (9-15)
