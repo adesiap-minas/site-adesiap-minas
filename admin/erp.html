@@ -201,6 +201,10 @@
         .btn-bitrix{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#1B5299;color:#fff;border-radius:6px;text-decoration:none;font-size:.78rem;font-weight:600;margin-bottom:12px;width:fit-content}
         .btn-bitrix:hover{background:#154080;color:#fff}
         .btn-bitrix i{font-size:.72rem}
+        .btn-mapa-cot{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;background:#166534;color:#fff;border:none;border-radius:5px;font-size:.68rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+        .btn-mapa-cot:hover{background:#14532D}
+        .btn-mapa-cot:disabled{opacity:.55;cursor:not-allowed}
+        .btn-mapa-cot i{font-size:.65rem}
 
         /* Toast */
         .toast{position:fixed;bottom:22px;right:22px;padding:11px 16px;border-radius:8px;font-size:.85rem;font-weight:600;color:#fff;z-index:9999;opacity:0;transform:translateY(5px);transition:all .22s;pointer-events:none}
@@ -951,7 +955,12 @@ function abrirDrawer(cod) {
 
         if (trf.cotacoes.length) {
             h += `<div class="flow-step step-cot">
-                <div class="step-lbl">Cotação ${trf.cotacoes[0]?.codigo ? '— ' + trf.cotacoes[0].codigo : ''}</div>
+                <div class="step-lbl" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                    <span>Cotação ${trf.cotacoes[0]?.codigo ? '— ' + trf.cotacoes[0].codigo : ''}</span>
+                    <button id="btnMapaCot" class="btn-mapa-cot" onclick="gerarMapaCotacao('${escA(trf.codigo)}')">
+                        <i class="fas fa-file-excel"></i> Mapa de Cotação
+                    </button>
+                </div>
                 <table class="cot-tbl"><thead><tr>
                     <th>Fornecedor</th><th style="text-align:right">Qtd</th>
                     <th style="text-align:right">Vlr Unit</th><th style="text-align:right">Total Neg.</th>
@@ -1007,6 +1016,40 @@ function abrirDrawer(cod) {
     document.getElementById('overlay').style.display = 'block';
     document.getElementById('drawer').classList.add('open');
 }
+async function gerarMapaCotacao(cod) {
+    const trf = projetoAtivo?.trfList.find(t => t.codigo === cod);
+    if (!trf || !trf.cotacoes.length) { mostrarToast('Sem cotações para gerar mapa', 'info'); return; }
+
+    const btn = document.getElementById('btnMapaCot');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...'; }
+
+    try {
+        const res = await fetch('/api/mapa-cotacao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                projeto:  { codigo: projetoAtivo.codigo, descricao: projetoAtivo.descricao },
+                trf:      { codigo: trf.codigo, nome: trf.nome, qtd: trf.qtd, unidade: trf.unidade,
+                            valorTotal: trf.valorTotal, pedido: trf.pedido },
+                cotacoes: trf.cotacoes,
+            }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `Mapa_Cotacao_${projetoAtivo.codigo}_${trf.codigo}.xlsx`.replace(/[^a-zA-Z0-9_\-.]/g,'_');
+        a.click();
+        URL.revokeObjectURL(url);
+        mostrarToast('Mapa gerado com sucesso!', 'sucesso');
+    } catch (e) {
+        mostrarToast('Erro ao gerar mapa: ' + e.message, 'erro');
+    } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-excel"></i> Mapa de Cotação'; }
+    }
+}
+
 function fecharDrawer() {
     document.getElementById('drawer').classList.remove('open');
     document.getElementById('overlay').style.display = 'none';
