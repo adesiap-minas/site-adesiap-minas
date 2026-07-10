@@ -429,7 +429,7 @@ function agrupar(rows) {
                 valorTotal:     r.TRF_VALOR_TOTAL,
                 unidade:        r.TRF_UNIDADE || '',
                 origemRegistro: r.ORIGEM_REGISTRO || '',
-                pedido: null, sc: null, cotacoes: [], oc: null, nf: null,
+                pedido: null, sc: null, cotacoes: [], ocs: [], nfs: [],
             });
         }
         const trf = prj.trfMap.get(trfKey);
@@ -460,21 +460,25 @@ function agrupar(rows) {
             }
         }
         // OC e NF: populados independente do fluxo (OC Direta, NF Direta e Fluxo Completo)
-        if (r.OC_IDMOV && !trf.oc) trf.oc = {
-            id: r.OC_IDMOV, numero: r.OC_NUMERO,
-            fornecedor: r.OC_FORNECEDOR_RAZAO_SOCIAL || '',
-            status: r.OC_STATUS || '', data: r.OC_DATA,
-            qtd: r.OC_QTD, vlrUnit: r.OC_VLR_UNITARIO, vlrTotal: r.OC_VLR_TOTAL,
-            usuario: r.OC_USUARIO_NOME || '',
-        };
-        if (r.NF_ID && !trf.nf) trf.nf = {
-            id: r.NF_ID, numero: r.NF_NUMERO,
-            tipo: r.NF_TIPO_DESCRICAO || r.NF_TIPO || '',
-            fornecedor: r.NF_FORNECEDOR_RAZAO_SOCIAL || '',
-            data: r.NF_DATA, status: r.NF_STATUS || '',
-            qtdRecebida: r.NF_QTD_RECEBIDA, vlrUnit: r.NF_VLR_UNITARIO, vlrTotal: r.NF_VLR_TOTAL,
-            usuario: r.NF_USUARIO_NOME || '',
-        };
+        if (r.OC_IDMOV && !trf.ocs.find(o => o.id === r.OC_IDMOV)) {
+            trf.ocs.push({
+                id: r.OC_IDMOV, numero: r.OC_NUMERO,
+                fornecedor: r.OC_FORNECEDOR_RAZAO_SOCIAL || '',
+                status: r.OC_STATUS || '', data: r.OC_DATA,
+                qtd: r.OC_QTD, vlrUnit: r.OC_VLR_UNITARIO, vlrTotal: r.OC_VLR_TOTAL,
+                usuario: r.OC_USUARIO_NOME || '',
+            });
+        }
+        if (r.NF_ID && !trf.nfs.find(n => n.id === r.NF_ID)) {
+            trf.nfs.push({
+                id: r.NF_ID, numero: r.NF_NUMERO,
+                tipo: r.NF_TIPO_DESCRICAO || r.NF_TIPO || '',
+                fornecedor: r.NF_FORNECEDOR_RAZAO_SOCIAL || '',
+                data: r.NF_DATA, status: r.NF_STATUS || '',
+                qtdRecebida: r.NF_QTD_RECEBIDA, vlrUnit: r.NF_VLR_UNITARIO, vlrTotal: r.NF_VLR_TOTAL,
+                usuario: r.NF_USUARIO_NOME || '',
+            });
+        }
     });
 
     return Array.from(projMap.values()).map(prj => {
@@ -506,8 +510,8 @@ function getStatus(trf) {
     if (orig === 'NF Direta')  return 'nf_direta';
     // Fluxo Completo
     if (!trf.pedido) return 'none';
-    if (trf.nf || trf.oc?.status === 'Recebido') return 'rec';
-    if (trf.oc)  return 'oc';
+    if (trf.nfs.length > 0 || trf.ocs.some(o => o.status === 'Recebido')) return 'rec';
+    if (trf.ocs.length > 0) return 'oc';
     if (trf.cotacoes.length > 0) return 'cot';
     return 'pend';
 }
@@ -586,8 +590,8 @@ function selecionarProjeto(id) {
     // KPIs
     const allLeaves   = projetoAtivo.trfTree.flatMap(n => leavesOf(n));
     const totalOrc    = projetoAtivo.trfList.reduce((s,t) => s + (t.valorTotal || 0), 0);
-    const totalOC     = allLeaves.reduce((s,t) => s + (t.oc?.vlrTotal || 0), 0);
-    const totalNF     = allLeaves.reduce((s,t) => s + (t.nf?.vlrTotal || 0), 0)
+    const totalOC     = allLeaves.reduce((s,t) => s + t.ocs.reduce((a,o)=>a+(o.vlrTotal||0),0), 0);
+    const totalNF     = allLeaves.reduce((s,t) => s + t.nfs.reduce((a,n)=>a+(n.vlrTotal||0),0), 0)
                       + projetoAtivo.semTarefas.reduce((s,x) => s + (x.nf?.vlrTotal || 0), 0);
     const nRec        = allLeaves.filter(t => getStatus(t) === 'rec').length;
     const nIrr        = allLeaves.filter(t => ['oc_direta','nf_direta'].includes(getStatus(t))).length
@@ -630,8 +634,8 @@ function renderIrregulares(irrTrf, irrCC) {
     irrTrf.forEach(trf => {
         const st  = getStatus(trf);
         const cfg = S[st];
-        const fornec = trf.oc?.fornecedor || trf.nf?.fornecedor || '';
-        const vlr    = trf.oc?.vlrTotal ?? trf.nf?.vlrTotal ?? null;
+        const fornec = trf.ocs[0]?.fornecedor || trf.nfs[0]?.fornecedor || '';
+        const vlr    = trf.ocs.reduce((s,o)=>s+(o.vlrTotal||0),0) || trf.nfs.reduce((s,n)=>s+(n.vlrTotal||0),0) || null;
         rows += `<div class="trf-l3" onclick="abrirDrawer('${escA(trf.codigo)}')">
             <div class="farole ${cfg.dot}"></div>
             <span class="l3-cod">${escH(trf.codigo)}</span>
@@ -724,8 +728,8 @@ function renderL2(node) {
 function renderL3(node) {
     const st  = getStatus(node);
     const cfg = S[st];
-    const fornec = node.cotacoes.find(c=>c.vencedor)?.fornecedor || node.oc?.fornecedor || '';
-    const vlr    = node.oc?.vlrTotal ?? node.pedido?.precoUnit ?? node.valorTotal ?? null;
+    const fornec = node.cotacoes.find(c=>c.vencedor)?.fornecedor || node.ocs[0]?.fornecedor || '';
+    const vlr    = node.ocs.reduce((s,o)=>s+(o.vlrTotal||0),0) || node.pedido?.precoUnit || node.valorTotal || null;
     const scSt   = node.sc?.status ? ` · ${escH(node.sc.status)}` : '';
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
@@ -860,17 +864,21 @@ function abrirDrawer(cod) {
             </div>`;
         }
 
-        if (trf.oc) h += `<div class="flow-step step-oc">
-            <div class="step-lbl">Ordem de Compra</div>
-            <div class="step-txt">OC nº <b>${escH(trf.oc.numero)}</b> · ${escH(trf.oc.status)} · ${fmtD(trf.oc.data)}<br>
-            Fornecedor: ${escH(trf.oc.fornecedor)} · Valor: <b>${fmtM(trf.oc.vlrTotal)}</b> · ${escH(trf.oc.usuario)}</div>
+        trf.ocs.forEach((oc, i) => {
+            h += `<div class="flow-step step-oc">
+            <div class="step-lbl">Ordem de Compra${trf.ocs.length > 1 ? ' ' + (i+1) + '/' + trf.ocs.length : ''}</div>
+            <div class="step-txt">OC nº <b>${escH(oc.numero)}</b> · ${escH(oc.status)} · ${fmtD(oc.data)}<br>
+            Fornecedor: ${escH(oc.fornecedor)} · Valor: <b>${fmtM(oc.vlrTotal)}</b> · ${escH(oc.usuario)}</div>
         </div>`;
+        });
 
-        if (trf.nf) h += `<div class="flow-step step-nf">
-            <div class="step-lbl">Nota Fiscal · ${escH(trf.nf.tipo)}</div>
-            <div class="step-txt">NF nº <b>${escH(trf.nf.numero)}</b> · ${escH(trf.nf.status)} · ${fmtD(trf.nf.data)}<br>
-            Fornecedor: ${escH(trf.nf.fornecedor)} · Qtd recebida: ${trf.nf.qtdRecebida} · Valor: <b>${fmtM(trf.nf.vlrTotal)}</b> · ${escH(trf.nf.usuario)}</div>
+        trf.nfs.forEach((nf, i) => {
+            h += `<div class="flow-step step-nf">
+            <div class="step-lbl">Nota Fiscal${trf.nfs.length > 1 ? ' ' + (i+1) + '/' + trf.nfs.length : ''} · ${escH(nf.tipo)}</div>
+            <div class="step-txt">NF nº <b>${escH(nf.numero)}</b> · ${escH(nf.status)} · ${fmtD(nf.data)}<br>
+            Fornecedor: ${escH(nf.fornecedor)} · Qtd recebida: ${nf.qtdRecebida} · Valor: <b>${fmtM(nf.vlrTotal)}</b> · ${escH(nf.usuario)}</div>
         </div>`;
+        });
 
         h += '</div>';
     }
