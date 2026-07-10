@@ -66,37 +66,59 @@ module.exports = async function handler(req, res) {
     });
 
     const DATA_START = 9;
+    const BRL = '"R$"#,##0.00';
     let rowIdx = 0;
+    const colTotals = [0, 0, 0]; // per-supplier running totals for row 19
+
     itemMap.forEach(item => {
         if (rowIdx >= 7) return; // template has 7 item rows (9-15)
         const rowNum = DATA_START + rowIdx;
         const row = ws.getRow(rowNum);
-        row.getCell(1).value = item.descricao; // A
-        row.getCell(2).value = item.qtd;        // B
-        row.getCell(3).value = item.unidade;    // C
-        row.getCell(4).value = item.rubrica;    // D
+        row.getCell(1).value = item.descricao;
+        row.getCell(2).value = item.qtd;
+        row.getCell(3).value = item.unidade;
+        row.getCell(4).value = item.rubrica;
+        row.getCell(4).numFmt = BRL;
+
+        const rowPrices = [];
         suppliers.forEach((sup, i) => {
             if (i >= 3) return;
             const q = item.quotes[sup.fornecedorCod];
-            if (q) {
+            const price = q ? (Number(q.vlrUnitNeg || q.vlrUnit) || 0) : 0;
+            if (price > 0) {
                 const cell = row.getCell(5 + i);
-                cell.value = q.vlrUnitNeg || q.vlrUnit || null;
-                cell.numFmt = '"R$"#,##0.00';
+                cell.value = price;
+                cell.numFmt = BRL;
+                rowPrices.push(price);
+                colTotals[i] += price;
             }
         });
+
+        // Write MAX and MIN as computed values (template formulas aren't recalculated by ExcelJS)
+        if (rowPrices.length > 0) {
+            row.getCell(8).value   = Math.max(...rowPrices);
+            row.getCell(8).numFmt  = BRL;
+            row.getCell(9).value   = Math.min(...rowPrices);
+            row.getCell(9).numFmt  = BRL;
+        }
+
         rowIdx++;
     });
 
-
-    // ── Format D column (rubrica) as currency
-    for (let r = DATA_START; r <= DATA_START + 6; r++) {
-        ws.getRow(r).getCell(4).numFmt = '"R$"#,##0.00';
-    }
-
-    // ── Footer rows formatting
-    ['E', 'F', 'G'].forEach(col => {
-        ws.getCell(`${col}19`).numFmt = '"R$"#,##0.00';
+    // ── Row 19: totals per supplier + overall MAX/MIN
+    const validTotals = colTotals.filter(t => t > 0);
+    cols.forEach((col, i) => {
+        if (colTotals[i] > 0) {
+            ws.getCell(`${col}19`).value   = colTotals[i];
+            ws.getCell(`${col}19`).numFmt  = BRL;
+        }
     });
+    if (validTotals.length > 0) {
+        ws.getCell('H19').value  = Math.max(...validTotals);
+        ws.getCell('H19').numFmt = BRL;
+        ws.getCell('I19').value  = Math.min(...validTotals);
+        ws.getCell('I19').numFmt = BRL;
+    }
 
     const buffer = await wb.xlsx.writeBuffer();
 
