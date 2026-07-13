@@ -115,7 +115,7 @@ function spSafe(s) {
 
 // ── Build full folder path for a TRF doc type
 function buildPath(prjCodigo, spFolder, docType, trfCodigo, trfNome) {
-    const ano       = (prjCodigo || '').split('.')[0] || new Date().getFullYear().toString();
+    const ano       = new Date().getFullYear().toString();
     const trfFolder = `${trfCodigo} - ${spSafe(trfNome)}`;
     return [
         'PMO/Registros/Clientes',

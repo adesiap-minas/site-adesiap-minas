@@ -1252,8 +1252,12 @@ function renderDocArea(trf, spFolder, files, jus) {
         </div>`;
 
         const jusText = hasJus ? escH(jus[dt.key]) : '';
-        h += `<div class="doc-jus-area${hasJus && !hasFiles ? ' open' : ''}" id="jus-${dt.key}">
-            ${hasJus ? `<div class="doc-jus-current"><i class="fas fa-comment-alt"></i> ${jusText}</div>` : ''}
+        // Justificativa sempre visível quando existe
+        if (hasJus) {
+            h += `<div class="doc-jus-current"><i class="fas fa-comment-alt"></i> <b>Justificativa:</b> ${jusText}</div>`;
+        }
+        // Área de edição colapsável (sempre começa fechada)
+        h += `<div class="doc-jus-area" id="jus-${dt.key}">
             <textarea class="doc-jus-input" id="jus-txt-${dt.key}"
                 placeholder="Motivo pelo qual este documento não será anexado...">${jusText}</textarea>
             <div class="doc-jus-btns">
