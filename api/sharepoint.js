@@ -181,8 +181,8 @@ module.exports = async function handler(req, res) {
             const spFolder = cfg.sp_folder;
             const token    = await getToken();
 
-            // Parallel: list files for 3 doc types + load justificativas
-            const [filesResult, { data: jusData }] = await Promise.all([
+            // Parallel: Graph API listing + Supabase-stored files + justificativas
+            const [filesResult, { data: storedFiles }, { data: jusData }] = await Promise.all([
                 Promise.all(Object.keys(DOC_PATHS).map(async docType => {
                     const folderPath = buildPath(prj, spFolder, docType, trf, trfNome);
                     try {
@@ -192,12 +192,17 @@ module.exports = async function handler(req, res) {
                             undefined,
                             token
                         );
-                        return [docType, (data?.value || []).filter(f => f.file)]; // files only
+                        return [docType, (data?.value || []).filter(f => f.file)];
                     } catch (e) {
-                        if (e.status === 404) return [docType, []]; // folder not created yet
+                        if (e.status === 404) return [docType, []];
                         throw e;
                     }
                 })),
+                sb()
+                    .from('sp_files')
+                    .select('doc_type,file_name,web_url')
+                    .eq('prj_codigo', prj)
+                    .eq('trf_codigo', trf),
                 sb()
                     .from('sp_justificativas')
                     .select('doc_type,texto')
@@ -206,7 +211,16 @@ module.exports = async function handler(req, res) {
             ]);
 
             const files = Object.fromEntries(filesResult);
-            const jus   = {};
+
+            // Merge Supabase-stored files — garante links persistentes mesmo se SP path mudar
+            (storedFiles || []).forEach(sf => {
+                if (!files[sf.doc_type]) files[sf.doc_type] = [];
+                if (!files[sf.doc_type].some(f => f.name === sf.file_name)) {
+                    files[sf.doc_type].push({ name: sf.file_name, webUrl: sf.web_url, size: null, file: true });
+                }
+            });
+
+            const jus = {};
             (jusData || []).forEach(r => { jus[r.doc_type] = r.texto; });
 
             return res.json({ spFolder, files, jus });
@@ -243,6 +257,12 @@ module.exports = async function handler(req, res) {
                 mimeType || 'application/octet-stream',
                 token
             );
+
+            // Persiste link no Supabase — fonte de verdade para listagem após reloads
+            await sb().from('sp_files').upsert({
+                prj_codigo: prj, trf_codigo: trfCodigo, doc_type: docType,
+                file_name: item.name || fileName, web_url: item.webUrl,
+            }, { onConflict: 'prj_codigo,trf_codigo,doc_type,file_name' });
 
             return res.json({ ok: true, webUrl: item.webUrl, name: item.name });
         }
