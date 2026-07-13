@@ -197,6 +197,47 @@
         .step-rec::before{background:#10B981}
         .step-pag .step-lbl{color:#92400E}
         .step-rec .step-lbl{color:#065F46}
+
+        /* SharePoint document section */
+        .doc-section{margin-top:16px;border-top:2px solid var(--borda);padding-top:14px}
+        .doc-section-hdr{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+        .doc-section-hdr-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--texto-leve);flex:1}
+        .doc-section-hdr-folder{font-size:.68rem;color:var(--texto-leve);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .doc-type-row{border:1px solid var(--borda);border-radius:8px;padding:10px 13px;margin-bottom:8px;transition:border-color .15s}
+        .doc-type-row:hover{border-color:#93C5FD}
+        .doc-type-hdr{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+        .doc-type-icon{font-size:.82rem;color:var(--azul);width:16px;text-align:center;flex-shrink:0}
+        .doc-type-name{font-size:.83rem;font-weight:600;flex:1}
+        .doc-status{font-size:.66rem;padding:2px 8px;border-radius:9px;font-weight:700;white-space:nowrap}
+        .ds-ok  {background:#D1FAE5;color:#065F46}
+        .ds-warn{background:#FEF3C7;color:#92400E}
+        .ds-just{background:#DBEAFE;color:#1E40AF}
+        .doc-file-list{display:flex;flex-direction:column;gap:3px;margin-bottom:7px;padding-left:4px}
+        .doc-file{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--texto)}
+        .doc-file a{color:var(--azul);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .doc-file a:hover{text-decoration:underline}
+        .doc-file-size{font-size:.65rem;color:var(--texto-leve);flex-shrink:0}
+        .doc-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:2px}
+        .btn-doc-upload{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;background:var(--azul);color:#fff;border:none;border-radius:6px;font-size:.73rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+        .btn-doc-upload:hover{background:var(--azul-claro)}
+        .btn-doc-upload:disabled{opacity:.55;cursor:not-allowed}
+        .doc-jus-toggle{font-size:.7rem;color:var(--azul);cursor:pointer;margin-left:auto;text-decoration:underline;white-space:nowrap}
+        .doc-jus-area{margin-top:7px;display:none}
+        .doc-jus-area.open{display:block}
+        .doc-jus-current{font-size:.72rem;color:#1E40AF;margin-bottom:5px;padding:5px 8px;background:#EFF6FF;border-radius:5px}
+        .doc-jus-input{width:100%;padding:6px 9px;border:1px solid var(--borda);border-radius:6px;font-size:.78rem;font-family:'Inter',sans-serif;resize:vertical;min-height:52px;outline:none;box-sizing:border-box}
+        .doc-jus-input:focus{border-color:var(--azul)}
+        .doc-jus-btns{display:flex;gap:6px;margin-top:4px}
+        .btn-jus-save{padding:4px 12px;background:var(--verde);color:#fff;border:none;border-radius:5px;font-size:.73rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+        .btn-jus-del {padding:4px 12px;background:#DC2626;color:#fff;border:none;border-radius:5px;font-size:.73rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+        .doc-cfg-box{background:#FFFBEB;border:1px solid #FCD34D;border-radius:8px;padding:12px}
+        .doc-cfg-title{font-size:.82rem;font-weight:600;color:#92400E;margin-bottom:4px}
+        .doc-cfg-hint{font-size:.74rem;color:var(--texto-leve);margin-bottom:8px}
+        .doc-cfg-hint code{font-size:.73rem;background:#FEF9C3;padding:1px 5px;border-radius:3px}
+        .doc-cfg-input{width:100%;padding:7px 10px;border:1px solid var(--borda);border-radius:6px;font-size:.82rem;outline:none;box-sizing:border-box}
+        .doc-cfg-input:focus{border-color:var(--azul)}
+        .doc-cfg-btn{margin-top:7px;padding:6px 16px;background:var(--azul);color:#fff;border:none;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+        .doc-loading{padding:14px 0;text-align:center;color:var(--texto-leve);font-size:.8rem}
         .fin-id{font-size:.72em;color:var(--texto-leve);font-weight:400;margin-left:3px}
         .btn-bitrix{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#1B5299;color:#fff;border-radius:6px;text-decoration:none;font-size:.78rem;font-weight:600;margin-bottom:12px;width:fit-content}
         .btn-bitrix:hover{background:#154080;color:#fff}
@@ -663,6 +704,7 @@ function selecionarProjeto(id) {
     document.getElementById('taskView').style.display   = 'flex';
     document.getElementById('searchTask').value = '';
     renderTree();
+    spCarregarKpi();
 }
 
 // ── RENDER TREE ───────────────────────────────────────────────────────
@@ -1013,9 +1055,12 @@ function abrirDrawer(cod) {
         h += '</div>';
     }
 
+    h += '<div id="docArea" class="doc-loading"><i class="fas fa-spinner fa-spin"></i> Carregando documentos...</div>';
     document.getElementById('drwBody').innerHTML = h;
     document.getElementById('overlay').style.display = 'block';
     document.getElementById('drawer').classList.add('open');
+    // Load SharePoint docs async (non-blocking)
+    spCarregarDocs(trf);
 }
 async function gerarMapaCotacao(cod) {
     const trf = projetoAtivo?.trfList.find(t => t.codigo === cod);
@@ -1049,6 +1094,249 @@ async function gerarMapaCotacao(cod) {
     } finally {
         if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-excel"></i> Mapa de Cotação'; }
     }
+}
+
+// ── SHAREPOINT ────────────────────────────────────────────────────────
+
+const SP_DOC_TYPES = [
+    { key: 'cotacao',  label: 'Cotações',            folder: '01 - Orçamentos',        icon: 'fa-file-invoice-dollar' },
+    { key: 'nf',       label: 'Notas Fiscais',        folder: '02 - Notas fiscais',     icon: 'fa-receipt' },
+    { key: 'certidao', label: 'Certidões Negativas',  folder: '06 - Certidão negativa', icon: 'fa-certificate' },
+];
+
+async function spApi(method, action, params) {
+    const isGet = method === 'GET';
+    const url   = isGet
+        ? `/api/sharepoint?action=${action}&${new URLSearchParams(params || {})}`
+        : `/api/sharepoint?action=${action}`;
+    const opts  = { method, headers: { 'Content-Type': 'application/json' } };
+    if (!isGet) opts.body = JSON.stringify(params || {});
+    const res  = await fetch(url, opts);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+}
+
+async function spCarregarKpi() {
+    if (!projetoAtivo) return;
+    try {
+        const data  = await spApi('GET', 'config', { prj: projetoAtivo.codigo });
+        const kpis  = document.getElementById('tvKpis');
+        if (!kpis) return;
+        const kpiEl = document.createElement('div');
+        kpiEl.className = 'kpi';
+        if (data.spFolder) {
+            kpiEl.style.border = '1.5px solid #A7F3D0';
+            kpiEl.innerHTML = `<div class="kpi-label" style="color:#065F46"><i class="fas fa-folder" style="margin-right:3px"></i>SharePoint</div>
+                <div class="kpi-value verde" style="font-size:.78rem;font-weight:600">✓ Configurado</div>`;
+        } else {
+            kpiEl.style.border = '1.5px solid #FCD34D';
+            kpiEl.innerHTML = `<div class="kpi-label" style="color:#92400E"><i class="fas fa-folder" style="margin-right:3px"></i>SharePoint</div>
+                <div class="kpi-value ambar" style="font-size:.78rem;font-weight:600">⚠ Não configurado</div>`;
+        }
+        kpis.appendChild(kpiEl);
+    } catch (_) {} // silently ignore if SP env vars not configured yet
+}
+
+async function spCarregarDocs(trf) {
+    const el = document.getElementById('docArea');
+    if (!el || !projetoAtivo) return;
+    try {
+        const data = await spApi('GET', 'summary', {
+            prj:     projetoAtivo.codigo,
+            trf:     trf.codigo,
+            trfNome: trf.nome || '',
+        });
+        if (!data.spFolder) {
+            renderDocConfig(trf.codigo);
+        } else {
+            renderDocArea(trf, data.spFolder, data.files || {}, data.jus || {});
+        }
+    } catch (err) {
+        el.innerHTML = `<div style="color:#e53e3e;font-size:.8rem;padding:8px 0">
+            <i class="fas fa-exclamation-circle"></i> Erro ao carregar documentos: ${escH(err.message)}
+        </div>`;
+    }
+}
+
+function renderDocConfig(trfCodigo) {
+    const el = document.getElementById('docArea');
+    if (!el) return;
+    el.innerHTML = `<div class="doc-section">
+        <div class="doc-section-hdr">
+            <i class="fas fa-folder-open" style="color:var(--ambar)"></i>
+            <span class="doc-section-hdr-title">Documentação SharePoint</span>
+        </div>
+        <div class="doc-cfg-box">
+            <div class="doc-cfg-title"><i class="fas fa-folder-plus"></i> Pasta do projeto não configurada</div>
+            <div class="doc-cfg-hint">
+                Informe o nome da pasta como aparece no SharePoint:<br>
+                <code>PMO/Registros/Clientes/ANO/Público/<b>X - Nome do Projeto</b>/...</code>
+            </div>
+            <input class="doc-cfg-input" id="spFolderInput"
+                placeholder="Ex: 3 - Polícia Civil Itabirito"
+                onkeydown="if(event.key==='Enter')salvarSpConfig('${escA(trfCodigo)}')">
+            <button class="doc-cfg-btn" onclick="salvarSpConfig('${escA(trfCodigo)}')">
+                <i class="fas fa-save"></i> Salvar e carregar
+            </button>
+        </div>
+    </div>`;
+}
+
+async function salvarSpConfig(trfCodigo) {
+    const v = (document.getElementById('spFolderInput')?.value || '').trim();
+    if (!v) { mostrarToast('Informe o nome da pasta', 'erro'); return; }
+    try {
+        await spApi('POST', 'config', { prj: projetoAtivo.codigo, spFolder: v });
+        mostrarToast('Pasta configurada!', 'sucesso');
+        spCarregarKpi(); // update KPI
+        const trf = projetoAtivo.trfList.find(t => t.codigo === trfCodigo);
+        if (trf) spCarregarDocs(trf);
+    } catch (err) {
+        mostrarToast('Erro: ' + err.message, 'erro');
+    }
+}
+
+function renderDocArea(trf, spFolder, files, jus) {
+    const el = document.getElementById('docArea');
+    if (!el) return;
+
+    const totalOk   = SP_DOC_TYPES.filter(dt => (files[dt.key]?.length > 0) || jus[dt.key]).length;
+    const totalPend = SP_DOC_TYPES.length - totalOk;
+
+    let h = `<div class="doc-section">
+        <div class="doc-section-hdr">
+            <i class="fas fa-folder-open" style="color:var(--azul)"></i>
+            <span class="doc-section-hdr-title">Documentação SharePoint</span>
+            ${totalPend > 0
+                ? `<span style="font-size:.66rem;padding:2px 8px;border-radius:9px;background:#FEF3C7;color:#92400E;font-weight:700">⚠ ${totalPend} pendente${totalPend>1?'s':''}</span>`
+                : `<span style="font-size:.66rem;padding:2px 8px;border-radius:9px;background:#D1FAE5;color:#065F46;font-weight:700">✓ Completo</span>`}
+            <span class="doc-section-hdr-folder" title="${escA(spFolder)}">📁 ${escH(spFolder)}</span>
+        </div>`;
+
+    SP_DOC_TYPES.forEach(dt => {
+        const fileList  = files[dt.key] || [];
+        const hasFiles  = fileList.length > 0;
+        const hasJus    = !!jus[dt.key];
+        const statusLbl = hasFiles ? `${fileList.length} arquivo${fileList.length>1?'s':''}` : (hasJus ? 'Justificado' : 'Pendente');
+        const statusCls = hasFiles ? 'ds-ok' : (hasJus ? 'ds-just' : 'ds-warn');
+
+        h += `<div class="doc-type-row">
+            <div class="doc-type-hdr">
+                <i class="fas ${dt.icon} doc-type-icon"></i>
+                <span class="doc-type-name">${dt.label}</span>
+                <span class="doc-status ${statusCls}">${statusLbl}</span>
+            </div>`;
+
+        if (hasFiles) {
+            h += '<div class="doc-file-list">';
+            fileList.forEach(f => {
+                h += `<div class="doc-file">
+                    <i class="fas fa-file-pdf" style="color:#DC2626;flex-shrink:0;font-size:.8rem"></i>
+                    <a href="${escA(f.webUrl)}" target="_blank" title="${escA(f.name)}">${escH(f.name)}</a>
+                    <span class="doc-file-size">${fmtBytes(f.size)}</span>
+                </div>`;
+            });
+            h += '</div>';
+        }
+
+        h += `<div class="doc-actions">
+            <label class="btn-doc-upload">
+                <i class="fas fa-upload"></i> Upload
+                <input type="file" accept=".pdf,.jpg,.jpeg,.png,.docx,.xlsx" style="display:none"
+                    onchange="spUploadDoc('${escA(trf.codigo)}','${dt.key}','${escA(trf.nome)}',this)">
+            </label>
+            <span class="doc-jus-toggle" onclick="spToggleJus('jus-${dt.key}')">
+                ${hasJus ? '<i class="fas fa-pencil-alt"></i> Editar justificativa' : '+ Justificar ausência'}
+            </span>
+        </div>`;
+
+        const jusText = hasJus ? escH(jus[dt.key]) : '';
+        h += `<div class="doc-jus-area${hasJus && !hasFiles ? ' open' : ''}" id="jus-${dt.key}">
+            ${hasJus ? `<div class="doc-jus-current"><i class="fas fa-comment-alt"></i> ${jusText}</div>` : ''}
+            <textarea class="doc-jus-input" id="jus-txt-${dt.key}"
+                placeholder="Motivo pelo qual este documento não será anexado...">${jusText}</textarea>
+            <div class="doc-jus-btns">
+                <button class="btn-jus-save" onclick="spSalvarJus('${escA(trf.codigo)}','${dt.key}')">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+                ${hasJus ? `<button class="btn-jus-del" onclick="spRemoverJus('${escA(trf.codigo)}','${dt.key}')">
+                    <i class="fas fa-trash"></i> Remover
+                </button>` : ''}
+            </div>
+        </div>`;
+
+        h += '</div>'; // doc-type-row
+    });
+
+    h += '</div>';
+    el.innerHTML = h;
+}
+
+function spToggleJus(id) {
+    document.getElementById(id)?.classList.toggle('open');
+}
+
+async function spUploadDoc(trfCodigo, docType, trfNome, input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 8 * 1024 * 1024) {
+        mostrarToast('Arquivo muito grande (máx 8 MB)', 'erro');
+        input.value = '';
+        return;
+    }
+    mostrarToast('Enviando arquivo...', 'info');
+    try {
+        const b64 = await new Promise((res, rej) => {
+            const reader  = new FileReader();
+            reader.onload = e => res(e.target.result.split(',')[1]);
+            reader.onerror = rej;
+            reader.readAsDataURL(file);
+        });
+        await spApi('POST', 'upload', {
+            prj: projetoAtivo.codigo, trfCodigo, trfNome, docType,
+            fileName: file.name, fileBase64: b64, mimeType: file.type,
+        });
+        mostrarToast('Arquivo enviado com sucesso!', 'sucesso');
+        input.value = '';
+        // Reload doc section
+        const trf = projetoAtivo.trfList.find(t => t.codigo === trfCodigo);
+        if (trf) spCarregarDocs(trf);
+    } catch (err) {
+        mostrarToast('Erro no upload: ' + err.message, 'erro');
+        input.value = '';
+    }
+}
+
+async function spSalvarJus(trfCodigo, docType) {
+    const txt = (document.getElementById(`jus-txt-${docType}`)?.value || '').trim();
+    if (!txt) { mostrarToast('Informe a justificativa', 'erro'); return; }
+    try {
+        await spApi('POST', 'jus', { prj: projetoAtivo.codigo, trf: trfCodigo, docType, texto: txt });
+        mostrarToast('Justificativa salva!', 'sucesso');
+        const trf = projetoAtivo.trfList.find(t => t.codigo === trfCodigo);
+        if (trf) spCarregarDocs(trf);
+    } catch (err) {
+        mostrarToast('Erro: ' + err.message, 'erro');
+    }
+}
+
+async function spRemoverJus(trfCodigo, docType) {
+    try {
+        await spApi('POST', 'jus-delete', { prj: projetoAtivo.codigo, trf: trfCodigo, docType });
+        mostrarToast('Justificativa removida', 'sucesso');
+        const trf = projetoAtivo.trfList.find(t => t.codigo === trfCodigo);
+        if (trf) spCarregarDocs(trf);
+    } catch (err) {
+        mostrarToast('Erro: ' + err.message, 'erro');
+    }
+}
+
+function fmtBytes(bytes) {
+    if (!bytes) return '';
+    if (bytes < 1024)         return bytes + ' B';
+    if (bytes < 1024 * 1024)  return Math.round(bytes / 1024) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB';
 }
 
 function fecharDrawer() {
