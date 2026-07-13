@@ -239,11 +239,12 @@
         .doc-cfg-btn{margin-top:7px;padding:6px 16px;background:var(--azul);color:#fff;border:none;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
         .doc-loading{padding:14px 0;text-align:center;color:var(--texto-leve);font-size:.8rem}
 
-        /* Doc indicator dot on tree task items */
-        .doc-tree-ind{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;margin-right:3px;vertical-align:middle;transition:background-color .25s}
-        .ind-gray{background:#D1D5DB}
-        .ind-ok  {background:#10B981}
-        .ind-warn{background:#F59E0B}
+        /* Doc status pills on tree task items */
+        .doc-pills{display:flex;align-items:center;gap:3px;margin-right:2px}
+        .doc-pill{font-size:.59rem;font-weight:700;padding:1px 5px;border-radius:4px;letter-spacing:.2px;white-space:nowrap;transition:background .2s,color .2s;cursor:default}
+        .doc-pill-unk {background:#F3F4F6;color:#9CA3AF}
+        .doc-pill-ok  {background:#D1FAE5;color:#065F46}
+        .doc-pill-warn{background:#FEF3C7;color:#92400E}
         .fin-id{font-size:.72em;color:var(--texto-leve);font-weight:400;margin-left:3px}
         .btn-bitrix{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#1B5299;color:#fff;border-radius:6px;text-decoration:none;font-size:.78rem;font-weight:600;margin-bottom:12px;width:fit-content}
         .btn-bitrix:hover{background:#154080;color:#fff}
@@ -857,9 +858,13 @@ function renderL3(node) {
     const fornec = node.cotacoes.find(c=>c.vencedor)?.fornecedor || node.ocs[0]?.fornecedor || '';
     const vlr    = node.ocs.reduce((s,o)=>s+(o.vlrTotal||0),0) || node.pedido?.precoUnit || node.valorTotal || null;
     const scSt   = node.sc?.status ? ` · ${escH(node.sc.status)}` : '';
-    const temCompra = node.cotacoes.length > 0 || node.ocs.length > 0 || node.nfs.length > 0;
-    const docInd    = temCompra
-        ? `<span class="doc-tree-ind ind-gray" id="doc-ind-${escId(node.codigo)}" title="Clique em Verificar docs"></span>`
+    const PILL_LBL  = { cotacao: 'COT', nf: 'NF', certidao: 'CERT' };
+    const PILL_TTL  = { cotacao: 'Cotação', nf: 'Nota Fiscal', certidao: 'Certidão negativa' };
+    const esperados = docsEsperados(node);
+    const docPills  = esperados.length > 0
+        ? `<span class="doc-pills">${esperados.map(d =>
+            `<span class="doc-pill doc-pill-unk" id="doc-pill-${d}-${escId(node.codigo)}" title="${PILL_TTL[d]}: não verificado">${PILL_LBL[d]} ?</span>`
+          ).join('')}</span>`
         : '';
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
@@ -869,7 +874,7 @@ function renderL3(node) {
             ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
             ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
             <span class="l3-badge ${cfg.badge}">${cfg.label}${scSt}</span>
-            ${docInd}
+            ${docPills}
             <i class="fas fa-chevron-right l3-chev"></i>
         </div>
     </div>`;
@@ -1419,20 +1424,24 @@ async function verificarDocs() {
 
 function atualizarIndicadoresDocs() {
     if (!projetoAtivo) return;
+    const PILL_LBL = { cotacao: 'COT', nf: 'NF', certidao: 'CERT' };
+    const PILL_TTL = { cotacao: 'Cotação', nf: 'Nota Fiscal', certidao: 'Certidão negativa' };
     projetoAtivo.trfList.forEach(trf => {
-        const ind = document.getElementById('doc-ind-' + escId(trf.codigo));
-        if (!ind) return;
-        const st = docStatusTrf(trf);
-        if (st === 'ok') {
-            ind.className = 'doc-tree-ind ind-ok';
-            ind.title     = 'Documentação completa';
-        } else if (st === 'warn') {
-            ind.className = 'doc-tree-ind ind-warn';
-            ind.title     = 'Documentos pendentes';
-        } else {
-            ind.className = 'doc-tree-ind ind-gray';
-            ind.title     = 'Clique em Verificar docs';
-        }
+        docsEsperados(trf).forEach(d => {
+            const pill = document.getElementById(`doc-pill-${d}-${escId(trf.codigo)}`);
+            if (!pill) return;
+            if (!spProjectDocs) {
+                pill.className   = 'doc-pill doc-pill-unk';
+                pill.textContent = PILL_LBL[d] + ' ?';
+                pill.title       = PILL_TTL[d] + ': não verificado';
+                return;
+            }
+            const data = spProjectDocs[trf.codigo] || { files: {}, jus: {} };
+            const ok   = !!(data.files[d]?.length > 0 || data.jus[d]);
+            pill.className   = ok ? 'doc-pill doc-pill-ok' : 'doc-pill doc-pill-warn';
+            pill.textContent = PILL_LBL[d] + (ok ? ' ✓' : ' ⚠');
+            pill.title       = PILL_TTL[d] + (ok ? ': ok' : ': pendente');
+        });
     });
 }
 
