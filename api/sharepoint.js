@@ -296,6 +296,27 @@ module.exports = async function handler(req, res) {
             return res.json({ ok: true });
         }
 
+        // ── GET project-docs: all sp_files + sp_justificativas for a project, grouped by trf_codigo
+        if (req.method === 'GET' && action === 'project-docs') {
+            const { prj } = req.query;
+            if (!prj) return res.status(400).json({ error: 'prj obrigatório' });
+            const [{ data: files }, { data: jus }] = await Promise.all([
+                sb().from('sp_files').select('trf_codigo,doc_type,file_name').eq('prj_codigo', prj),
+                sb().from('sp_justificativas').select('trf_codigo,doc_type').eq('prj_codigo', prj),
+            ]);
+            const byTrf = {};
+            (files || []).forEach(f => {
+                if (!byTrf[f.trf_codigo]) byTrf[f.trf_codigo] = { files: {}, jus: {} };
+                if (!byTrf[f.trf_codigo].files[f.doc_type]) byTrf[f.trf_codigo].files[f.doc_type] = [];
+                byTrf[f.trf_codigo].files[f.doc_type].push(f.file_name);
+            });
+            (jus || []).forEach(j => {
+                if (!byTrf[j.trf_codigo]) byTrf[j.trf_codigo] = { files: {}, jus: {} };
+                byTrf[j.trf_codigo].jus[j.doc_type] = true;
+            });
+            return res.json(byTrf);
+        }
+
         return res.status(404).json({ error: 'Ação não encontrada' });
 
     } catch (err) {

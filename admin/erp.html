@@ -238,6 +238,12 @@
         .doc-cfg-input:focus{border-color:var(--azul)}
         .doc-cfg-btn{margin-top:7px;padding:6px 16px;background:var(--azul);color:#fff;border:none;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
         .doc-loading{padding:14px 0;text-align:center;color:var(--texto-leve);font-size:.8rem}
+
+        /* Doc indicator dot on tree task items */
+        .doc-tree-ind{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;margin-right:3px;vertical-align:middle;transition:background-color .25s}
+        .ind-gray{background:#D1D5DB}
+        .ind-ok  {background:#10B981}
+        .ind-warn{background:#F59E0B}
         .fin-id{font-size:.72em;color:var(--texto-leve);font-weight:400;margin-left:3px}
         .btn-bitrix{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#1B5299;color:#fff;border-radius:6px;text-decoration:none;font-size:.78rem;font-weight:600;margin-bottom:12px;width:fit-content}
         .btn-bitrix:hover{background:#154080;color:#fff}
@@ -344,6 +350,9 @@
 
                 <div class="tree-toolbar">
                     <input class="search-task" id="searchTask" placeholder="Filtrar tarefa..." oninput="filtrarTarefas()">
+                    <button class="btn-refresh-sm" id="btnVerDocs" onclick="verificarDocs()" title="Carrega status de documentação SharePoint para todas as tarefas do projeto">
+                        <i class="fas fa-folder-open"></i> Verificar docs
+                    </button>
                     <div class="legend">
                         <div class="leg"><div class="dot" style="background:var(--s-none)"></div> Sem movim.</div>
                         <div class="leg"><div class="dot" style="background:var(--s-pend)"></div> Aguardando</div>
@@ -397,8 +406,9 @@ function fazerLogout() {
 
 // ── STATE ─────────────────────────────────────────────────────────────
 let projetos     = [];
-let projetoAtivo = null;
-const expanded   = {}; // codigo → bool (undefined = default open)
+let projetoAtivo  = null;
+let spProjectDocs = null; // cache: { trf_codigo: { files: {doc_type:[names]}, jus: {doc_type:true} } }
+const expanded    = {}; // codigo → bool (undefined = default open)
 
 // ── LOAD ──────────────────────────────────────────────────────────────
 async function carregarDados() {
@@ -668,7 +678,8 @@ function renderProjetos() {
 
 // ── SELECIONAR PROJETO ────────────────────────────────────────────────
 function selecionarProjeto(id) {
-    projetoAtivo = projetos.find(p => p.id === id);
+    projetoAtivo  = projetos.find(p => p.id === id);
+    spProjectDocs = null; // reset doc cache on project switch
     if (!projetoAtivo) return;
     renderProjetos(); // update active highlight
 
@@ -721,6 +732,7 @@ function renderTree() {
     }
 
     document.getElementById('treeBody').innerHTML = html;
+    if (spProjectDocs) atualizarIndicadoresDocs();
 }
 
 function renderIrregulares(irrTrf, irrCC, irrTit) {
@@ -840,11 +852,15 @@ function renderL2(node) {
 }
 
 function renderL3(node) {
-    const st  = getStatus(node);
-    const cfg = S[st];
+    const st     = getStatus(node);
+    const cfg    = S[st];
     const fornec = node.cotacoes.find(c=>c.vencedor)?.fornecedor || node.ocs[0]?.fornecedor || '';
     const vlr    = node.ocs.reduce((s,o)=>s+(o.vlrTotal||0),0) || node.pedido?.precoUnit || node.valorTotal || null;
     const scSt   = node.sc?.status ? ` · ${escH(node.sc.status)}` : '';
+    const temCompra = node.cotacoes.length > 0 || node.ocs.length > 0 || node.nfs.length > 0;
+    const docInd    = temCompra
+        ? `<span class="doc-tree-ind ind-gray" id="doc-ind-${escId(node.codigo)}" title="Clique em Verificar docs"></span>`
+        : '';
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
         <span class="l3-cod">${escH(node.codigo)}</span>
@@ -853,6 +869,7 @@ function renderL3(node) {
             ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
             ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
             <span class="l3-badge ${cfg.badge}">${cfg.label}${scSt}</span>
+            ${docInd}
             <i class="fas fa-chevron-right l3-chev"></i>
         </div>
     </div>`;
@@ -1123,18 +1140,20 @@ async function spCarregarKpi() {
         const data  = await spApi('GET', 'config', { prj: projetoAtivo.codigo });
         const kpis  = document.getElementById('tvKpis');
         if (!kpis) return;
-        const kpiEl = document.createElement('div');
+        const existing = document.getElementById('kpiSP');
+        const kpiEl    = existing || document.createElement('div');
+        kpiEl.id        = 'kpiSP';
         kpiEl.className = 'kpi';
         if (data.spFolder) {
             kpiEl.style.border = '1.5px solid #A7F3D0';
-            kpiEl.innerHTML = `<div class="kpi-label" style="color:#065F46"><i class="fas fa-folder" style="margin-right:3px"></i>SharePoint</div>
+            kpiEl.innerHTML = `<div class="kpi-label" style="color:#065F46"><i class="fas fa-folder" style="margin-right:3px"></i>Docs SP</div>
                 <div class="kpi-value verde" style="font-size:.78rem;font-weight:600">✓ Configurado</div>`;
         } else {
             kpiEl.style.border = '1.5px solid #FCD34D';
-            kpiEl.innerHTML = `<div class="kpi-label" style="color:#92400E"><i class="fas fa-folder" style="margin-right:3px"></i>SharePoint</div>
+            kpiEl.innerHTML = `<div class="kpi-label" style="color:#92400E"><i class="fas fa-folder" style="margin-right:3px"></i>Docs SP</div>
                 <div class="kpi-value ambar" style="font-size:.78rem;font-weight:600">⚠ Não configurado</div>`;
         }
-        kpis.appendChild(kpiEl);
+        if (!existing) kpis.appendChild(kpiEl);
     } catch (_) {} // silently ignore if SP env vars not configured yet
 }
 
@@ -1200,6 +1219,18 @@ async function salvarSpConfig(trfCodigo) {
 function renderDocArea(trf, spFolder, files, jus) {
     const el = document.getElementById('docArea');
     if (!el) return;
+
+    // Update the project docs cache so the tree indicator reflects this drawer's data
+    if (!spProjectDocs) spProjectDocs = {};
+    spProjectDocs[trf.codigo] = {
+        files: Object.fromEntries(
+            Object.entries(files).map(([k, v]) => [k, (v || []).map(f => f.name)])
+        ),
+        jus: Object.fromEntries(
+            Object.entries(jus).map(([k, v]) => [k, !!v])
+        ),
+    };
+    atualizarIndicadoresDocs();
 
     const totalOk   = SP_DOC_TYPES.filter(dt => (files[dt.key]?.length > 0) || jus[dt.key]).length;
     const totalPend = SP_DOC_TYPES.length - totalOk;
@@ -1341,6 +1372,68 @@ function fmtBytes(bytes) {
     if (bytes < 1024)         return bytes + ' B';
     if (bytes < 1024 * 1024)  return Math.round(bytes / 1024) + ' KB';
     return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+// ── DOC STATUS INDICATORS ─────────────────────────────────────────────
+function docsEsperados(node) {
+    // Returns which doc types are currently expected based on TOTVS data
+    const t = [];
+    if (node.cotacoes.length > 0) t.push('cotacao');
+    if (node.nfs.length > 0) { t.push('nf'); t.push('certidao'); }
+    return t;
+}
+
+function docStatusTrf(trf) {
+    if (!spProjectDocs) return 'unknown';
+    const esperados = docsEsperados(trf);
+    if (!esperados.length) return 'na';
+    const data     = spProjectDocs[trf.codigo] || { files: {}, jus: {} };
+    const faltando = esperados.filter(d => !data.files[d]?.length && !data.jus[d]);
+    return faltando.length === 0 ? 'ok' : 'warn';
+}
+
+async function verificarDocs() {
+    if (!projetoAtivo) return;
+    const btn = document.getElementById('btnVerDocs');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
+    try {
+        spProjectDocs = await spApi('GET', 'project-docs', { prj: projetoAtivo.codigo });
+        atualizarIndicadoresDocs();
+        const leaves  = projetoAtivo.trfTree.flatMap(n => leavesOf(n));
+        const comDocs = leaves.filter(t => docsEsperados(t).length > 0);
+        const ok      = comDocs.filter(t => docStatusTrf(t) === 'ok').length;
+        const kpiSP   = document.getElementById('kpiSP');
+        if (kpiSP) {
+            const tudo = ok === comDocs.length;
+            kpiSP.style.border = tudo ? '1.5px solid #A7F3D0' : '1.5px solid #FCD34D';
+            kpiSP.innerHTML = `<div class="kpi-label" style="color:${tudo?'#065F46':'#92400E'}"><i class="fas fa-folder" style="margin-right:3px"></i>Docs SP</div>
+                <div class="kpi-value ${tudo?'verde':'ambar'}" style="font-size:.78rem;font-weight:600">${ok} / ${comDocs.length} completos</div>`;
+        }
+        mostrarToast(`Docs SP: ${ok} de ${comDocs.length} completos`, ok === comDocs.length ? 'sucesso' : 'info');
+    } catch (err) {
+        mostrarToast('Erro ao verificar docs: ' + err.message, 'erro');
+    } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-folder-open"></i> Verificar docs'; }
+    }
+}
+
+function atualizarIndicadoresDocs() {
+    if (!projetoAtivo) return;
+    projetoAtivo.trfList.forEach(trf => {
+        const ind = document.getElementById('doc-ind-' + escId(trf.codigo));
+        if (!ind) return;
+        const st = docStatusTrf(trf);
+        if (st === 'ok') {
+            ind.className = 'doc-tree-ind ind-ok';
+            ind.title     = 'Documentação completa';
+        } else if (st === 'warn') {
+            ind.className = 'doc-tree-ind ind-warn';
+            ind.title     = 'Documentos pendentes';
+        } else {
+            ind.className = 'doc-tree-ind ind-gray';
+            ind.title     = 'Clique em Verificar docs';
+        }
+    });
 }
 
 function fecharDrawer() {
