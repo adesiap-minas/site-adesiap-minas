@@ -387,18 +387,9 @@
 
 <script>
 // ── AUTH ──────────────────────────────────────────────────────────────
-const SENHA_PADRAO = 'adesiap2026';
-let senhaAtual = localStorage.getItem('admin_senha') || SENHA_PADRAO;
+// init() é chamado pelo auth.js ao entrar no app (login ou sessão salva)
+function init() { carregarDados(); }
 
-function fazerLogin() {
-    if (document.getElementById('senhaInput').value === senhaAtual) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appShell').style.display   = 'flex';
-        carregarDados();
-    } else {
-        document.getElementById('loginError').style.display = 'block';
-    }
-}
 function fazerLogout() {
     document.getElementById('appShell').style.display   = 'none';
     document.getElementById('loginScreen').style.display = 'flex';
@@ -717,6 +708,7 @@ function selecionarProjeto(id) {
     document.getElementById('searchTask').value = '';
     renderTree();
     spCarregarKpi();
+    verificarDocs(true); // carrega status de docs automaticamente, sem toast
 }
 
 // ── RENDER TREE ───────────────────────────────────────────────────────
@@ -1397,7 +1389,7 @@ function docStatusTrf(trf) {
     return faltando.length === 0 ? 'ok' : 'warn';
 }
 
-async function verificarDocs() {
+async function verificarDocs(silent = false) {
     if (!projetoAtivo) return;
     const btn = document.getElementById('btnVerDocs');
     if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; }
@@ -1414,9 +1406,9 @@ async function verificarDocs() {
             kpiSP.innerHTML = `<div class="kpi-label" style="color:${tudo?'#065F46':'#92400E'}"><i class="fas fa-folder" style="margin-right:3px"></i>Docs SP</div>
                 <div class="kpi-value ${tudo?'verde':'ambar'}" style="font-size:.78rem;font-weight:600">${ok} / ${comDocs.length} completos</div>`;
         }
-        mostrarToast(`Docs SP: ${ok} de ${comDocs.length} completos`, ok === comDocs.length ? 'sucesso' : 'info');
-    } catch (err) {
-        mostrarToast('Erro ao verificar docs: ' + err.message, 'erro');
+        if (!silent) mostrarToast(`Docs SP: ${ok} de ${comDocs.length} completos`, ok === comDocs.length ? 'sucesso' : 'info');
+    } catch (_) {
+        if (!silent) mostrarToast('Erro ao verificar docs', 'erro');
     } finally {
         if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-folder-open"></i> Verificar docs'; }
     }
