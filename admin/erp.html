@@ -238,6 +238,17 @@
         .doc-cfg-input:focus{border-color:var(--azul)}
         .doc-cfg-btn{margin-top:7px;padding:6px 16px;background:var(--azul);color:#fff;border:none;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
         .doc-loading{padding:14px 0;text-align:center;color:var(--texto-leve);font-size:.8rem}
+        /* Justificativa DOCX generator modal */
+        .jus-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1100;display:flex;align-items:center;justify-content:center}
+        .jus-modal{background:#fff;border-radius:12px;padding:24px 28px;width:min(520px,94vw);max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+        .jus-modal h4{font-size:.95rem;font-weight:700;color:var(--azul);margin:0 0 16px}
+        .jus-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+        .jus-field label{font-size:.72rem;font-weight:600;color:var(--texto-leve);text-transform:uppercase;letter-spacing:.5px}
+        .jus-field input,.jus-field textarea{padding:7px 10px;border:1.5px solid var(--borda);border-radius:7px;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;resize:vertical}
+        .jus-field input:focus,.jus-field textarea:focus{border-color:var(--azul)}
+        .jus-modal-btns{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+        .btn-jus-gerar{padding:7px 18px;background:var(--azul);color:#fff;border:none;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+        .btn-jus-cancel{padding:7px 14px;background:none;border:1.5px solid var(--borda);border-radius:7px;font-size:.82rem;cursor:pointer;color:var(--texto-leve)}
 
         /* Doc status pills on tree task items */
         .doc-pills{display:flex;align-items:center;gap:3px;margin-right:2px}
@@ -399,7 +410,8 @@ function fazerLogout() {
 // ── STATE ─────────────────────────────────────────────────────────────
 let projetos     = [];
 let projetoAtivo  = null;
-let spProjectDocs = null; // cache: { trf_codigo: { files: {doc_type:[names]}, jus: {doc_type:true} } }
+let spProjectDocs  = null; // cache: { trf_codigo: { files: {doc_type:[names]}, jus: {doc_type:true} } }
+let _drawerCtx     = null; // { trf, spFolder, files, jus } — contexto do drawer aberto
 const expanded    = {}; // codigo → bool (undefined = default open)
 
 // ── LOAD ──────────────────────────────────────────────────────────────
@@ -1217,6 +1229,9 @@ function renderDocArea(trf, spFolder, files, jus) {
     const el = document.getElementById('docArea');
     if (!el) return;
 
+    // Salva contexto para o modal de justificativa
+    _drawerCtx = { trf, spFolder, files, jus };
+
     // Update the project docs cache so the tree indicator reflects this drawer's data
     if (!spProjectDocs) spProjectDocs = {};
     spProjectDocs[trf.codigo] = {
@@ -1240,6 +1255,9 @@ function renderDocArea(trf, spFolder, files, jus) {
                 ? `<span style="font-size:.66rem;padding:2px 8px;border-radius:9px;background:#FEF3C7;color:#92400E;font-weight:700">⚠ ${totalPend} pendente${totalPend>1?'s':''}</span>`
                 : `<span style="font-size:.66rem;padding:2px 8px;border-radius:9px;background:#D1FAE5;color:#065F46;font-weight:700">✓ Completo</span>`}
             <span class="doc-section-hdr-folder" title="${escA(spFolder)}">📁 ${escH(spFolder)}</span>
+            <button class="btn-refresh-sm" style="flex-shrink:0" onclick="abrirModalJustificativa()">
+                <i class="fas fa-file-word"></i> Gerar Justificativa
+            </button>
         </div>`;
 
     SP_DOC_TYPES.forEach(dt => {
@@ -1369,6 +1387,117 @@ function fmtBytes(bytes) {
     if (bytes < 1024)         return bytes + ' B';
     if (bytes < 1024 * 1024)  return Math.round(bytes / 1024) + ' KB';
     return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+// ── GERADOR DE JUSTIFICATIVA DOCX ────────────────────────────────────
+function abrirModalJustificativa() {
+    if (!_drawerCtx || !projetoAtivo) return;
+    const { trf, jus } = _drawerCtx;
+
+    // Pré-preenche campos com dados do TOTVS + SP
+    const nomeProj   = projetoAtivo.descricao || '';
+    const tituloItem = trf.nome || '';
+    const hoje       = new Date().toLocaleDateString('pt-BR', { day:'numeric', month:'long', year:'numeric' });
+    const responsavel = projetoAtivo.responsavel || '';
+    // Item solicitado: qtd + unidade + detalhamento do pedido
+    const qtd        = trf.qtd ? `${trf.qtd} ${trf.unidade || ''}`.trim() + ' — ' : '';
+    const detalhe    = trf.pedido?.detalhamento || trf.nome || '';
+    const itemSolic  = qtd + detalhe;
+    // Justificativa técnica: pega a que tiver (cotacao, nf ou certidao)
+    const jusTexto   = jus.cotacao || jus.nf || jus.certidao || '';
+
+    const overlay = document.createElement('div');
+    overlay.id        = 'jusModal';
+    overlay.className = 'jus-modal-overlay';
+    overlay.innerHTML = `
+        <div class="jus-modal" onclick="event.stopPropagation()">
+            <h4><i class="fas fa-file-word" style="color:#2563EB;margin-right:6px"></i>Gerar Justificativa de Aquisição</h4>
+
+            <div class="jus-field">
+                <label>Nome do Projeto</label>
+                <input id="jm-proj" value="${escA(nomeProj)}" readonly style="background:#F9FAFB">
+            </div>
+            <div class="jus-field">
+                <label>Título / Item adquirido</label>
+                <input id="jm-titulo" value="${escA(tituloItem)}">
+            </div>
+            <div class="jus-field">
+                <label>Data</label>
+                <input id="jm-data" value="${escA(hoje)}">
+            </div>
+            <div class="jus-field">
+                <label>Responsável</label>
+                <input id="jm-resp" value="${escA(responsavel)}">
+            </div>
+            <div class="jus-field">
+                <label>Item solicitado pelo gerente PMO</label>
+                <textarea id="jm-solic" rows="2">${escH(itemSolic)}</textarea>
+            </div>
+            <div class="jus-field">
+                <label>Item adquirido pelo setor de suprimento</label>
+                <textarea id="jm-adqui" rows="2" placeholder="Descreva o que foi efetivamente adquirido..."></textarea>
+            </div>
+            <div class="jus-field">
+                <label>Justificativa (conforme Lei 13.019)</label>
+                <textarea id="jm-jus" rows="5" placeholder="Fundamente a aquisição conforme a lei...">${escH(jusTexto)}</textarea>
+            </div>
+            <div class="jus-field">
+                <label>Benefício recebido</label>
+                <textarea id="jm-benef" rows="3" placeholder="Descreva o impacto e benefício esperado..."></textarea>
+            </div>
+
+            <div class="jus-modal-btns">
+                <button class="btn-jus-cancel" onclick="fecharModalJustificativa()">Cancelar</button>
+                <button class="btn-jus-gerar" id="btnGerarDocx" onclick="gerarJustificativaDocx('${escA(trf.codigo)}')">
+                    <i class="fas fa-download"></i> Baixar DOCX
+                </button>
+            </div>
+        </div>`;
+    overlay.onclick = fecharModalJustificativa;
+    document.body.appendChild(overlay);
+}
+
+function fecharModalJustificativa() {
+    document.getElementById('jusModal')?.remove();
+}
+
+async function gerarJustificativaDocx(trfCodigo) {
+    const btn = document.getElementById('btnGerarDocx');
+    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...'; }
+    try {
+        const body = {
+            nome_projeto:    document.getElementById('jm-proj')?.value  || '',
+            titulo_item:     document.getElementById('jm-titulo')?.value || '',
+            data:            document.getElementById('jm-data')?.value   || '',
+            responsavel:     document.getElementById('jm-resp')?.value   || '',
+            item_solicitado: document.getElementById('jm-solic')?.value  || '',
+            item_adquirido:  document.getElementById('jm-adqui')?.value  || '',
+            justificativa:   document.getElementById('jm-jus')?.value    || '',
+            beneficio:       document.getElementById('jm-benef')?.value  || '',
+            trf_codigo:      trfCodigo,
+        };
+        const res = await fetch('/api/gerar-justificativa', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(body),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || 'HTTP ' + res.status);
+        }
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1] || 'Justificativa.docx';
+        a.click();
+        URL.revokeObjectURL(url);
+        fecharModalJustificativa();
+        mostrarToast('Justificativa gerada com sucesso!', 'sucesso');
+    } catch (err) {
+        mostrarToast('Erro ao gerar DOCX: ' + err.message, 'erro');
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-download"></i> Baixar DOCX'; }
+    }
 }
 
 // ── DOC STATUS INDICATORS ─────────────────────────────────────────────
