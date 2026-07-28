@@ -640,12 +640,12 @@ const S = {
     nf_direta:{ dot:'s-direta',badge:'bd', label:'⚠ NF Direta' },
 };
 
-// Tarefa que bypassa o fluxo padrão (OC/NF/FLAN sem pedido+cotação)
+// Tarefa que bypassa o fluxo padrão: qualquer movimentação sem Pedido Extra
 function isFluxoIrregular(trf) {
     const orig = trf.origemRegistro || '';
     if (orig === 'OC Direta' || orig === 'NF Direta' || orig === 'Título Financeiro Direto') return true;
-    // FLAN direto associado à tarefa sem nenhum fluxo de compra
-    if (trf.fins.length > 0 && !trf.pedido && trf.ocs.length === 0 && trf.nfs.length === 0) return true;
+    // Tem movimentação (NF, OC ou FLAN) mas não passou pelo Pedido Extra
+    if (!trf.pedido && (trf.nfs.length > 0 || trf.ocs.length > 0 || trf.fins.length > 0)) return true;
     return false;
 }
 
@@ -1030,8 +1030,14 @@ function abrirDrawer(cod) {
             irrMsg = 'OC lançada diretamente, sem Pedido Extra → SC → Cotação.';
         else if (orig === 'NF Direta')
             irrMsg = 'NF lançada diretamente, sem Pedido Extra → SC → Cotação → OC.';
-        else
+        else if (trf.fins.length > 0 && trf.nfs.length === 0 && trf.ocs.length === 0)
             irrMsg = 'Título financeiro lançado diretamente, sem Pedido Extra → SC → Cotação → OC → NF.';
+        else if (trf.nfs.length > 0 && trf.ocs.length === 0)
+            irrMsg = 'Nota Fiscal recebida sem passar pelo fluxo: Pedido Extra → SC → Cotação → OC.';
+        else if (trf.ocs.length > 0)
+            irrMsg = 'Ordem de Compra sem Pedido Extra → SC → Cotação.';
+        else
+            irrMsg = 'Movimentação registrada sem passar pelo fluxo: Pedido Extra → SC → Cotação → OC → NF.';
         h += `<div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:.8rem;color:#991B1B">
             <b><i class="fas fa-exclamation-triangle"></i> Lançamento fora do fluxo padrão</b><br>${irrMsg}
             Avaliar regularização com o setor de suprimentos.
