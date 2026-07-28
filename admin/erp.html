@@ -616,6 +616,7 @@ function getStatus(trf) {
     // Fluxo Completo
     if (!trf.pedido) {
         if (trf.nfs.length > 0 || trf.ocs.some(o => o.status === 'Recebido')) return 'rec';
+        if (trf.fins.length > 0) return 'rec';
         return 'none';
     }
     if (trf.nfs.length > 0 || trf.ocs.some(o => o.status === 'Recebido')) return 'rec';
@@ -1006,7 +1007,7 @@ function abrirDrawer(cod) {
     h += `</div>`;
 
     const isIrregular = orig === 'OC Direta' || orig === 'NF Direta';
-    if (!trf.pedido && !isIrregular && trf.nfs.length === 0 && trf.ocs.length === 0) {
+    if (!trf.pedido && !isIrregular && trf.nfs.length === 0 && trf.ocs.length === 0 && trf.fins.length === 0) {
         h += `<div class="no-compra"><i class="fas fa-box-open"></i>Sem movimentação de compra nesta tarefa.</div>`;
     } else {
         h += '<div class="flow">';
