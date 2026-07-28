@@ -635,6 +635,25 @@ const S = {
     nf_direta:{ dot:'s-direta',badge:'bd', label:'⚠ NF Direta' },
 };
 
+// Tarefa que bypassa o fluxo padrão (OC/NF/FLAN sem pedido+cotação)
+function isFluxoIrregular(trf) {
+    const orig = trf.origemRegistro || '';
+    if (orig === 'OC Direta' || orig === 'NF Direta' || orig === 'Título Financeiro Direto') return true;
+    // FLAN direto associado à tarefa sem nenhum fluxo de compra
+    if (trf.fins.length > 0 && !trf.pedido && trf.ocs.length === 0 && trf.nfs.length === 0) return true;
+    return false;
+}
+
+// Valor realizado: NF > FLAN > OC (prioridade de confiabilidade)
+function getRealizadoValor(trf) {
+    const nNF  = trf.nfs.reduce((s, n) => s + (n.vlrTotal || 0), 0);
+    const nFin = trf.fins.reduce((s, f) => s + (f.rateioValor != null ? f.rateioValor : (f.vlrOriginal || 0)), 0);
+    const nOC  = trf.ocs.reduce((s, o) => s + (o.vlrTotal || 0), 0);
+    if (nNF  > 0) return nNF;
+    if (nFin > 0) return nFin;
+    return nOC;
+}
+
 function leavesOf(node) {
     if (!node.children || node.children.length === 0) return [node];
     return node.children.flatMap(c => leavesOf(c));
@@ -707,9 +726,14 @@ function selecionarProjeto(id) {
                       + projetoAtivo.semTitulos.reduce((s,x) => s + (x.fin?.vlrPago || 0), 0);
     const nRec        = allLeaves.filter(t => getStatus(t) === 'rec').length;
     const nIrr        = allLeaves.filter(t => ['oc_direta','nf_direta'].includes(getStatus(t))).length
-                      + projetoAtivo.semTarefas.length + projetoAtivo.semTitulos.length;
+                      + projetoAtivo.semTarefas.length + projetoAtivo.semTitulos.length
+                      + allLeaves.filter(t => isFluxoIrregular(t) && !['oc_direta','nf_direta'].includes(getStatus(t))).length;
+    const nAcimaOrc   = allLeaves.filter(t => { const r = getRealizadoValor(t); return t.valorTotal > 0 && r > t.valorTotal; }).length;
     const irrKpi      = nIrr
         ? `<div class="kpi" style="border:1.5px solid #FECACA"><div class="kpi-label" style="color:#991B1B">⚠ Irregulares</div><div class="kpi-value" style="color:#DC2626">${nIrr}</div></div>`
+        : '';
+    const orcKpi      = nAcimaOrc
+        ? `<div class="kpi" style="border:1.5px solid #FECACA"><div class="kpi-label" style="color:#991B1B">⚠ Acima orçado</div><div class="kpi-value" style="color:#DC2626">${nAcimaOrc} tarefa${nAcimaOrc !== 1 ? 's' : ''}</div></div>`
         : '';
     document.getElementById('tvKpis').innerHTML = `
         <div class="kpi"><div class="kpi-label">Orçado (TRF)</div><div class="kpi-value">${fmtM(totalOrc)}</div></div>
@@ -717,7 +741,7 @@ function selecionarProjeto(id) {
         <div class="kpi"><div class="kpi-label">Total NF</div><div class="kpi-value verde">${fmtM(totalNF)}</div></div>
         <div class="kpi"><div class="kpi-label">Total Pago</div><div class="kpi-value verde">${fmtM(totalPago)}</div></div>
         <div class="kpi"><div class="kpi-label">Itens recebidos</div><div class="kpi-value verde">${nRec} / ${allLeaves.length}</div></div>
-        ${irrKpi}`;
+        ${irrKpi}${orcKpi}`;
 
     document.getElementById('emptyState').style.display = 'none';
     document.getElementById('taskView').style.display   = 'flex';
@@ -874,6 +898,16 @@ function renderL3(node) {
             `<span class="doc-pill doc-pill-unk" id="doc-pill-${d}-${escId(node.codigo)}" title="${PILL_TTL[d]}: não verificado">${PILL_LBL[d]} ?</span>`
           ).join('')}</span>`
         : '';
+    // Badge de origem irregular (aparece somente quando o status seria "normal")
+    const irrBadge = (isFluxoIrregular(node) && st === 'rec')
+        ? `<span class="l3-badge" style="background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;font-size:.68rem" title="Não passou pelo fluxo padrão: Pedido → SC → Cotação → OC → NF">⚠ Direto</span>`
+        : '';
+    // Badge de orçamento excedido
+    const realizado = getRealizadoValor(node);
+    const acimaOrc  = node.valorTotal > 0 && realizado > node.valorTotal;
+    const orcBadge  = acimaOrc
+        ? `<span class="l3-badge" style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;font-size:.68rem" title="Realizado ${fmtM(realizado)} supera orçado ${fmtM(node.valorTotal)}">⚠ Acima orçado</span>`
+        : '';
     return `<div class="trf-l3" onclick="abrirDrawer('${escA(node.codigo)}')">
         <div class="farole ${cfg.dot}"></div>
         <span class="l3-cod">${escH(node.codigo)}</span>
@@ -882,6 +916,7 @@ function renderL3(node) {
             ${fornec ? `<span class="l3-fornec" title="${escA(fornec)}">${escH(fornec)}</span>` : ''}
             ${vlr    ? `<span class="l3-vlr">${fmtM(vlr)}</span>` : ''}
             <span class="l3-badge ${cfg.badge}">${cfg.label}${scSt}</span>
+            ${irrBadge}${orcBadge}
             ${docPills}
             <i class="fas fa-chevron-right l3-chev"></i>
         </div>
@@ -984,12 +1019,16 @@ function abrirDrawer(cod) {
 
     // Banner de alerta para lançamentos fora do fluxo
     const orig = trf.origemRegistro || '';
-    if (orig === 'OC Direta' || orig === 'NF Direta') {
-        const msg = orig === 'OC Direta'
-            ? 'OC lançada diretamente, sem Pedido Extra → SC → Cotação.'
-            : 'NF lançada diretamente, sem Pedido Extra → SC → Cotação → OC.';
+    if (isFluxoIrregular(trf)) {
+        let irrMsg;
+        if (orig === 'OC Direta')
+            irrMsg = 'OC lançada diretamente, sem Pedido Extra → SC → Cotação.';
+        else if (orig === 'NF Direta')
+            irrMsg = 'NF lançada diretamente, sem Pedido Extra → SC → Cotação → OC.';
+        else
+            irrMsg = 'Título financeiro lançado diretamente, sem Pedido Extra → SC → Cotação → OC → NF.';
         h += `<div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:.8rem;color:#991B1B">
-            <b><i class="fas fa-exclamation-triangle"></i> Lançamento irregular — ${escH(orig)}</b><br>${msg}
+            <b><i class="fas fa-exclamation-triangle"></i> Lançamento fora do fluxo padrão</b><br>${irrMsg}
             Avaliar regularização com o setor de suprimentos.
         </div>`;
     }
@@ -1004,6 +1043,24 @@ function abrirDrawer(cod) {
     if (trf.qtd)            h += `<div class="trf-info-row"><span class="trf-info-lbl">Qtd</span><span>${trf.qtd} ${escH(trf.unidade)}</span></div>`;
     if (trf.origemRegistro) h += `<div class="trf-info-row"><span class="trf-info-lbl">Origem</span><span>${escH(trf.origemRegistro)}</span></div>`;
     if (trf.descricao)      h += `<div class="trf-info-row"><span class="trf-info-lbl">Descrição</span><span>${escH(trf.descricao)}</span></div>`;
+    // Linha de realizado × orçado
+    const _real = getRealizadoValor(trf);
+    if (trf.valorTotal > 0 && _real > 0) {
+        const _delta  = _real - trf.valorTotal;
+        const _pct    = ((_delta / trf.valorTotal) * 100).toFixed(1);
+        const _sinal  = _delta >= 0 ? '+' : '';
+        const _cor    = _delta > 0 ? '#DC2626' : '#16A34A';
+        const _aviso  = _delta > 0
+            ? ` <span style="display:inline-block;background:#FEE2E2;color:#991B1B;border-radius:4px;padding:1px 6px;font-size:.72rem;font-weight:700">⚠ Acima do orçado</span>`
+            : '';
+        h += `<div class="trf-info-row" style="${_delta > 0 ? 'background:#FFF5F5;border-radius:6px;padding:4px 6px;margin:2px -6px' : ''}">
+            <span class="trf-info-lbl">Realizado</span>
+            <span><b>${fmtM(_real)}</b>
+                <span style="color:${_cor};font-size:.75rem;margin-left:4px">(${_sinal}${fmtM(_delta)} / ${_sinal}${_pct}%)</span>
+                ${_aviso}
+            </span>
+        </div>`;
+    }
     h += `</div>`;
 
     const isIrregular = orig === 'OC Direta' || orig === 'NF Direta';
