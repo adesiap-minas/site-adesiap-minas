@@ -589,6 +589,11 @@ function agrupar(rows) {
     return Array.from(projMap.values()).map(prj => {
         const trfList = Array.from(prj.trfMap.values()).sort((a,b) => a.codigo.localeCompare(b.codigo));
         const trfTree = buildTree(trfList);
+        // Dedup: remove da seção irregular qualquer FIN/NF já atribuído a uma tarefa
+        const finIdsInTasks = new Set(trfList.flatMap(t => t.fins.map(f => f.id)));
+        const nfIdsInTasks  = new Set(trfList.flatMap(t => t.nfs.map(n => n.id)));
+        prj.semTitulos = prj.semTitulos.filter(s => !finIdsInTasks.has(s.fin?.id));
+        prj.semTarefas = prj.semTarefas.filter(s => !nfIdsInTasks.has(s.nf?.id));
         return { ...prj, trfList, trfTree };
     }).sort((a,b) => a.codigo.localeCompare(b.codigo));
 }
@@ -644,13 +649,13 @@ function isFluxoIrregular(trf) {
     return false;
 }
 
-// Valor realizado: NF > FLAN > OC (prioridade de confiabilidade)
+// Valor realizado: MAX(soma NF, soma FLAN) para expor sobre-comprometimentos
+// Se FLANs somam mais que a NF (ex: pagamento duplicado), mostra o total dos FLANs
 function getRealizadoValor(trf) {
     const nNF  = trf.nfs.reduce((s, n) => s + (n.vlrTotal || 0), 0);
     const nFin = trf.fins.reduce((s, f) => s + (f.rateioValor != null ? f.rateioValor : (f.vlrOriginal || 0)), 0);
     const nOC  = trf.ocs.reduce((s, o) => s + (o.vlrTotal || 0), 0);
-    if (nNF  > 0) return nNF;
-    if (nFin > 0) return nFin;
+    if (nNF > 0 || nFin > 0) return Math.max(nNF, nFin);
     return nOC;
 }
 
