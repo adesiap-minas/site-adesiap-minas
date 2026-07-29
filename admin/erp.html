@@ -688,7 +688,7 @@ function renderProjetos() {
         const leaves = p.trfTree.flatMap(n => leavesOf(n));
         const cnt = {};
         leaves.map(getStatus).forEach(s => cnt[s] = (cnt[s]||0)+1);
-        const nIrr = (cnt.oc_direta||0) + (cnt.nf_direta||0) + p.semTarefas.length;
+        const nIrr = leaves.filter(t => isFluxoIrregular(t)).length + p.semTarefas.length + p.semTitulos.length;
         const pills = [
             cnt.rec  ? `<span class="pill pill-rec">${cnt.rec} Recebido</span>` : '',
             cnt.oc   ? `<span class="pill pill-oc">${cnt.oc} OC</span>` : '',
@@ -730,9 +730,8 @@ function selecionarProjeto(id) {
     const totalPago   = allLeaves.reduce((s,t) => s + t.fins.reduce((a,f)=>a+(f.rateioValor||f.vlrPago||0),0), 0)
                       + projetoAtivo.semTitulos.reduce((s,x) => s + (x.fin?.vlrPago || 0), 0);
     const nRec        = allLeaves.filter(t => getStatus(t) === 'rec').length;
-    const nIrr        = allLeaves.filter(t => ['oc_direta','nf_direta'].includes(getStatus(t))).length
-                      + projetoAtivo.semTarefas.length + projetoAtivo.semTitulos.length
-                      + allLeaves.filter(t => isFluxoIrregular(t) && !['oc_direta','nf_direta'].includes(getStatus(t))).length;
+    const nIrr        = allLeaves.filter(t => isFluxoIrregular(t)).length
+                      + projetoAtivo.semTarefas.length + projetoAtivo.semTitulos.length;
     const nAcimaOrc   = allLeaves.filter(t => { const r = getRealizadoValor(t); return t.valorTotal > 0 && r > t.valorTotal; }).length;
     const irrKpi      = nIrr
         ? `<div class="kpi" style="border:1.5px solid #FECACA"><div class="kpi-label" style="color:#991B1B">⚠ Irregulares</div><div class="kpi-value" style="color:#DC2626">${nIrr}</div></div>`
