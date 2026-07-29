@@ -729,8 +729,12 @@ function selecionarProjeto(id) {
     const totalOC     = allLeaves.reduce((s,t) => s + t.ocs.reduce((a,o)=>a+(o.vlrTotal||0),0), 0);
     const totalNF     = allLeaves.reduce((s,t) => s + t.nfs.reduce((a,n)=>a+(n.vlrTotal||0),0), 0)
                       + projetoAtivo.semTarefas.reduce((s,x) => s + (x.nf?.vlrTotal || 0), 0);
-    const totalPago   = allLeaves.reduce((s,t) => s + t.fins.reduce((a,f)=>a+(f.rateioValor||f.vlrPago||0),0), 0)
-                      + projetoAtivo.semTitulos.reduce((s,x) => s + (x.fin?.vlrPago || 0), 0);
+    const totalPago   = allLeaves.reduce((s,t) => s + t.fins
+                          .filter(f => f.tipoCod != 1)  // exclui Recebimentos (PAGREC=1)
+                          .reduce((a,f)=>a+(f.rateioValor||f.vlrPago||0),0), 0)
+                      + projetoAtivo.semTitulos
+                          .filter(x => x.fin?.tipoCod != 1)
+                          .reduce((s,x) => s + (x.fin?.vlrPago || 0), 0);
     const nRec        = allLeaves.filter(t => getStatus(t) === 'rec').length;
     const nIrr        = allLeaves.filter(t => isFluxoIrregular(t)).length
                       + projetoAtivo.semTarefas.length + projetoAtivo.semTitulos.length;
