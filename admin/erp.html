@@ -688,14 +688,16 @@ function renderProjetos() {
         const leaves = p.trfTree.flatMap(n => leavesOf(n));
         const cnt = {};
         leaves.map(getStatus).forEach(s => cnt[s] = (cnt[s]||0)+1);
-        const nIrr = leaves.filter(t => isFluxoIrregular(t)).length + p.semTarefas.length + p.semTitulos.length;
+        const nIrr      = leaves.filter(t => isFluxoIrregular(t)).length + p.semTarefas.length + p.semTitulos.length;
+        const nAcimaOrc = leaves.filter(t => { const r = getRealizadoValor(t); return t.valorTotal > 0 && r > t.valorTotal; }).length;
         const pills = [
-            cnt.rec  ? `<span class="pill pill-rec">${cnt.rec} Recebido</span>` : '',
-            cnt.oc   ? `<span class="pill pill-oc">${cnt.oc} OC</span>` : '',
-            cnt.cot  ? `<span class="pill pill-cot">${cnt.cot} Cotação</span>` : '',
-            cnt.pend ? `<span class="pill pill-pend">${cnt.pend} Aguardando</span>` : '',
-            cnt.none ? `<span class="pill pill-none">${cnt.none} Sem mov.</span>` : '',
-            nIrr     ? `<span class="pill" style="background:#FEF2F2;color:#991B1B">⚠ ${nIrr} Irregular</span>` : '',
+            cnt.rec     ? `<span class="pill pill-rec">${cnt.rec} Recebido</span>` : '',
+            cnt.oc      ? `<span class="pill pill-oc">${cnt.oc} OC</span>` : '',
+            cnt.cot     ? `<span class="pill pill-cot">${cnt.cot} Cotação</span>` : '',
+            cnt.pend    ? `<span class="pill pill-pend">${cnt.pend} Aguardando</span>` : '',
+            cnt.none    ? `<span class="pill pill-none">${cnt.none} Sem mov.</span>` : '',
+            nIrr        ? `<span class="pill" style="background:#FEF2F2;color:#991B1B">⚠ ${nIrr} Irregular</span>` : '',
+            nAcimaOrc   ? `<span class="pill" style="background:#FEF2F2;color:#991B1B">⚠ ${nAcimaOrc} Acima orçado</span>` : '',
         ].filter(Boolean).join('');
 
         const active = projetoAtivo?.id === p.id ? 'active' : '';
