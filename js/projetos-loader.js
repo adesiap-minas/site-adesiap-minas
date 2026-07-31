@@ -288,22 +288,28 @@
     }
 
     // ── MAIN ───────────────────────────────────────────
-    try {
-        const [categorias, projetos] = await Promise.all([
-            sbGet('categorias?order=ordem&select=id,nome,slug,secao,cor_principal,cor_forte,cor_clara'),
-            sbGet('projetos?publicado=eq.true&order=ordem&select=id,titulo,subtag,resumo,descricao,categoria_id,imagem_url,galeria_urls,video_urls,ods,indicadores,parceiros,local,ano,documentos_pc')
-        ]);
+    const SELECT_PROJETOS_FULL = 'id,titulo,subtag,resumo,descricao,categoria_id,imagem_url,galeria_urls,video_urls,ods,indicadores,parceiros,local,ano,documentos_pc';
+    const SELECT_PROJETOS_BASE = 'id,titulo,subtag,resumo,descricao,categoria_id,imagem_url,galeria_urls,video_urls,ods,indicadores,parceiros,local,ano';
 
-        renderProjetos(projetos, categorias);
-        bindSearch(projetos, categorias);
-
-        // Remove static fallback HTML now that dynamic content is loaded
-        const staticEl = document.getElementById('static-projetos');
-        if (staticEl) staticEl.remove();
-
-    } catch (e) {
-        // Supabase unavailable — keep static HTML as fallback, hide skeleton
-        const container = document.getElementById('projetos-container');
-        if (container) container.innerHTML = '';
+    let carregou = false;
+    for (const sel of [SELECT_PROJETOS_FULL, SELECT_PROJETOS_BASE]) {
+        try {
+            const [categorias, projetos] = await Promise.all([
+                sbGet('categorias?order=ordem&select=id,nome,slug,secao,cor_principal,cor_forte,cor_clara'),
+                sbGet(`projetos?publicado=eq.true&order=ordem&select=${sel}`)
+            ]);
+            renderProjetos(projetos, categorias);
+            bindSearch(projetos, categorias);
+            const staticEl = document.getElementById('static-projetos');
+            if (staticEl) staticEl.remove();
+            carregou = true;
+            break;
+        } catch (e) {
+            if (sel === SELECT_PROJETOS_BASE) {
+                // Supabase unavailable — keep static HTML as fallback
+                const container = document.getElementById('projetos-container');
+                if (container) container.innerHTML = '';
+            }
+        }
     }
 })();

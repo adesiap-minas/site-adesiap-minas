@@ -523,12 +523,20 @@ function buildCategoriaSelect() {
     });
 }
 
+const SELECT_BASE = 'id,titulo,subtag,resumo,publicado,destaque,categoria_id,imagem_url,ods,galeria_urls,video_urls,indicadores,parceiros,local,ano,ordem,slug,descricao';
+
 async function carregarProjetos() {
-    try {
-        allProjetos = await sbFetch('projetos?order=ordem&select=id,titulo,subtag,resumo,publicado,destaque,categoria_id,imagem_url,ods,galeria_urls,video_urls,indicadores,parceiros,local,ano,ordem,slug,descricao,documentos_pc');
-        renderTabela(allProjetos);
-        atualizarStats(allProjetos);
-    } catch(e) { showToast('Erro ao carregar projetos', 'error'); }
+    // Tenta com documentos_pc; se a coluna ainda não existir, carrega sem ela
+    for (const sel of [SELECT_BASE + ',documentos_pc', SELECT_BASE]) {
+        try {
+            allProjetos = await sbFetch(`projetos?order=ordem&select=${sel}`);
+            renderTabela(allProjetos);
+            atualizarStats(allProjetos);
+            return;
+        } catch(e) {
+            if (sel === SELECT_BASE) showToast('Erro ao carregar projetos', 'error');
+        }
+    }
 }
 
 // ── TABELA ───────────────────────────────────────────
@@ -977,7 +985,7 @@ async function salvarProjeto() {
         ods: odsNums,
         indicadores: lerIndicadores(),
         parceiros: parceiros.filter(Boolean),
-        documentos_pc: documentosPc.filter(d => d?.url)
+        ...(documentosPc.length ? { documentos_pc: documentosPc.filter(d => d?.url) } : {})
     };
 
     const btn = document.getElementById('btnSalvar');
