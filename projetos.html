@@ -999,27 +999,30 @@
         }
 
         .modal-metrics {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            align-items: start;
         }
 
         .modal-metric {
-            flex: 1;
-            min-width: 110px;
+            min-width: 0;
             background: var(--areia-fundo);
             border-radius: 12px;
-            padding: 18px 14px;
+            padding: 16px 12px;
             text-align: center;
         }
 
         .modal-metric strong {
             display: block;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: var(--azul-institucional);
             margin-bottom: 4px;
             font-family: 'Inter', sans-serif;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.2;
         }
 
         .modal-metric span {
@@ -1106,12 +1109,12 @@
             }
 
             .modal-metrics {
-                gap: 10px;
+                gap: 8px;
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             }
 
             .modal-metric {
-                min-width: 90px;
-                padding: 14px 10px;
+                padding: 12px 10px;
             }
         }
 
@@ -1177,6 +1180,56 @@
             text-decoration: none;
             margin-bottom: 10px;
         }
+
+        /* ===== DOCUMENTOS PRESTAÇÃO DE CONTAS ===== */
+        .modal-doc-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--areia-fundo);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--azul-institucional);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+            border: 1px solid rgba(18,57,93,0.08);
+        }
+
+        .modal-doc-link:hover {
+            background: #e4ecf5;
+            color: var(--azul-institucional);
+        }
+
+        .modal-doc-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-doc-link i {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .modal-doc-link .doc-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .modal-doc-link .doc-ext {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .doc-ext-pdf { background: #fee2e2; color: #b91c1c; }
+        .doc-ext-docx, .doc-ext-doc { background: #dbeafe; color: #1d4ed8; }
 
         /* ===== TOPBAR DE ATENDIMENTO ===== */
         :root { --topbar-height: 36px; }
@@ -2004,6 +2057,10 @@
                 <div class="modal-section" id="modalVideoSection" style="display:none">
                     <span class="modal-section-label">Vídeos</span>
                     <div id="modalVideos"></div>
+                </div>
+                <div class="modal-section" id="modalDocsSection" style="display:none">
+                    <span class="modal-section-label">Prestação de Contas</span>
+                    <div id="modalDocs"></div>
                 </div>
             </div>
             <div class="modal-footer">

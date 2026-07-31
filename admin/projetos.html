@@ -201,6 +201,17 @@ tr:hover td { background: #F8FAFC; }
 .stat-card .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--azul); line-height: 1; }
 .stat-card .stat-label { font-size: 0.78rem; color: var(--texto-leve); margin-top: 4px; }
 
+/* ── DOCUMENTOS PRESTAÇÃO DE CONTAS ─────────────── */
+.doc-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.doc-item { display: flex; align-items: center; gap: 10px; background: var(--areia); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--borda); }
+.doc-item-icon { font-size: 1.1rem; color: var(--terracota); flex-shrink: 0; }
+.doc-item-info { flex: 1; min-width: 0; }
+.doc-item-name { font-size: 0.85rem; font-weight: 600; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-item-meta { font-size: 0.72rem; color: var(--texto-leve); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-upload-area { border: 2px dashed var(--borda); border-radius: 10px; padding: 22px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; position: relative; background: #FAFBFC; }
+.doc-upload-area:hover, .doc-upload-area.dragover { border-color: var(--azul); background: #EEF4FB; }
+.doc-upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+
 /* ── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 900px) {
     .drawer { width: 100vw; }
@@ -433,6 +444,20 @@ html[data-auth] #appShell{display:flex!important}
             <input type="text" id="parceiroInput" class="tag-input-inner" placeholder="Digite e pressione Enter..." onkeydown="addParceiro(event)">
         </div>
 
+        <!-- PRESTAÇÃO DE CONTAS -->
+        <div class="section-divider"><h3><i class="fas fa-file-alt"></i> Prestação de Contas</h3></div>
+        <p style="font-size:0.83rem;color:var(--texto-leve);margin-bottom:12px">Arquivos exibidos no modal do projeto (PDF ou DOCX)</p>
+        <div class="doc-list" id="docsList"></div>
+        <div class="doc-upload-area" id="docUploadArea">
+            <input type="file" id="docFile" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple onchange="handleDocUpload(this)">
+            <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--texto-leve);margin-bottom:8px;display:block"></i>
+            <p style="margin:0;font-size:0.85rem;color:var(--texto-leve)"><strong style="color:var(--azul)">Clique para enviar</strong> ou arraste — PDF ou DOCX</p>
+        </div>
+        <div class="upload-progress" id="docProgress">
+            <div class="upload-progress-bar"><div class="upload-progress-fill" id="docProgressFill"></div></div>
+            <div class="upload-progress-label" id="docProgressLabel">Enviando...</div>
+        </div>
+
         <div style="height:24px"></div>
     </div><!-- /drawer-body -->
     <div class="drawer-footer">
@@ -464,6 +489,7 @@ let allCategorias = [];
 let galeriaUrls = [];
 let videoUrls = [];
 let parceiros = [];
+let documentosPc = [];
 let editingId = null;
 
 // ── INIT ─────────────────────────────────────────────
@@ -499,7 +525,7 @@ function buildCategoriaSelect() {
 
 async function carregarProjetos() {
     try {
-        allProjetos = await sbFetch('projetos?order=ordem&select=id,titulo,subtag,resumo,publicado,destaque,categoria_id,imagem_url,ods,galeria_urls,video_urls,indicadores,parceiros,local,ano,ordem,slug,descricao');
+        allProjetos = await sbFetch('projetos?order=ordem&select=id,titulo,subtag,resumo,publicado,destaque,categoria_id,imagem_url,ods,galeria_urls,video_urls,indicadores,parceiros,local,ano,ordem,slug,descricao,documentos_pc');
         renderTabela(allProjetos);
         atualizarStats(allProjetos);
     } catch(e) { showToast('Erro ao carregar projetos', 'error'); }
@@ -574,6 +600,7 @@ function abrirDrawer(dados = null) {
     galeriaUrls = dados?.galeria_urls || [];
     videoUrls = dados?.video_urls || [];
     parceiros = dados?.parceiros || [];
+    documentosPc = dados?.documentos_pc || [];
 
     // Preencher campos
     document.getElementById('fTitulo').value = dados?.titulo || '';
@@ -614,6 +641,9 @@ function abrirDrawer(dados = null) {
 
     // Parceiros
     renderParceiros();
+
+    // Documentos
+    renderDocs();
 
     document.getElementById('drawerSaveMsg').classList.remove('show');
     document.getElementById('drawerOverlay').classList.add('active');
@@ -762,6 +792,66 @@ function removerIndicador(idx) {
     renderIndicadores(existentes);
 }
 
+// ── DOCUMENTOS PRESTAÇÃO DE CONTAS ───────────────────
+function renderDocs() {
+    const list = document.getElementById('docsList');
+    list.innerHTML = documentosPc.map((doc, i) => {
+        const ext = (doc.url || '').split('.').pop().toLowerCase().replace(/\?.*/, '') || 'doc';
+        const icon = ext === 'pdf' ? 'fas fa-file-pdf' : 'fas fa-file-word';
+        const iconColor = ext === 'pdf' ? '#dc2626' : '#2563eb';
+        return `<div class="doc-item">
+            <i class="${icon} doc-item-icon" style="color:${iconColor}"></i>
+            <div class="doc-item-info">
+                <div class="doc-item-name" title="${doc.nome || ''}">${doc.nome || 'Documento'}</div>
+                <div class="doc-item-meta">${ext.toUpperCase()} · ${doc.url.split('/').pop()}</div>
+            </div>
+            <button class="btn btn-danger btn-sm btn-icon" onclick="removerDoc(${i})" title="Remover"><i class="fas fa-times"></i></button>
+        </div>`;
+    }).join('');
+}
+
+function removerDoc(idx) {
+    documentosPc.splice(idx, 1);
+    renderDocs();
+}
+
+async function handleDocUpload(input) {
+    const files = Array.from(input.files);
+    if (!files.length) return;
+    const prog = document.getElementById('docProgress');
+    const fill = document.getElementById('docProgressFill');
+    const lbl = document.getElementById('docProgressLabel');
+    prog.style.display = 'block';
+    for (let i = 0; i < files.length; i++) {
+        lbl.textContent = `Enviando ${i + 1}/${files.length}...`;
+        fill.style.width = `${(i / files.length) * 100}%`;
+        const url = await uploadDoc(files[i]);
+        if (url) documentosPc.push({ nome: files[i].name, url });
+    }
+    fill.style.width = '100%';
+    lbl.textContent = 'Concluído!';
+    setTimeout(() => { prog.style.display = 'none'; }, 2000);
+    renderDocs();
+    input.value = '';
+}
+
+async function uploadDoc(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const nomeFinal = `docs/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const r = await fetch(`${SB_URL}/storage/v1/object/docs-projetos/${nomeFinal}`, {
+        method: 'POST',
+        headers: {
+            'apikey': SB_KEY,
+            'Authorization': `Bearer ${SB_KEY}`,
+            'Content-Type': file.type || 'application/octet-stream',
+            'x-upsert': 'true'
+        },
+        body: file
+    });
+    if (!r.ok) { showToast('Erro no upload: ' + await r.text(), 'error'); return null; }
+    return `${SB_URL}/storage/v1/object/public/docs-projetos/${nomeFinal}`;
+}
+
 // ── PARCEIROS ─────────────────────────────────────────
 function renderParceiros() {
     const wrapper = document.getElementById('parceirosWrapper');
@@ -886,7 +976,8 @@ async function salvarProjeto() {
         video_urls: videoUrls.filter(v => v.trim()),
         ods: odsNums,
         indicadores: lerIndicadores(),
-        parceiros: parceiros.filter(Boolean)
+        parceiros: parceiros.filter(Boolean),
+        documentos_pc: documentosPc.filter(d => d?.url)
     };
 
     const btn = document.getElementById('btnSalvar');

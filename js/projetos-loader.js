@@ -215,6 +215,26 @@
             vidSection.style.display = 'none';
         }
 
+        // Prestação de Contas
+        const docsSection = document.getElementById('modalDocsSection');
+        const docsEl = document.getElementById('modalDocs');
+        const docs = Array.isArray(p.documentos_pc) ? p.documentos_pc.filter(d => d?.url) : [];
+        if (docsSection && docs.length) {
+            docsEl.innerHTML = docs.map(doc => {
+                const ext = (doc.url.split('.').pop() || '').toLowerCase().replace(/\?.*/, '');
+                const icon = ext === 'pdf' ? 'fas fa-file-pdf' : 'fas fa-file-word';
+                const extClass = ext === 'pdf' ? 'doc-ext-pdf' : `doc-ext-${ext || 'docx'}`;
+                return `<a href="${doc.url}" target="_blank" rel="noopener" class="modal-doc-link">
+                    <i class="${icon}" style="color:${ext === 'pdf' ? '#dc2626' : '#2563eb'}"></i>
+                    <span class="doc-name">${doc.nome || 'Documento'}</span>
+                    <span class="doc-ext ${extClass}">${ext || 'doc'}</span>
+                </a>`;
+            }).join('');
+            docsSection.style.display = '';
+        } else if (docsSection) {
+            docsSection.style.display = 'none';
+        }
+
         // Abrir overlay
         const overlay = document.getElementById('projectModalOverlay');
         overlay.classList.add('active');
@@ -271,7 +291,7 @@
     try {
         const [categorias, projetos] = await Promise.all([
             sbGet('categorias?order=ordem&select=id,nome,slug,secao,cor_principal,cor_forte,cor_clara'),
-            sbGet('projetos?publicado=eq.true&order=ordem&select=id,titulo,subtag,resumo,descricao,categoria_id,imagem_url,galeria_urls,video_urls,ods,indicadores,parceiros,local,ano')
+            sbGet('projetos?publicado=eq.true&order=ordem&select=id,titulo,subtag,resumo,descricao,categoria_id,imagem_url,galeria_urls,video_urls,ods,indicadores,parceiros,local,ano,documentos_pc')
         ]);
 
         renderProjetos(projetos, categorias);
