@@ -2270,8 +2270,20 @@
                                 stroke-width="3" class="map-dot" /> <!-- PA -->
                             <circle cx="410" cy="350" r="12" fill="#fff" stroke="var(--terracota-institucional)"
                                 stroke-width="3" class="map-dot" /> <!-- DF -->
-                            <circle cx="480" cy="450" r="12" fill="#fff" stroke="var(--terracota-institucional)"
-                                stroke-width="3" class="map-dot" /> <!-- MG -->
+                            <!-- Pin ADESIAP (MG) — estilo logo -->
+                            <g class="map-dot" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.30));">
+                                <g transform="translate(480, 432)">
+                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 1,1 18,-8 C18,14 5,24 0,36Z" fill="#BF3030"/>
+                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 0,1 18,-8 C18,14 5,24 0,36Z" fill="#A02828" opacity="0.25"/>
+                                    <circle cx="0" cy="-8" r="9" fill="white"/>
+                                    <animateTransform attributeName="transform" type="translate"
+                                        values="480,432; 480,427; 480,432"
+                                        keyTimes="0; 0.5; 1"
+                                        dur="2.4s" repeatCount="indefinite"
+                                        calcMode="spline"
+                                        keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+                                </g>
+                            </g> <!-- MG -->
                             <circle cx="380" cy="650" r="12" fill="#fff" stroke="var(--terracota-institucional)"
                                 stroke-width="3" class="map-dot" /> <!-- RS -->
                         </svg>
