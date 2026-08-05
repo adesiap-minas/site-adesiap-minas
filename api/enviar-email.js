@@ -9,6 +9,7 @@ const TIPO_LABELS = {
     ouvidoria_elogio:     'Ouvidoria — Elogio',
     denuncias:            'Canal de Denúncias',
     candidaturas:         'Trabalhe Conosco',
+    doacoes:              'Cadastro de Doador',
     confirmacao_protocolo: 'Confirmação de Protocolo',
     resposta_protocolo:    'Atualização de Protocolo',
 };
@@ -26,6 +27,12 @@ const FIELD_LABELS = {
     bairro: 'Bairro', contatoNome: 'Contato — Nome', contatoCargo: 'Contato — Cargo',
     contatoEmail: 'Contato — E-mail', contatoTelefone: 'Contato — Telefone',
     website: 'Website',
+    // Doações
+    tipo_doador: 'Tipo de Doador', nome_completo: 'Nome Completo', cpf: 'CPF',
+    is_pep: 'Pessoa Politicamente Exposta (PEP)', comprovante_residencia: 'Comprovante de Residência',
+    razao_social: 'Razão Social', nome_representante: 'Representante Legal',
+    valor_pretendido: 'Valor / Bem Pretendido', contrapartida_imagem: 'Contrapartida de Imagem',
+    documentos_enviados: 'Documentos Anexados',
 };
 
 function getMimeType(filename) {
@@ -205,6 +212,7 @@ async function handler(req, res) {
             ouvidoria_elogio:     cfg.email_ouvidoria_elogio,
             denuncias:            cfg.email_denuncias,
             candidaturas:         cfg.email_candidaturas,
+            doacoes:              cfg.email_doacoes,
         };
 
         const isUserEmail = tipo === 'confirmacao_protocolo' || tipo === 'resposta_protocolo';

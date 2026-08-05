@@ -1279,7 +1279,6 @@
         const btn = document.getElementById('submitBtn');
         const tipo = getTipo();
 
-        // Validate required checkboxes
         if (!document.getElementById('aceitOrigem').checked) {
             showToast('Você precisa aceitar a declaração de origem dos recursos.', 'error');
             return;
@@ -1293,9 +1292,9 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
         try {
-            // Upload documents
+            // 1. Upload de documentos para Supabase Storage
             const docs = [];
-            for (const { input, label } of fileMap) {
+            for (const { input } of fileMap) {
                 const el = document.getElementById(input);
                 if (el?.files[0]) {
                     const url = await uploadFile(el.files[0]);
@@ -1303,7 +1302,7 @@
                 }
             }
 
-            // Build payload
+            // 2. Payload para salvar no Supabase
             const payload = {
                 tipo_doador: tipo,
                 valor_pretendido: document.getElementById('valorDoacao').value.trim(),
@@ -1328,18 +1327,45 @@
                 payload.telefone           = document.getElementById('telefonePJ').value.trim();
             }
 
-            const res = await fetch(`${SB_URL}/rest/v1/doacoes`, {
+            // 3. Salvar no Supabase
+            const sbRes = await fetch(`${SB_URL}/rest/v1/doacoes`, {
                 method: 'POST',
                 headers: { ...HDRS, 'Prefer': 'return=minimal' },
                 body: JSON.stringify(payload)
             });
+            if (!sbRes.ok) throw new Error(await sbRes.text());
 
-            if (!res.ok) {
-                const err = await res.text();
-                throw new Error(err);
-            }
+            // 4. Enviar e-mail de notificação via API
+            const protocolo = 'DOA-' + Date.now().toString().slice(-6);
+            const nomeDisplay = tipo === 'pf'
+                ? (payload.nome_completo || payload.email)
+                : (payload.razao_social || payload.email);
 
-            // Success
+            const dadosEmail = {
+                tipo_doador:          tipo === 'pf' ? 'Pessoa Física' : 'Pessoa Jurídica',
+                nome_completo:        payload.nome_completo  || payload.razao_social || '',
+                cpf:                  payload.cpf            || '',
+                cnpj:                 payload.cnpj           || '',
+                nome_representante:   payload.nome_representante || '',
+                email:                payload.email,
+                telefone:             payload.telefone,
+                is_pep:               payload.is_pep ? 'Sim' : 'Não',
+                comprovante_residencia: payload.comprovante_residencia || '',
+                valor_pretendido:     payload.valor_pretendido,
+                contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
+                documentos_enviados:  docs.length ? docs.map(d => d.nome).join(', ') : 'Nenhum',
+            };
+
+            // Remove campos vazios
+            Object.keys(dadosEmail).forEach(k => { if (!dadosEmail[k]) delete dadosEmail[k]; });
+
+            await fetch('/api/enviar-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tipo: 'doacoes', dados: dadosEmail, protocolo })
+            });
+
+            // 5. Sucesso
             document.getElementById('doacaoForm').style.display = 'none';
             document.getElementById('formSuccess').style.display = 'block';
             window.scrollTo({ top: document.getElementById('formulario').offsetTop - 100, behavior: 'smooth' });
