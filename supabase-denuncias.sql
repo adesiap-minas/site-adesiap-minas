@@ -3,7 +3,9 @@
 -- Execute no Supabase → SQL Editor → New query
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS denuncias (
+DROP TABLE IF EXISTS denuncias CASCADE;
+
+CREATE TABLE denuncias (
   id           uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
   protocolo    text        UNIQUE NOT NULL,
   tipo         text        NOT NULL,
