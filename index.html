@@ -2007,6 +2007,177 @@
                 justify-content: center;
             }
         }
+
+        /* ===== MODAL DE PROJETOS (homepage) ===== */
+        .project-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 31, 51, 0.88);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            backdrop-filter: blur(5px);
+        }
+        .project-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .project-modal {
+            background: #fff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 860px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.38s cubic-bezier(0.34, 1.4, 0.64, 1);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
+            scrollbar-width: thin;
+            scrollbar-color: var(--areia-fundo) transparent;
+        }
+        .project-modal-overlay.active .project-modal {
+            transform: translateY(0) scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: background 0.2s, transform 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.32); transform: scale(1.1); }
+        .modal-hero {
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+        .modal-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(11,31,51,0.92) 0%, rgba(11,31,51,0.3) 55%, transparent 100%);
+            border-radius: 20px 20px 0 0;
+        }
+        .modal-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 28px 32px;
+            width: 100%;
+        }
+        .modal-hero-content .project-tag { display: inline-block; margin-bottom: 10px; font-size: 0.72rem; }
+        .modal-hero-content h2 { color: #fff; font-size: 1.75rem; margin-bottom: 6px; line-height: 1.2; }
+        .modal-meta {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.88rem;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .modal-meta i { margin-right: 5px; opacity: 0.7; }
+        .modal-body { padding: 32px 38px; }
+        .modal-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--areia-fundo);
+        }
+        .modal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .modal-section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--terracota-institucional);
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .modal-section p { font-size: 1rem; color: var(--texto-secundario); line-height: 1.8; margin: 0; }
+        .modal-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            align-items: start;
+        }
+        .modal-metric { min-width: 0; background: var(--areia-fundo); border-radius: 12px; padding: 16px 12px; text-align: center; }
+        .modal-metric strong {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--azul-institucional);
+            margin-bottom: 4px;
+            font-family: 'Inter', sans-serif;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.2;
+        }
+        .modal-metric span { font-size: 0.82rem; color: var(--texto-secundario); font-family: 'Roboto', sans-serif; line-height: 1.3; }
+        .modal-partners { display: flex; flex-wrap: wrap; gap: 8px; }
+        .modal-partner-tag {
+            background: var(--azul-institucional);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+        .modal-ods-grid { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .modal-ods-grid img { height: 50px; width: auto; border-radius: 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.12); transition: transform 0.2s; }
+        .modal-ods-grid img:hover { transform: scale(1.08); }
+        .modal-footer { padding: 4px 38px 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .modal-galeria-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+        .modal-gal-item { aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; cursor: zoom-in; background: var(--areia-fundo); }
+        .modal-gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .modal-gal-item:hover img { transform: scale(1.05); }
+        .modal-video-embed { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 10px; overflow: hidden; margin-bottom: 14px; background: #000; }
+        .modal-video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .modal-video-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--azul-institucional); color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; margin-bottom: 10px; }
+        .modal-doc-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--areia-fundo); border-radius: 8px; text-decoration: none; color: var(--azul-institucional); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; transition: background 0.2s; border: 1px solid rgba(18,57,93,0.08); }
+        .modal-doc-link:hover { background: #e4ecf5; color: var(--azul-institucional); }
+        .modal-doc-link:last-child { margin-bottom: 0; }
+        .modal-doc-link i { font-size: 1.1rem; flex-shrink: 0; }
+        .modal-doc-link .doc-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .modal-doc-link .doc-ext { font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; text-transform: uppercase; }
+        .doc-ext-pdf { background: #fee2e2; color: #b91c1c; }
+        .doc-ext-docx, .doc-ext-doc { background: #dbeafe; color: #1d4ed8; }
+        button.project-link.open-modal { background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; text-align: left; }
+        @media (max-width: 767px) {
+            .project-modal { max-height: 96vh; border-radius: 16px; }
+            .modal-hero { height: 200px; border-radius: 16px 16px 0 0; }
+            .modal-hero-content { padding: 20px; }
+            .modal-hero-content h2 { font-size: 1.35rem; }
+            .modal-body { padding: 22px 20px; }
+            .modal-footer { padding: 4px 20px 24px; }
+            .modal-metrics { gap: 8px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .modal-metric { padding: 12px 10px; }
+            .modal-galeria-grid { grid-template-columns: repeat(2,1fr); }
+        }
     </style>
 </head>
 
@@ -2796,6 +2967,56 @@
         </div>
     </section>
 
+    <!-- Modal de Detalhes do Projeto (homepage) -->
+    <div class="project-modal-overlay" id="hpProjectModalOverlay" role="dialog" aria-modal="true" aria-labelledby="hpModalTitle">
+        <div class="project-modal" id="hpProjectModal">
+            <button class="modal-close" id="hpModalClose" aria-label="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-hero" id="hpModalHero">
+                <div class="modal-hero-content">
+                    <span class="project-tag" id="hpModalTag"></span>
+                    <h2 id="hpModalTitle"></h2>
+                    <p class="modal-meta" id="hpModalMeta"></p>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <span class="modal-section-label">Sobre o Projeto</span>
+                    <p id="hpModalDescription"></p>
+                </div>
+                <div class="modal-section" id="hpModalMetricsSection">
+                    <span class="modal-section-label">Resultados Alcançados</span>
+                    <div class="modal-metrics" id="hpModalMetrics"></div>
+                </div>
+                <div class="modal-section" id="hpModalPartnersSection">
+                    <span class="modal-section-label">Parceiros e Financiadores</span>
+                    <div class="modal-partners" id="hpModalPartners"></div>
+                </div>
+                <div class="modal-section" id="hpModalOdsSection">
+                    <span class="modal-section-label">Alinhamento com os ODS</span>
+                    <div class="modal-ods-grid" id="hpModalOds"></div>
+                </div>
+                <div class="modal-section" id="hpModalGaleriaSection" style="display:none">
+                    <span class="modal-section-label">Galeria de Fotos</span>
+                    <div class="modal-galeria-grid" id="hpModalGaleria"></div>
+                </div>
+                <div class="modal-section" id="hpModalVideoSection" style="display:none">
+                    <span class="modal-section-label">Vídeos</span>
+                    <div id="hpModalVideos"></div>
+                </div>
+                <div class="modal-section" id="hpModalDocsSection" style="display:none">
+                    <span class="modal-section-label">Prestação de Contas</span>
+                    <div id="hpModalDocs"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="projetos.html" class="btn-outline" style="padding:12px 28px;">Ver todos os projetos</a>
+                <a data-wa-cta="projetos-home" href="https://wa.me/553184011390?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20projetos%20da%20ADESIAP%20Minas." target="_blank" rel="noopener" class="btn-primary" style="padding:12px 28px;">Fale com um Especialista</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contato">
         <div class="container">
@@ -2827,6 +3048,7 @@
                         <li><a href="servicos.html">Serviços</a></li>
                         <li><a href="projetos.html">Projetos</a></li>
                         <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="doacoes.html">Seja Doador</a></li>
                         <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li></ul>
                 </div>
                 <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
