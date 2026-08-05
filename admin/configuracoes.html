@@ -538,6 +538,20 @@
                         </div>
                     </div>
 
+                    <div class="routing-card" style="border-color:var(--verde);">
+                        <div class="routing-card-header" style="background:#f0faf5;">
+                            <div class="routing-icon" style="background:var(--verde)"><i class="fas fa-hand-holding-heart"></i></div>
+                            <div>
+                                <h4>Seja Doador</h4>
+                                <p>doacoes.html — Captação / Compliance</p>
+                            </div>
+                        </div>
+                        <div class="routing-card-body">
+                            <label>E-mail destino</label>
+                            <input type="email" id="email_doacoes" placeholder="captacao@adesiap.org.br">
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="section-footer">
@@ -1000,7 +1014,7 @@
             'email_destino','email_remetente',
             'email_contato','email_fornecedores',
             'email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio',
-            'email_denuncias','email_candidaturas',
+            'email_denuncias','email_candidaturas','email_doacoes',
             'wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg',
             'wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg',
             'wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg',
@@ -1029,7 +1043,7 @@
     async function salvarGrupo(grupo) {
         const mapa = {
             email:     ['email_destino','email_remetente'],
-            routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas'],
+            routing:   ['email_contato','email_fornecedores','email_ouvidoria_reclamacao','email_ouvidoria_sugestao','email_ouvidoria_elogio','email_denuncias','email_candidaturas','email_doacoes'],
             whatsapp:  ['wa_topbar_1_numero','wa_topbar_1_label','wa_topbar_1_msg','wa_topbar_2_numero','wa_topbar_2_label','wa_topbar_2_msg','wa_topbar_3_numero','wa_topbar_3_label','wa_topbar_3_msg','wa_fale_conosco_numero','wa_fale_conosco_label','wa_cta_inicio_numero','wa_cta_inicio_msg','wa_cta_quem_somos_numero','wa_cta_quem_somos_msg','wa_cta_governanca_numero','wa_cta_governanca_msg','wa_cta_agenda_numero','wa_cta_agenda_msg','wa_cta_servicos_numero','wa_cta_servicos_msg','wa_cta_projetos_numero','wa_cta_projetos_msg'],
             site:      ['site_nome','site_url'],
             ouvidoria: ['ouvidoria_prazo','ouvidoria_email','politica_privacidade'],
