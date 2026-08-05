@@ -842,9 +842,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="comprovantePF">Comprovante de Residência <span class="req">*</span></label>
+                                    <label class="form-label">Comprovante de Residência <span class="req">*</span></label>
                                     <p style="font-size:0.82rem;margin-bottom:8px;color:var(--texto-secundario)">Emitido nos últimos 90 dias (conta de água, luz, internet, extrato bancário, etc.)</p>
-                                    <input type="text" id="comprovantePF" name="comprovante_residencia_desc" class="form-control" placeholder="Ex: Conta de energia — Av. Principal, 100, Itabirito/MG">
+                                    <div class="doc-upload-item">
+                                        <div class="doc-upload-label">
+                                            <span class="doc-title">Selecione o arquivo</span>
+                                            <span class="doc-sub">PDF, JPG ou PNG — máx. 10 MB</span>
+                                            <div class="doc-filename" id="docCompResNome"></div>
+                                        </div>
+                                        <label class="doc-file-btn" for="fileComprovante">
+                                            <i class="fas fa-upload"></i> Selecionar
+                                            <input type="file" id="fileComprovante" name="doc_comprovante_residencia" accept=".pdf,.jpg,.jpeg,.png">
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="declaration-item" style="margin-bottom:20px">
                                     <input type="checkbox" id="isPEP" name="is_pep">
@@ -1238,6 +1248,7 @@
 
     // File input feedback
     const fileMap = [
+        { input: 'fileComprovante',   label: 'docCompResNome' },
         { input: 'fileIdentificacao', label: 'docIdentNome' },
         { input: 'fileContrato',      label: 'docContratoNome' },
         { input: 'fileCNDFed',        label: 'docCNDFedNome' },
@@ -1318,7 +1329,6 @@
                 payload.email          = document.getElementById('emailPF').value.trim();
                 payload.telefone       = document.getElementById('telefonePF').value.trim();
                 payload.is_pep         = document.getElementById('isPEP').checked;
-                payload.comprovante_residencia = document.getElementById('comprovantePF').value.trim();
             } else {
                 payload.razao_social       = document.getElementById('razaoSocial').value.trim();
                 payload.cnpj               = document.getElementById('cnpj').value.trim();
@@ -1350,7 +1360,6 @@
                 email:                payload.email,
                 telefone:             payload.telefone,
                 is_pep:               payload.is_pep ? 'Sim' : 'Não',
-                comprovante_residencia: payload.comprovante_residencia || '',
                 valor_pretendido:     payload.valor_pretendido,
                 contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
                 documentos_enviados:  docs.length ? docs.map(d => d.nome).join(', ') : 'Nenhum',
