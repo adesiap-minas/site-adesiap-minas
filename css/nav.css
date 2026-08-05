@@ -1,0 +1,51 @@
+/* Nav moderno — igual ao doacoes.html. Sobrescreve estilos inline de cada página. */
+
+header .main-menu {
+    gap: 8px;
+    align-items: center;
+}
+
+header .main-menu li > a,
+header .main-menu > li > a {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    text-transform: none;
+    white-space: nowrap;
+    color: var(--azul-institucional);
+    transition: background 0.2s, color 0.2s;
+}
+
+header .main-menu li > a::after,
+header .main-menu > li > a::after {
+    display: none !important;
+}
+
+header .main-menu li > a:hover,
+header .main-menu > li > a:hover {
+    background: var(--areia-fundo);
+    color: var(--azul-institucional);
+}
+
+header .dropdown-menu {
+    top: calc(100% + 6px);
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    padding: 8px 0;
+    min-width: 200px;
+}
+
+header .dropdown-menu li a {
+    padding: 9px 18px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+header .dropdown-menu li a:hover {
+    background: var(--areia-fundo);
+    color: var(--azul-institucional);
+}
