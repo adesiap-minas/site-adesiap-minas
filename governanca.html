@@ -330,6 +330,46 @@
             color: var(--terracota-institucional);
         }
 
+        /* Conselhos */
+        .conselho-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 24px;
+            border: 1.5px solid rgba(18,57,93,0.08);
+            box-shadow: 0 4px 20px rgba(18,57,93,0.06);
+            transition: transform 0.25s, box-shadow 0.25s;
+            height: 100%;
+        }
+        .conselho-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 32px rgba(18,57,93,0.12);
+        }
+        .conselho-sigla {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--azul-institucional);
+            letter-spacing: -0.5px;
+            line-height: 1;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+        .conselho-nome {
+            font-size: 0.88rem;
+            color: var(--texto-secundario);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .conselho-card::before {
+            content: '';
+            display: block;
+            width: 36px;
+            height: 3px;
+            background: var(--terracota-institucional);
+            border-radius: 2px;
+            margin-bottom: 16px;
+        }
+
         /* Organograma */
         .org-tree-container { overflow-x: auto; padding: 60px 0 20px; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.05); }
         .org-tree { width: 1200px; margin: 0 auto; position: relative; font-family: 'Inter', sans-serif; }
@@ -685,7 +725,29 @@
         </div>
     </section>
 
-    <!-- 6. CALL TO ACTION -->
+    <!-- 6. PARTICIPAÇÃO EM CONSELHOS -->
+    <section class="section-padding" id="conselhos-municipais">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12 reveal-on-scroll">
+                    <span class="section-tag">Participação Cívica</span>
+                    <h2 class="display-title" style="font-size:3rem">
+                        <span>INSERÇÃO</span>
+                        INSTITUCIONAL
+                    </h2>
+                    <p style="max-width:650px;margin:0 auto;font-size:1rem">A ADESIAP Minas participa ativamente de conselhos municipais de políticas públicas, contribuindo com sua expertise técnica na construção de um território mais desenvolvido e sustentável.</p>
+                </div>
+            </div>
+            <div id="conselhosGrid" class="row g-4">
+                <!-- preenchido via JS -->
+                <div class="col-12 text-center" style="color:var(--texto-secundario);padding:40px 0">
+                    <i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CALL TO ACTION -->
     <section class="section-padding">
         <div class="container">
             <div class="row">
@@ -844,6 +906,39 @@
     </script>
 <script src="./js/wa-config.js" defer></script>
 <script src="./js/mobile-dropdown.js" defer></script>
+<script>
+(async function carregarConselhos() {
+    const SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+    const grid = document.getElementById('conselhosGrid');
+    try {
+        const res = await fetch(`${SB_URL}/rest/v1/conselhos?ativo=eq.true&order=ordem.asc,sigla.asc`, {
+            headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+        });
+        const rows = res.ok ? await res.json() : [];
+        if (!rows.length) { grid.innerHTML = ''; return; }
+        grid.innerHTML = rows.map(r => `
+            <div class="col-lg-4 col-md-6 reveal-on-scroll">
+                <div class="conselho-card">
+                    <div class="conselho-sigla">${r.sigla}</div>
+                    <p class="conselho-nome">${r.nome_completo}</p>
+                </div>
+            </div>
+        `).join('');
+        // Anima novos elementos
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            document.querySelectorAll('#conselhosGrid .reveal-on-scroll').forEach(el => {
+                gsap.from(el, {
+                    y: 50, opacity: 0, duration: 1, ease: 'power3.out',
+                    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+                });
+            });
+        }
+    } catch (e) {
+        grid.innerHTML = '';
+    }
+})();
+</script>
 </body>
 </html>
 
