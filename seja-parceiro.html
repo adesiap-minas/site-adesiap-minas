@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seja Parceiro | Adesiap Minas</title>
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <style>
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+            --topbar-height: 36px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--texto-principal); background: var(--branco); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        h1,h2,h3,h4 { font-family: 'Inter', sans-serif; font-weight: 700; margin-bottom: 20px; color: var(--azul-institucional); }
+        p { font-family: 'Roboto', sans-serif; font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 15px; }
+        .section-padding { padding: 100px 0; }
+
+        /* TOPBAR */
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; }
+        .tb-short { display: none; }
+        @media (max-width: 640px) { .topbar-link strong { display: none; } .tb-full { display: none; } .tb-short { display: inline; } .topbar-link { font-size: 0.62rem; } .topbar-inner { gap: 8px; justify-content: center; } }
+
+        /* HEADER */
+        header { position: fixed; top: var(--topbar-height); left: 0; width: 100%; z-index: 1000; padding: 20px 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 30px rgba(0,0,0,0.08); transition: padding 0.3s; }
+        header.scrolled { padding: 12px 0; }
+        .header-container { max-width: 1320px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .logo img { height: 50px; width: auto; }
+        .main-menu { display: flex; list-style: none; gap: 8px; align-items: center; margin: 0; }
+        .main-menu>li>a { font-size: 0.82rem; font-weight: 600; color: var(--azul-institucional); padding: 8px 10px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; }
+        .main-menu>li>a:hover { background: var(--areia-fundo); }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); list-style: none; min-width: 210px; padding: 8px 0; z-index: 100; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu li a { display: block; padding: 9px 18px; font-size: 0.82rem; font-weight: 500; color: var(--azul-institucional); transition: background 0.2s; }
+        .dropdown-menu li a:hover { background: var(--areia-fundo); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; color: var(--azul-institucional); cursor: pointer; }
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            #main-menu.open { display: block; }
+            .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
+            .main-menu>li { width: 100%; }
+            .main-menu>li>a { display: block; padding: 12px 0; border-bottom: 1px solid var(--areia-fundo); }
+            .dropdown-menu { position: static; display: none !important; box-shadow: none; padding-left: 16px; }
+        }
+
+        /* HERO */
+        .hero-parceiro {
+            min-height: 65vh;
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 80px);
+            padding-bottom: 80px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(11,31,51,0.92) 0%, rgba(18,57,93,0.80) 100%),
+                url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+        }
+        .hero-parceiro .container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+        .section-tag { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 50px; margin-bottom: 20px; }
+        .display-title { font-size: 3.5rem; font-weight: 800; line-height: 1.05; margin-bottom: 24px; color: var(--azul-institucional); }
+        .display-title.light, .display-title.light span { color: #fff; }
+        .display-title span { display: block; color: var(--terracota-institucional); font-size: 0.65em; letter-spacing: 3px; margin-bottom: 4px; }
+        .display-title.light span { color: var(--ambar-impacto); }
+        @media (max-width: 991px) { .display-title { font-size: 2.8rem; } }
+        @media (max-width: 767px) { .display-title { font-size: 2.2rem; } .hero-parceiro { min-height: auto; padding-top: calc(var(--header-height) + var(--topbar-height) + 50px); padding-bottom: 50px; } }
+
+        /* BENEFÍCIOS */
+        .benefit-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+        .benefit-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--azul-institucional); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .benefit-item h4 { font-size: 1rem; margin-bottom: 4px; }
+        .benefit-item p { font-size: 0.9rem; margin: 0; }
+
+        /* FORM */
+        .form-card { background: #fff; border-radius: 20px; box-shadow: 0 8px 40px rgba(18,57,93,0.10); padding: 48px 44px; border: 1px solid rgba(18,57,93,0.06); }
+        @media (max-width: 767px) { .form-card { padding: 28px 20px; } }
+        .form-section-title { font-size: 0.72rem; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terracota-institucional); display: block; margin-bottom: 20px; margin-top: 32px; padding-bottom: 10px; border-bottom: 2px solid var(--areia-fundo); }
+        .form-section-title:first-of-type { margin-top: 0; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--azul-institucional); margin-bottom: 6px; font-family: 'Inter', sans-serif; }
+        .form-label .req { color: var(--terracota-institucional); margin-left: 2px; }
+        .form-control { width: 100%; padding: 12px 16px; border: 1.5px solid #dce3ea; border-radius: 10px; font-family: 'Roboto', sans-serif; font-size: 0.95rem; color: var(--texto-principal); background: #fff; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+        .form-control:focus { border-color: var(--azul-institucional); box-shadow: 0 0 0 3px rgba(18,57,93,0.08); }
+        .form-control::placeholder { color: #aab4bc; }
+        select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235F6B76' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .form-row, .form-row-3 { grid-template-columns: 1fr; } }
+
+        /* Declaration & Submit */
+        .declaration-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; background: var(--areia-fundo); border-radius: 10px; margin-bottom: 12px; }
+        .declaration-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--azul-institucional); flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+        .declaration-item label { font-size: 0.88rem; font-family: 'Roboto', sans-serif; color: var(--texto-secundario); cursor: pointer; line-height: 1.5; }
+        .declaration-item label strong { color: var(--azul-institucional); }
+        .btn-submit { width: 100%; padding: 16px; background: var(--azul-institucional); color: #fff; border: none; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
+        .btn-submit:hover { background: var(--azul-profundo); transform: translateY(-1px); }
+        .btn-submit:disabled { background: #8fa5b8; cursor: not-allowed; transform: none; }
+        .info-note { display: flex; gap: 12px; align-items: flex-start; background: #eef4fb; border-left: 4px solid var(--azul-institucional); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 20px; }
+        .info-note i { color: var(--azul-institucional); margin-top: 3px; flex-shrink: 0; }
+        .info-note p { margin: 0; font-size: 0.85rem; color: var(--texto-secundario); font-family: 'Roboto', sans-serif; line-height: 1.6; }
+
+        /* Success */
+        .form-success { display: none; text-align: center; padding: 48px 24px; }
+        .form-success .success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--verde-sustentabilidade); color: #fff; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+        .form-success h3 { color: var(--azul-institucional); font-size: 1.6rem; }
+        .btn-primary { display: inline-block; background: var(--azul-institucional); color: #fff; padding: 14px 32px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; transition: all 0.3s; cursor: pointer; border: none; }
+        .btn-primary:hover { background: var(--azul-profundo); transform: translateY(-2px); }
+
+        /* Footer */
+        footer { background: var(--azul-profundo); color: rgba(255,255,255,0.75); padding: 80px 0 0; }
+        footer .container { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+        .footer-logo { height: 50px; margin-bottom: 20px; }
+        footer p { font-size: 0.92rem; color: rgba(255,255,255,0.6); margin-bottom: 15px; }
+        footer h4 { color: #fff; font-size: 1rem; margin-bottom: 20px; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links ul li { margin-bottom: 10px; }
+        .footer-links ul li a { color: rgba(255,255,255,0.65); font-size: 0.88rem; font-family: 'Roboto', sans-serif; transition: color 0.2s; }
+        .footer-links ul li a:hover { color: #fff; }
+        .footer-links ul li a i { margin-right: 8px; opacity: 0.7; }
+        .footer-bottom { margin-top: 60px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-bottom p { font-size: 0.82rem; margin: 0; color: rgba(255,255,255,0.45); }
+        .footer-bottom a { color: rgba(255,255,255,0.55); transition: color 0.2s; }
+        .footer-bottom a:hover { color: #fff; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 46px; height: 46px; background: var(--azul-institucional); color: #fff; border: none; border-radius: 50%; font-size: 1rem; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 900; }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .reveal-on-scroll { opacity: 0; transform: translateY(40px); }
+        .toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .toast { padding: 12px 24px; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: #fff; animation: toastIn 0.3s ease; }
+        .toast.success { background: var(--verde-sustentabilidade); }
+        .toast.error { background: #dc2626; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <link rel="stylesheet" href="./css/nav.css">
+</head>
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20ao%20Empreendedor." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO AO EMPREENDEDOR</span><span class="tb-short">EMPREEND.</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo"><img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas"></a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quem-somos.html">Quem Somos</a></li>
+                            <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                            <li><a href="terceiro-setor.html">O Terceiro Setor</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li>
+                            <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown"><a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                            <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
+                            <li><a href="seja-parceiro.html">Seja Parceiro</a></li>
+                        </ul>
+                    </li>
+                    <li style="margin-left:6px"><a href="doacoes.html" style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-parceiro">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 reveal-on-scroll">
+                    <span class="section-tag" style="background:rgba(255,255,255,0.12);color:var(--ambar-impacto)">Parcerias &amp; Desenvolvimento</span>
+                    <h1 class="display-title light">
+                        <span>JUNTE-SE A NÓS</span>
+                        SEJA PARCEIRO
+                    </h1>
+                    <p style="font-size:1.15rem;max-width:680px;color:rgba(255,255,255,0.9);line-height:1.75;margin-bottom:0">
+                        A ADESIAP Minas conecta empresas, organizações e instituições comprometidas com o <strong style="color:#fff">desenvolvimento econômico e social sustentável</strong> do território. Ao se tornar parceiro, sua empresa passa a integrar uma rede de alto impacto, com reconhecimento, acesso a projetos estratégicos e visibilidade institucional.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POR QUE PARCERIAS -->
+    <section class="section-padding" style="background:var(--areia-fundo)">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 reveal-on-scroll">
+                    <h2 class="display-title" style="font-size:2.8rem">
+                        <span>POR QUE</span>
+                        SER PARCEIRO?
+                    </h2>
+                    <p>A ADESIAP Minas é reconhecida pelos principais órgãos do Terceiro Setor, com histórico comprovado de projetos de impacto real. Nossas parcerias são relacionamentos de longo prazo, construídos sobre transparência, governança e resultados mensuráveis.</p>
+                </div>
+                <div class="col-lg-6 offset-lg-1 mt-5 mt-lg-0 reveal-on-scroll">
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="fas fa-handshake"></i></div>
+                        <div>
+                            <h4>Acesso a projetos estratégicos</h4>
+                            <p>Participe de iniciativas que conectam o setor privado, público e o terceiro setor em projetos de desenvolvimento regional.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon" style="background:var(--terracota-institucional)"><i class="fas fa-award"></i></div>
+                        <div>
+                            <h4>Visibilidade e reconhecimento</h4>
+                            <p>Associe sua marca a uma organização com selos de qualidade reconhecidos pelo Sebrae e auditada pelos principais órgãos fiscalizadores.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon" style="background:var(--verde-sustentabilidade)"><i class="fas fa-chart-line"></i></div>
+                        <div>
+                            <h4>Impacto mensurável</h4>
+                            <p>Receba relatórios de impacto e prestação de contas sobre como sua contribuição transforma o território e a comunidade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULÁRIO -->
+    <section class="section-padding" id="formulario" style="background:var(--branco)">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="text-center mb-5 reveal-on-scroll">
+                        <h2 class="display-title">
+                            <span>CADASTRO DE</span>
+                            PARCEIRO
+                        </h2>
+                        <p style="max-width:560px;margin:0 auto">Preencha o formulário abaixo para iniciar o processo de parceria. Nossa equipe entrará em contato em até 2 dias úteis.</p>
+                    </div>
+
+                    <div class="form-card reveal-on-scroll">
+
+                        <div class="form-success" id="formSuccess">
+                            <div class="success-icon"><i class="fas fa-check"></i></div>
+                            <h3>Cadastro recebido!</h3>
+                            <p style="margin-top:12px">Obrigado pelo interesse em se tornar parceiro da ADESIAP Minas. Nossa equipe analisará as informações e entrará em contato em até <strong>2 dias úteis</strong>.</p>
+                            <a href="index.html" class="btn-primary" style="margin-top:28px;display:inline-block">Voltar ao Início</a>
+                        </div>
+
+                        <form id="parceiroForm" novalidate>
+
+                            <!-- SEÇÃO 1: Dados da Empresa -->
+                            <span class="form-section-title">Seção 1 — Dados da Empresa</span>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="razaoSocial">Razão Social <span class="req">*</span></label>
+                                    <input type="text" id="razaoSocial" class="form-control" placeholder="Razão social completa" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="nomeFantasia">Nome Fantasia</label>
+                                    <input type="text" id="nomeFantasia" class="form-control" placeholder="Nome fantasia (se houver)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="cnpj">CNPJ <span class="req">*</span></label>
+                                    <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="ramoAtividade">Ramo de Atividade <span class="req">*</span></label>
+                                    <input type="text" id="ramoAtividade" class="form-control" placeholder="Ex: Construção Civil, Saúde, Educação...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="enderecoEmpresa">Endereço <span class="req">*</span></label>
+                                <input type="text" id="enderecoEmpresa" class="form-control" placeholder="Rua, número, complemento">
+                            </div>
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label class="form-label" for="bairroEmpresa">Bairro</label>
+                                    <input type="text" id="bairroEmpresa" class="form-control" placeholder="Bairro">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="cepEmpresa">CEP</label>
+                                    <input type="text" id="cepEmpresa" class="form-control" placeholder="00000-000" maxlength="9">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="ufEmpresa">UF</label>
+                                    <select id="ufEmpresa" class="form-control">
+                                        <option value="">Selecione</option>
+                                        <option value="MG" selected>MG</option>
+                                        <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option>
+                                        <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+                                        <option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                                        <option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option>
+                                        <option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                                        <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option>
+                                        <option value="SE">SE</option><option value="TO">TO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="cidadeEmpresa">Cidade <span class="req">*</span></label>
+                                    <input type="text" id="cidadeEmpresa" class="form-control" placeholder="Cidade">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="telefoneEmpresa">Telefone <span class="req">*</span></label>
+                                    <input type="tel" id="telefoneEmpresa" class="form-control" placeholder="(31) 3000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="emailEmpresa">E-mail <span class="req">*</span></label>
+                                <input type="email" id="emailEmpresa" class="form-control" placeholder="contato@empresa.com.br" required>
+                            </div>
+
+                            <!-- SEÇÃO 2: Responsável 1 -->
+                            <span class="form-section-title">Seção 2 — Responsável que Representará a Empresa (1)</span>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Nome">Nome Completo <span class="req">*</span></label>
+                                    <input type="text" id="resp1Nome" class="form-control" placeholder="Nome completo" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1CPF">CPF <span class="req">*</span></label>
+                                    <input type="text" id="resp1CPF" class="form-control" placeholder="000.000.000-00" maxlength="14">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Nacionalidade">Nacionalidade</label>
+                                    <input type="text" id="resp1Nacionalidade" class="form-control" placeholder="Brasileira">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Profissao">Profissão</label>
+                                    <input type="text" id="resp1Profissao" class="form-control" placeholder="Profissão">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="resp1Endereco">Endereço Residencial</label>
+                                <input type="text" id="resp1Endereco" class="form-control" placeholder="Rua, número, complemento">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Bairro">Bairro</label>
+                                    <input type="text" id="resp1Bairro" class="form-control" placeholder="Bairro">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Cidade">Cidade</label>
+                                    <input type="text" id="resp1Cidade" class="form-control" placeholder="Cidade">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Telefone">Telefone</label>
+                                    <input type="tel" id="resp1Telefone" class="form-control" placeholder="(31) 3000-0000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp1Cel">Celular</label>
+                                    <input type="tel" id="resp1Cel" class="form-control" placeholder="(31) 99999-9999">
+                                </div>
+                            </div>
+
+                            <!-- SEÇÃO 3: Responsável 2 -->
+                            <span class="form-section-title">Seção 3 — Responsável que Representará a Empresa (2)</span>
+
+                            <div class="info-note">
+                                <i class="fas fa-info-circle"></i>
+                                <p>O segundo responsável é opcional. Preencha apenas se a empresa possuir um segundo representante legal ou procurador.</p>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Nome">Nome Completo</label>
+                                    <input type="text" id="resp2Nome" class="form-control" placeholder="Nome completo">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2CPF">CPF</label>
+                                    <input type="text" id="resp2CPF" class="form-control" placeholder="000.000.000-00" maxlength="14">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2RG">RG</label>
+                                    <input type="text" id="resp2RG" class="form-control" placeholder="0000000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Nacionalidade">Nacionalidade</label>
+                                    <input type="text" id="resp2Nacionalidade" class="form-control" placeholder="Brasileira">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2EstadoCivil">Estado Civil</label>
+                                    <select id="resp2EstadoCivil" class="form-control">
+                                        <option value="">Selecione</option>
+                                        <option>Solteiro(a)</option>
+                                        <option>Casado(a)</option>
+                                        <option>Divorciado(a)</option>
+                                        <option>Viúvo(a)</option>
+                                        <option>União Estável</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Profissao">Profissão</label>
+                                    <input type="text" id="resp2Profissao" class="form-control" placeholder="Profissão">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Cargo">Cargo</label>
+                                    <input type="text" id="resp2Cargo" class="form-control" placeholder="Cargo na empresa">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Email">E-mail</label>
+                                    <input type="email" id="resp2Email" class="form-control" placeholder="email@empresa.com.br">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="resp2Endereco">Endereço Residencial</label>
+                                <input type="text" id="resp2Endereco" class="form-control" placeholder="Rua, número, complemento">
+                            </div>
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Bairro">Bairro</label>
+                                    <input type="text" id="resp2Bairro" class="form-control" placeholder="Bairro">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2CEP">CEP</label>
+                                    <input type="text" id="resp2CEP" class="form-control" placeholder="00000-000" maxlength="9">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2UF">UF</label>
+                                    <select id="resp2UF" class="form-control">
+                                        <option value="MG" selected>MG</option>
+                                        <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option><option value="AM">AM</option>
+                                        <option value="BA">BA</option><option value="CE">CE</option><option value="DF">DF</option><option value="ES">ES</option>
+                                        <option value="GO">GO</option><option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                                        <option value="PA">PA</option><option value="PB">PB</option><option value="PR">PR</option><option value="PE">PE</option>
+                                        <option value="PI">PI</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                                        <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option><option value="SP">SP</option>
+                                        <option value="SE">SE</option><option value="TO">TO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Cidade">Cidade</label>
+                                    <input type="text" id="resp2Cidade" class="form-control" placeholder="Cidade">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="resp2Telefone">Telefone</label>
+                                    <input type="tel" id="resp2Telefone" class="form-control" placeholder="(31) 3000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="resp2Cel">Celular</label>
+                                <input type="tel" id="resp2Cel" class="form-control" placeholder="(31) 99999-9999">
+                            </div>
+
+                            <!-- SEÇÃO 4: Aceite -->
+                            <span class="form-section-title">Seção 4 — Declaração e Aceite</span>
+
+                            <div class="declaration-item">
+                                <input type="checkbox" id="aceitTermos" required>
+                                <label for="aceitTermos">
+                                    <strong>Declaração de Veracidade:</strong> Declaro que as informações prestadas neste formulário são verdadeiras e que tenho poderes para representar a empresa indicada, comprometendo-me a comunicar quaisquer alterações cadastrais à ADESIAP Minas. <span class="req">*</span>
+                                </label>
+                            </div>
+                            <div class="declaration-item">
+                                <input type="checkbox" id="aceitLGPD" required>
+                                <label for="aceitLGPD">
+                                    <strong>Privacidade e LGPD:</strong> Autorizo a ADESIAP Minas a tratar os dados fornecidos para fins de análise de parceria e comunicações institucionais, conforme nossa <a href="#" onclick="abrirPoliticaPrivacidade(); return false;" style="color:var(--azul-institucional);text-decoration:underline">Política de Privacidade</a>. <span class="req">*</span>
+                                </label>
+                            </div>
+
+                            <div class="info-note" style="margin-top:20px;margin-bottom:24px">
+                                <i class="fas fa-lock"></i>
+                                <p>Seus dados são tratados com total confidencialidade e utilizados exclusivamente para análise e formalização da parceria com a ADESIAP Minas.</p>
+                            </div>
+
+                            <button type="submit" class="btn-submit" id="submitBtn">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Cadastro de Parceiro
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="quem-somos.html">Quem Somos</a></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display:flex;gap:15px">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size:1.2rem"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size:1.2rem"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(time => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            let delay = 0;
+            if (el.classList.contains('delay-1')) delay = 0.15;
+            if (el.classList.contains('delay-2')) delay = 0.3;
+            gsap.fromTo(el, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay, ease: 'power2.out', scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } });
+        });
+
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+            document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+        });
+        document.getElementById('backToTop').addEventListener('click', () => lenis.scrollTo(0));
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => { document.getElementById('main-menu').classList.toggle('open'); });
+
+        function showToast(msg, type = 'success') {
+            const tc = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.textContent = msg;
+            tc.appendChild(t);
+            setTimeout(() => t.remove(), 4500);
+        }
+
+        // Máscaras
+        const SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+        const HDRS = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
+
+        function maskCPF(el) {
+            el.addEventListener('input', function() {
+                let v = this.value.replace(/\D/g,'');
+                if (v.length > 9) v = v.slice(0,9) + '-' + v.slice(9,11);
+                if (v.length > 6) v = v.slice(0,6) + '.' + v.slice(6);
+                if (v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
+                this.value = v;
+            });
+        }
+        function maskCNPJ(el) {
+            el.addEventListener('input', function() {
+                let v = this.value.replace(/\D/g,'');
+                if (v.length > 12) v = v.slice(0,12) + '-' + v.slice(12,14);
+                if (v.length > 8) v = v.slice(0,8) + '/' + v.slice(8);
+                if (v.length > 5) v = v.slice(0,5) + '.' + v.slice(5);
+                if (v.length > 2) v = v.slice(0,2) + '.' + v.slice(2);
+                this.value = v;
+            });
+        }
+        function maskCEP(el) {
+            el.addEventListener('input', function() {
+                let v = this.value.replace(/\D/g,'');
+                if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5,8);
+                this.value = v;
+            });
+        }
+        maskCNPJ(document.getElementById('cnpj'));
+        maskCEP(document.getElementById('cepEmpresa'));
+        maskCEP(document.getElementById('resp2CEP'));
+        maskCPF(document.getElementById('resp1CPF'));
+        maskCPF(document.getElementById('resp2CPF'));
+
+        // Submit
+        document.getElementById('parceiroForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+
+            const razaoSocial = document.getElementById('razaoSocial').value.trim();
+            const cnpj = document.getElementById('cnpj').value.trim();
+            const ramoAtividade = document.getElementById('ramoAtividade').value.trim();
+            const enderecoEmpresa = document.getElementById('enderecoEmpresa').value.trim();
+            const cidadeEmpresa = document.getElementById('cidadeEmpresa').value.trim();
+            const telefoneEmpresa = document.getElementById('telefoneEmpresa').value.trim();
+            const emailEmpresa = document.getElementById('emailEmpresa').value.trim();
+            const resp1Nome = document.getElementById('resp1Nome').value.trim();
+            const resp1CPF = document.getElementById('resp1CPF').value.trim();
+
+            if (!razaoSocial || !cnpj || !ramoAtividade || !enderecoEmpresa || !cidadeEmpresa || !telefoneEmpresa || !emailEmpresa) {
+                showToast('Preencha todos os campos obrigatórios da Empresa.', 'error'); return;
+            }
+            if (!resp1Nome || !resp1CPF) {
+                showToast('Preencha nome e CPF do Responsável 1.', 'error'); return;
+            }
+            if (!document.getElementById('aceitTermos').checked) {
+                showToast('É necessário aceitar a declaração de veracidade.', 'error'); return;
+            }
+            if (!document.getElementById('aceitLGPD').checked) {
+                showToast('É necessário autorizar o tratamento de dados (LGPD).', 'error'); return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+            try {
+                const payload = {
+                    razao_social: razaoSocial,
+                    nome_fantasia: document.getElementById('nomeFantasia').value.trim(),
+                    cnpj,
+                    ramo_atividade: ramoAtividade,
+                    endereco: enderecoEmpresa,
+                    bairro: document.getElementById('bairroEmpresa').value.trim(),
+                    cep: document.getElementById('cepEmpresa').value.trim(),
+                    cidade: cidadeEmpresa,
+                    uf: document.getElementById('ufEmpresa').value,
+                    telefone: telefoneEmpresa,
+                    email: emailEmpresa,
+                    resp1_nome: resp1Nome,
+                    resp1_cpf: resp1CPF,
+                    resp1_nacionalidade: document.getElementById('resp1Nacionalidade').value.trim(),
+                    resp1_profissao: document.getElementById('resp1Profissao').value.trim(),
+                    resp1_endereco: document.getElementById('resp1Endereco').value.trim(),
+                    resp1_bairro: document.getElementById('resp1Bairro').value.trim(),
+                    resp1_cidade: document.getElementById('resp1Cidade').value.trim(),
+                    resp1_telefone: document.getElementById('resp1Telefone').value.trim(),
+                    resp1_celular: document.getElementById('resp1Cel').value.trim(),
+                    resp2_nome: document.getElementById('resp2Nome').value.trim(),
+                    resp2_cpf: document.getElementById('resp2CPF').value.trim(),
+                    resp2_rg: document.getElementById('resp2RG').value.trim(),
+                    resp2_nacionalidade: document.getElementById('resp2Nacionalidade').value.trim(),
+                    resp2_estado_civil: document.getElementById('resp2EstadoCivil').value,
+                    resp2_profissao: document.getElementById('resp2Profissao').value.trim(),
+                    resp2_cargo: document.getElementById('resp2Cargo').value.trim(),
+                    resp2_email: document.getElementById('resp2Email').value.trim(),
+                    resp2_endereco: document.getElementById('resp2Endereco').value.trim(),
+                    resp2_bairro: document.getElementById('resp2Bairro').value.trim(),
+                    resp2_cep: document.getElementById('resp2CEP').value.trim(),
+                    resp2_cidade: document.getElementById('resp2Cidade').value.trim(),
+                    resp2_uf: document.getElementById('resp2UF').value,
+                    resp2_telefone: document.getElementById('resp2Telefone').value.trim(),
+                    resp2_celular: document.getElementById('resp2Cel').value.trim(),
+                };
+
+                // Remove campos vazios
+                Object.keys(payload).forEach(k => { if (!payload[k]) delete payload[k]; });
+
+                // Salva no Supabase
+                const sbRes = await fetch(`${SB_URL}/rest/v1/parceiros`, {
+                    method: 'POST',
+                    headers: { ...HDRS, 'Prefer': 'return=minimal' },
+                    body: JSON.stringify({ razao_social: razaoSocial, cnpj, email: emailEmpresa, dados: payload })
+                });
+                if (!sbRes.ok) throw new Error(await sbRes.text());
+
+                // Envia e-mail
+                const protocolo = 'PAR-' + Date.now().toString().slice(-6);
+                try {
+                    const emailRes = await fetch('/api/enviar-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tipo: 'parceiros', dados: payload, protocolo })
+                    });
+                    if (!emailRes.ok) {
+                        const err = await emailRes.json().catch(() => ({}));
+                        console.error('Erro e-mail parceiro:', err);
+                    }
+                } catch (emailEx) {
+                    console.error('Falha no envio de e-mail:', emailEx);
+                }
+
+                document.getElementById('parceiroForm').style.display = 'none';
+                document.getElementById('formSuccess').style.display = 'block';
+                window.scrollTo({ top: document.getElementById('formulario').offsetTop - 100, behavior: 'smooth' });
+
+            } catch(err) {
+                console.error(err);
+                showToast('Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Cadastro de Parceiro';
+            }
+        });
+    </script>
+    <script src="./js/wa-config.js" defer></script>
+    <script src="./js/mobile-dropdown.js" defer></script>
+    <script src="./js/modal-privacidade.js" defer></script>
+</body>
+</html>

@@ -10,6 +10,7 @@ const TIPO_LABELS = {
     denuncias:            'Canal de Denúncias',
     candidaturas:         'Trabalhe Conosco',
     doacoes:              'Cadastro de Doador',
+    parceiros:            'Cadastro de Parceiro',
     confirmacao_protocolo: 'Confirmação de Protocolo',
     resposta_protocolo:    'Atualização de Protocolo',
 };
@@ -33,6 +34,22 @@ const FIELD_LABELS = {
     razao_social: 'Razão Social', nome_representante: 'Representante Legal',
     valor_pretendido: 'Valor / Bem Pretendido', contrapartida_imagem: 'Contrapartida de Imagem',
     documentos_enviados: 'Documentos Anexados',
+    // Parceiros
+    nome_fantasia: 'Nome Fantasia', ramo_atividade: 'Ramo de Atividade',
+    endereco: 'Endereço', razao_social: 'Razão Social',
+    resp1_nome: 'Resp. 1 — Nome', resp1_cpf: 'Resp. 1 — CPF',
+    resp1_nacionalidade: 'Resp. 1 — Nacionalidade', resp1_profissao: 'Resp. 1 — Profissão',
+    resp1_endereco: 'Resp. 1 — Endereço', resp1_bairro: 'Resp. 1 — Bairro',
+    resp1_cidade: 'Resp. 1 — Cidade', resp1_telefone: 'Resp. 1 — Telefone',
+    resp1_celular: 'Resp. 1 — Celular',
+    resp2_nome: 'Resp. 2 — Nome', resp2_cpf: 'Resp. 2 — CPF',
+    resp2_rg: 'Resp. 2 — RG', resp2_nacionalidade: 'Resp. 2 — Nacionalidade',
+    resp2_estado_civil: 'Resp. 2 — Estado Civil', resp2_profissao: 'Resp. 2 — Profissão',
+    resp2_cargo: 'Resp. 2 — Cargo', resp2_email: 'Resp. 2 — E-mail',
+    resp2_endereco: 'Resp. 2 — Endereço', resp2_bairro: 'Resp. 2 — Bairro',
+    resp2_cep: 'Resp. 2 — CEP', resp2_cidade: 'Resp. 2 — Cidade',
+    resp2_uf: 'Resp. 2 — UF', resp2_telefone: 'Resp. 2 — Telefone',
+    resp2_celular: 'Resp. 2 — Celular',
 };
 
 function getMimeType(filename) {
@@ -213,6 +230,7 @@ async function handler(req, res) {
             denuncias:            cfg.email_denuncias,
             candidaturas:         cfg.email_candidaturas,
             doacoes:              cfg.email_doacoes,
+            parceiros:            cfg.email_parceiros,
         };
 
         const isUserEmail = tipo === 'confirmacao_protocolo' || tipo === 'resposta_protocolo';
