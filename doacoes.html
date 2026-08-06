@@ -1862,8 +1862,8 @@
                 checar('fileIdentificacao', label);
             }
 
-            // docsPJOnly visível (PJ): todos obrigatórios
-            if (document.getElementById('docsPJOnly').style.display !== 'none') {
+            // Documentos corporativos: apenas PJ
+            if (tipo === 'pj') {
                 checar('fileContrato',  'Contrato / Estatuto Social');
                 checar('fileCNDFed',   'CND Federal');
                 checar('fileCNDTrab',  'CND Trabalhista (CNDT)');
@@ -1997,11 +1997,20 @@
                 // Remove campos vazios
                 Object.keys(dadosEmail).forEach(k => { if (!dadosEmail[k]) delete dadosEmail[k]; });
 
-                await fetch('/api/enviar-email', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tipo: 'doacoes', dados: dadosEmail, protocolo })
-                });
+                try {
+                    const emailRes = await fetch('/api/enviar-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tipo: 'doacoes', dados: dadosEmail, protocolo })
+                    });
+                    if (!emailRes.ok) {
+                        const emailErr = await emailRes.json().catch(() => ({}));
+                        console.error('Erro ao enviar e-mail:', emailErr);
+                        showToast('Cadastro salvo, mas houve falha no envio do e-mail de notificação. Entre em contato pelo WhatsApp.', 'error');
+                    }
+                } catch (emailEx) {
+                    console.error('Falha na chamada ao enviar-email:', emailEx);
+                }
 
                 // 5. Sucesso
                 document.getElementById('doacaoForm').style.display = 'none';
