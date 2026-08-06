@@ -642,6 +642,9 @@
             border-color: var(--azul-institucional);
         }
 
+        .doc-upload-item.doc-missing { border-color: #dc2626 !important; background: #fff5f5; }
+        .doc-upload-item.doc-missing .doc-title { color: #dc2626; }
+
         .doc-upload-label {
             flex: 1;
         }
@@ -1833,8 +1836,43 @@
                     nameEl.textContent = el.files[0]?.name || '';
                     nameEl.style.display = el.files[0] ? 'block' : 'none';
                 }
+                // Remove destaque de erro ao selecionar arquivo
+                el.closest('.doc-upload-item')?.classList.remove('doc-missing');
             });
         });
+
+        // Valida documentos obrigatórios conforme visibilidade
+        function validarDocumentos() {
+            const tipo = getTipo();
+            const faltando = [];
+
+            function checar(inputId, nome) {
+                const el = document.getElementById(inputId);
+                if (!el?.files[0]) {
+                    faltando.push(nome);
+                    el?.closest('.doc-upload-item')?.classList.add('doc-missing');
+                }
+            }
+
+            // PF: comprovante de residência sempre obrigatório
+            if (tipo === 'pf') checar('fileComprovante', 'Comprovante de Residência');
+
+            // docsSection visível: identificação obrigatória
+            if (document.getElementById('docsSection').style.display !== 'none') {
+                const label = tipo === 'pj' ? 'Comprovante de CNPJ' : 'Documento de Identificação com CPF';
+                checar('fileIdentificacao', label);
+            }
+
+            // docsPJOnly visível (PJ): todos obrigatórios
+            if (document.getElementById('docsPJOnly').style.display !== 'none') {
+                checar('fileContrato',  'Contrato / Estatuto Social');
+                checar('fileCNDFed',   'CND Federal');
+                checar('fileCNDTrab',  'CND Trabalhista (CNDT)');
+                checar('fileFGTS',     'Certificado de Regularidade do FGTS');
+            }
+
+            return faltando;
+        }
 
         // Upload file to Supabase Storage
         async function uploadFile(file) {
@@ -1864,6 +1902,17 @@
             }
             if (!document.getElementById('aceitLGPD').checked) {
                 showToast('Você precisa autorizar o tratamento de dados (LGPD).', 'error');
+                return;
+            }
+
+            const faltando = validarDocumentos();
+            if (faltando.length > 0) {
+                const lista = faltando.length === 1
+                    ? faltando[0]
+                    : faltando.slice(0, -1).join(', ') + ' e ' + faltando.at(-1);
+                showToast(`Documento(s) obrigatório(s) não anexado(s): ${lista}.`, 'error');
+                // Rola até o primeiro item com erro
+                document.querySelector('.doc-missing')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
