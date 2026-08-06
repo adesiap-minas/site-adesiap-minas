@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | Adesiap Minas</title>
+    <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --azul-institucional: #12395D;
+            --azul-profundo: #0B1F33;
+            --terracota-institucional: #B85C38;
+            --ambar-impacto: #D9902F;
+            --verde-sustentabilidade: #3B8C6E;
+            --areia-fundo: #F4EFE7;
+            --branco: #FFFFFF;
+            --texto-principal: #1F2933;
+            --texto-secundario: #5F6B76;
+            --header-height: 90px;
+            --topbar-height: 36px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { font-family: 'Inter', sans-serif; color: var(--texto-principal); background: var(--branco); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        h1, h2, h3, h4 { font-family: 'Inter', sans-serif; font-weight: 700; margin-bottom: 16px; color: var(--azul-institucional); }
+        p { font-family: 'Roboto', sans-serif; font-size: 1rem; color: var(--texto-secundario); margin-bottom: 14px; line-height: 1.75; }
+
+        /* ===== TOPBAR ===== */
+        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
+        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .topbar-link:hover { color: #fff; }
+        .topbar-link i { color: #25D366; font-size: 0.9rem; }
+        .topbar-link strong { font-weight: 700; color: #fff; }
+        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; }
+        .tb-short { display: none; }
+        @media (max-width: 640px) {
+            .topbar-link strong { display: none; }
+            .tb-full { display: none; }
+            .tb-short { display: inline; }
+            .topbar-link { font-size: 0.62rem; letter-spacing: 0; }
+            .topbar-inner { gap: 8px; justify-content: center; }
+        }
+
+        /* ===== HEADER ===== */
+        header { position: fixed; top: var(--topbar-height); left: 0; width: 100%; z-index: 1000; padding: 20px 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 30px rgba(0,0,0,0.08); transition: padding 0.3s, box-shadow 0.3s; }
+        header.scrolled { padding: 12px 0; box-shadow: 0 2px 20px rgba(0,0,0,0.12); }
+        .header-container { max-width: 1320px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .logo img { height: 50px; width: auto; }
+        .main-menu { display: flex; list-style: none; gap: 8px; align-items: center; margin: 0; }
+        .main-menu > li > a { font-size: 0.82rem; font-weight: 600; color: var(--azul-institucional); padding: 8px 10px; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.3px; white-space: nowrap; }
+        .main-menu > li > a:hover { background: var(--areia-fundo); }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); list-style: none; min-width: 200px; padding: 8px 0; z-index: 100; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu li a { display: block; padding: 9px 18px; font-size: 0.82rem; font-weight: 500; color: var(--azul-institucional); transition: background 0.2s; }
+        .dropdown-menu li a:hover { background: var(--areia-fundo); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; color: var(--azul-institucional); cursor: pointer; }
+        @media (max-width: 991px) {
+            .mobile-menu-btn { display: block; }
+            #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            #main-menu.open { display: block; }
+            .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
+            .main-menu > li { width: 100%; }
+            .main-menu > li > a { display: block; padding: 12px 0; border-bottom: 1px solid var(--areia-fundo); }
+            .dropdown-menu { position: static; display: none !important; box-shadow: none; padding-left: 16px; }
+        }
+
+        /* ===== HERO ===== */
+        .hero-pp {
+            padding-top: calc(var(--header-height) + var(--topbar-height) + 70px);
+            padding-bottom: 60px;
+            background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--azul-institucional) 100%);
+        }
+        .hero-pp .container { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+        .section-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 50px; margin-bottom: 16px; }
+
+        /* ===== CONTENT ===== */
+        .policy-content { padding: 80px 0; }
+        .policy-content .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+        .policy-section { margin-bottom: 48px; }
+        .policy-section h2 { font-size: 1.3rem; color: var(--azul-institucional); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--areia-fundo); display: flex; align-items: center; gap: 10px; }
+        .policy-section h2 i { color: var(--terracota-institucional); font-size: 1rem; }
+
+        .policy-list { list-style: none; padding: 0; margin: 0 0 14px; }
+        .policy-list li { font-family: 'Roboto', sans-serif; font-size: 1rem; color: var(--texto-secundario); padding: 6px 0 6px 22px; position: relative; line-height: 1.65; }
+        .policy-list li::before { content: ''; position: absolute; left: 0; top: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--azul-institucional); }
+
+        .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+        .concept-card { background: var(--areia-fundo); border-radius: 12px; padding: 20px; }
+        .concept-card h4 { font-size: 0.88rem; color: var(--azul-institucional); margin-bottom: 6px; }
+        .concept-card p { font-size: 0.88rem; margin: 0; }
+
+        .highlight-box { background: #eef4fb; border-left: 4px solid var(--azul-institucional); border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 16px; }
+        .highlight-box p { margin: 0; font-size: 0.93rem; }
+
+        .dpo-card { background: var(--azul-institucional); color: #fff; border-radius: 16px; padding: 28px 32px; display: flex; align-items: center; gap: 24px; margin-top: 24px; }
+        .dpo-card i { font-size: 2rem; opacity: 0.8; flex-shrink: 0; }
+        .dpo-card h4 { color: #fff; margin-bottom: 4px; font-size: 1rem; }
+        .dpo-card p { margin: 0; color: rgba(255,255,255,0.8); font-size: 0.9rem; }
+        .dpo-card a { color: #fff; font-weight: 700; text-decoration: underline; }
+
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } .dpo-card { flex-direction: column; gap: 12px; } }
+
+        /* ===== FOOTER ===== */
+        footer { background: var(--azul-profundo); color: rgba(255,255,255,0.75); padding: 80px 0 0; }
+        footer .container { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+        .footer-logo { height: 50px; margin-bottom: 20px; }
+        footer p { font-size: 0.92rem; color: rgba(255,255,255,0.6); margin-bottom: 15px; }
+        footer h4 { color: #fff; font-size: 1rem; margin-bottom: 20px; }
+        .footer-links ul { list-style: none; padding: 0; }
+        .footer-links ul li { margin-bottom: 10px; }
+        .footer-links ul li a { color: rgba(255,255,255,0.65); font-size: 0.88rem; font-family: 'Roboto', sans-serif; transition: color 0.2s; }
+        .footer-links ul li a:hover { color: #fff; }
+        .footer-links ul li a i { margin-right: 8px; opacity: 0.7; }
+        .footer-bottom { margin-top: 60px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-bottom p { font-size: 0.82rem; margin: 0; color: rgba(255,255,255,0.45); }
+        .footer-bottom a { color: rgba(255,255,255,0.55); transition: color 0.2s; }
+        .footer-bottom a:hover { color: #fff; }
+
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 46px; height: 46px; background: var(--azul-institucional); color: #fff; border: none; border-radius: 50%; font-size: 1rem; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 900; }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+    </style>
+    <link rel="stylesheet" href="./css/nav.css">
+</head>
+
+<body>
+
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20ao%20Empreendedor." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO AO EMPREENDEDOR</span><span class="tb-short">EMPREEND.</span>&ensp;<strong>(31) 98427-1617</strong>
+            </a>
+            <span class="topbar-sep">|</span>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="LOGO ADESIAP MINAS PRETA.png" alt="Adesiap Minas">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+            <nav id="main-menu">
+                <ul class="main-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quem-somos.html">Quem Somos</a></li>
+                            <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                            <li><a href="terceiro-setor.html">O Terceiro Setor</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="governanca.html">Governança</a></li>
+                            <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="transparencia.html">Transparência</a></li>
+                    <li><a href="servicos.html">Serviços</a></li>
+                    <li><a href="projetos.html">Projetos</a></li>
+                    <li><a href="index.html#noticias">Notícias</a></li>
+                    <li class="dropdown"><a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="fale-conosco.html">Fale Conosco</a></li>
+                            <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                            <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
+                        </ul>
+                    </li>
+                    <li style="margin-left:6px"><a href="doacoes.html" style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-pp">
+        <div class="container">
+            <span class="section-tag" style="background:rgba(255,255,255,0.12);color:var(--ambar-impacto)">LGPD · Lei nº 13.709/2018</span>
+            <h1 style="font-size:2.8rem;font-weight:800;color:#fff;margin-bottom:16px">Política de Privacidade</h1>
+            <p style="color:rgba(255,255,255,0.8);max-width:640px;font-size:1.05rem;margin:0">
+                A ADESIAP Minas preza pela sua privacidade e pela proteção dos seus dados pessoais. Saiba como coletamos, utilizamos e protegemos suas informações.
+            </p>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-top:20px;margin-bottom:0">
+                <i class="fas fa-calendar-alt" style="margin-right:6px"></i> Atualizada em 10 de dezembro de 2024
+            </p>
+        </div>
+    </section>
+
+    <!-- Conteúdo -->
+    <section class="policy-content">
+        <div class="container">
+
+            <!-- Quem somos -->
+            <div class="policy-section">
+                <h2><i class="fas fa-building"></i> Sobre a ADESIAP</h2>
+                <p>
+                    A <strong>Agência de Desenvolvimento Econômico e Social dos Inconfidentes e Alto Paraopeba – ADESIAP</strong> é uma entidade de direito privado, sem fins econômicos, qualificada como Organização da Sociedade Civil de Interesse Público (OSCIP). Consolidada em Itabirito e região, a ADESIAP possui vasta experiência em consultoria e assessoria a empreendedores, diagnóstico e pesquisas, organização de eventos, elaboração de projetos e captação de recursos.
+                </p>
+                <p>
+                    Prezamos pela excelência no atendimento e nos preocupamos com a sua privacidade e com a proteção dos seus dados pessoais. Sempre que necessário ou diante de modificações nesta Política, a atualizaremos, em conformidade com a legislação vigente.
+                </p>
+            </div>
+
+            <!-- Como coletamos -->
+            <div class="policy-section">
+                <h2><i class="fas fa-database"></i> Como seus dados são coletados</h2>
+                <p>Seus dados são coletados por meios físicos e digitais:</p>
+                <ul class="policy-list">
+                    <li><strong>Meios físicos:</strong> documentos impressos e procedimentos realizados em feiras, congressos, atendimentos, eventos e workshops promovidos pela ADESIAP.</li>
+                    <li><strong>Meios digitais:</strong> consultas eletrônicas, formulários preenchidos online, e-mails e sistemas internos da organização.</li>
+                </ul>
+                <div class="highlight-box">
+                    <p>Independentemente de quais dados o titular fornecer, utilizamos apenas aqueles efetivamente relevantes e necessários para o cumprimento das finalidades declaradas, caso a caso.</p>
+                </div>
+            </div>
+
+            <!-- Como utilizamos -->
+            <div class="policy-section">
+                <h2><i class="fas fa-cogs"></i> Como utilizamos seus dados</h2>
+                <p>O tratamento dos seus dados pode ocorrer nas seguintes situações:</p>
+                <ul class="policy-list">
+                    <li>Mediante consentimento fornecido pelo titular;</li>
+                    <li>Para cumprimento de obrigação legal ou regulatória;</li>
+                    <li>Para execução de contrato ou procedimentos preliminares relacionados a contrato do qual o titular seja parte;</li>
+                    <li>Para proteção da vida ou da incolumidade física do titular ou de terceiro;</li>
+                    <li>Para tutela da saúde, exclusivamente em procedimentos realizados por profissionais ou autoridades de saúde;</li>
+                    <li>Para realização de pesquisas relacionadas às atividades da ADESIAP, mediante consentimento do titular.</li>
+                </ul>
+            </div>
+
+            <!-- Como protegemos -->
+            <div class="policy-section">
+                <h2><i class="fas fa-shield-alt"></i> Como seus dados são protegidos</h2>
+                <p>
+                    A ADESIAP adota medidas técnicas e administrativas para proteger seus dados pessoais contra acesso não autorizado, destruição, perda, alteração ou comunicação indevida. As metodologias de proteção incluem:
+                </p>
+                <ul class="policy-list">
+                    <li>Firewall e softwares de segurança;</li>
+                    <li>Restrições de acesso aos sistemas internos;</li>
+                    <li>Políticas de controle de acesso por perfil;</li>
+                    <li>Demais mecanismos de segurança da informação.</li>
+                </ul>
+            </div>
+
+            <!-- Compartilhamento -->
+            <div class="policy-section">
+                <h2><i class="fas fa-share-alt"></i> Com quem compartilhamos seus dados</h2>
+                <p>
+                    Os dados são compartilhados somente com as áreas internas da ADESIAP, parceiros, terceiros, Administração Pública e outros que se fizerem necessários para a realização do atendimento aos titulares de dados e o cumprimento de finalidades legítimas.
+                </p>
+            </div>
+
+            <!-- Conceitos -->
+            <div class="policy-section">
+                <h2><i class="fas fa-book-open"></i> Conceitos importantes (LGPD)</h2>
+                <p>A Lei Geral de Proteção de Dados nº 13.709/2018 estabelece as diretrizes para o tratamento de dados pessoais no Brasil. Conheça os principais conceitos:</p>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <h4>Privacidade</h4>
+                        <p>Habilidade de controlar a exposição e disponibilidade de informações sobre si; o direito ao respeito pela vida privada.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Dados Pessoais</h4>
+                        <p>Qualquer informação que permita identificar uma pessoa — nome, CPF, endereço, e-mail, telefone, IP, entre outros.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Dados Sensíveis</h4>
+                        <p>Dados sobre origem étnica, convicção religiosa, filiação política, dados genéticos, biométricos, de saúde ou vida sexual.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Titular dos Dados</h4>
+                        <p>Pessoa física identificada ou identificável por um ou mais fatores relacionados à sua identidade.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Tratamento de Dados</h4>
+                        <p>Qualquer operação sobre dados pessoais — coleta, registro, armazenamento, consulta, utilização, exclusão, entre outras.</p>
+                    </div>
+                    <div class="concept-card">
+                        <h4>Anonimização</h4>
+                        <p>Utilização de meios técnicos por meio dos quais um dado perde a possibilidade de associação a um indivíduo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Direitos do titular -->
+            <div class="policy-section">
+                <h2><i class="fas fa-user-shield"></i> Seus direitos como titular</h2>
+                <p>A LGPD garante que você tenha uma série de direitos relacionados aos seus dados. A ADESIAP está comprometida com o cumprimento desses direitos:</p>
+                <ul class="policy-list">
+                    <li>Revogação do consentimento a qualquer momento;</li>
+                    <li>Acesso aos dados pessoais armazenados;</li>
+                    <li>Anonimização, bloqueio ou eliminação de dados desnecessários ou excessivos;</li>
+                    <li>Confirmação da existência de tratamento;</li>
+                    <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+                    <li>Eliminação dos dados tratados com base no consentimento;</li>
+                    <li>Informação sobre a possibilidade de não fornecer consentimento e suas consequências;</li>
+                    <li>Informação sobre as entidades com as quais a ADESIAP compartilhou seus dados;</li>
+                    <li>Portabilidade dos dados a outro fornecedor de serviços ou produtos.</li>
+                </ul>
+            </div>
+
+            <!-- Órgão regulador -->
+            <div class="policy-section">
+                <h2><i class="fas fa-landmark"></i> Órgão regulador</h2>
+                <p>
+                    A <strong>ANPD (Agência Nacional de Proteção de Dados)</strong> é o órgão da administração pública federal responsável por zelar pela proteção de dados pessoais e fiscalizar o cumprimento da LGPD no Brasil.
+                </p>
+                <p>
+                    Na LGPD, o tratamento pode ser realizado pelo <strong>controlador</strong> (quem decide sobre o tratamento) e pelo <strong>operador</strong> (quem realiza o tratamento em nome do controlador).
+                </p>
+            </div>
+
+            <!-- DPO / Contato -->
+            <div class="policy-section">
+                <h2><i class="fas fa-user-tie"></i> Encarregado de Dados (DPO)</h2>
+                <p>
+                    O encarregado de proteção de dados é o responsável por aceitar reclamações e comunicações dos titulares, orientar colaboradores sobre práticas de proteção de dados e manter o diálogo com a ANPD.
+                </p>
+                <div class="dpo-card">
+                    <i class="fas fa-id-badge"></i>
+                    <div>
+                        <h4>Ana Luisa Lopes Carmo</h4>
+                        <p>Encarregada de Proteção de Dados (DPO) — ADESIAP Minas<br>
+                        Para exercer seus direitos ou esclarecer dúvidas, entre em contato:<br>
+                        <a href="mailto:sac@adesiap.org.br">sac@adesiap.org.br</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="quem-somos.html">Quem Somos</a></li>
+                        <li><a href="governanca.html">Governança</a></li>
+                        <li><a href="agenda-2030.html">Agenda 2030</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="transparencia.html">Transparência</a></li>
+                        <li><a href="politica-privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
+                <div style="display:flex;gap:15px">
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size:1.2rem"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size:1.2rem"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(time => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+            document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
+        });
+        document.getElementById('backToTop').addEventListener('click', () => lenis.scrollTo(0));
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('main-menu').classList.toggle('open');
+        });
+    </script>
+    <script src="./js/wa-config.js" defer></script>
+    <script src="./js/mobile-dropdown.js" defer></script>
+</body>
+</html>
