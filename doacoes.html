@@ -1,12 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seja Doador | Adesiap Minas</title>
     <link rel="stylesheet" href="./Modelos/Pixy_files/bootstrap-grid.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
@@ -26,7 +29,11 @@
             --topbar-height: 36px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -36,34 +43,116 @@
             overflow-x: hidden;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-        h1, h2, h3, h4 {
+        h1,
+        h2,
+        h3,
+        h4 {
             font-family: 'Inter', sans-serif;
             font-weight: 700;
             margin-bottom: 20px;
             color: var(--azul-institucional);
         }
 
-        p { font-family: 'Roboto', sans-serif; font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 15px; }
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
 
-        .section-padding { padding: 100px 0; }
+        .section-padding {
+            padding: 100px 0;
+        }
 
         /* ===== TOPBAR ===== */
-        .topbar { position: fixed; top: 0; left: 0; width: 100%; height: var(--topbar-height); background-color: var(--azul-institucional); z-index: 1002; display: flex; align-items: center; }
-        .topbar-inner { max-width: 1320px; width: 100%; margin: 0 auto; padding: 0 24px; display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
-        .topbar-link { display: flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.82); font-size: 0.72rem; font-family: 'Roboto', sans-serif; font-weight: 400; letter-spacing: 0.3px; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
-        .topbar-link:hover { color: #fff; }
-        .topbar-link i { color: #25D366; font-size: 0.9rem; }
-        .topbar-link strong { font-weight: 700; color: #fff; }
-        .topbar-sep { color: rgba(255,255,255,0.25); font-size: 1rem; line-height: 1; }
-        .tb-short { display: none; }
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--topbar-height);
+            background-color: var(--azul-institucional);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .topbar-inner {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .topbar-link {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 0.72rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .topbar-link:hover {
+            color: #fff;
+        }
+
+        .topbar-link i {
+            color: #25D366;
+            font-size: 0.9rem;
+        }
+
+        .topbar-link strong {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .topbar-sep {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .tb-short {
+            display: none;
+        }
+
         @media (max-width: 640px) {
-            .topbar-link strong { display: none; }
-            .tb-full { display: none; }
-            .tb-short { display: inline; }
-            .topbar-link { font-size: 0.62rem; letter-spacing: 0; }
-            .topbar-inner { gap: 8px; justify-content: center; }
+            .topbar-link strong {
+                display: none;
+            }
+
+            .tb-full {
+                display: none;
+            }
+
+            .tb-short {
+                display: inline;
+            }
+
+            .topbar-link {
+                font-size: 0.62rem;
+                letter-spacing: 0;
+            }
+
+            .topbar-inner {
+                gap: 8px;
+                justify-content: center;
+            }
         }
 
         /* ===== HEADER ===== */
@@ -80,7 +169,10 @@
             transition: padding 0.3s ease, box-shadow 0.3s ease;
         }
 
-        header.scrolled { padding: 12px 0; box-shadow: 0 2px 20px rgba(0,0,0,0.12); }
+        header.scrolled {
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.12);
+        }
 
         .header-container {
             max-width: 1320px;
@@ -91,28 +183,120 @@
             justify-content: space-between;
         }
 
-        .logo img { height: 50px; width: auto; }
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
 
-        .main-menu { display: flex; list-style: none; gap: 8px; align-items: center; margin: 0; }
-        .main-menu > li > a { font-size: 0.82rem; font-weight: 600; color: var(--azul-institucional); padding: 8px 10px; border-radius: 6px; transition: all 0.2s; letter-spacing: 0.3px; white-space: nowrap; }
-        .main-menu > li > a:hover { background: var(--areia-fundo); }
+        .main-menu {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            align-items: center;
+            margin: 0;
+        }
 
-        .dropdown { position: relative; }
-        .dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: #fff; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); list-style: none; min-width: 200px; padding: 8px 0; z-index: 100; }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu li a { display: block; padding: 9px 18px; font-size: 0.82rem; font-weight: 500; color: var(--azul-institucional); transition: background 0.2s; }
-        .dropdown-menu li a:hover { background: var(--areia-fundo); }
+        .main-menu>li>a {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--azul-institucional);
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
 
-        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.4rem; color: var(--azul-institucional); cursor: pointer; }
+        .main-menu>li>a:hover {
+            background: var(--areia-fundo);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            list-style: none;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 9px 18px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--azul-institucional);
+            transition: background 0.2s;
+        }
+
+        .dropdown-menu li a:hover {
+            background: var(--areia-fundo);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: var(--azul-institucional);
+            cursor: pointer;
+        }
 
         @media (max-width: 991px) {
-            .mobile-menu-btn { display: block; }
-            #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-            #main-menu.open { display: block; }
-            .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
-            .main-menu > li { width: 100%; }
-            .main-menu > li > a { display: block; padding: 12px 0; border-bottom: 1px solid var(--areia-fundo); }
-            .dropdown-menu { position: static; display: none !important; box-shadow: none; padding-left: 16px; }
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            #main-menu {
+                display: none;
+                position: fixed;
+                top: calc(var(--topbar-height) + var(--header-height));
+                left: 0;
+                width: 100%;
+                background: #fff;
+                padding: 20px 24px 40px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+
+            #main-menu.open {
+                display: block;
+            }
+
+            .main-menu {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+            }
+
+            .main-menu>li {
+                width: 100%;
+            }
+
+            .main-menu>li>a {
+                display: block;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--areia-fundo);
+            }
+
+            .dropdown-menu {
+                position: static;
+                display: none !important;
+                box-shadow: none;
+                padding-left: 16px;
+            }
         }
 
         /* ===== HERO ===== */
@@ -122,11 +306,16 @@
             padding-bottom: 80px;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, rgba(11,31,51,0.90) 0%, rgba(59,140,110,0.75) 100%),
+            background: linear-gradient(135deg, rgba(11, 31, 51, 0.90) 0%, rgba(59, 140, 110, 0.75) 100%),
                 url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
         }
 
-        .hero-doacoes .container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+        .hero-doacoes .container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
         .section-tag {
             display: inline-block;
@@ -147,9 +336,22 @@
             color: var(--azul-institucional);
         }
 
-        .display-title.light, .display-title.light span { color: #fff; }
-        .display-title span { display: block; color: var(--terracota-institucional); font-size: 0.65em; letter-spacing: 3px; margin-bottom: 4px; }
-        .display-title.light span { color: var(--ambar-impacto); }
+        .display-title.light,
+        .display-title.light span {
+            color: #fff;
+        }
+
+        .display-title span {
+            display: block;
+            color: var(--terracota-institucional);
+            font-size: 0.65em;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .display-title.light span {
+            color: var(--ambar-impacto);
+        }
 
         /* ===== PROCESS STEPS ===== */
         .step-grid {
@@ -164,8 +366,8 @@
             border-radius: 16px;
             padding: 32px 28px;
             text-align: center;
-            box-shadow: 0 4px 24px rgba(18,57,93,0.08);
-            border: 1px solid rgba(18,57,93,0.06);
+            box-shadow: 0 4px 24px rgba(18, 57, 93, 0.08);
+            border: 1px solid rgba(18, 57, 93, 0.06);
             position: relative;
         }
 
@@ -184,10 +386,23 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .step-card h4 { font-size: 1rem; margin-bottom: 10px; color: var(--azul-institucional); }
-        .step-card p { font-size: 0.9rem; margin: 0; color: var(--texto-secundario); }
+        .step-card h4 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--azul-institucional);
+        }
 
-        @media (max-width: 767px) { .step-grid { grid-template-columns: 1fr; } }
+        .step-card p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--texto-secundario);
+        }
+
+        @media (max-width: 767px) {
+            .step-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* ===== TIER BADGES ===== */
         .tier-grid {
@@ -224,26 +439,67 @@
             margin-bottom: 12px;
         }
 
-        .tier-small .tier-badge { background: var(--verde-sustentabilidade); color: #fff; }
-        .tier-large .tier-badge { background: var(--azul-institucional); color: #fff; }
-        .tier-card h4 { font-size: 0.95rem; margin-bottom: 8px; }
-        .tier-card ul { list-style: none; padding: 0; margin: 0; }
-        .tier-card ul li { font-size: 0.85rem; font-family: 'Roboto', sans-serif; color: var(--texto-secundario); padding: 3px 0; display: flex; align-items: flex-start; gap: 8px; }
-        .tier-card ul li i { color: var(--verde-sustentabilidade); margin-top: 3px; flex-shrink: 0; }
-        .tier-large ul li i { color: var(--azul-institucional); }
+        .tier-small .tier-badge {
+            background: var(--verde-sustentabilidade);
+            color: #fff;
+        }
 
-        @media (max-width: 600px) { .tier-grid { grid-template-columns: 1fr; } }
+        .tier-large .tier-badge {
+            background: var(--azul-institucional);
+            color: #fff;
+        }
+
+        .tier-card h4 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .tier-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tier-card ul li {
+            font-size: 0.85rem;
+            font-family: 'Roboto', sans-serif;
+            color: var(--texto-secundario);
+            padding: 3px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .tier-card ul li i {
+            color: var(--verde-sustentabilidade);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .tier-large ul li i {
+            color: var(--azul-institucional);
+        }
+
+        @media (max-width: 600px) {
+            .tier-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* ===== FORM ===== */
         .form-card {
             background: #fff;
             border-radius: 20px;
-            box-shadow: 0 8px 40px rgba(18,57,93,0.10);
+            box-shadow: 0 8px 40px rgba(18, 57, 93, 0.10);
             padding: 48px 44px;
-            border: 1px solid rgba(18,57,93,0.06);
+            border: 1px solid rgba(18, 57, 93, 0.06);
         }
 
-        @media (max-width: 767px) { .form-card { padding: 28px 20px; } }
+        @media (max-width: 767px) {
+            .form-card {
+                padding: 28px 20px;
+            }
+        }
 
         .form-section-title {
             font-size: 0.72rem;
@@ -257,7 +513,9 @@
             border-bottom: 2px solid var(--areia-fundo);
         }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
         .form-label {
             display: block;
@@ -268,7 +526,10 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .form-label .req { color: var(--terracota-institucional); margin-left: 2px; }
+        .form-label .req {
+            color: var(--terracota-institucional);
+            margin-left: 2px;
+        }
 
         .form-control {
             width: 100%;
@@ -285,15 +546,32 @@
 
         .form-control:focus {
             border-color: var(--azul-institucional);
-            box-shadow: 0 0 0 3px rgba(18,57,93,0.08);
+            box-shadow: 0 0 0 3px rgba(18, 57, 93, 0.08);
         }
 
-        .form-control::placeholder { color: #aab4bc; }
+        .form-control::placeholder {
+            color: #aab4bc;
+        }
 
-        select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235F6B76' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235F6B76' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 38px;
+        }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
 
         /* Radio type toggle */
         .type-toggle {
@@ -303,8 +581,11 @@
             margin-bottom: 28px;
         }
 
-        .type-option { display: none; }
-        .type-option + label {
+        .type-option {
+            display: none;
+        }
+
+        .type-option+label {
             display: flex;
             align-items: center;
             gap: 14px;
@@ -319,7 +600,7 @@
             color: var(--texto-secundario);
         }
 
-        .type-option + label .type-icon {
+        .type-option+label .type-icon {
             width: 44px;
             height: 44px;
             border-radius: 10px;
@@ -333,13 +614,13 @@
             transition: background 0.2s;
         }
 
-        .type-option:checked + label {
+        .type-option:checked+label {
             border-color: var(--azul-institucional);
             background: #f0f5fb;
             color: var(--azul-institucional);
         }
 
-        .type-option:checked + label .type-icon {
+        .type-option:checked+label .type-icon {
             background: var(--azul-institucional);
             color: #fff;
         }
@@ -357,7 +638,9 @@
             transition: border-color 0.2s;
         }
 
-        .doc-upload-item:has(input[type="file"]:focus) { border-color: var(--azul-institucional); }
+        .doc-upload-item:has(input[type="file"]:focus) {
+            border-color: var(--azul-institucional);
+        }
 
         .doc-upload-label {
             flex: 1;
@@ -394,9 +677,13 @@
             flex-shrink: 0;
         }
 
-        .doc-file-btn:hover { background: var(--azul-profundo); }
+        .doc-file-btn:hover {
+            background: var(--azul-profundo);
+        }
 
-        .doc-upload-item input[type="file"] { display: none; }
+        .doc-upload-item input[type="file"] {
+            display: none;
+        }
 
         .doc-filename {
             font-size: 0.75rem;
@@ -434,7 +721,10 @@
             line-height: 1.5;
         }
 
-        .declaration-item label strong { color: var(--azul-institucional); font-weight: 700; }
+        .declaration-item label strong {
+            color: var(--azul-institucional);
+            font-weight: 700;
+        }
 
         /* Submit button */
         .btn-submit {
@@ -456,8 +746,16 @@
             margin-top: 8px;
         }
 
-        .btn-submit:hover { background: var(--azul-profundo); transform: translateY(-1px); }
-        .btn-submit:disabled { background: #8fa5b8; cursor: not-allowed; transform: none; }
+        .btn-submit:hover {
+            background: var(--azul-profundo);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            background: #8fa5b8;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         /* Info note */
         .info-note {
@@ -471,14 +769,28 @@
             margin-bottom: 20px;
         }
 
-        .info-note i { color: var(--azul-institucional); margin-top: 3px; flex-shrink: 0; }
-        .info-note p { margin: 0; font-size: 0.85rem; color: var(--texto-secundario); font-family: 'Roboto', sans-serif; line-height: 1.6; }
+        .info-note i {
+            color: var(--azul-institucional);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .info-note p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+        }
 
         .alert-note {
             background: #fff8ec;
             border-left-color: var(--ambar-impacto);
         }
-        .alert-note i { color: var(--ambar-impacto); }
+
+        .alert-note i {
+            color: var(--ambar-impacto);
+        }
 
         /* Success state */
         .form-success {
@@ -500,8 +812,15 @@
             margin: 0 auto 24px;
         }
 
-        .form-success h3 { color: var(--azul-institucional); font-size: 1.6rem; }
-        .form-success p { max-width: 420px; margin: 0 auto; }
+        .form-success h3 {
+            color: var(--azul-institucional);
+            font-size: 1.6rem;
+        }
+
+        .form-success p {
+            max-width: 420px;
+            margin: 0 auto;
+        }
 
         /* ===== FAQ ===== */
         .faq-item {
@@ -526,7 +845,9 @@
             transition: color 0.2s;
         }
 
-        .faq-question:hover { color: var(--terracota-institucional); }
+        .faq-question:hover {
+            color: var(--terracota-institucional);
+        }
 
         .faq-question i {
             flex-shrink: 0;
@@ -535,7 +856,9 @@
             color: var(--terracota-institucional);
         }
 
-        .faq-item.open .faq-question i { transform: rotate(180deg); }
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
 
         .faq-answer {
             max-height: 0;
@@ -543,7 +866,9 @@
             transition: max-height 0.35s ease;
         }
 
-        .faq-item.open .faq-answer { max-height: 400px; }
+        .faq-item.open .faq-answer {
+            max-height: 400px;
+        }
 
         .faq-answer p {
             font-size: 0.95rem;
@@ -554,7 +879,10 @@
         }
 
         /* ===== REVEAL ===== */
-        .reveal-on-scroll { opacity: 0; transform: translateY(40px); }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+        }
 
         /* ===== BTN STYLES ===== */
         .btn-primary {
@@ -571,7 +899,10 @@
             border: none;
         }
 
-        .btn-primary:hover { background: var(--azul-profundo); transform: translateY(-2px); }
+        .btn-primary:hover {
+            background: var(--azul-profundo);
+            transform: translateY(-2px);
+        }
 
         /* ===== FOOTER ===== */
         footer {
@@ -580,38 +911,167 @@
             padding: 80px 0 0;
         }
 
-        footer .container { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
-        .footer-logo { height: 50px; margin-bottom: 20px; }
-        footer p { font-size: 0.92rem; color: rgba(255,255,255,0.6); margin-bottom: 15px; }
-        footer h4 { color: #fff; font-size: 1rem; margin-bottom: 20px; }
-        .footer-links ul { list-style: none; padding: 0; }
-        .footer-links ul li { margin-bottom: 10px; }
-        .footer-links ul li a { color: rgba(255,255,255,0.65); font-size: 0.88rem; font-family: 'Roboto', sans-serif; transition: color 0.2s; }
-        .footer-links ul li a:hover { color: #fff; }
-        .footer-links ul li a i { margin-right: 8px; opacity: 0.7; }
-        .footer-bottom { margin-top: 60px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .footer-bottom p { font-size: 0.82rem; margin: 0; color: rgba(255,255,255,0.45); }
-        .footer-bottom a { color: rgba(255,255,255,0.55); transition: color 0.2s; }
-        .footer-bottom a:hover { color: #fff; }
+        footer .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        footer p {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 15px;
+        }
+
+        footer h4 {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.88rem;
+            font-family: 'Roboto', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .footer-links ul li a:hover {
+            color: #fff;
+        }
+
+        .footer-links ul li a i {
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            margin-top: 60px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-bottom p {
+            font-size: 0.82rem;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.55);
+            transition: color 0.2s;
+        }
+
+        .footer-bottom a:hover {
+            color: #fff;
+        }
 
         /* ===== BACK TO TOP ===== */
-        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 46px; height: 46px; background: var(--azul-institucional); color: #fff; border: none; border-radius: 50%; font-size: 1rem; cursor: pointer; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 900; }
-        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 46px;
+            height: 46px;
+            background: var(--azul-institucional);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 900;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
 
         /* ===== TOAST ===== */
-        .toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .toast { padding: 12px 24px; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: #fff; animation: toastIn 0.3s ease; }
-        .toast.success { background: var(--verde-sustentabilidade); }
-        .toast.error { background: #dc2626; }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toast {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #fff;
+            animation: toastIn 0.3s ease;
+        }
+
+        .toast.success {
+            background: var(--verde-sustentabilidade);
+        }
+
+        .toast.error {
+            background: #dc2626;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         @media (max-width: 991px) {
-            .display-title { font-size: 2.8rem; }
-            .section-padding { padding: 70px 0; }
+            .display-title {
+                font-size: 2.8rem;
+            }
+
+            .section-padding {
+                padding: 70px 0;
+            }
         }
+
         @media (max-width: 767px) {
-            .display-title { font-size: 2.2rem; }
-            .hero-doacoes { min-height: auto; padding-top: calc(var(--header-height) + var(--topbar-height) + 50px); padding-bottom: 50px; }
+            .display-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-doacoes {
+                min-height: auto;
+                padding-top: calc(var(--header-height) + var(--topbar-height) + 50px);
+                padding-bottom: 50px;
+            }
         }
     </style>
 </head>
@@ -621,16 +1081,22 @@
     <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-inner">
-            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
+            <a href="https://wa.me/553184011390?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO ADESIAP</span><span
+                    class="tb-short">ADESIAP</span>&ensp;<strong>(31) 98401-1390</strong>
             </a>
             <span class="topbar-sep">|</span>
-            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20ao%20Empreendedor." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO AO EMPREENDEDOR</span><span class="tb-short">EMPREEND.</span>&ensp;<strong>(31) 98427-1617</strong>
+            <a href="https://wa.me/553184271617?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20ao%20Empreendedor."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO AO EMPREENDEDOR</span><span
+                    class="tb-short">EMPREEND.</span>&ensp;<strong>(31) 98427-1617</strong>
             </a>
             <span class="topbar-sep">|</span>
-            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje." class="topbar-link" target="_blank" rel="noopener">
-                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
+            <a href="https://wa.me/553196288671?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ADESIAP%20Minas%20e%20gostaria%20de%20atendimento%20sobre%20o%20Projeto%20S%C3%B3%20Por%20Hoje."
+                class="topbar-link" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i><span class="tb-full">ATENDIMENTO SÓ POR HOJE</span><span
+                    class="tb-short">SÓ POR HOJE</span>&ensp;<strong>(31) 99628-8671</strong>
             </a>
         </div>
     </div>
@@ -645,14 +1111,16 @@
             <nav id="main-menu">
                 <ul class="main-menu">
                     <li><a href="index.html">Início</a></li>
-                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down"
+                                style="font-size:0.7em;margin-left:3px"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="quem-somos.html">Quem Somos</a></li>
                             <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
                             <li><a href="terceiro-setor.html">O Terceiro Setor</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="governanca.html">Governança <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                    <li class="dropdown"><a href="governanca.html">Governança <i class="fas fa-chevron-down"
+                                style="font-size:0.7em;margin-left:3px"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="governanca.html">Governança</a></li>
                             <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
@@ -662,7 +1130,8 @@
                     <li><a href="servicos.html">Serviços</a></li>
                     <li><a href="projetos.html">Projetos</a></li>
                     <li><a href="index.html#noticias">Notícias</a></li>
-                    <li class="dropdown"><a href="fale-conosco.html">Contato <i class="fas fa-chevron-down" style="font-size:0.7em;margin-left:3px"></i></a>
+                    <li class="dropdown"><a href="fale-conosco.html">Contato <i class="fas fa-chevron-down"
+                                style="font-size:0.7em;margin-left:3px"></i></a>
                         <ul class="dropdown-menu">
                             <li><a href="fale-conosco.html">Fale Conosco</a></li>
                             <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
@@ -670,7 +1139,8 @@
                             <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
                         </ul>
                     </li>
-                    <li style="margin-left:6px"><a href="doacoes.html" style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
+                    <li style="margin-left:6px"><a href="doacoes.html"
+                            style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
                 </ul>
             </nav>
         </div>
@@ -681,13 +1151,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 reveal-on-scroll">
-                    <span class="section-tag" style="background:rgba(255,255,255,0.12);color:var(--ambar-impacto)">Transparência &amp; Captação</span>
+                    <span class="section-tag"
+                        style="background:rgba(255,255,255,0.12);color:var(--ambar-impacto)">Transparência &amp;
+                        Captação</span>
                     <h1 class="display-title light">
                         <span>SEJA</span>
                         DOADOR
                     </h1>
-                    <p style="font-size:1.2rem;max-width:680px;color:rgba(255,255,255,0.9);line-height:1.75;margin-bottom:0">
-                        Na ADESIAP Minas, cada contribuição impulsiona nossa missão de transformar vidas. Trabalhamos em conformidade com as melhores práticas do Terceiro Setor, garantindo que todos os recursos recebidos tenham <strong style="color:#fff">origem lícita</strong> e estejam alinhados aos nossos <strong style="color:#fff">valores institucionais</strong>.
+                    <p
+                        style="font-size:1.2rem;max-width:680px;color:rgba(255,255,255,0.9);line-height:1.75;margin-bottom:0">
+                        Na ADESIAP Minas, cada contribuição impulsiona nossa missão de transformar vidas. Para
+                        garantir a sustentabilidade do nosso trabalho e manter o compromisso com a transparência, ética
+                        e prestação de contas, adotamos uma política de doações. Trabalhamos em conformidade com as
+                        melhores práticas do Terceiro Setor, garantindo que todos os recursos recebidos tenham <strong
+                            style="color:#fff">origem lícita</strong> e estejam alinhados aos nossos <strong
+                            style="color:#fff">valores institucionais</strong>.
                     </p>
                 </div>
             </div>
@@ -704,7 +1182,10 @@
                         &amp; INTEGRIDADE
                     </h2>
                     <p class="reveal-on-scroll" style="font-size:1.05rem;max-width:680px">
-                        Para garantir a sustentabilidade do nosso trabalho e manter o compromisso com a <strong>transparência, ética e prestação de contas</strong>, adotamos uma política de doações rigorosa — assegurando que todos os recursos recebidos tenham origem lícita e sejam rastreáveis perante os órgãos fiscalizadores.
+                        Para garantir a sustentabilidade do nosso trabalho e manter o compromisso com a
+                        <strong>transparência, ética e prestação de contas</strong>, adotamos uma política de doações
+                        rigorosa — assegurando que todos os recursos recebidos tenham origem lícita e sejam rastreáveis
+                        perante os órgãos fiscalizadores.
                     </p>
                 </div>
             </div>
@@ -713,17 +1194,20 @@
                 <div class="step-card reveal-on-scroll">
                     <div class="step-num">1</div>
                     <h4>Cadastro Prévio</h4>
-                    <p>O doador (Pessoa Física ou Empresa) preenche o formulário abaixo e anexa os documentos solicitados conforme seu perfil.</p>
+                    <p>O doador (Pessoa Física ou Empresa) preenche o formulário abaixo e anexa os documentos
+                        solicitados conforme seu perfil.</p>
                 </div>
                 <div class="step-card reveal-on-scroll delay-1">
                     <div class="step-num">2</div>
                     <h4>Análise de Conformidade</h4>
-                    <p>Nossa equipe realiza uma checagem simples de dados e certidões. O processo leva até <strong>2 dias úteis</strong>.</p>
+                    <p>Nossa equipe realiza uma checagem simples de dados e certidões. O processo leva até <strong>2
+                            dias úteis</strong>.</p>
                 </div>
                 <div class="step-card reveal-on-scroll delay-2">
                     <div class="step-num">3</div>
                     <h4>Confirmação</h4>
-                    <p>Enviamos as instruções para efetivação da doação ou o Termo de Doação para assinatura digital.</p>
+                    <p>Enviamos as instruções para efetivação da doação ou o Termo de Doação para assinatura digital.
+                    </p>
                 </div>
             </div>
 
@@ -731,7 +1215,8 @@
             <div class="row mt-5">
                 <div class="col-12 reveal-on-scroll">
                     <h3 style="font-size:1.3rem;margin-bottom:8px">Requisitos por Faixa de Valor</h3>
-                    <p style="font-size:0.95rem;margin-bottom:0">Os documentos solicitados variam conforme o perfil e o valor da doação:</p>
+                    <p style="font-size:0.95rem;margin-bottom:0">Os documentos solicitados variam conforme o perfil e o
+                        valor da doação:</p>
                     <div class="tier-grid">
                         <div class="tier-card tier-small">
                             <span class="tier-badge">Até R$ 5.000 — Pessoa Física</span>
@@ -749,7 +1234,8 @@
                             <ul>
                                 <li><i class="fas fa-check-circle"></i> Formulário completo</li>
                                 <li><i class="fas fa-check-circle"></i> CNPJ ativo + Contrato Social atualizado</li>
-                                <li><i class="fas fa-check-circle"></i> CND Federal (Tributos Federais e Dívida Ativa)</li>
+                                <li><i class="fas fa-check-circle"></i> CND Federal (Tributos Federais e Dívida Ativa)
+                                </li>
                                 <li><i class="fas fa-check-circle"></i> CND Trabalhista (CNDT)</li>
                                 <li><i class="fas fa-check-circle"></i> Certificado de Regularidade do FGTS (CRF)</li>
                             </ul>
@@ -757,7 +1243,8 @@
                     </div>
                     <div class="info-note alert-note mt-3">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <p><strong>Nota:</strong> Se a doação envolver contrapartida de imagem ou uso de marca, solicitamos as CNDs mesmo para valores abaixo de R$ 5.000.</p>
+                        <p><strong>Nota:</strong> Se a doação envolver contrapartida de imagem ou uso de marca,
+                            solicitamos as CNDs mesmo para valores abaixo de R$ 5.000.</p>
                     </div>
                 </div>
             </div>
@@ -774,7 +1261,8 @@
                             <span>FORMULÁRIO DE</span>
                             CADASTRO
                         </h2>
-                        <p style="max-width:560px;margin:0 auto">Preencha os campos abaixo para iniciar seu cadastro como doador. Nossa equipe entrará em contato em até 2 dias úteis.</p>
+                        <p style="max-width:560px;margin:0 auto">Preencha os campos abaixo para iniciar seu cadastro
+                            como doador. Nossa equipe entrará em contato em até 2 dias úteis.</p>
                     </div>
 
                     <div class="form-card reveal-on-scroll">
@@ -783,8 +1271,11 @@
                         <div class="form-success" id="formSuccess">
                             <div class="success-icon"><i class="fas fa-check"></i></div>
                             <h3>Cadastro recebido!</h3>
-                            <p style="margin-top:12px">Obrigado pelo seu interesse em apoiar a ADESIAP Minas. Nossa equipe analisará seus dados e entrará em contato em até <strong>2 dias úteis</strong>.</p>
-                            <a href="index.html" class="btn-primary" style="margin-top:28px;display:inline-block">Voltar ao Início</a>
+                            <p style="margin-top:12px">Obrigado pelo seu interesse em apoiar a ADESIAP Minas. Nossa
+                                equipe analisará seus dados e entrará em contato em até <strong>2 dias úteis</strong>.
+                            </p>
+                            <a href="index.html" class="btn-primary" style="margin-top:28px;display:inline-block">Voltar
+                                ao Início</a>
                         </div>
 
                         <!-- Formulário -->
@@ -795,12 +1286,15 @@
 
                             <div class="type-toggle">
                                 <div>
-                                    <input type="radio" name="tipo_doador" id="tipoPF" value="pf" class="type-option" checked>
+                                    <input type="radio" name="tipo_doador" id="tipoPF" value="pf" class="type-option"
+                                        checked>
                                     <label for="tipoPF">
                                         <div class="type-icon"><i class="fas fa-user"></i></div>
                                         <div>
                                             <div>Pessoa Física</div>
-                                            <div style="font-size:0.78rem;font-weight:400;color:var(--texto-secundario);margin-top:3px">Doador individual</div>
+                                            <div
+                                                style="font-size:0.78rem;font-weight:400;color:var(--texto-secundario);margin-top:3px">
+                                                Doador individual</div>
                                         </div>
                                     </label>
                                 </div>
@@ -810,7 +1304,9 @@
                                         <div class="type-icon"><i class="fas fa-building"></i></div>
                                         <div>
                                             <div>Pessoa Jurídica</div>
-                                            <div style="font-size:0.78rem;font-weight:400;color:var(--texto-secundario);margin-top:3px">Empresa ou organização</div>
+                                            <div
+                                                style="font-size:0.78rem;font-weight:400;color:var(--texto-secundario);margin-top:3px">
+                                                Empresa ou organização</div>
                                         </div>
                                     </label>
                                 </div>
@@ -823,27 +1319,36 @@
                             <div id="fieldsPF">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label" for="nomeCompleto">Nome Completo <span class="req">*</span></label>
-                                        <input type="text" id="nomeCompleto" name="nome_completo" class="form-control" placeholder="Seu nome completo" required>
+                                        <label class="form-label" for="nomeCompleto">Nome Completo <span
+                                                class="req">*</span></label>
+                                        <input type="text" id="nomeCompleto" name="nome_completo" class="form-control"
+                                            placeholder="Seu nome completo" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="cpf">CPF <span class="req">*</span></label>
-                                        <input type="text" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14">
+                                        <input type="text" id="cpf" name="cpf" class="form-control"
+                                            placeholder="000.000.000-00" maxlength="14">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label" for="emailPF">E-mail <span class="req">*</span></label>
-                                        <input type="email" id="emailPF" name="email" class="form-control" placeholder="seu@email.com" required>
+                                        <label class="form-label" for="emailPF">E-mail <span
+                                                class="req">*</span></label>
+                                        <input type="email" id="emailPF" name="email" class="form-control"
+                                            placeholder="seu@email.com" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="telefonePF">Telefone / WhatsApp <span class="req">*</span></label>
-                                        <input type="tel" id="telefonePF" name="telefone" class="form-control" placeholder="(31) 99999-9999" required>
+                                        <label class="form-label" for="telefonePF">Telefone / WhatsApp <span
+                                                class="req">*</span></label>
+                                        <input type="tel" id="telefonePF" name="telefone" class="form-control"
+                                            placeholder="(31) 99999-9999" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Comprovante de Residência <span class="req">*</span></label>
-                                    <p style="font-size:0.82rem;margin-bottom:8px;color:var(--texto-secundario)">Emitido nos últimos 90 dias (conta de água, luz, internet, extrato bancário, etc.)</p>
+                                    <label class="form-label">Comprovante de Residência <span
+                                            class="req">*</span></label>
+                                    <p style="font-size:0.82rem;margin-bottom:8px;color:var(--texto-secundario)">Emitido
+                                        nos últimos 90 dias (conta de água, luz, internet, extrato bancário, etc.)</p>
                                     <div class="doc-upload-item">
                                         <div class="doc-upload-label">
                                             <span class="doc-title">Selecione o arquivo</span>
@@ -852,14 +1357,17 @@
                                         </div>
                                         <label class="doc-file-btn" for="fileComprovante">
                                             <i class="fas fa-upload"></i> Selecionar
-                                            <input type="file" id="fileComprovante" name="doc_comprovante_residencia" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file" id="fileComprovante" name="doc_comprovante_residencia"
+                                                accept=".pdf,.jpg,.jpeg,.png">
                                         </label>
                                     </div>
                                 </div>
                                 <div class="declaration-item" style="margin-bottom:20px">
                                     <input type="checkbox" id="isPEP" name="is_pep">
                                     <label for="isPEP">
-                                        <strong>Sou uma Pessoa Politicamente Exposta (PEP)</strong> — Ocupo ou ocupei cargo público relevante nos últimos 5 anos (ex: mandato eletivo, cargo de direção em órgão público, etc.)
+                                        <strong>Sou uma Pessoa Politicamente Exposta (PEP)</strong> — Ocupo ou ocupei
+                                        cargo público relevante nos últimos 5 anos (ex: mandato eletivo, cargo de
+                                        direção em órgão público, etc.)
                                     </label>
                                 </div>
                             </div>
@@ -868,26 +1376,35 @@
                             <div id="fieldsPJ" style="display:none">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label" for="razaoSocial">Razão Social / Nome Fantasia <span class="req">*</span></label>
-                                        <input type="text" id="razaoSocial" name="razao_social" class="form-control" placeholder="Nome da empresa">
+                                        <label class="form-label" for="razaoSocial">Razão Social / Nome Fantasia <span
+                                                class="req">*</span></label>
+                                        <input type="text" id="razaoSocial" name="razao_social" class="form-control"
+                                            placeholder="Nome da empresa">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="cnpj">CNPJ <span class="req">*</span></label>
-                                        <input type="text" id="cnpj" name="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18">
+                                        <input type="text" id="cnpj" name="cnpj" class="form-control"
+                                            placeholder="00.000.000/0001-00" maxlength="18">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="nomeRepresentante">Nome do Representante Legal <span class="req">*</span></label>
-                                    <input type="text" id="nomeRepresentante" name="nome_representante" class="form-control" placeholder="Nome completo do sócio ou procurador">
+                                    <label class="form-label" for="nomeRepresentante">Nome do Representante Legal <span
+                                            class="req">*</span></label>
+                                    <input type="text" id="nomeRepresentante" name="nome_representante"
+                                        class="form-control" placeholder="Nome completo do sócio ou procurador">
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <label class="form-label" for="emailPJ">E-mail do Responsável <span class="req">*</span></label>
-                                        <input type="email" id="emailPJ" name="email_pj" class="form-control" placeholder="contato@empresa.com.br">
+                                        <label class="form-label" for="emailPJ">E-mail do Responsável <span
+                                                class="req">*</span></label>
+                                        <input type="email" id="emailPJ" name="email_pj" class="form-control"
+                                            placeholder="contato@empresa.com.br">
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="telefonePJ">Telefone / WhatsApp <span class="req">*</span></label>
-                                        <input type="tel" id="telefonePJ" name="telefone_pj" class="form-control" placeholder="(31) 99999-9999">
+                                        <label class="form-label" for="telefonePJ">Telefone / WhatsApp <span
+                                                class="req">*</span></label>
+                                        <input type="tel" id="telefonePJ" name="telefone_pj" class="form-control"
+                                            placeholder="(31) 99999-9999">
                                     </div>
                                 </div>
                             </div>
@@ -897,11 +1414,14 @@
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="form-label" for="valorDoacao">Valor ou Bem Pretendido <span class="req">*</span></label>
-                                    <input type="text" id="valorDoacao" name="valor_pretendido" class="form-control" placeholder="Ex: R$ 3.000,00 ou Equipamentos de informática" required>
+                                    <label class="form-label" for="valorDoacao">Valor ou Bem Pretendido <span
+                                            class="req">*</span></label>
+                                    <input type="text" id="valorDoacao" name="valor_pretendido" class="form-control"
+                                        placeholder="Ex: R$ 3.000,00 ou Equipamentos de informática" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="contrapartida">Haverá Uso da Marca / Contrapartida de Imagem?</label>
+                                    <label class="form-label" for="contrapartida">Haverá Uso da Marca / Contrapartida de
+                                        Imagem?</label>
                                     <select id="contrapartida" name="contrapartida_imagem" class="form-control">
                                         <option value="nao">Não</option>
                                         <option value="sim">Sim — nossa empresa/nome quer visibilidade</option>
@@ -911,7 +1431,9 @@
 
                             <div class="info-note" id="contrapartidaNote" style="display:none">
                                 <i class="fas fa-info-circle"></i>
-                                <p>Doações com contrapartida de imagem exigem a verificação de CNDs e checagem reputacional, mesmo para valores abaixo de R$ 5.000. Os campos de upload de documentos serão ativados abaixo.</p>
+                                <p>Doações com contrapartida de imagem exigem a verificação de CNDs e checagem
+                                    reputacional, mesmo para valores abaixo de R$ 5.000. Os campos de upload de
+                                    documentos serão ativados abaixo.</p>
                             </div>
 
                             <!-- SEÇÃO 4: Upload de Documentos -->
@@ -920,7 +1442,9 @@
 
                                 <div class="info-note" style="margin-bottom:20px">
                                     <i class="fas fa-shield-alt"></i>
-                                    <p>Para garantir a conformidade legal, solicitamos os documentos abaixo. Envie arquivos em PDF, JPG ou PNG (máx. 10 MB cada). Os documentos são tratados com total sigilo e usados exclusivamente para fins de auditoria.</p>
+                                    <p>Para garantir a conformidade legal, solicitamos os documentos abaixo. Envie
+                                        arquivos em PDF, JPG ou PNG (máx. 10 MB cada). Os documentos são tratados com
+                                        total sigilo e usados exclusivamente para fins de auditoria.</p>
                                 </div>
 
                                 <!-- Documento CPF/CNPJ (sempre visível nesta seção) -->
@@ -932,7 +1456,8 @@
                                     </div>
                                     <label class="doc-file-btn" for="fileIdentificacao">
                                         <i class="fas fa-upload"></i> Selecionar
-                                        <input type="file" id="fileIdentificacao" name="doc_identificacao" accept=".pdf,.jpg,.jpeg,.png">
+                                        <input type="file" id="fileIdentificacao" name="doc_identificacao"
+                                            accept=".pdf,.jpg,.jpeg,.png">
                                     </label>
                                 </div>
 
@@ -941,23 +1466,27 @@
                                     <div class="doc-upload-item">
                                         <div class="doc-upload-label">
                                             <span class="doc-title">Contrato / Estatuto Social Atualizado</span>
-                                            <span class="doc-sub">Para verificar composição societária e representantes legais</span>
+                                            <span class="doc-sub">Para verificar composição societária e representantes
+                                                legais</span>
                                             <div class="doc-filename" id="docContratoNome"></div>
                                         </div>
                                         <label class="doc-file-btn" for="fileContrato">
                                             <i class="fas fa-upload"></i> Selecionar
-                                            <input type="file" id="fileContrato" name="doc_contrato" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file" id="fileContrato" name="doc_contrato"
+                                                accept=".pdf,.jpg,.jpeg,.png">
                                         </label>
                                     </div>
                                     <div class="doc-upload-item">
                                         <div class="doc-upload-label">
                                             <span class="doc-title">CND Federal — Dívida Ativa da União</span>
-                                            <span class="doc-sub">Regularidade fiscal ampla perante a Receita Federal</span>
+                                            <span class="doc-sub">Regularidade fiscal ampla perante a Receita
+                                                Federal</span>
                                             <div class="doc-filename" id="docCNDFedNome"></div>
                                         </div>
                                         <label class="doc-file-btn" for="fileCNDFed">
                                             <i class="fas fa-upload"></i> Selecionar
-                                            <input type="file" id="fileCNDFed" name="doc_cnd_federal" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file" id="fileCNDFed" name="doc_cnd_federal"
+                                                accept=".pdf,.jpg,.jpeg,.png">
                                         </label>
                                     </div>
                                     <div class="doc-upload-item">
@@ -968,18 +1497,21 @@
                                         </div>
                                         <label class="doc-file-btn" for="fileCNDTrab">
                                             <i class="fas fa-upload"></i> Selecionar
-                                            <input type="file" id="fileCNDTrab" name="doc_cnd_trabalhista" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file" id="fileCNDTrab" name="doc_cnd_trabalhista"
+                                                accept=".pdf,.jpg,.jpeg,.png">
                                         </label>
                                     </div>
                                     <div class="doc-upload-item">
                                         <div class="doc-upload-label">
                                             <span class="doc-title">Certificado de Regularidade do FGTS (CRF)</span>
-                                            <span class="doc-sub">Comprova cumprimento com os direitos dos trabalhadores</span>
+                                            <span class="doc-sub">Comprova cumprimento com os direitos dos
+                                                trabalhadores</span>
                                             <div class="doc-filename" id="docFGTSNome"></div>
                                         </div>
                                         <label class="doc-file-btn" for="fileFGTS">
                                             <i class="fas fa-upload"></i> Selecionar
-                                            <input type="file" id="fileFGTS" name="doc_fgts" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file" id="fileFGTS" name="doc_fgts"
+                                                accept=".pdf,.jpg,.jpeg,.png">
                                         </label>
                                     </div>
                                 </div>
@@ -991,19 +1523,26 @@
                             <div class="declaration-item">
                                 <input type="checkbox" id="aceitOrigem" name="aceite_origem" required>
                                 <label for="aceitOrigem">
-                                    <strong>Origem dos Recursos:</strong> Declaro que os recursos a serem doados são de origem lícita e não derivam de práticas ilícitas, de corrupção ou de violação de direitos humanos/trabalhistas. <span class="req">*</span>
+                                    <strong>Origem dos Recursos:</strong> Declaro que os recursos a serem doados são de
+                                    origem lícita e não derivam de práticas ilícitas, de corrupção ou de violação de
+                                    direitos humanos/trabalhistas. <span class="req">*</span>
                                 </label>
                             </div>
                             <div class="declaration-item">
                                 <input type="checkbox" id="aceitLGPD" name="aceite_lgpd" required>
                                 <label for="aceitLGPD">
-                                    <strong>Privacidade e LGPD:</strong> Autorizo a ADESIAP a tratar meus dados pessoais e documentos fornecidos exclusivamente para fins de auditoria, conformidade legal e emissão de recibos, conforme nossa <a href="transparencia.html" style="color:var(--azul-institucional);text-decoration:underline">Política de Privacidade</a>. <span class="req">*</span>
+                                    <strong>Privacidade e LGPD:</strong> Autorizo a ADESIAP a tratar meus dados pessoais
+                                    e documentos fornecidos exclusivamente para fins de auditoria, conformidade legal e
+                                    emissão de recibos, conforme nossa <a href="transparencia.html"
+                                        style="color:var(--azul-institucional);text-decoration:underline">Política de
+                                        Privacidade</a>. <span class="req">*</span>
                                 </label>
                             </div>
 
                             <div class="info-note" style="margin-top:20px;margin-bottom:24px">
                                 <i class="fas fa-lock"></i>
-                                <p>Seus dados são protegidos e tratados com total confidencialidade. Nunca compartilhamos informações com terceiros sem sua autorização.</p>
+                                <p>Seus dados são protegidos e tratados com total confidencialidade. Nunca
+                                    compartilhamos informações com terceiros sem sua autorização.</p>
                             </div>
 
                             <button type="submit" class="btn-submit" id="submitBtn">
@@ -1035,7 +1574,10 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="faq-answer">
-                                <p>Como entidade auditada e comprometida com a ética, precisamos garantir a regularidade fiscal das parcerias e demonstrar aos órgãos fiscalizadores a rastreabilidade e a boa procedência dos recursos que mantêm nossos projetos. Isso protege tanto a ADESIAP quanto o doador.</p>
+                                <p>Como entidade auditada e comprometida com a ética, precisamos garantir a regularidade
+                                    fiscal das parcerias e demonstrar aos órgãos fiscalizadores a rastreabilidade e a
+                                    boa procedência dos recursos que mantêm nossos projetos. Isso protege tanto a
+                                    ADESIAP quanto o doador.</p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1044,7 +1586,9 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="faq-answer">
-                                <p>Nossa análise é simples e leva até <strong>2 dias úteis</strong>. Assim que concluída, nossa equipe entrará em contato com os dados bancários para depósito ou o Termo de Doação para assinatura digital.</p>
+                                <p>Nossa análise é simples e leva até <strong>2 dias úteis</strong>. Assim que
+                                    concluída, nossa equipe entrará em contato com os dados bancários para depósito ou o
+                                    Termo de Doação para assinatura digital.</p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1053,7 +1597,9 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="faq-answer">
-                                <p>Sim. Após a confirmação da doação, emitimos um Recibo de Doação e, quando aplicável, o Termo de Doação assinado pelas partes. Para empresas, fornecemos os documentos necessários para dedução fiscal conforme a legislação vigente.</p>
+                                <p>Sim. Após a confirmação da doação, emitimos um Recibo de Doação e, quando aplicável,
+                                    o Termo de Doação assinado pelas partes. Para empresas, fornecemos os documentos
+                                    necessários para dedução fiscal conforme a legislação vigente.</p>
                             </div>
                         </div>
                         <div class="faq-item">
@@ -1062,7 +1608,11 @@
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="faq-answer">
-                                <p>Entre em contato diretamente com nossa equipe de Compliance e Captação pelo e-mail <a href="mailto:contato@adesiap.org.br" style="color:var(--azul-institucional);font-weight:600">contato@adesiap.org.br</a> ou pelo WhatsApp <a href="https://wa.me/553184011390" target="_blank" rel="noopener" style="color:var(--azul-institucional);font-weight:600">(31) 98401-1390</a>.</p>
+                                <p>Entre em contato diretamente com nossa equipe de Compliance e Captação pelo e-mail <a
+                                        href="mailto:contato@adesiap.org.br"
+                                        style="color:var(--azul-institucional);font-weight:600">contato@adesiap.org.br</a>
+                                    ou pelo WhatsApp <a href="https://wa.me/553184011390" target="_blank" rel="noopener"
+                                        style="color:var(--azul-institucional);font-weight:600">(31) 98401-1390</a>.</p>
                             </div>
                         </div>
                     </div>
@@ -1077,11 +1627,25 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
-                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
                     <div style="display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap;">
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s"
+                                onmouseover="this.style.transform='scale(1.1)'"
+                                onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block"><img src="Selos/sebrae-diamante-2025-g.png"
+                                alt="Sebrae Diamante 2025"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s"
+                                onmouseover="this.style.transform='scale(1.1)'"
+                                onmouseout="this.style.transform='scale(1)'"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s"
+                                onmouseover="this.style.transform='scale(1.1)'"
+                                onmouseout="this.style.transform='scale(1)'"></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-4 mb-4 mb-md-0 footer-links">
@@ -1105,8 +1669,11 @@
                 <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
                     <h4>Contato</h4>
                     <ul>
-                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
-                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
                         <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
                     </ul>
                 </div>
@@ -1114,8 +1681,11 @@
             <div class="footer-bottom">
                 <p>&copy; 2026 Adesiap Minas. CNPJ: 05.685.572/0001-75. Todos os direitos reservados.</p>
                 <div style="display:flex;gap:15px">
-                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i class="fab fa-instagram" style="font-size:1.2rem"></i></a>
-                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin" style="font-size:1.2rem"></i></a>
+                    <a href="https://www.instagram.com/Adesiap.itabirito" target="_blank" aria-label="Instagram"><i
+                            class="fab fa-instagram" style="font-size:1.2rem"></i></a>
+                    <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico"
+                        target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"
+                            style="font-size:1.2rem"></i></a>
                 </div>
             </div>
         </div>
@@ -1126,284 +1696,283 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-    // ── SMOOTH SCROLL ──────────────────────────────────────────
-    gsap.registerPlugin(ScrollTrigger);
+        // ── SMOOTH SCROLL ──────────────────────────────────────────
+        gsap.registerPlugin(ScrollTrigger);
 
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(time => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+        const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, smoothTouch: false });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(time => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
 
-    // ── REVEAL ANIMATIONS ──────────────────────────────────────
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-        let delay = 0;
-        if (el.classList.contains('delay-1')) delay = 0.15;
-        if (el.classList.contains('delay-2')) delay = 0.3;
-        gsap.fromTo(el, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay, ease: 'power2.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+        // ── REVEAL ANIMATIONS ──────────────────────────────────────
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            let delay = 0;
+            if (el.classList.contains('delay-1')) delay = 0.15;
+            if (el.classList.contains('delay-2')) delay = 0.3;
+            gsap.fromTo(el, { y: 50, opacity: 0 }, {
+                y: 0, opacity: 1, duration: 0.8, delay, ease: 'power2.out',
+                scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+            });
         });
-    });
 
-    // ── HEADER SCROLL ──────────────────────────────────────────
-    window.addEventListener('scroll', () => {
-        document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
-        document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
-    });
-    document.getElementById('backToTop').addEventListener('click', () => lenis.scrollTo(0));
-
-    // ── MOBILE MENU ────────────────────────────────────────────
-    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-        document.getElementById('main-menu').classList.toggle('open');
-    });
-
-    // ── FAQ ────────────────────────────────────────────────────
-    document.querySelectorAll('.faq-question').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const item = btn.closest('.faq-item');
-            const isOpen = item.classList.contains('open');
-            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-            if (!isOpen) item.classList.add('open');
+        // ── HEADER SCROLL ──────────────────────────────────────────
+        window.addEventListener('scroll', () => {
+            document.querySelector('header').classList.toggle('scrolled', window.scrollY > 50);
+            document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 400);
         });
-    });
+        document.getElementById('backToTop').addEventListener('click', () => lenis.scrollTo(0));
 
-    // ── TOAST ──────────────────────────────────────────────────
-    function showToast(msg, type = 'success') {
-        const tc = document.getElementById('toastContainer');
-        const t = document.createElement('div');
-        t.className = `toast ${type}`;
-        t.textContent = msg;
-        tc.appendChild(t);
-        setTimeout(() => t.remove(), 4000);
-    }
-
-    // ── FORM LOGIC ─────────────────────────────────────────────
-    const SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
-    const HDRS  = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
-
-    // Tipo PF/PJ toggle
-    document.querySelectorAll('input[name="tipo_doador"]').forEach(radio => {
-        radio.addEventListener('change', atualizarTipo);
-    });
-
-    function getTipo() {
-        return document.querySelector('input[name="tipo_doador"]:checked')?.value || 'pf';
-    }
-
-    function atualizarTipo() {
-        const isPJ = getTipo() === 'pj';
-        document.getElementById('fieldsPF').style.display = isPJ ? 'none' : '';
-        document.getElementById('fieldsPJ').style.display = isPJ ? '' : 'none';
-        document.getElementById('docsPJOnly').style.display = isPJ ? '' : 'none';
-        document.getElementById('docIdentTitulo').textContent = isPJ ? 'Comprovante de CNPJ' : 'Documento de Identificação com CPF';
-        // PJ sempre requer docs
-        if (isPJ) document.getElementById('docsSection').style.display = '';
-        else verificarDocs();
-    }
-
-    // Valor e contrapartida → mostrar docs
-    function verificarDocs() {
-        if (getTipo() === 'pj') return; // PJ sempre mostra
-        const val = document.getElementById('valorDoacao').value;
-        const contrapartida = document.getElementById('contrapartida').value === 'sim';
-        const valorNum = parseBRL(val);
-        const precisaDocs = valorNum > 5000 || contrapartida;
-        document.getElementById('docsSection').style.display = precisaDocs ? '' : 'none';
-    }
-
-    function parseBRL(str) {
-        // Extrai número de strings como "R$ 3.000,00" ou "3000"
-        const clean = str.replace(/[^\d,]/g, '').replace(',', '.');
-        return parseFloat(clean) || 0;
-    }
-
-    document.getElementById('valorDoacao').addEventListener('input', verificarDocs);
-    document.getElementById('contrapartida').addEventListener('change', () => {
-        const sim = document.getElementById('contrapartida').value === 'sim';
-        document.getElementById('contrapartidaNote').style.display = sim ? '' : 'none';
-        verificarDocs();
-    });
-
-    // CPF mask
-    document.getElementById('cpf').addEventListener('input', function() {
-        let v = this.value.replace(/\D/g, '');
-        if (v.length > 9) v = v.slice(0,9) + '-' + v.slice(9,11);
-        if (v.length > 6) v = v.slice(0,6) + '.' + v.slice(6);
-        if (v.length > 3) v = v.slice(0,3) + '.' + v.slice(3);
-        this.value = v;
-    });
-
-    // CNPJ mask
-    document.getElementById('cnpj').addEventListener('input', function() {
-        let v = this.value.replace(/\D/g, '');
-        if (v.length > 12) v = v.slice(0,12) + '-' + v.slice(12,14);
-        if (v.length > 8) v = v.slice(0,8) + '/' + v.slice(8);
-        if (v.length > 5) v = v.slice(0,5) + '.' + v.slice(5);
-        if (v.length > 2) v = v.slice(0,2) + '.' + v.slice(2);
-        this.value = v;
-    });
-
-    // File input feedback
-    const fileMap = [
-        { input: 'fileComprovante',   label: 'docCompResNome' },
-        { input: 'fileIdentificacao', label: 'docIdentNome' },
-        { input: 'fileContrato',      label: 'docContratoNome' },
-        { input: 'fileCNDFed',        label: 'docCNDFedNome' },
-        { input: 'fileCNDTrab',       label: 'docCNDTrabNome' },
-        { input: 'fileFGTS',          label: 'docFGTSNome' },
-    ];
-
-    fileMap.forEach(({ input, label }) => {
-        const el = document.getElementById(input);
-        if (!el) return;
-        el.addEventListener('change', () => {
-            const nameEl = document.getElementById(label);
-            if (nameEl) {
-                nameEl.textContent = el.files[0]?.name || '';
-                nameEl.style.display = el.files[0] ? 'block' : 'none';
-            }
+        // ── MOBILE MENU ────────────────────────────────────────────
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('main-menu').classList.toggle('open');
         });
-    });
 
-    // Upload file to Supabase Storage
-    async function uploadFile(file) {
-        if (!file) return null;
-        const ext = file.name.split('.').pop();
-        const path = `doacoes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-        const res = await fetch(`${SB_URL}/storage/v1/object/docs-doacoes/${path}`, {
-            method: 'POST',
-            headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': file.type },
-            body: file
+        // ── FAQ ────────────────────────────────────────────────────
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
         });
-        if (!res.ok) throw new Error('Falha no upload do arquivo: ' + file.name);
-        const data = await res.json();
-        return `${SB_URL}/storage/v1/object/public/docs-doacoes/${path}`;
-    }
 
-    // SUBMIT
-    document.getElementById('doacaoForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const btn = document.getElementById('submitBtn');
-        const tipo = getTipo();
-
-        if (!document.getElementById('aceitOrigem').checked) {
-            showToast('Você precisa aceitar a declaração de origem dos recursos.', 'error');
-            return;
-        }
-        if (!document.getElementById('aceitLGPD').checked) {
-            showToast('Você precisa autorizar o tratamento de dados (LGPD).', 'error');
-            return;
+        // ── TOAST ──────────────────────────────────────────────────
+        function showToast(msg, type = 'success') {
+            const tc = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.textContent = msg;
+            tc.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
         }
 
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        // ── FORM LOGIC ─────────────────────────────────────────────
+        const SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+        const HDRS = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
 
-        try {
-            // 1. Ler arquivos como base64 (para anexo no e-mail) + upload para Storage
-            function toBase64(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload  = () => resolve(reader.result.split(',')[1]);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            }
+        // Tipo PF/PJ toggle
+        document.querySelectorAll('input[name="tipo_doador"]').forEach(radio => {
+            radio.addEventListener('change', atualizarTipo);
+        });
 
-            const docs = [];
-            const arquivosEmail = [];
-            for (const { input } of fileMap) {
-                const el = document.getElementById(input);
-                if (el?.files[0]) {
-                    const file = el.files[0];
-                    const [url, base64] = await Promise.all([uploadFile(file), toBase64(file)]);
-                    docs.push({ nome: file.name, campo: input, url });
-                    arquivosEmail.push({ nome: file.name, base64 });
+        function getTipo() {
+            return document.querySelector('input[name="tipo_doador"]:checked')?.value || 'pf';
+        }
+
+        function atualizarTipo() {
+            const isPJ = getTipo() === 'pj';
+            document.getElementById('fieldsPF').style.display = isPJ ? 'none' : '';
+            document.getElementById('fieldsPJ').style.display = isPJ ? '' : 'none';
+            document.getElementById('docsPJOnly').style.display = isPJ ? '' : 'none';
+            document.getElementById('docIdentTitulo').textContent = isPJ ? 'Comprovante de CNPJ' : 'Documento de Identificação com CPF';
+            // PJ sempre requer docs
+            if (isPJ) document.getElementById('docsSection').style.display = '';
+            else verificarDocs();
+        }
+
+        // Valor e contrapartida → mostrar docs
+        function verificarDocs() {
+            if (getTipo() === 'pj') return; // PJ sempre mostra
+            const val = document.getElementById('valorDoacao').value;
+            const contrapartida = document.getElementById('contrapartida').value === 'sim';
+            const valorNum = parseBRL(val);
+            const precisaDocs = valorNum > 5000 || contrapartida;
+            document.getElementById('docsSection').style.display = precisaDocs ? '' : 'none';
+        }
+
+        function parseBRL(str) {
+            // Extrai número de strings como "R$ 3.000,00" ou "3000"
+            const clean = str.replace(/[^\d,]/g, '').replace(',', '.');
+            return parseFloat(clean) || 0;
+        }
+
+        document.getElementById('valorDoacao').addEventListener('input', verificarDocs);
+        document.getElementById('contrapartida').addEventListener('change', () => {
+            const sim = document.getElementById('contrapartida').value === 'sim';
+            document.getElementById('contrapartidaNote').style.display = sim ? '' : 'none';
+            verificarDocs();
+        });
+
+        // CPF mask
+        document.getElementById('cpf').addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 9) v = v.slice(0, 9) + '-' + v.slice(9, 11);
+            if (v.length > 6) v = v.slice(0, 6) + '.' + v.slice(6);
+            if (v.length > 3) v = v.slice(0, 3) + '.' + v.slice(3);
+            this.value = v;
+        });
+
+        // CNPJ mask
+        document.getElementById('cnpj').addEventListener('input', function () {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 12) v = v.slice(0, 12) + '-' + v.slice(12, 14);
+            if (v.length > 8) v = v.slice(0, 8) + '/' + v.slice(8);
+            if (v.length > 5) v = v.slice(0, 5) + '.' + v.slice(5);
+            if (v.length > 2) v = v.slice(0, 2) + '.' + v.slice(2);
+            this.value = v;
+        });
+
+        // File input feedback
+        const fileMap = [
+            { input: 'fileComprovante', label: 'docCompResNome' },
+            { input: 'fileIdentificacao', label: 'docIdentNome' },
+            { input: 'fileContrato', label: 'docContratoNome' },
+            { input: 'fileCNDFed', label: 'docCNDFedNome' },
+            { input: 'fileCNDTrab', label: 'docCNDTrabNome' },
+            { input: 'fileFGTS', label: 'docFGTSNome' },
+        ];
+
+        fileMap.forEach(({ input, label }) => {
+            const el = document.getElementById(input);
+            if (!el) return;
+            el.addEventListener('change', () => {
+                const nameEl = document.getElementById(label);
+                if (nameEl) {
+                    nameEl.textContent = el.files[0]?.name || '';
+                    nameEl.style.display = el.files[0] ? 'block' : 'none';
                 }
-            }
-
-            // 2. Payload para salvar no Supabase
-            const payload = {
-                tipo_doador: tipo,
-                valor_pretendido: document.getElementById('valorDoacao').value.trim(),
-                contrapartida_imagem: document.getElementById('contrapartida').value === 'sim',
-                aceite_origem: true,
-                aceite_lgpd: true,
-                documentos: docs,
-            };
-
-            if (tipo === 'pf') {
-                payload.nome_completo  = document.getElementById('nomeCompleto').value.trim();
-                payload.cpf            = document.getElementById('cpf').value.trim();
-                payload.email          = document.getElementById('emailPF').value.trim();
-                payload.telefone       = document.getElementById('telefonePF').value.trim();
-                payload.is_pep         = document.getElementById('isPEP').checked;
-            } else {
-                payload.razao_social       = document.getElementById('razaoSocial').value.trim();
-                payload.cnpj               = document.getElementById('cnpj').value.trim();
-                payload.nome_representante = document.getElementById('nomeRepresentante').value.trim();
-                payload.email              = document.getElementById('emailPJ').value.trim();
-                payload.telefone           = document.getElementById('telefonePJ').value.trim();
-            }
-
-            // 3. Salvar no Supabase
-            const sbRes = await fetch(`${SB_URL}/rest/v1/doacoes`, {
-                method: 'POST',
-                headers: { ...HDRS, 'Prefer': 'return=minimal' },
-                body: JSON.stringify(payload)
             });
-            if (!sbRes.ok) throw new Error(await sbRes.text());
+        });
 
-            // 4. Enviar e-mail de notificação via API
-            const protocolo = 'DOA-' + Date.now().toString().slice(-6);
-            const nomeDisplay = tipo === 'pf'
-                ? (payload.nome_completo || payload.email)
-                : (payload.razao_social || payload.email);
-
-            const dadosEmail = {
-                tipo_doador:          tipo === 'pf' ? 'Pessoa Física' : 'Pessoa Jurídica',
-                nome_completo:        payload.nome_completo  || payload.razao_social || '',
-                cpf:                  payload.cpf            || '',
-                cnpj:                 payload.cnpj           || '',
-                nome_representante:   payload.nome_representante || '',
-                email:                payload.email,
-                telefone:             payload.telefone,
-                is_pep:               payload.is_pep ? 'Sim' : 'Não',
-                valor_pretendido:     payload.valor_pretendido,
-                contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
-                documentos_enviados:  docs.length ? docs.map(d => d.nome).join(', ') : 'Nenhum',
-                _arquivos:            arquivosEmail,
-            };
-
-            // Remove campos vazios
-            Object.keys(dadosEmail).forEach(k => { if (!dadosEmail[k]) delete dadosEmail[k]; });
-
-            await fetch('/api/enviar-email', {
+        // Upload file to Supabase Storage
+        async function uploadFile(file) {
+            if (!file) return null;
+            const ext = file.name.split('.').pop();
+            const path = `doacoes/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+            const res = await fetch(`${SB_URL}/storage/v1/object/docs-doacoes/${path}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tipo: 'doacoes', dados: dadosEmail, protocolo })
+                headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': file.type },
+                body: file
             });
-
-            // 5. Sucesso
-            document.getElementById('doacaoForm').style.display = 'none';
-            document.getElementById('formSuccess').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('formulario').offsetTop - 100, behavior: 'smooth' });
-
-        } catch (err) {
-            console.error(err);
-            showToast('Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Cadastro de Doador';
+            if (!res.ok) throw new Error('Falha no upload do arquivo: ' + file.name);
+            const data = await res.json();
+            return `${SB_URL}/storage/v1/object/public/docs-doacoes/${path}`;
         }
-    });
+
+        // SUBMIT
+        document.getElementById('doacaoForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const tipo = getTipo();
+
+            if (!document.getElementById('aceitOrigem').checked) {
+                showToast('Você precisa aceitar a declaração de origem dos recursos.', 'error');
+                return;
+            }
+            if (!document.getElementById('aceitLGPD').checked) {
+                showToast('Você precisa autorizar o tratamento de dados (LGPD).', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+            try {
+                // 1. Ler arquivos como base64 (para anexo no e-mail) + upload para Storage
+                function toBase64(file) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
+
+                const docs = [];
+                const arquivosEmail = [];
+                for (const { input } of fileMap) {
+                    const el = document.getElementById(input);
+                    if (el?.files[0]) {
+                        const file = el.files[0];
+                        const [url, base64] = await Promise.all([uploadFile(file), toBase64(file)]);
+                        docs.push({ nome: file.name, campo: input, url });
+                        arquivosEmail.push({ nome: file.name, base64 });
+                    }
+                }
+
+                // 2. Payload para salvar no Supabase
+                const payload = {
+                    tipo_doador: tipo,
+                    valor_pretendido: document.getElementById('valorDoacao').value.trim(),
+                    contrapartida_imagem: document.getElementById('contrapartida').value === 'sim',
+                    aceite_origem: true,
+                    aceite_lgpd: true,
+                    documentos: docs,
+                };
+
+                if (tipo === 'pf') {
+                    payload.nome_completo = document.getElementById('nomeCompleto').value.trim();
+                    payload.cpf = document.getElementById('cpf').value.trim();
+                    payload.email = document.getElementById('emailPF').value.trim();
+                    payload.telefone = document.getElementById('telefonePF').value.trim();
+                    payload.is_pep = document.getElementById('isPEP').checked;
+                } else {
+                    payload.razao_social = document.getElementById('razaoSocial').value.trim();
+                    payload.cnpj = document.getElementById('cnpj').value.trim();
+                    payload.nome_representante = document.getElementById('nomeRepresentante').value.trim();
+                    payload.email = document.getElementById('emailPJ').value.trim();
+                    payload.telefone = document.getElementById('telefonePJ').value.trim();
+                }
+
+                // 3. Salvar no Supabase
+                const sbRes = await fetch(`${SB_URL}/rest/v1/doacoes`, {
+                    method: 'POST',
+                    headers: { ...HDRS, 'Prefer': 'return=minimal' },
+                    body: JSON.stringify(payload)
+                });
+                if (!sbRes.ok) throw new Error(await sbRes.text());
+
+                // 4. Enviar e-mail de notificação via API
+                const protocolo = 'DOA-' + Date.now().toString().slice(-6);
+                const nomeDisplay = tipo === 'pf'
+                    ? (payload.nome_completo || payload.email)
+                    : (payload.razao_social || payload.email);
+
+                const dadosEmail = {
+                    tipo_doador: tipo === 'pf' ? 'Pessoa Física' : 'Pessoa Jurídica',
+                    nome_completo: payload.nome_completo || payload.razao_social || '',
+                    cpf: payload.cpf || '',
+                    cnpj: payload.cnpj || '',
+                    nome_representante: payload.nome_representante || '',
+                    email: payload.email,
+                    telefone: payload.telefone,
+                    is_pep: payload.is_pep ? 'Sim' : 'Não',
+                    valor_pretendido: payload.valor_pretendido,
+                    contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
+                    documentos_enviados: docs.length ? docs.map(d => d.nome).join(', ') : 'Nenhum',
+                    _arquivos: arquivosEmail,
+                };
+
+                // Remove campos vazios
+                Object.keys(dadosEmail).forEach(k => { if (!dadosEmail[k]) delete dadosEmail[k]; });
+
+                await fetch('/api/enviar-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tipo: 'doacoes', dados: dadosEmail, protocolo })
+                });
+
+                // 5. Sucesso
+                document.getElementById('doacaoForm').style.display = 'none';
+                document.getElementById('formSuccess').style.display = 'block';
+                window.scrollTo({ top: document.getElementById('formulario').offsetTop - 100, behavior: 'smooth' });
+
+            } catch (err) {
+                console.error(err);
+                showToast('Ocorreu um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Cadastro de Doador';
+            }
+        });
     </script>
 
     <script src="./js/wa-config.js" defer></script>
     <script src="./js/mobile-dropdown.js" defer></script>
 </body>
+
 </html>
-
-
-
