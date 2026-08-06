@@ -1919,25 +1919,14 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
             try {
-                // 1. Ler arquivos como base64 (para anexo no e-mail) + upload para Storage
-                function toBase64(file) {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result.split(',')[1]);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
-                    });
-                }
-
+                // 1. Upload dos arquivos para o Supabase Storage (URLs ficam no e-mail como links)
                 const docs = [];
-                const arquivosEmail = [];
                 for (const { input } of fileMap) {
                     const el = document.getElementById(input);
                     if (el?.files[0]) {
                         const file = el.files[0];
-                        const [url, base64] = await Promise.all([uploadFile(file), toBase64(file)]);
+                        const url = await uploadFile(file);
                         docs.push({ nome: file.name, campo: input, url });
-                        arquivosEmail.push({ nome: file.name, base64 });
                     }
                 }
 
@@ -1990,8 +1979,9 @@
                     is_pep: payload.is_pep ? 'Sim' : 'Não',
                     valor_pretendido: payload.valor_pretendido,
                     contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
-                    documentos_enviados: docs.length ? docs.map(d => d.nome).join(', ') : 'Nenhum',
-                    _arquivos: arquivosEmail,
+                    documentos_enviados: docs.length
+                        ? docs.map(d => `<a href="${d.url}" target="_blank" style="color:#12395D">${d.nome}</a>`).join('<br>')
+                        : 'Nenhum',
                 };
 
                 // Remove campos vazios
