@@ -2005,8 +2005,9 @@
                     });
                     if (!emailRes.ok) {
                         const emailErr = await emailRes.json().catch(() => ({}));
-                        console.error('Erro ao enviar e-mail:', emailErr);
-                        showToast('Cadastro salvo, mas houve falha no envio do e-mail de notificação. Entre em contato pelo WhatsApp.', 'error');
+                        const detalhe = emailErr?.detalhe || emailErr?.error || JSON.stringify(emailErr);
+                        console.error('Erro ao enviar e-mail:', detalhe);
+                        showToast(`Falha no e-mail: ${detalhe}`, 'error');
                     }
                 } catch (emailEx) {
                     console.error('Falha na chamada ao enviar-email:', emailEx);
