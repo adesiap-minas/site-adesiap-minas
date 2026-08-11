@@ -264,7 +264,7 @@ function toast(msg, ok = true) {
     setTimeout(() => t.className = 'toast', 3500);
 }
 
-const PERFIL_LABELS = {
+const _LABELS = {
     super_admin:          'Super Admin',
     editor:               'Editor de Conteúdo',
     ouvidoria_compliance: 'Ouvidoria & Compliance',
@@ -274,7 +274,7 @@ const PERFIL_LABELS = {
 };
 
 function perfilBadge(p) {
-    const label = PERFIL_LABELS[p] || p || '—';
+    const label = _LABELS[p] || p || '—';
     return `<span class="perfil-badge ${p || ''}">${label}</span>`;
 }
 
