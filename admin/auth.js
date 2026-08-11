@@ -28,7 +28,12 @@ let _sb = null;
 function getSB() {
     if (!_sb) {
         _sb = window.supabase.createClient(AUTH_SB_URL, AUTH_SB_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true, storageKey: 'adesiap_admin_auth' }
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                storageKey: 'adesiap_admin_auth',
+                storage: window.localStorage,
+            }
         });
     }
     return _sb;
@@ -59,8 +64,8 @@ function exibirInfoUsuario(user) {
 
 async function entrarNoApp(user) {
     const perfil = getPerfil(user);
-    const paginaAtual = window.location.pathname.split('/').pop() || 'index.html';
-    const ehLogin = paginaAtual === 'index.html' || paginaAtual === '';
+    // Página de login = qualquer página que não tenha #appShell (index.html)
+    const ehLogin = !document.getElementById('appShell');
 
     // Se é a página de login, redireciona para o módulo do perfil
     if (ehLogin) {
