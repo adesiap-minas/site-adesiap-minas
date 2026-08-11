@@ -1,8 +1,18 @@
-// ── AUTH.JS v2 — Supabase Auth (email + senha, controle por perfil) ──────────
+// ── AUTH.JS v3 — Supabase Auth com redirecionamento por perfil ────────────────
 // Defina antes deste script: window.PERFIS_PERMITIDOS = ['super_admin', 'perfil1']
 
 const AUTH_SB_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
 const AUTH_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+
+// Página padrão de cada perfil após o login
+const PERFIL_HOME = {
+    super_admin:          'bpc.html',
+    editor:               'projetos.html',
+    ouvidoria_compliance: 'ouvidoria.html',
+    gestor_projetos:      'bpc.html',
+    operador_totvs:       'erp.html',
+    comercial_captacao:   'bpc.html',
+};
 
 const PERFIL_LABELS = {
     super_admin:          'Super Admin',
@@ -49,18 +59,24 @@ function exibirInfoUsuario(user) {
 
 async function entrarNoApp(user) {
     const perfil = getPerfil(user);
+    const paginaAtual = window.location.pathname.split('/').pop() || 'index.html';
+    const ehLogin = paginaAtual === 'index.html' || paginaAtual === '';
+
+    // Se é a página de login, redireciona para o módulo do perfil
+    if (ehLogin) {
+        const destino = PERFIL_HOME[perfil] || 'erp.html';
+        window.location.href = destino;
+        return;
+    }
+
     const permitidos = Array.isArray(window.PERFIS_PERMITIDOS)
         ? window.PERFIS_PERMITIDOS
         : ['super_admin'];
 
-    // Bloqueia perfil sem acesso a este módulo (super_admin sempre passa)
+    // Perfil sem acesso a este módulo → redireciona para página correta (sem logout)
     if (perfil !== 'super_admin' && !permitidos.includes(perfil)) {
-        await getSB().auth.signOut();
-        const erroEl = document.getElementById('loginError');
-        if (erroEl) {
-            erroEl.textContent = `Perfil "${PERFIL_LABELS[perfil] || perfil || 'desconhecido'}" sem acesso a este módulo.`;
-            erroEl.style.display = 'block';
-        }
+        const destino = PERFIL_HOME[perfil] || 'index.html';
+        window.location.href = destino;
         return;
     }
 
