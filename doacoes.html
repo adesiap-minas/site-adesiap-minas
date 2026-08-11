@@ -1243,10 +1243,12 @@
                             </ul>
                         </div>
                     </div>
+                    <!-- TODO: reativar quando o processo de contrapartida de imagem estiver maduro
                     <div class="info-note alert-note mt-3">
                         <i class="fas fa-exclamation-triangle"></i>
                         <p><strong>Contrapartida de imagem:</strong> Se a doação envolver uso de marca ou visibilidade institucional, as CNDs serão solicitadas independentemente do valor ou perfil do doador.</p>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -1413,29 +1415,29 @@
                             <!-- SEÇÃO 3: Informações da Doação -->
                             <span class="form-section-title">Seção 3 — Informações da Doação</span>
 
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="valorDoacao">Valor ou Bem Pretendido <span
-                                            class="req">*</span></label>
-                                    <input type="text" id="valorDoacao" name="valor_pretendido" class="form-control"
-                                        placeholder="Ex: R$ 3.000,00 ou Equipamentos de informática" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="contrapartida">Haverá Uso da Marca / Contrapartida de
-                                        Imagem?</label>
-                                    <select id="contrapartida" name="contrapartida_imagem" class="form-control">
-                                        <option value="nao">Não</option>
-                                        <option value="sim">Sim — nossa empresa/nome quer visibilidade</option>
-                                    </select>
-                                </div>
+                            <div class="form-group">
+                                <label class="form-label" for="valorDoacao">Valor ou Bem Pretendido <span
+                                        class="req">*</span></label>
+                                <input type="text" id="valorDoacao" name="valor_pretendido" class="form-control"
+                                    placeholder="Ex: R$ 3.000,00 ou Equipamentos de informática" required>
                             </div>
 
+                            <!-- TODO: reativar quando o processo de contrapartida de imagem estiver maduro
+                            <div class="form-group">
+                                <label class="form-label" for="contrapartida">Haverá Uso da Marca / Contrapartida de
+                                    Imagem?</label>
+                                <select id="contrapartida" name="contrapartida_imagem" class="form-control">
+                                    <option value="nao">Não</option>
+                                    <option value="sim">Sim — nossa empresa/nome quer visibilidade</option>
+                                </select>
+                            </div>
                             <div class="info-note" id="contrapartidaNote" style="display:none">
                                 <i class="fas fa-info-circle"></i>
                                 <p>Doações com contrapartida de imagem exigem a verificação de CNDs e checagem
                                     reputacional, mesmo para valores abaixo de R$ 5.000. Os campos de upload de
                                     documentos serão ativados abaixo.</p>
                             </div>
+                            -->
 
                             <!-- SEÇÃO 4: Upload de Documentos -->
                             <div id="docsSection" style="display:none">
@@ -1783,9 +1785,9 @@
         function verificarDocs() {
             if (getTipo() === 'pj') return; // PJ sempre mostra
             const val = document.getElementById('valorDoacao').value;
-            const contrapartida = document.getElementById('contrapartida').value === 'sim';
+            // TODO (contrapartida): const contrapartida = document.getElementById('contrapartida').value === 'sim';
             const valorNum = parseBRL(val);
-            const precisaDocs = valorNum > 5000 || contrapartida;
+            const precisaDocs = valorNum > 5000; // TODO (contrapartida): || contrapartida
             document.getElementById('docsSection').style.display = precisaDocs ? '' : 'none';
         }
 
@@ -1796,11 +1798,12 @@
         }
 
         document.getElementById('valorDoacao').addEventListener('input', verificarDocs);
+        /* TODO (contrapartida): reativar quando o processo estiver maduro
         document.getElementById('contrapartida').addEventListener('change', () => {
             const sim = document.getElementById('contrapartida').value === 'sim';
             document.getElementById('contrapartidaNote').style.display = sim ? '' : 'none';
             verificarDocs();
-        });
+        }); */
 
         // CPF mask
         document.getElementById('cpf').addEventListener('input', function () {
@@ -1939,7 +1942,7 @@
                 const payload = {
                     tipo_doador: tipo,
                     valor_pretendido: document.getElementById('valorDoacao').value.trim(),
-                    contrapartida_imagem: document.getElementById('contrapartida').value === 'sim',
+                    // TODO (contrapartida): contrapartida_imagem: document.getElementById('contrapartida').value === 'sim',
                     aceite_origem: true,
                     aceite_lgpd: true,
                     documentos: docs,
@@ -1983,7 +1986,7 @@
                     telefone: payload.telefone,
                     is_pep: payload.is_pep ? 'Sim' : 'Não',
                     valor_pretendido: payload.valor_pretendido,
-                    contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
+                    // TODO (contrapartida): contrapartida_imagem: payload.contrapartida_imagem ? 'Sim' : 'Não',
                     documentos_enviados: docs.length
                         ? docs.map(d => `<a href="${d.url}" target="_blank" style="color:#12395D">${d.nome}</a>`).join('<br>')
                         : 'Nenhum',
