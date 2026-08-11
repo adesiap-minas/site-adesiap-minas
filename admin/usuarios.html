@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usuários — Admin ADESIAP</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --azul:#12395D; --azul-prof:#0B1F33; --azul-claro:#1a4f82; --terracota:#B85C38;
+    --verde:#3B8C6E; --vermelho:#DC2626; --ambar:#D9902F;
+    --cinza-bg:#f4f6f9; --borda:#e2e8f0;
+    --texto:#1e293b; --texto-sec:#64748b; --texto-leve:#94a3b8;
+    --sidebar-w:240px; --radius:10px; --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--cinza-bg);color:var(--texto);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+html[data-auth] #loginScreen{display:none!important}
+html[data-auth] #appShell{display:flex!important}
+
+/* ── LOGIN ── */
+#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--azul-prof)}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo img{height:48px}
+.login-logo h2{font-size:1.1rem;color:var(--azul);margin-top:10px;font-weight:600}
+.login-box .form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.login-box label{display:block;font-size:.8rem;font-weight:600;color:var(--texto-sec);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.login-box input{width:100%;padding:11px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.95rem;outline:none;transition:border-color .2s}
+.login-box input:focus{border-color:var(--azul)}
+.login-box .btn-login{width:100%;margin-top:20px;padding:12px;background:var(--azul);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s}
+.login-box .btn-login:hover{background:var(--azul-claro)}
+.login-error{color:#e53e3e;font-size:.83rem;margin-top:10px;text-align:center;display:none}
+
+/* ── SHELL ── */
+#appShell{display:none;width:100%;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--azul-prof);min-height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo img{height:36px}
+.sidebar-nav{padding:16px 0;flex:1}
+.nav-section-label{display:block;padding:16px 20px 6px;color:rgba(255,255,255,.3);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);font-size:.88rem;font-weight:500;text-decoration:none;transition:all .2s;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--terracota)}
+.nav-item i{width:18px;text-align:center;font-size:.95rem}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:10px}
+.sidebar-footer a,.btn-logout{color:rgba(255,255,255,.45);font-size:.82rem;text-decoration:none;display:flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0}
+.sidebar-footer a:hover,.btn-logout:hover{color:#fff}
+
+/* ── MAIN ── */
+main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{padding:28px 32px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.topbar h1{font-size:1.45rem;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:10px}
+.topbar h1 i{color:var(--terracota)}
+.topbar p{font-size:.88rem;color:var(--texto-sec);margin-top:4px}
+.content{padding:24px 32px 48px}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card+.card{margin-top:24px}
+.card-header{padding:20px 24px;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between;background:#fafbfc}
+.card-title{font-size:1rem;font-weight:700;color:var(--azul);display:flex;align-items:center;gap:8px;margin:0}
+.card-title i{color:var(--terracota);font-size:.95rem}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:32px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-size:1.1rem;color:var(--azul);margin-bottom:20px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-group label{font-size:.78rem;font-weight:600;color:var(--texto-sec);text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select{border:1.5px solid var(--borda);border-radius:8px;padding:10px 14px;font-size:.92rem;font-family:'Inter',sans-serif;color:var(--texto);outline:none;transition:border-color .2s;width:100%}
+.form-group input:focus,.form-group select:focus{border-color:var(--azul)}
+.form-group small{font-size:.77rem;color:var(--texto-leve)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.modal-error{color:#e53e3e;font-size:.83rem;margin-top:8px;display:none}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:7px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--azul);color:#fff}
+.btn-primary:hover{background:var(--azul-claro)}
+.btn-ghost{background:#f1f5f9;color:var(--texto-sec)}
+.btn-ghost:hover{background:var(--borda)}
+.btn-danger{background:#fef2f2;color:var(--vermelho)}
+.btn-danger:hover{background:#fee2e2}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-icon{padding:6px 10px;border-radius:6px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{padding:12px 16px;text-align:left;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-leve);border-bottom:1px solid var(--borda);background:#fafbfc}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--borda);font-size:.88rem;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#f8fafc}
+.perfil-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600;background:rgba(18,57,93,.08);color:var(--azul)}
+.perfil-badge.super_admin{background:rgba(184,92,56,.12);color:var(--terracota)}
+.actions{display:flex;gap:6px}
+
+/* ── EMPTY / LOADING ── */
+.empty-state{text-align:center;padding:56px 24px;color:var(--texto-leve)}
+.empty-state i{font-size:2.5rem;margin-bottom:12px;display:block;color:var(--borda)}
+.empty-state p{font-size:.92rem}
+.loading-row td{text-align:center;padding:40px;color:var(--texto-leve)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--azul-prof);color:#fff;padding:13px 20px;border-radius:10px;font-size:.88rem;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.175,.885,.32,1.275);z-index:9999;display:flex;align-items:center;gap:10px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok i{color:#4ade80}
+.toast.err i{color:#f87171}
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="../img/logo.png" alt="ADESIAP">
+      <h2>Área Administrativa</h2>
+    </div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="emailInput" placeholder="seu@email.com" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Senha</label>
+      <input type="password" id="senhaInput" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')fazerLogin()">
+    </div>
+    <button class="btn-login" id="btnLogin" onclick="fazerLogin()">Entrar</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ── APP SHELL ── -->
+<div id="appShell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="../img/logo.png" alt="ADESIAP">
+    </div>
+    <nav class="sidebar-nav">
+      <span class="nav-section-label" data-perfis="super_admin,gestor_projetos">Comercial</span>
+      <a href="bpc.html" class="nav-item" data-perfis="super_admin,gestor_projetos"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+      <span class="nav-section-label">Conteúdo</span>
+      <a href="configuracoes.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-cog"></i> Configurações</a>
+      <a href="projetos.html" class="nav-item" data-perfis="super_admin,editor,gestor_projetos"><i class="fas fa-project-diagram"></i> Projetos</a>
+      <a href="conselhos.html" class="nav-item" data-perfis="super_admin,editor"><i class="fas fa-landmark"></i> Conselhos</a>
+      <a href="#" class="nav-item"><i class="fas fa-newspaper"></i> Notícias</a>
+      <a href="#" class="nav-item"><i class="fas fa-briefcase"></i> Vagas</a>
+      <span class="nav-section-label" data-perfis="super_admin,operador_totvs">Gestão</span>
+      <a href="erp.html" class="nav-item" data-perfis="super_admin,operador_totvs"><i class="fas fa-database"></i> Projetos TOTVS</a>
+      <span class="nav-section-label" data-perfis="super_admin,ouvidoria_compliance">Atendimento</span>
+      <a href="ouvidoria.html" class="nav-item" data-perfis="super_admin,ouvidoria_compliance"><i class="fas fa-inbox"></i> Ouvidoria</a>
+      <span class="nav-section-label">Ferramentas</span>
+      <a href="ferramentas.html" class="nav-item"><i class="fas fa-tools"></i> Conversor de Imagens</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="userInfo" style="display:none;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px">
+        <div id="userNome" style="color:#fff;font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px"></div>
+        <div id="userPerfil" style="color:rgba(255,255,255,.4);font-size:.72rem;margin-top:2px"></div>
+      </div>
+      <a href="usuarios.html" class="nav-item active" data-perfis="super_admin" style="padding:0;margin-bottom:4px;border:none"><i class="fas fa-users-cog"></i> Usuários</a>
+      <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+      <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main>
+    <div class="topbar">
+      <div>
+        <h1><i class="fas fa-users-cog"></i> Gestão de Usuários</h1>
+        <p>Crie, edite e remova usuários do painel administrativo.</p>
+      </div>
+      <button class="btn btn-primary" onclick="abrirModalNovo()">
+        <i class="fas fa-plus"></i> Novo Usuário
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fas fa-list"></i> Usuários cadastrados</h2>
+          <button class="btn btn-ghost btn-sm" onclick="carregarUsuarios()"><i class="fas fa-sync-alt"></i> Atualizar</button>
+        </div>
+        <div class="table-wrap">
+          <table id="tblUsuarios">
+            <thead>
+              <tr>
+                <th>E-mail</th>
+                <th>Perfil</th>
+                <th>Criado em</th>
+                <th>Último acesso</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbodyUsuarios">
+              <tr class="loading-row"><td colspan="5"><i class="fas fa-spinner fa-spin"></i> Carregando…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ── MODAL CRIAR / EDITAR ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)fecharModal()">
+  <div class="modal">
+    <h3 id="modalTitulo">Novo Usuário</h3>
+
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" id="modalEmail" placeholder="usuario@adesiap.org.br">
+    </div>
+    <div class="form-group" id="grupoSenha">
+      <label>Senha temporária</label>
+      <input type="password" id="modalSenha" placeholder="Mínimo 8 caracteres">
+      <small>O usuário deverá trocar no primeiro acesso.</small>
+    </div>
+    <div class="form-group">
+      <label>Perfil de acesso</label>
+      <select id="modalPerfil">
+        <option value="">— Selecione —</option>
+        <option value="editor">Editor de Conteúdo</option>
+        <option value="ouvidoria_compliance">Ouvidoria &amp; Compliance</option>
+        <option value="gestor_projetos">Gestor de Projetos</option>
+        <option value="operador_totvs">Operador TOTVS</option>
+        <option value="comercial_captacao">Comercial / Captação</option>
+        <option value="super_admin">Super Admin</option>
+      </select>
+    </div>
+
+    <div class="modal-error" id="modalErro"></div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvar" onclick="salvarUsuario()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
+
+<script>
+// ── Estado ──────────────────────────────────────────────────────────────────
+let _editId = null;
+
+// ── Helpers UI ──────────────────────────────────────────────────────────────
+function toast(msg, ok = true) {
+    const t = document.getElementById('toast');
+    const icon = t.querySelector('i');
+    document.getElementById('toastMsg').textContent = msg;
+    icon.className = ok ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    t.className = 'toast show ' + (ok ? 'ok' : 'err');
+    setTimeout(() => t.className = 'toast', 3500);
+}
+
+const PERFIL_LABELS = {
+    super_admin:          'Super Admin',
+    editor:               'Editor de Conteúdo',
+    ouvidoria_compliance: 'Ouvidoria & Compliance',
+    gestor_projetos:      'Gestor de Projetos',
+    operador_totvs:       'Operador TOTVS',
+    comercial_captacao:   'Comercial / Captação',
+};
+
+function perfilBadge(p) {
+    const label = PERFIL_LABELS[p] || p || '—';
+    return `<span class="perfil-badge ${p || ''}">${label}</span>`;
+}
+
+function fmt(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ── API helper ───────────────────────────────────────────────────────────────
+async function api(method, body) {
+    const { data: { session } } = await window._sb.auth.getSession();
+    const token = session?.access_token;
+    const res = await fetch('/api/admin/usuarios', {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: body ? JSON.stringify(body) : undefined,
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(json.error || `HTTP ${res.status}`);
+    return json;
+}
+
+// ── Listar usuários ──────────────────────────────────────────────────────────
+async function carregarUsuarios() {
+    const tbody = document.getElementById('tbodyUsuarios');
+    tbody.innerHTML = '<tr class="loading-row"><td colspan="5"><i class="fas fa-spinner fa-spin"></i> Carregando…</td></tr>';
+    try {
+        const { users } = await api('GET');
+        if (!users?.length) {
+            tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fas fa-users-slash"></i><p>Nenhum usuário encontrado.</p></div></td></tr>';
+            return;
+        }
+        tbody.innerHTML = users.map(u => {
+            const perfil = u.app_metadata?.perfil || '';
+            return `<tr>
+                <td>${u.email}</td>
+                <td>${perfilBadge(perfil)}</td>
+                <td>${fmt(u.created_at)}</td>
+                <td>${fmt(u.last_sign_in_at)}</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Editar" onclick="abrirModalEditar('${u.id}','${u.email}','${perfil}')"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-danger btn-sm btn-icon" title="Excluir" onclick="excluirUsuario('${u.id}','${u.email}')"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>`;
+        }).join('');
+    } catch (e) {
+        tbody.innerHTML = `<tr class="loading-row"><td colspan="5" style="color:var(--vermelho)"><i class="fas fa-exclamation-triangle"></i> Erro: ${e.message}</td></tr>`;
+    }
+}
+
+// ── Modal Criar ──────────────────────────────────────────────────────────────
+function abrirModalNovo() {
+    _editId = null;
+    document.getElementById('modalTitulo').textContent = 'Novo Usuário';
+    document.getElementById('modalEmail').value = '';
+    document.getElementById('modalSenha').value = '';
+    document.getElementById('modalPerfil').value = '';
+    document.getElementById('modalEmail').disabled = false;
+    document.getElementById('grupoSenha').style.display = '';
+    document.getElementById('modalErro').style.display = 'none';
+    document.getElementById('modalOverlay').classList.add('open');
+    document.getElementById('modalEmail').focus();
+}
+
+function abrirModalEditar(id, email, perfil) {
+    _editId = id;
+    document.getElementById('modalTitulo').textContent = 'Editar Usuário';
+    document.getElementById('modalEmail').value = email;
+    document.getElementById('modalEmail').disabled = true;
+    document.getElementById('grupoSenha').style.display = 'none';
+    document.getElementById('modalPerfil').value = perfil;
+    document.getElementById('modalErro').style.display = 'none';
+    document.getElementById('modalOverlay').classList.add('open');
+    document.getElementById('modalPerfil').focus();
+}
+
+function fecharModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ── Salvar (criar ou editar) ─────────────────────────────────────────────────
+async function salvarUsuario() {
+    const email  = document.getElementById('modalEmail').value.trim();
+    const senha  = document.getElementById('modalSenha').value;
+    const perfil = document.getElementById('modalPerfil').value;
+    const erroEl = document.getElementById('modalErro');
+    const btnEl  = document.getElementById('btnSalvar');
+
+    erroEl.style.display = 'none';
+
+    if (!perfil) { erroEl.textContent = 'Selecione um perfil de acesso.'; erroEl.style.display = 'block'; return; }
+    if (!_editId && !email) { erroEl.textContent = 'Informe o e-mail.'; erroEl.style.display = 'block'; return; }
+    if (!_editId && senha.length < 8) { erroEl.textContent = 'A senha deve ter pelo menos 8 caracteres.'; erroEl.style.display = 'block'; return; }
+
+    btnEl.disabled = true;
+    btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando…';
+
+    try {
+        if (_editId) {
+            await api('PATCH', { id: _editId, perfil });
+            toast('Perfil atualizado com sucesso.');
+        } else {
+            await api('POST', { email, senha, perfil });
+            toast('Usuário criado com sucesso.');
+        }
+        fecharModal();
+        carregarUsuarios();
+    } catch (e) {
+        erroEl.textContent = e.message;
+        erroEl.style.display = 'block';
+    } finally {
+        btnEl.disabled = false;
+        btnEl.innerHTML = 'Salvar';
+    }
+}
+
+// ── Excluir ──────────────────────────────────────────────────────────────────
+async function excluirUsuario(id, email) {
+    if (!confirm(`Excluir o usuário "${email}"? Esta ação não pode ser desfeita.`)) return;
+    try {
+        await api('DELETE', { id });
+        toast('Usuário excluído.');
+        carregarUsuarios();
+    } catch (e) {
+        toast('Erro: ' + e.message, false);
+    }
+}
+
+// ── init (chamado pelo auth.js após login) ────────────────────────────────────
+function init() {
+    // Expõe o cliente Supabase para o helper api()
+    window._sb = getSB();
+    carregarUsuarios();
+}
+</script>
+
+<script>window.PERFIS_PERMITIDOS = ['super_admin'];</script>
+<script src="auth.js"></script>
+</body>
+</html>
