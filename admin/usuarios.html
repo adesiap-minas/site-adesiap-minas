@@ -248,6 +248,29 @@ tbody tr:hover{background:#f8fafc}
   </div>
 </div>
 
+<!-- ── MODAL REDEFINIR SENHA ── -->
+<div class="modal-overlay" id="senhaOverlay" onclick="if(event.target===this)fecharModalSenha()">
+  <div class="modal">
+    <h3>Redefinir Senha</h3>
+    <p id="senhaEmailLabel" style="font-size:.85rem;color:var(--texto-sec);margin-bottom:20px"></p>
+    <div class="form-group">
+      <label>Nova senha</label>
+      <input type="password" id="senhaNovaInput" placeholder="Mínimo 8 caracteres"
+        onkeydown="if(event.key==='Enter')salvarSenha()">
+    </div>
+    <div class="form-group">
+      <label>Confirmar senha</label>
+      <input type="password" id="senhaConfirmInput" placeholder="Repita a senha"
+        onkeydown="if(event.key==='Enter')salvarSenha()">
+    </div>
+    <div class="modal-error" id="senhaErro"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModalSenha()">Cancelar</button>
+      <button class="btn btn-primary" id="btnSalvarSenha" onclick="salvarSenha()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── TOAST ── -->
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg"></span></div>
 
@@ -320,7 +343,8 @@ async function carregarUsuarios() {
                 <td>${fmt(u.last_sign_in_at)}</td>
                 <td>
                   <div class="actions">
-                    <button class="btn btn-ghost btn-sm btn-icon" title="Editar" onclick="abrirModalEditar('${u.id}','${u.email}','${perfil}')"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Editar perfil" onclick="abrirModalEditar('${u.id}','${u.email}','${perfil}')"><i class="fas fa-pen"></i></button>
+                    <button class="btn btn-ghost btn-sm btn-icon" title="Redefinir senha" onclick="abrirModalSenha('${u.id}','${u.email}')"><i class="fas fa-key"></i></button>
                     <button class="btn btn-danger btn-sm btn-icon" title="Excluir" onclick="excluirUsuario('${u.id}','${u.email}')"><i class="fas fa-trash"></i></button>
                   </div>
                 </td>
@@ -406,6 +430,48 @@ async function excluirUsuario(id, email) {
         carregarUsuarios();
     } catch (e) {
         toast('Erro: ' + e.message, false);
+    }
+}
+
+// ── Modal Redefinir Senha ────────────────────────────────────────────────────
+let _senhaId = null;
+
+function abrirModalSenha(id, email) {
+    _senhaId = id;
+    document.getElementById('senhaEmailLabel').textContent = email;
+    document.getElementById('senhaNovaInput').value = '';
+    document.getElementById('senhaConfirmInput').value = '';
+    document.getElementById('senhaErro').style.display = 'none';
+    document.getElementById('senhaOverlay').classList.add('open');
+    document.getElementById('senhaNovaInput').focus();
+}
+
+function fecharModalSenha() {
+    document.getElementById('senhaOverlay').classList.remove('open');
+}
+
+async function salvarSenha() {
+    const senha    = document.getElementById('senhaNovaInput').value;
+    const confirm  = document.getElementById('senhaConfirmInput').value;
+    const erroEl   = document.getElementById('senhaErro');
+    const btnEl    = document.getElementById('btnSalvarSenha');
+
+    erroEl.style.display = 'none';
+    if (senha.length < 8)      { erroEl.textContent = 'A senha deve ter pelo menos 8 caracteres.'; erroEl.style.display = 'block'; return; }
+    if (senha !== confirm)     { erroEl.textContent = 'As senhas não coincidem.'; erroEl.style.display = 'block'; return; }
+
+    btnEl.disabled = true;
+    btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando…';
+    try {
+        await api('PUT', { id: _senhaId, senha });
+        toast('Senha redefinida com sucesso.');
+        fecharModalSenha();
+    } catch (e) {
+        erroEl.textContent = e.message;
+        erroEl.style.display = 'block';
+    } finally {
+        btnEl.disabled = false;
+        btnEl.innerHTML = 'Salvar';
     }
 }
 
