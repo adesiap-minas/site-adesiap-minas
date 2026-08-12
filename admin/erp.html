@@ -522,7 +522,7 @@ function agrupar(rows) {
                 valorTotal:     r.TRF_VALOR_TOTAL,
                 unidade:        r.TRF_UNIDADE || '',
                 origemRegistro: r.ORIGEM_REGISTRO || '',
-                pedido: null, sc: null, cotacoes: [], ocs: [], nfs: [], fins: [], negocioBitrix: null,
+                pedido: null, sc: null, cotacoes: [], ocs: [], nfs: [], fins: [], negocioBitrix: [],
             });
         }
         const trf = prj.trfMap.get(trfKey);
@@ -573,7 +573,7 @@ function agrupar(rows) {
                 usuario: r.NF_USUARIO_NOME || '',
             });
         }
-        if (r.NEGOCIOBITRIX && !trf.negocioBitrix) trf.negocioBitrix = r.NEGOCIOBITRIX;
+        if (r.NEGOCIOBITRIX && !trf.negocioBitrix.includes(r.NEGOCIOBITRIX)) trf.negocioBitrix.push(r.NEGOCIOBITRIX);
         if (r.FIN_IDLAN) {
             // Attribute rateio to this TRF only when FIN_RATEIO_TAREFA_ID matches or is absent
             const rateioTrfId = r.FIN_RATEIO_TAREFA_ID;
@@ -1056,11 +1056,11 @@ function abrirDrawer(cod) {
         </div>`;
     }
 
-    if (trf.negocioBitrix) {
-        h += `<a href="https://b24-x8x4xo.bitrix24.com.br/crm/deal/details/${trf.negocioBitrix}/" target="_blank" class="btn-bitrix">
-            <i class="fas fa-external-link-alt"></i> Ver Negócio no Bitrix <span style="font-weight:400;opacity:.7">#${trf.negocioBitrix}</span>
+    trf.negocioBitrix.forEach(id => {
+        h += `<a href="https://b24-x8x4xo.bitrix24.com.br/crm/deal/details/${id}/" target="_blank" class="btn-bitrix">
+            <i class="fas fa-external-link-alt"></i> Ver Negócio no Bitrix <span style="font-weight:400;opacity:.7">#${id}</span>
         </a>`;
-    }
+    });
     h += `<div class="trf-info-box">`;
     if (trf.valorTotal)     h += `<div class="trf-info-row"><span class="trf-info-lbl">Orçado</span><b>${fmtM(trf.valorTotal)}</b></div>`;
     if (trf.qtd)            h += `<div class="trf-info-row"><span class="trf-info-lbl">Qtd</span><span>${trf.qtd} ${escH(trf.unidade)}</span></div>`;
