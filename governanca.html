@@ -372,7 +372,7 @@
 
         /* Organograma */
         .org-tree-container { overflow-x: auto; padding: 60px 0 20px; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.05); }
-        .org-tree { width: 1200px; margin: 0 auto; position: relative; font-family: 'Inter', sans-serif; }
+        .org-tree { width: 1300px; margin: 0 auto; position: relative; font-family: 'Inter', sans-serif; }
         .org-node {
             width: 240px; padding: 14px 20px; text-align: center; font-weight: 700; font-size: 0.85rem;
             z-index: 2; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-transform: uppercase;
@@ -547,102 +547,108 @@
                     <div class="org-tree-container">
                         <div class="org-tree">
                             <div style="display: flex; flex-direction: column; align-items: center;">
-                                
-                                <!-- COMITÊ -->
-                                <div class="org-node c-red">COMITÊ DE PARCEIROS</div>
-                                
-                                <div class="v-line" style="position: relative;">
-                                    <!-- Branch right to Conselho Fiscal -->
-                                    <div style="position: absolute; top: 17px; left: 0; width: 180px; height: 2px; background: #B0B0B0;"></div>
-                                    <div class="org-node c-white" style="position: absolute; top: -5px; left: 180px; width: 200px;">Conselho Fiscal</div>
-                                </div>
-                                
-                                <!-- PRESIDENTE -->
-                                <div class="org-node c-darkgray">PRESIDENTE DO COMITÊ</div>
-                                
-                                <div class="v-line"></div>
-                                
-                                <!-- VICE -->
-                                <div class="org-node c-medgray">VICE PRESIDÊNCIA DO COMITÊ</div>
-                                
-                                <div class="v-line-long" style="position: relative; height: 60px;">
-                                    <!-- Branch right and up to Consultoria Jurídica -->
-                                    <div style="position: absolute; top: 30px; left: 0; width: 240px; height: 2px; background: #B0B0B0;"></div>
-                                    <div style="position: absolute; bottom: 30px; left: 240px; width: 2px; height: 60px; background: #B0B0B0;"></div>
-                                    <div style="position: absolute; bottom: 90px; left: 240px; width: 20px; height: 2px; background: #B0B0B0;"></div>
-                                    <div class="org-node c-white" style="position: absolute; bottom: 70px; left: 260px; width: 180px; text-align: center;">Consultoria Jurídica</div>
-                                </div>
-                                
-                                <!-- DIRETORIA EXECUTIVA -->
+
+                                <!-- COMITÊ DE PARCEIROS + Conselho Fiscal (lado direito) -->
                                 <div style="position: relative; display: flex; justify-content: center; width: 100%;">
-                                    <div class="org-node c-lightgray" style="margin: 0 auto;">DIRETORIA EXECUTIVA</div>
-                                    
-                                    <!-- Line directly right to DIRETORIA DE SEGURANÇA -->
-                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 80px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
-                                    
-                                    <div style="position: absolute; top: 0; left: calc(50% + 200px);">
-                                        <div class="org-node c-lightgray">DIRETORIA DE SEGURANÇA</div>
-                                        <div class="v-line" style="height: 35px;"></div>
-                                        <div class="org-node c-white">Consultor de Segurança</div>
+                                    <div class="org-node c-red">COMITÊ DE PARCEIROS</div>
+                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 60px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: calc(50% + 180px); transform: translateY(-50%);">
+                                        <div class="org-node c-lightgray" style="width:220px; text-transform:none; font-weight:700; font-size:.8rem; text-align:center; line-height:1.5;">
+                                            Conselho Fiscal
+                                            <div style="font-size:.72rem; font-weight:400; margin-top:5px; color:#444; line-height:1.6;">
+                                                Maria Luiza Maia Oliveira<br>Luiz Carlos Furst Palermo<br>Dacio Niquini Junior
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div class="v-line-long" style="position: relative; height: 70px;"></div>
-                                
-                                <!-- GERÊNCIA EXECUTIVA -->
-                                <div class="org-node c-darkred">GERÊNCIA EXECUTIVA</div>
-                                
-                                <div class="v-line"></div>
-                                
-                                <!-- EQUIPE EXECUTIVA -->
-                                <div class="org-node c-white" style="text-transform: uppercase;">EQUIPE EXECUTIVA</div>
 
-                                <!-- Conector vertical -->
+                                <div class="v-line"></div>
+
+                                <!-- PRESIDENTE DO COMITÊ -->
+                                <div class="org-node c-darkgray">PRESIDENTE DO COMITÊ</div>
+
+                                <div class="v-line"></div>
+
+                                <!-- VICE PRESIDÊNCIA + Consultoria Jurídica Externa (lado direito) -->
+                                <div style="position: relative; display: flex; justify-content: center; width: 100%;">
+                                    <div class="org-node c-medgray">VICE PRESIDÊNCIA DO COMITÊ</div>
+                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 60px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: calc(50% + 180px); transform: translateY(-50%);">
+                                        <div class="org-node c-white" style="width:210px;">Consultoria Jurídica Externa</div>
+                                    </div>
+                                </div>
+
+                                <div class="v-line"></div>
+
+                                <!-- DIRETORIA EXECUTIVA -->
+                                <div class="org-node c-darkgray">DIRETORIA EXECUTIVA</div>
+
+                                <div class="v-line"></div>
+
+                                <!-- GERÊNCIA EXECUTIVA + Assessorias laterais -->
+                                <div style="display: flex; align-items: center; justify-content: center;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div class="org-node c-white" style="width:200px; font-size:.8rem;">Assessoria Jurídica Interna</div>
+                                        <div style="width:50px; height:2px; background:#B0B0B0;"></div>
+                                    </div>
+                                    <div class="org-node c-red">GERÊNCIA EXECUTIVA</div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="width:50px; height:2px; background:#B0B0B0;"></div>
+                                        <div class="org-node c-white" style="width:200px; font-size:.8rem;">Assessoria Executiva</div>
+                                    </div>
+                                </div>
+
+                                <!-- Conector vertical para departamentos -->
                                 <div style="width: 2px; height: 30px; background: #B0B0B0; margin: 0 auto;"></div>
 
-                                <!-- DEPARTAMENTOS -->
+                                <!-- 9 DEPARTAMENTOS -->
                                 <div style="position: relative; width: 100%;">
-                                    <div style="position: absolute; top: 0; left: 65px; right: 65px; height: 2px; background: #B0B0B0;"></div>
+                                    <div style="position: absolute; top: 0; left: 50px; right: 50px; height: 2px; background: #B0B0B0;"></div>
                                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Projetos</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">PMO — Escritório de Gerenciamento de Projetos</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Suprimentos</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Tecnologia e Inovação</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">CAMPE</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Captação de Recursos e Orçamentos</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">RH / Depto. Pessoal</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Apoio Administrativo</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Prestação de Contas</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Gente e Gestão</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Financeiro</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Financeiro</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Comercial</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Suprimentos e Logística</div>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 130px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
                                             <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
-                                            <div class="org-node c-white" style="font-size: 0.75rem; padding: 10px 8px; width: 100%; text-align: center;">Jurídico</div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">Prestação de Contas</div>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 118px;">
+                                            <div style="width: 2px; height: 25px; background: #B0B0B0;"></div>
+                                            <div class="org-node c-red" style="font-size: 0.63rem; padding: 10px 6px; width: 100%; text-align: center; letter-spacing: 0; text-transform: none; font-weight: 700;">CAMPE — Centro de Apoio ao MEI, Micro e Pequeno Empresário</div>
                                         </div>
 
                                     </div>
