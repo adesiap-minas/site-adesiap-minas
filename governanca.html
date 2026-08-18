@@ -548,11 +548,13 @@
                         <div class="org-tree">
                             <div style="display: flex; flex-direction: column; align-items: center;">
 
-                                <!-- COMITÊ DE PARCEIROS + Conselho Fiscal (lado direito) -->
-                                <div style="position: relative; display: flex; justify-content: center; width: 100%;">
-                                    <div class="org-node c-red">COMITÊ DE PARCEIROS</div>
-                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 60px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
-                                    <div style="position: absolute; top: 50%; left: calc(50% + 180px); transform: translateY(-50%);">
+                                <!-- COMITÊ DE PARCEIROS -->
+                                <div class="org-node c-red">COMITÊ DE PARCEIROS</div>
+
+                                <!-- V-line com Conselho Fiscal saindo à direita -->
+                                <div class="v-line" style="position: relative;">
+                                    <div style="position: absolute; top: 50%; left: 1px; width: 130px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: 131px; transform: translateY(-50%);">
                                         <div class="org-node c-lightgray" style="width:220px; text-transform:none; font-weight:700; font-size:.8rem; text-align:center; line-height:1.5;">
                                             Conselho Fiscal
                                             <div style="font-size:.72rem; font-weight:400; margin-top:5px; color:#444; line-height:1.6;">
@@ -561,8 +563,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="v-line"></div>
 
                                 <!-- PRESIDENTE DO COMITÊ -->
                                 <div class="org-node c-darkgray" style="text-align:center; line-height:1.4;">
