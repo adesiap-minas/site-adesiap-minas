@@ -572,19 +572,19 @@
 
                                 <div class="v-line"></div>
 
-                                <!-- VICE PRESIDÊNCIA + Consultoria Jurídica Externa (lado direito) -->
-                                <div style="position: relative; display: flex; justify-content: center; width: 100%;">
-                                    <div class="org-node c-medgray" style="text-align:center; line-height:1.4;">
-                                        VICE PRESIDÊNCIA DO COMITÊ
-                                        <div style="font-size:.75rem; font-weight:400; margin-top:4px; color:#333; text-transform:none; letter-spacing:0;">José Letício Ferreira Vilalba</div>
-                                    </div>
-                                    <div style="position: absolute; top: 50%; left: calc(50% + 120px); width: 60px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
-                                    <div style="position: absolute; top: 50%; left: calc(50% + 180px); transform: translateY(-50%);">
+                                <!-- VICE PRESIDÊNCIA DO COMITÊ -->
+                                <div class="org-node c-medgray" style="text-align:center; line-height:1.4;">
+                                    VICE PRESIDÊNCIA DO COMITÊ
+                                    <div style="font-size:.75rem; font-weight:400; margin-top:4px; color:#333; text-transform:none; letter-spacing:0;">José Letício Ferreira Vilalba</div>
+                                </div>
+
+                                <!-- V-line com Consultoria Jurídica Externa saindo à direita -->
+                                <div class="v-line" style="position: relative;">
+                                    <div style="position: absolute; top: 50%; left: 1px; width: 130px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: 131px; transform: translateY(-50%);">
                                         <div class="org-node c-white" style="width:210px;">Consultoria Jurídica Externa</div>
                                     </div>
                                 </div>
-
-                                <div class="v-line"></div>
 
                                 <!-- DIRETORIA EXECUTIVA -->
                                 <div class="org-node c-darkgray" style="text-align:center; line-height:1.4;">
@@ -594,21 +594,22 @@
 
                                 <div class="v-line"></div>
 
-                                <!-- GERÊNCIA EXECUTIVA + Assessorias laterais -->
-                                <div style="display: flex; align-items: center; justify-content: center;">
-                                    <div style="display: flex; align-items: center;">
+                                <!-- GERÊNCIA EXECUTIVA -->
+                                <div class="org-node c-red">GERÊNCIA EXECUTIVA</div>
+
+                                <!-- Conector com Assessoria Jurídica Interna (esq) e Assessoria Executiva (dir) -->
+                                <div style="width: 2px; height: 60px; background: #B0B0B0; margin: 0 auto; position: relative;">
+                                    <!-- Assessoria Jurídica Interna (esquerda) -->
+                                    <div style="position: absolute; top: 50%; left: 1px; width: 130px; height: 2px; background: #B0B0B0; transform: translate(-130px, -50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: 1px; transform: translate(-330px, -50%);">
                                         <div class="org-node c-white" style="width:200px; font-size:.8rem;">Assessoria Jurídica Interna</div>
-                                        <div style="width:50px; height:2px; background:#B0B0B0;"></div>
                                     </div>
-                                    <div class="org-node c-red">GERÊNCIA EXECUTIVA</div>
-                                    <div style="display: flex; align-items: center;">
-                                        <div style="width:50px; height:2px; background:#B0B0B0;"></div>
+                                    <!-- Assessoria Executiva (direita) -->
+                                    <div style="position: absolute; top: 50%; left: 1px; width: 130px; height: 2px; background: #B0B0B0; transform: translateY(-50%);"></div>
+                                    <div style="position: absolute; top: 50%; left: 131px; transform: translateY(-50%);">
                                         <div class="org-node c-white" style="width:200px; font-size:.8rem;">Assessoria Executiva</div>
                                     </div>
                                 </div>
-
-                                <!-- Conector vertical para departamentos -->
-                                <div style="width: 2px; height: 30px; background: #B0B0B0; margin: 0 auto;"></div>
 
                                 <!-- 9 DEPARTAMENTOS -->
                                 <div style="position: relative; width: 100%;">
