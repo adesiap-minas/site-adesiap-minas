@@ -345,9 +345,9 @@
 
         document.getElementById('drawer-titulo').textContent = `${tipoLabel(d.tipo)} — ${d.protocolo}`;
 
-        const dadosHtml = Object.entries(d.dados || {})
-            .filter(([k]) => !k.startsWith('_'))
-            .map(([k, v]) => `<div class="kv"><span class="k">${escHtml(k)}</span><span class="v">${escHtml(String(v))}</span></div>`)
+        const dadosRows = Object.entries(d.dados || {})
+            .filter(([k, v]) => !k.startsWith('_') && v && String(v).trim())
+            .map(([k, v]) => `<div class="dl-row"><dt>${escHtml(k)}</dt><dd style="white-space:pre-wrap">${escHtml(String(v))}</dd></div>`)
             .join('');
 
         document.getElementById('drawer-body').innerHTML = `
@@ -356,7 +356,9 @@
             <div class="dl-row"><dt>Recebido em</dt><dd>${fmtDataHora(d.created_at)}</dd></div>
             ${d.atualizado_em ? `<div class="dl-row"><dt>Última atualização</dt><dd>${fmtDataHora(d.atualizado_em)}</dd></div>` : ''}
             ${d.email_usuario ? `<div class="dl-row"><dt>E-mail</dt><dd>${escHtml(d.email_usuario)}</dd></div>` : ''}
-            <div class="dl-row"><dt>Dados enviados</dt><div class="dados-json">${dadosHtml || '<span style="color:#9ca3af">Nenhum dado</span>'}</div></div>
+            <hr style="border:none;border-top:1px solid #e2e8f0;margin:16px 0 8px">
+            ${dadosRows || '<p style="color:#9ca3af;font-size:.85rem">Nenhum dado informado</p>'}
+            <hr style="border:none;border-top:1px solid #e2e8f0;margin:8px 0 16px">
             ${d.resposta_admin ? `<label class="field-label">Resposta anterior</label><div class="resposta-existente"><strong>Enviada em ${d.atualizado_em ? fmtData(d.atualizado_em) : '—'}</strong>${escHtml(d.resposta_admin).replace(/\n/g,'<br>')}</div>` : ''}
             <label class="field-label">Status</label>
             <select class="field-select" id="drawerStatus">
