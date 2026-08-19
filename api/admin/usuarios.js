@@ -53,17 +53,37 @@ module.exports = async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(204).end();
 
     try {
-        await autenticarRequisicao(req);
-
-        // ── GET: listar usuários ─────────────────────────────────────────────
+        // ── GET: auth + listagem em paralelo para reduzir latência ──────────
         if (req.method === 'GET') {
-            const data = await sbAdmin('users?per_page=500');
-            // Supabase retorna { users: [...] } ou [ ... ] dependendo da versão
+            const authHeader = req.headers['authorization'] || '';
+            const token = authHeader.replace('Bearer ', '').trim();
+            if (!token) throw new Error('Não autorizado: token ausente.');
+
+            const [authRes, adminRes] = await Promise.all([
+                fetch(`${SB_URL}/auth/v1/user`, {
+                    headers: { 'apikey': ANON_KEY, 'Authorization': `Bearer ${token}` },
+                }),
+                fetch(`${SB_URL}/auth/v1/admin/users?per_page=500`, {
+                    headers: { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
+                }),
+            ]);
+
+            if (!authRes.ok) throw new Error('Não autorizado: token inválido.');
+            const authUser = await authRes.json();
+            if (authUser?.app_metadata?.perfil !== 'super_admin')
+                throw new Error('Acesso negado: apenas Super Admin pode gerenciar usuários.');
+
+            if (!adminRes.ok) {
+                const e = await adminRes.json().catch(() => ({}));
+                throw new Error(e.msg || e.message || `Erro ${adminRes.status}`);
+            }
+            const data = await adminRes.json().catch(() => ({}));
             const users = Array.isArray(data) ? data : (data.users || []);
-            // Ordena por data de criação, mais recente primeiro
             users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             return res.status(200).json({ users });
         }
+
+        await autenticarRequisicao(req);
 
         // ── POST: criar usuário ──────────────────────────────────────────────
         if (req.method === 'POST') {
