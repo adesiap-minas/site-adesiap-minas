@@ -311,17 +311,29 @@ function fmt(iso) {
 async function api(method, body) {
     const { data: { session } } = await window._sb.auth.getSession();
     const token = session?.access_token;
-    const res = await fetch('/api/admin/usuarios', {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: body ? JSON.stringify(body) : undefined,
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(json.error || `HTTP ${res.status}`);
-    return json;
+    if (!token) throw new Error('Sessão expirada — faça login novamente.');
+
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+    try {
+        const res = await fetch('/api/admin/usuarios', {
+            method,
+            signal: ctrl.signal,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: body ? JSON.stringify(body) : undefined,
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(json.error || `HTTP ${res.status}`);
+        return json;
+    } catch (e) {
+        if (e.name === 'AbortError') throw new Error('Tempo limite excedido — verifique a configuração do servidor.');
+        throw e;
+    } finally {
+        clearTimeout(timer);
+    }
 }
 
 // ── Listar usuários ──────────────────────────────────────────────────────────
@@ -351,7 +363,8 @@ async function carregarUsuarios() {
               </tr>`;
         }).join('');
     } catch (e) {
-        tbody.innerHTML = `<tr class="loading-row"><td colspan="5" style="color:var(--vermelho)"><i class="fas fa-exclamation-triangle"></i> Erro: ${e.message}</td></tr>`;
+        console.error('[usuarios] carregarUsuarios erro:', e);
+        tbody.innerHTML = `<tr class="loading-row"><td colspan="5" style="color:var(--vermelho)"><i class="fas fa-exclamation-triangle"></i> Erro: ${e.message || 'falha desconhecida — veja o console (F12)'}</td></tr>`;
     }
 }
 
