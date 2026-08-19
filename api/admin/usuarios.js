@@ -52,6 +52,10 @@ module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     if (req.method === 'OPTIONS') return res.status(204).end();
 
+    if (!SB_URL || !SERVICE_KEY || !ANON_KEY) {
+        return res.status(500).json({ error: 'Configuração incompleta no servidor: SUPABASE_URL, SUPABASE_SERVICE_KEY e SUPABASE_ANON_KEY devem ser definidas nas variáveis de ambiente do Vercel.' });
+    }
+
     try {
         // ── GET: auth + listagem em paralelo para reduzir latência ──────────
         if (req.method === 'GET') {
