@@ -7,25 +7,28 @@ const ANON_KEY       = process.env.SUPABASE_ANON_KEY;
 
 const PERFIS_VALIDOS = ['super_admin','editor','ouvidoria_compliance','gestor_projetos','operador_totvs','comercial_captacao'];
 
-// ── Valida o JWT do usuário logado e retorna o perfil ───────────────────────
-async function autenticarRequisicao(req) {
+// ── Decodifica o JWT localmente (sem chamada HTTP) e verifica perfil ─────────
+function autenticarRequisicao(req) {
     const authHeader = req.headers['authorization'] || '';
     const token = authHeader.replace('Bearer ', '').trim();
     if (!token) throw new Error('Não autorizado: token ausente.');
 
-    // Verifica o token via Supabase Auth (usando anon key + token do usuário)
-    const r = await fetch(`${SB_URL}/auth/v1/user`, {
-        headers: {
-            'apikey': ANON_KEY,
-            'Authorization': `Bearer ${token}`,
-        },
-    });
-    if (!r.ok) throw new Error('Não autorizado: token inválido.');
-    const user = await r.json();
+    const parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Não autorizado: token malformado.');
 
-    const perfil = user?.app_metadata?.perfil;
+    let payload;
+    try {
+        payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    } catch {
+        throw new Error('Não autorizado: token inválido.');
+    }
+
+    if (!payload.exp || Math.floor(Date.now() / 1000) > payload.exp)
+        throw new Error('Não autorizado: token expirado.');
+
+    const perfil = payload?.app_metadata?.perfil;
     if (perfil !== 'super_admin') throw new Error('Acesso negado: apenas Super Admin pode gerenciar usuários.');
-    return user;
+    return payload;
 }
 
 // ── Helper: chamada à Admin API do Supabase ──────────────────────────────────
@@ -52,42 +55,21 @@ module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     if (req.method === 'OPTIONS') return res.status(204).end();
 
-    if (!SB_URL || !SERVICE_KEY || !ANON_KEY) {
-        return res.status(500).json({ error: 'Configuração incompleta no servidor: SUPABASE_URL, SUPABASE_SERVICE_KEY e SUPABASE_ANON_KEY devem ser definidas nas variáveis de ambiente do Vercel.' });
+    const missing = [!SB_URL && 'SUPABASE_URL', !SERVICE_KEY && 'SUPABASE_SERVICE_KEY', !ANON_KEY && 'SUPABASE_ANON_KEY'].filter(Boolean);
+    if (missing.length) {
+        return res.status(500).json({ error: `Variáveis de ambiente ausentes no Vercel: ${missing.join(', ')}` });
     }
 
     try {
-        // ── GET: auth + listagem em paralelo para reduzir latência ──────────
+        autenticarRequisicao(req);
+
+        // ── GET: listagem (uma única chamada ao Supabase) ────────────────────
         if (req.method === 'GET') {
-            const authHeader = req.headers['authorization'] || '';
-            const token = authHeader.replace('Bearer ', '').trim();
-            if (!token) throw new Error('Não autorizado: token ausente.');
-
-            const [authRes, adminRes] = await Promise.all([
-                fetch(`${SB_URL}/auth/v1/user`, {
-                    headers: { 'apikey': ANON_KEY, 'Authorization': `Bearer ${token}` },
-                }),
-                fetch(`${SB_URL}/auth/v1/admin/users?per_page=500`, {
-                    headers: { 'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-                }),
-            ]);
-
-            if (!authRes.ok) throw new Error('Não autorizado: token inválido.');
-            const authUser = await authRes.json();
-            if (authUser?.app_metadata?.perfil !== 'super_admin')
-                throw new Error('Acesso negado: apenas Super Admin pode gerenciar usuários.');
-
-            if (!adminRes.ok) {
-                const e = await adminRes.json().catch(() => ({}));
-                throw new Error(e.msg || e.message || `Erro ${adminRes.status}`);
-            }
-            const data = await adminRes.json().catch(() => ({}));
+            const data = await sbAdmin('users?per_page=500');
             const users = Array.isArray(data) ? data : (data.users || []);
             users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
             return res.status(200).json({ users });
         }
-
-        await autenticarRequisicao(req);
 
         // ── POST: criar usuário ──────────────────────────────────────────────
         if (req.method === 'POST') {
