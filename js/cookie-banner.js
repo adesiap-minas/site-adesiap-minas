@@ -10,7 +10,7 @@
         'box-shadow:0 -4px 24px rgba(0,0,0,.28);',
         'transform:translateY(100%);transition:transform .4s ease;}',
         '#ck-banner.ck-show{transform:translateY(0);}',
-        '#ck-banner p{margin:0;max-width:780px;}',
+        '#ck-banner p{margin:0;max-width:780px;color:rgba(255,255,255,.72);}',
         '#ck-banner a{color:#93c5fd;text-decoration:underline;}',
         '#ck-btn{background:#B21F1F;color:#fff;border:none;padding:10px 22px;',
         'border-radius:6px;font-size:.84rem;font-weight:600;cursor:pointer;',
