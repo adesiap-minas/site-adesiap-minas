@@ -974,27 +974,53 @@
                 }
             }
 
+            function cnpjValido(d) {
+                if (/^(\d)\1+$/.test(d)) return false;
+                var calc = function(d, n) {
+                    var s = 0, p = n;
+                    for (var i = 0; i < n - 1; i++) { s += +d[i] * p--; if (p < 2) p = 9; }
+                    var r = s % 11; return r < 2 ? 0 : 11 - r;
+                };
+                return calc(d, 13) === +d[12] && calc(d, 14) === +d[13];
+            }
+
+            async function tentarFetch(url, signal) {
+                var res = await fetch(url, { signal: signal });
+                if (!res.ok) {
+                    var err = await res.json().catch(function() { return {}; });
+                    throw { tipo: 'http', msg: err.message || '' };
+                }
+                return res.json();
+            }
+
             async function buscarCNPJ(cnpj) {
+                if (!cnpjValido(cnpj)) {
+                    setStatus('cnpj-erro', '✕ CNPJ inválido. Verifique os dígitos.');
+                    return;
+                }
                 var spinner = document.getElementById('cnpj-spinner');
                 if (spinner) spinner.style.display = 'inline-block';
                 setStatus('cnpj-load', 'Consultando…');
                 var controller = new AbortController();
-                var timer = setTimeout(function() { controller.abort(); }, 8000);
+                var timer = setTimeout(function() { controller.abort(); }, 10000);
                 try {
-                    var res = await fetch('/api/cnpj/' + cnpj, { signal: controller.signal });
-                    clearTimeout(timer);
-                    if (!res.ok) {
-                        var err = await res.json().catch(function() { return {}; });
-                        setStatus('cnpj-erro', '✕ ' + (err.message || 'CNPJ não encontrado. Preencha os dados manualmente.'));
-                        return;
+                    var data;
+                    try {
+                        data = await tentarFetch('/api/cnpj/' + cnpj, controller.signal);
+                    } catch(e1) {
+                        if (e1.tipo === 'http') throw e1;
+                        // proxy falhou — tenta direto
+                        data = await tentarFetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj, controller.signal);
                     }
-                    var data = await res.json();
+                    clearTimeout(timer);
                     preencherCampos(data);
                 } catch (e) {
                     clearTimeout(timer);
                     var msg = e.name === 'AbortError'
                         ? '✕ Consulta demorou demais. Preencha os dados manualmente.'
-                        : '✕ Não foi possível consultar. Preencha os dados manualmente.';
+                        : e.tipo === 'http'
+                            ? '✕ CNPJ não encontrado na Receita Federal.'
+                            : '✕ Não foi possível consultar. Preencha os dados manualmente.';
                     setStatus('cnpj-erro', msg);
                 } finally {
                     if (spinner) spinner.style.display = 'none';
