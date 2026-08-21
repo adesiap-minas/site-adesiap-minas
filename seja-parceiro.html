@@ -300,7 +300,11 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label" for="cnpj">CNPJ <span class="req">*</span></label>
-                                    <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18">
+                                    <div style="position:relative;display:flex;align-items:center;gap:8px">
+                                        <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18" style="flex:1">
+                                        <span id="cnpj-spinner" style="display:none;position:absolute;right:14px"><i class="fas fa-spinner fa-spin" style="color:var(--azul-institucional)"></i></span>
+                                    </div>
+                                    <div id="cnpj-status" style="margin-top:6px;font-size:0.82rem;font-family:'Roboto',sans-serif;min-height:18px"></div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="ramoAtividade">Ramo de Atividade <span class="req">*</span></label>
@@ -659,6 +663,61 @@
         maskCEP(document.getElementById('resp2CEP'));
         maskCPF(document.getElementById('resp1CPF'));
         maskCPF(document.getElementById('resp2CPF'));
+
+        // CNPJ lookup
+        (function() {
+            function ttc(s) { return s ? s.toLowerCase().replace(/(?:^|\s)\S/g, function(c){ return c.toUpperCase(); }) : ''; }
+            function fCEP(v) { v = v.replace(/\D/g,''); return v.length === 8 ? v.slice(0,5)+'-'+v.slice(5) : v; }
+            function fTel(v) { v = v.replace(/\D/g,''); if (!v) return ''; if (v.length === 11) return '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7); if (v.length === 10) return '('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6); return v; }
+            function setSt(msg, cor) { var el = document.getElementById('cnpj-status'); if (!el) return; el.textContent = msg; el.style.color = cor; }
+            function setV(id, val) { var el = document.getElementById(id); if (el && val) el.value = val; }
+            function cnpjOk(d) {
+                if (d.length !== 14 || /^(\d)\1+$/.test(d)) return false;
+                var w1=[5,4,3,2,9,8,7,6,5,4,3,2], w2=[6,5,4,3,2,9,8,7,6,5,4,3,2];
+                var soma=function(w){var s=0;for(var i=0;i<w.length;i++)s+=+d[i]*w[i];var r=s%11;return r<2?0:11-r;};
+                return soma(w1)===+d[12] && soma(w2)===+d[13];
+            }
+            function preencher(data) {
+                var est = data.estabelecimento || data;
+                var sit = (est.situacao_cadastral || '').toUpperCase();
+                if (sit && sit !== 'ATIVA') setSt('⚠ CNPJ com situação: ' + ttc(sit), '#b45309');
+                else setSt('✓ Campos preenchidos automaticamente', '#166534');
+                setV('razaoSocial', data.razao_social || '');
+                setV('nomeFantasia', est.nome_fantasia || '');
+                setV('cepEmpresa', fCEP(est.cep || ''));
+                var cidade = (est.municipio && est.municipio.nome) || est.municipio || '';
+                setV('cidadeEmpresa', ttc(cidade));
+                setV('enderecoEmpresa', [ttc(est.logradouro||''), est.numero||'', est.complemento||''].filter(Boolean).join(', '));
+                setV('bairroEmpresa', ttc(est.bairro||''));
+                var ddd = est.ddd1||est.ddd_telefone_1||'', tel = est.telefone1||'';
+                setV('telefoneEmpresa', fTel(tel ? ddd+tel : ddd));
+                if (est.email) setV('emailEmpresa', est.email);
+                var uf = (est.estado && est.estado.sigla) || est.uf || '';
+                var ufSel = document.getElementById('ufEmpresa');
+                if (ufSel && uf) { for (var i=0;i<ufSel.options.length;i++) { if (ufSel.options[i].value===uf){ufSel.selectedIndex=i;break;} } }
+            }
+            document.getElementById('cnpj').addEventListener('input', async function() {
+                var digits = this.value.replace(/\D/g,'');
+                if (digits.length < 14) { setSt('', ''); return; }
+                if (!cnpjOk(digits)) { setSt('✕ CNPJ inválido. Verifique os dígitos.', '#dc2626'); return; }
+                var spinner = document.getElementById('cnpj-spinner');
+                if (spinner) spinner.style.display = 'inline-block';
+                setSt('Consultando…', '#5F6B76');
+                var ctrl = new AbortController();
+                var timer = setTimeout(function(){ ctrl.abort(); }, 10000);
+                try {
+                    var res = await fetch('/api/cnpj/' + digits, { signal: ctrl.signal });
+                    clearTimeout(timer);
+                    if (!res.ok) { var err = await res.json().catch(function(){return{};}); setSt('✕ ' + (err.message || 'CNPJ não encontrado na Receita Federal.'), '#dc2626'); return; }
+                    preencher(await res.json());
+                } catch(e) {
+                    clearTimeout(timer);
+                    setSt(e.name==='AbortError' ? '✕ Consulta demorou demais. Preencha manualmente.' : '✕ Não foi possível consultar. Preencha manualmente.', '#dc2626');
+                } finally {
+                    if (spinner) spinner.style.display = 'none';
+                }
+            });
+        })();
 
         // Submit
         document.getElementById('parceiroForm').addEventListener('submit', async function(e) {
