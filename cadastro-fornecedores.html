@@ -946,30 +946,38 @@
             }
 
             function preencherCampos(data) {
-                var situacao = (data.situacao_cadastral || '').toUpperCase();
+                // Suporte ao formato publica.cnpj.ws (nested) e BrasilAPI (flat)
+                var est = data.estabelecimento || data;
+                var situacao = (est.situacao_cadastral || '').toUpperCase();
                 if (situacao && situacao !== 'ATIVA') {
-                    setStatus('cnpj-aviso', '⚠️ CNPJ com situação: ' + toTitleCase(data.descricao_situacao_cadastral || situacao));
+                    setStatus('cnpj-aviso', '⚠️ CNPJ com situação: ' + toTitleCase(situacao));
                 } else {
                     setStatus('cnpj-ok', '✓ CNPJ encontrado — campos preenchidos automaticamente');
                 }
 
                 setVal('razao_social', data.razao_social || '');
-                setVal('nome_fantasia', data.nome_fantasia || '');
-                setVal('cep', fmtCEP(data.cep || ''));
-                setVal('cidade', toTitleCase(data.municipio || ''));
-                setVal('logradouro',
-                    [toTitleCase(data.logradouro || ''),
-                     data.numero || '',
-                     data.complemento || ''].filter(Boolean).join(', '));
-                setVal('bairro', toTitleCase(data.bairro || ''));
-                setVal('contato_telefone', fmtPhone(data.ddd_telefone_1 || ''));
-                if (data.email) setVal('contato_email', data.email);
+                setVal('nome_fantasia', est.nome_fantasia || '');
+                setVal('cep', fmtCEP(est.cep || ''));
 
-                // UF select
+                var cidade = (est.municipio && est.municipio.nome) || est.municipio || '';
+                setVal('cidade', toTitleCase(cidade));
+
+                setVal('logradouro',
+                    [toTitleCase(est.logradouro || ''),
+                     est.numero || '',
+                     est.complemento || ''].filter(Boolean).join(', '));
+                setVal('bairro', toTitleCase(est.bairro || ''));
+
+                var ddd = est.ddd1 || est.ddd_telefone_1 || '';
+                var tel = est.telefone1 || '';
+                setVal('contato_telefone', fmtPhone(tel ? ddd + tel : ddd));
+                if (est.email) setVal('contato_email', est.email);
+
+                var uf = (est.estado && est.estado.sigla) || est.uf || '';
                 var ufSel = document.getElementById('uf');
-                if (ufSel && data.uf) {
+                if (ufSel && uf) {
                     for (var i = 0; i < ufSel.options.length; i++) {
-                        if (ufSel.options[i].value === data.uf) { ufSel.selectedIndex = i; break; }
+                        if (ufSel.options[i].value === uf) { ufSel.selectedIndex = i; break; }
                     }
                 }
             }
@@ -980,15 +988,6 @@
                 var w2 = [6,5,4,3,2,9,8,7,6,5,4,3,2];
                 var soma = function(w) { var s=0; for(var i=0;i<w.length;i++) s += +d[i]*w[i]; var r=s%11; return r<2?0:11-r; };
                 return soma(w1) === +d[12] && soma(w2) === +d[13];
-            }
-
-            async function tentarFetch(url, signal) {
-                var res = await fetch(url, { signal: signal });
-                if (!res.ok) {
-                    var err = await res.json().catch(function() { return {}; });
-                    throw { tipo: 'http', msg: err.message || '' };
-                }
-                return res.json();
             }
 
             async function buscarCNPJ(cnpj) {
@@ -1002,24 +1001,19 @@
                 var controller = new AbortController();
                 var timer = setTimeout(function() { controller.abort(); }, 10000);
                 try {
-                    var data;
-                    try {
-                        data = await tentarFetch('/api/cnpj/' + cnpj, controller.signal);
-                    } catch(e1) {
-                        if (e1.tipo === 'http') throw e1;
-                        // proxy falhou — tenta direto
-                        data = await tentarFetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj, controller.signal);
-                    }
+                    var res = await fetch('/api/cnpj/' + cnpj, { signal: controller.signal });
                     clearTimeout(timer);
-                    preencherCampos(data);
+                    if (!res.ok) {
+                        var err = await res.json().catch(function() { return {}; });
+                        setStatus('cnpj-erro', '✕ ' + (err.message || 'CNPJ não encontrado na Receita Federal.'));
+                        return;
+                    }
+                    preencherCampos(await res.json());
                 } catch (e) {
                     clearTimeout(timer);
-                    var msg = e.name === 'AbortError'
+                    setStatus('cnpj-erro', e.name === 'AbortError'
                         ? '✕ Consulta demorou demais. Preencha os dados manualmente.'
-                        : e.tipo === 'http'
-                            ? '✕ CNPJ não encontrado na Receita Federal.'
-                            : '✕ Não foi possível consultar. Preencha os dados manualmente.';
-                    setStatus('cnpj-erro', msg);
+                        : '✕ Não foi possível consultar. Preencha os dados manualmente.');
                 } finally {
                     if (spinner) spinner.style.display = 'none';
                 }
