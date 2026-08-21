@@ -749,6 +749,27 @@
                         <input type="text" id="site_url" placeholder="https://adesiap.org.br">
                     </div>
                 </div>
+                <div style="border-top:1px solid var(--borda);margin-top:24px;padding-top:24px">
+                    <div class="field-group">
+                        <label>Favicon do site</label>
+                        <span class="field-desc">Substitua o ícone exibido na aba do navegador em todas as páginas (somente SVG)</span>
+                        <div style="display:flex;align-items:center;gap:16px;margin-top:10px;flex-wrap:wrap">
+                            <div style="width:52px;height:52px;border:1.5px solid var(--borda);border-radius:8px;background:#f8f9fa;padding:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                <img id="flaticon_preview" src="../flaticon.svg" alt="Favicon" style="max-width:100%;max-height:100%">
+                            </div>
+                            <div style="flex:1;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                                <input type="file" id="flaticon_file" accept=".svg,image/svg+xml" style="display:none" onchange="previewFlaticon(this)">
+                                <button class="btn btn-secondary" onclick="document.getElementById('flaticon_file').click()">
+                                    <i class="fas fa-upload"></i> Escolher SVG
+                                </button>
+                                <span id="flaticon_nome" style="font-size:0.82rem;color:var(--texto-leve)">Nenhum arquivo selecionado</span>
+                            </div>
+                            <button class="btn btn-primary" onclick="uploadFlaticon()" id="btn_upload_flaticon" disabled>
+                                <i class="fas fa-save"></i> Aplicar favicon
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="section-footer">
                 <button class="btn btn-primary" onclick="salvarGrupo('site')">
@@ -1064,6 +1085,11 @@
             ppEl.value = window._politicaPrivacidadePadrao || '';
         }
         });
+        // Favicon: mostra versão salva no Supabase (se houver)
+        if (configs['flaticon_url']) {
+            const prev = document.getElementById('flaticon_preview');
+            if (prev) prev.src = configs['flaticon_url'];
+        }
     }
 
     // ── SALVAR GRUPO ────────────────────────────────────────
@@ -1385,7 +1411,54 @@
         }
     }
 
-    // ── UTILITÁRIOS ─────────────────────────────────────────
+    // ── FAVICON ─────────────────────────────────────────────
+    var _flatIconText = null;
+
+    function previewFlaticon(input) {
+        const file = input.files[0];
+        if (!file) return;
+        document.getElementById('flaticon_nome').textContent = file.name;
+        document.getElementById('btn_upload_flaticon').disabled = false;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            _flatIconText = e.target.result;
+            try {
+                const b64 = btoa(unescape(encodeURIComponent(_flatIconText)));
+                document.getElementById('flaticon_preview').src = 'data:image/svg+xml;base64,' + b64;
+            } catch(err) {}
+        };
+        reader.readAsText(file);
+    }
+
+    async function uploadFlaticon() {
+        if (!_flatIconText) return;
+        const btn = document.getElementById('btn_upload_flaticon');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Salvando...';
+        try {
+            const b64 = btoa(unescape(encodeURIComponent(_flatIconText)));
+            const dataUrl = 'data:image/svg+xml;base64,' + b64;
+            await sbFetch('configuracoes?on_conflict=chave', {
+                method: 'POST',
+                headers: { 'Prefer': 'resolution=merge-duplicates' },
+                body: JSON.stringify([{ grupo: 'site', chave: 'flaticon_url', valor: dataUrl }])
+            });
+            configs['flaticon_url'] = dataUrl;
+            // Aplica na aba atual
+            const link = document.querySelector('link[rel="icon"]');
+            if (link) link.href = dataUrl;
+            // Invalida cache das páginas públicas
+            localStorage.removeItem('adesiap_flaticon');
+            document.getElementById('flaticon_nome').textContent = 'Aplicado com sucesso!';
+            mostrarToast('Favicon atualizado! Será aplicado em todas as páginas.', 'sucesso');
+        } catch(e) {
+            mostrarToast('Erro ao salvar favicon: ' + e.message, 'erro');
+            btn.disabled = false;
+        }
+        btn.innerHTML = '<i class="fas fa-save"></i> Aplicar favicon';
+    }
+
+    // ── UTILITÁRIOS ─────────────────────────────────────────────────────────
     function mostrarToast(msg, tipo = 'sucesso') {
         const t = document.getElementById('toast');
         const icone = tipo === 'sucesso' ? 'fa-check-circle' : tipo === 'erro' ? 'fa-times-circle' : 'fa-info-circle';

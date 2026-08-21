@@ -3,6 +3,36 @@
     var CACHE_TTL = 5 * 60 * 1000; // 5 min
     var API = '/api/admin/visibilidade';
 
+    // ── Favicon sync ─────────────────────────────────────────────────────────
+    var FAV_KEY = 'adesiap_flaticon';
+    var FAV_TTL = 24 * 60 * 60 * 1000; // 24h
+    var SB_URL  = 'https://vpnqqrzzptuselhiemyp.supabase.co';
+    var SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
+
+    function applyFavicon(url) {
+        var link = document.querySelector('link[rel="icon"]');
+        if (link && url) link.href = url;
+    }
+
+    function syncFavicon() {
+        try {
+            var c = JSON.parse(localStorage.getItem(FAV_KEY) || 'null');
+            if (c && Date.now() - c.ts < FAV_TTL) { applyFavicon(c.val); return; }
+        } catch(e) {}
+        fetch(SB_URL + '/rest/v1/configuracoes?chave=eq.flaticon_url&select=valor', {
+            headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(rows) {
+            var url = rows && rows[0] && rows[0].valor;
+            if (url) {
+                applyFavicon(url);
+                try { localStorage.setItem(FAV_KEY, JSON.stringify({ ts: Date.now(), val: url })); } catch(e) {}
+            }
+        })
+        .catch(function() {});
+    }
+
     // Mapa: chave → arquivo da página
     var PAGE_KEYS = {
         'quem-somos.html':            'pagina_quem-somos',
@@ -169,6 +199,7 @@
     if (cached) checkPage(cached); // redireciona imediatamente se oculta (usa cache)
 
     function run() {
+        syncFavicon();
         if (cached) applyAll(cached);
         fetch(API)
             .then(function (r) { return r.json(); })
