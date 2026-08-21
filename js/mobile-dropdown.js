@@ -31,11 +31,10 @@
 
     function initDropdowns() {
         var mainMenu = document.querySelector('.main-menu');
-        if (!mainMenu) return;
 
         // When hamburger closes the menu, also collapse any open dropdowns
         var hamburger = document.getElementById('mobile-menu-btn');
-        if (hamburger) {
+        if (hamburger && mainMenu) {
             hamburger.addEventListener('click', function () {
                 mainMenu.querySelectorAll('.dropdown.open').forEach(function (d) {
                     d.classList.remove('open');
@@ -43,17 +42,21 @@
             });
         }
 
-        // Intercept dropdown parent links on mobile
-        mainMenu.querySelectorAll('.dropdown > a').forEach(function (link) {
+        // Intercept ALL dropdown parent links on mobile (main menu + footer)
+        document.querySelectorAll('.dropdown > a').forEach(function (link) {
             link.addEventListener('click', function (e) {
                 if (window.innerWidth > 991) return;
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 var dropdown = link.parentElement;
                 var isOpen = dropdown.classList.contains('open');
-                mainMenu.querySelectorAll('.dropdown.open').forEach(function (d) {
-                    d.classList.remove('open');
-                });
+                // Close all open dropdowns in the same container
+                var container = dropdown.parentElement;
+                if (container) {
+                    container.querySelectorAll('.dropdown.open').forEach(function (d) {
+                        d.classList.remove('open');
+                    });
+                }
                 if (!isOpen) dropdown.classList.add('open');
             });
         });
