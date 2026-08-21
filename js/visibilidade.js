@@ -25,6 +25,7 @@
 
     // Mapa: chave de seção → seletor CSS (somente index.html)
     var SECTION_SEL = {
+        // index.html
         'secao_hero':         '.hero',
         'secao_quem-somos':   '#quem-somos',
         'secao_parceiros':    '.partners-section',
@@ -55,6 +56,11 @@
         'pagina_fale-conosco':          ['fale-conosco.html'],
         'pagina_cadastro-fornecedores': ['cadastro-fornecedores.html'],
         'pagina_politica-privacidade':  ['politica-privacidade.html'],
+    };
+
+    // Mapa: chave → { página, seletor } para seções em páginas específicas (fora da index)
+    var OTHER_SECTIONS = {
+        'secao_ouvidoria-denuncias': { page: 'ouvidoria.html', sel: '#hub-card-denuncias' },
     };
 
     var filename = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
@@ -141,9 +147,21 @@
         });
     }
 
+    // ── Oculta seções em páginas específicas (fora da index) ────────────────────
+    function applyOtherSections(data) {
+        Object.keys(OTHER_SECTIONS).forEach(function (key) {
+            var cfg = OTHER_SECTIONS[key];
+            if (filename !== cfg.page) return;
+            var el = document.querySelector(cfg.sel);
+            if (!el) return;
+            el.style.display = data[key] === false ? 'none' : '';
+        });
+    }
+
     function applyAll(data) {
         checkPage(data);
         applySections(data);
+        applyOtherSections(data);
         applyLinks(data);
     }
 
