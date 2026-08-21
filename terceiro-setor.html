@@ -133,16 +133,12 @@
 
         @media (max-width: 991px) {
             .mobile-menu-btn { display: block; }
-            .main-menu {
-                display: flex; flex-direction: column; position: fixed; top: calc(var(--header-height) + var(--topbar-height));
-                left: -100%; width: 100%; height: calc(100vh - var(--header-height) - var(--topbar-height));
-                background-color: #fff; transition: left 0.3s ease; padding: 40px 20px;
-                overflow-y: auto; gap: 0;
-            }
-            .main-menu.active { left: 0; }
-            .main-menu li a { font-size: 1.2rem; padding: 15px 0; display: block; border-bottom: 1px solid var(--areia-fundo); }
-            .dropdown-menu { display: flex; position: relative; box-shadow: none; padding-left: 20px; min-width: 100%; border-radius: 0; }
-            .dropdown-menu li a { font-size: 1.1rem; padding: 10px 0; border-bottom: 1px dashed var(--areia-fundo); }
+            #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow-y: auto; max-height: calc(100vh - var(--topbar-height) - var(--header-height)); z-index: 999; }
+            #main-menu.open { display: block; }
+            .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
+            .main-menu > li { width: 100%; }
+            .main-menu > li > a { display: block; padding: 12px 0; border-bottom: 1px solid var(--areia-fundo); font-size: 1rem !important; font-weight: 600; text-transform: none; letter-spacing: normal; }
+            .dropdown-menu { position: static !important; display: none !important; box-shadow: none !important; padding-left: 16px; min-width: unset !important; width: 100% !important; }
         }
 
         /* Hero */
@@ -703,13 +699,9 @@
 
     <script>
         const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mainMenu = document.querySelector('.main-menu');
-        if (mobileBtn && mainMenu) {
+        if (mobileBtn) {
             mobileBtn.addEventListener('click', () => {
-                mainMenu.classList.toggle('active');
-                const icon = mobileBtn.querySelector('i');
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
+                document.getElementById('main-menu').classList.toggle('open');
             });
         }
 

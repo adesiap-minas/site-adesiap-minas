@@ -1,22 +1,21 @@
 // Mobile dropdown: tap opens submenu; submenu items navigate normally
 (function () {
-    // CSS for mobile dropdown
     var style = document.createElement('style');
     style.textContent = [
         '@media (max-width: 991px) {',
         '  .dropdown > a > i.fa-chevron-down { transition: transform 0.3s; display: inline-block; }',
-        '  .dropdown:hover > .dropdown-menu { display: none; }',
+        '  .dropdown:hover > .dropdown-menu { display: none !important; }',
         '  .dropdown.open > a > i.fa-chevron-down { transform: rotate(180deg); }',
         '  .dropdown.open > .dropdown-menu {',
         '    display: flex !important;',
         '    flex-direction: column;',
-        '    position: static;',
-        '    box-shadow: none;',
+        '    position: static !important;',
+        '    box-shadow: none !important;',
         '    background: rgba(245,242,238,0.6);',
         '    border-radius: 0 0 6px 6px;',
         '    padding: 4px 0 8px 16px;',
         '    border-left: 3px solid var(--terracota-institucional, #c0614a);',
-        '    min-width: unset;',
+        '    min-width: unset !important;',
         '    width: 100%;',
         '    margin-top: 0;',
         '  }',
@@ -29,47 +28,42 @@
     ].join('\n');
     document.head.appendChild(style);
 
-    // CAPTURE PHASE — fires before any element-level listener or bubbling handler.
-    // This intercepts the click at the top of the event chain, preventing navigation
-    // on dropdown parents regardless of what other scripts do.
-    document.addEventListener('click', function (e) {
-        if (window.innerWidth > 991) return;
+    function initDropdowns() {
+        // Attach CAPTURE-phase listeners directly to each dropdown parent <a>.
+        // Capture on the element fires before any target-phase listener added earlier
+        // (e.g. the menu-close handlers in inline page scripts).
+        document.querySelectorAll('.dropdown > a').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                if (window.innerWidth > 991) return;
+                e.preventDefault();
+                e.stopImmediatePropagation(); // also stops sibling handlers on this element
+                var dropdown = a.parentElement;
+                var isOpen = dropdown.classList.contains('open');
+                var list = dropdown.parentElement;
+                if (list) {
+                    list.querySelectorAll('.dropdown.open').forEach(function (d) {
+                        d.classList.remove('open');
+                    });
+                }
+                if (!isOpen) dropdown.classList.add('open');
+            }, true); // true = capture phase on the element
+        });
 
-        // Walk up from the clicked target to find a .dropdown > a
-        var link = e.target;
-        while (link && link !== document) {
-            if (link.tagName === 'A' && link.parentElement && link.parentElement.classList.contains('dropdown')) break;
-            link = link.parentElement;
-        }
-        if (!link || link === document) return;
-
-        // It's a dropdown parent link — block navigation and toggle submenu
-        e.preventDefault();
-        e.stopPropagation();
-
-        var dropdown = link.parentElement;
-        var isOpen = dropdown.classList.contains('open');
-        // Collapse all open dropdowns in the same list
-        var list = dropdown.parentElement;
-        if (list) {
-            list.querySelectorAll('.dropdown.open').forEach(function (d) {
-                d.classList.remove('open');
-            });
-        }
-        if (!isOpen) dropdown.classList.add('open');
-
-    }, true); // true = capture phase
-
-    // Collapse open dropdowns when hamburger closes the menu
-    document.addEventListener('DOMContentLoaded', function () {
+        // Collapse open dropdowns when hamburger closes the menu
         var hamburger = document.getElementById('mobile-menu-btn');
-        var mainMenu = document.querySelector('.main-menu');
-        if (hamburger && mainMenu) {
+        if (hamburger) {
             hamburger.addEventListener('click', function () {
-                mainMenu.querySelectorAll('.dropdown.open').forEach(function (d) {
+                document.querySelectorAll('.dropdown.open').forEach(function (d) {
                     d.classList.remove('open');
                 });
             });
         }
-    });
+    }
+
+    // defer scripts run after HTML parsing (readyState is 'interactive')
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDropdowns);
+    } else {
+        initDropdowns();
+    }
 })();
