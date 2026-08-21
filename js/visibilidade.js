@@ -148,11 +148,10 @@
     }
 
     // ── Oculta seções em páginas específicas (fora da index) ────────────────────
+    // Usa só o seletor CSS — se o elemento não existir na página atual, querySelector retorna null
     function applyOtherSections(data) {
         Object.keys(OTHER_SECTIONS).forEach(function (key) {
-            var cfg = OTHER_SECTIONS[key];
-            if (filename !== cfg.page) return;
-            var el = document.querySelector(cfg.sel);
+            var el = document.querySelector(OTHER_SECTIONS[key].sel);
             if (!el) return;
             el.style.display = data[key] === false ? 'none' : '';
         });
