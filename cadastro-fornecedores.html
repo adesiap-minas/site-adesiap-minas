@@ -346,18 +346,6 @@
         }
 
         /* CNPJ lookup */
-        .cnpj-destaque {
-            background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 100%);
-            border: 1.5px solid #BFDBFE;
-            border-radius: 10px;
-            padding: 20px 22px;
-            margin-bottom: 24px;
-        }
-        .cnpj-destaque-header {
-            display: flex; align-items: center; gap: 8px;
-            font-size: .78rem; font-weight: 700; color: #1D4ED8;
-            text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px;
-        }
         #cnpj-status {
             font-size: .82rem; font-weight: 500;
             margin-top: 6px; min-height: 20px;
@@ -628,24 +616,18 @@
                 </div>
 
                 <!-- CNPJ em destaque — consulta automática Receita Federal -->
-                <div class="cnpj-destaque">
-                    <div class="cnpj-destaque-header">
-                        <i class="fas fa-search"></i> Consulta automática pela Receita Federal
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="cnpj">CNPJ *</label>
+                        <div style="position:relative">
+                            <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18" required autocomplete="off">
+                            <span id="cnpj-spinner" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#1D4ED8"><i class="fas fa-circle-notch fa-spin"></i></span>
+                        </div>
+                        <div id="cnpj-status"></div>
                     </div>
-                    <p style="font-size:.85rem;color:#3B5B8C;margin:0 0 14px">Digite o CNPJ da empresa e preencheremos os dados automaticamente.</p>
-                    <div class="row">
-                        <div class="col-md-6 form-group" style="margin-bottom:0">
-                            <label class="form-label" for="cnpj">CNPJ *</label>
-                            <div style="position:relative">
-                                <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18" required autocomplete="off">
-                                <span id="cnpj-spinner" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#1D4ED8"><i class="fas fa-circle-notch fa-spin"></i></span>
-                            </div>
-                            <div id="cnpj-status"></div>
-                        </div>
-                        <div class="col-md-6 form-group" style="margin-bottom:0">
-                            <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
-                            <input type="text" id="inscricao_estadual" class="form-control" placeholder="Isento ou nº da inscrição">
-                        </div>
+                    <div class="col-md-6 form-group">
+                        <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
+                        <input type="text" id="inscricao_estadual" class="form-control" placeholder="Isento ou nº da inscrição">
                     </div>
                 </div>
 
@@ -995,18 +977,25 @@
             async function buscarCNPJ(cnpj) {
                 var spinner = document.getElementById('cnpj-spinner');
                 if (spinner) spinner.style.display = 'inline-block';
-                setStatus('cnpj-load', 'Consultando Receita Federal…');
+                setStatus('cnpj-load', 'Consultando…');
+                var controller = new AbortController();
+                var timer = setTimeout(function() { controller.abort(); }, 8000);
                 try {
-                    var res = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj);
+                    var res = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj, { signal: controller.signal });
+                    clearTimeout(timer);
                     if (!res.ok) {
                         var err = await res.json().catch(function() { return {}; });
-                        setStatus('cnpj-erro', '✕ ' + (err.message || 'CNPJ não encontrado. Verifique e tente novamente.'));
+                        setStatus('cnpj-erro', '✕ ' + (err.message || 'CNPJ não encontrado. Preencha os dados manualmente.'));
                         return;
                     }
                     var data = await res.json();
                     preencherCampos(data);
                 } catch (e) {
-                    setStatus('cnpj-erro', '✕ Erro ao consultar. Verifique sua conexão.');
+                    clearTimeout(timer);
+                    var msg = e.name === 'AbortError'
+                        ? '✕ Consulta demorou demais. Preencha os dados manualmente.'
+                        : '✕ Não foi possível consultar. Preencha os dados manualmente.';
+                    setStatus('cnpj-erro', msg);
                 } finally {
                     if (spinner) spinner.style.display = 'none';
                 }
