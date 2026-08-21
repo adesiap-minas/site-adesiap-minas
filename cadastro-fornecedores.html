@@ -981,7 +981,7 @@
                 var controller = new AbortController();
                 var timer = setTimeout(function() { controller.abort(); }, 8000);
                 try {
-                    var res = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj, { signal: controller.signal });
+                    var res = await fetch('/api/cnpj?cnpj=' + cnpj, { signal: controller.signal });
                     clearTimeout(timer);
                     if (!res.ok) {
                         var err = await res.json().catch(function() { return {}; });
