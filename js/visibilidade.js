@@ -187,7 +187,64 @@
         });
     }
 
+    // ── Modo Manutenção ──────────────────────────────────────────────────────
+    function checkMaintenance(data) {
+        if (data['manutencao_ativa'] !== true || isSuperAdmin()) return;
+
+        // Injeta CSS de animação
+        var style = document.createElement('style');
+        style.textContent = '@keyframes adesiap-fadein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}' +
+            '@keyframes adesiap-pulse{0%,100%{opacity:.4}50%{opacity:.9}}' +
+            '#adesiap-manutencao *{box-sizing:border-box}';
+        document.head.appendChild(style);
+
+        // Esconde o conteúdo original
+        document.documentElement.style.overflow = 'hidden';
+
+        var el = document.createElement('div');
+        el.id = 'adesiap-manutencao';
+        el.style.cssText = 'position:fixed;inset:0;z-index:999999;background:linear-gradient(145deg,#0B1F33 0%,#12395D 55%,#1a4f82 100%);display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;';
+
+        el.innerHTML =
+            '<div style="text-align:center;max-width:500px;padding:48px 28px;animation:adesiap-fadein .6s ease both">' +
+
+            // Logo
+            '<img src="./ADESIAP MINAS BRANCA.png" alt="ADESIAP Minas"' +
+            ' style="height:52px;margin-bottom:48px;opacity:.95;filter:drop-shadow(0 2px 12px rgba(0,0,0,.3))"' +
+            ' onerror="this.style.display=\'none\'">' +
+
+            // Ícone animado
+            '<div style="width:80px;height:80px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 32px;font-size:2.2rem;animation:adesiap-pulse 2.4s ease-in-out infinite">' +
+            '<i class="fas fa-tools" style="color:rgba(255,255,255,.75)"></i>' +
+            '</div>' +
+
+            // Título
+            '<h1 style="color:#fff;font-size:2rem;font-weight:700;margin:0 0 14px;letter-spacing:-.03em;line-height:1.2">' +
+            'Site em Manutenção' +
+            '</h1>' +
+
+            // Descrição
+            '<p style="color:rgba(255,255,255,.6);font-size:1rem;line-height:1.75;margin:0 0 48px">' +
+            'Estamos realizando melhorias para oferecer<br>uma experiência ainda melhor.<br>' +
+            '<span style="color:rgba(255,255,255,.85);font-weight:600">Voltaremos em breve!</span>' +
+            '</p>' +
+
+            // Divider
+            '<div style="width:40px;height:2px;background:rgba(255,255,255,.15);margin:0 auto 32px;border-radius:2px"></div>' +
+
+            // Contato
+            '<div style="display:inline-flex;align-items:center;gap:10px;padding:12px 22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:50px">' +
+            '<i class="fas fa-envelope" style="color:rgba(255,255,255,.4);font-size:.85rem"></i>' +
+            '<a href="mailto:contato@adesiap.org.br" style="color:rgba(255,255,255,.5);font-size:.85rem;text-decoration:none;font-family:Inter,sans-serif">contato@adesiap.org.br</a>' +
+            '</div>' +
+
+            '</div>';
+
+        document.body.appendChild(el);
+    }
+
     function applyAll(data) {
+        checkMaintenance(data);
         checkPage(data);
         applySections(data);
         applyOtherSections(data);

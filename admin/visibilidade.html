@@ -92,6 +92,25 @@
 
         .td-toggle { text-align: center; }
 
+        /* Toggle perigo (manutenção) */
+        .tog-danger input:checked + .tog-slider { background: #DC2626; }
+
+        /* Card manutenção */
+        .manut-card { background: #fff; border-radius: 12px; margin-bottom: 24px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 2px solid #FECACA; transition: border-color .3s; }
+        .manut-card.ativa { border-color: #DC2626; box-shadow: 0 4px 24px rgba(220,38,38,.15); }
+        .manut-header { display: flex; align-items: center; gap: 16px; padding: 24px 28px; background: #FFF5F5; transition: background .3s; }
+        .manut-card.ativa .manut-header { background: #FEF2F2; }
+        .manut-icon { width: 48px; height: 48px; border-radius: 12px; background: #DC2626; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; flex-shrink: 0; }
+        .manut-info { flex: 1; }
+        .manut-info h2 { font-size: 1.05rem; color: #991B1B; font-weight: 700; margin: 0 0 3px; }
+        .manut-info p { font-size: .82rem; color: #B91C1C; margin: 0; line-height: 1.5; }
+        .manut-status { display: flex; align-items: center; gap: 16px; }
+        .manut-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: .8rem; font-weight: 700; }
+        .manut-badge.normal { background: #D1FAE5; color: #065F46; }
+        .manut-badge.ativa  { background: #FEE2E2; color: #991B1B; }
+        .manut-footer { padding: 14px 28px; background: #FFF9F9; border-top: 1px solid #FECACA; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #B91C1C; }
+        .manut-card.ativa .manut-footer { background: #FEF2F2; }
+
         /* Loading */
         .loading-row td { text-align: center; padding: 40px; color: var(--texto-leve); }
         .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--borda); border-top-color: var(--azul); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: middle; }
@@ -164,6 +183,30 @@
         <div class="page-header">
             <h1><i class="fas fa-eye-slash" style="color:var(--terracota);margin-right:10px;font-size:1.4rem;"></i>Visibilidade do Site</h1>
             <p>Controle quais páginas e seções estão visíveis para os visitantes. Páginas ocultas somem do menu, rodapé e redirecionam para a home.</p>
+        </div>
+
+        <!-- MODO MANUTENÇÃO -->
+        <div class="manut-card" id="manutCard">
+            <div class="manut-header">
+                <div class="manut-icon"><i class="fas fa-hard-hat"></i></div>
+                <div class="manut-info">
+                    <h2><i class="fas fa-shield-alt" style="margin-right:6px;font-size:.9rem"></i>Modo Manutenção</h2>
+                    <p>Quando ativo, <strong>todos os visitantes</strong> veem a tela de manutenção em todas as páginas. O painel admin continua acessível normalmente.</p>
+                </div>
+                <div class="manut-status">
+                    <span class="manut-badge normal" id="manutBadge">
+                        <i class="fas fa-check-circle"></i> Site no ar
+                    </span>
+                    <label class="tog tog-danger" style="width:52px;height:28px" title="Ativar modo manutenção">
+                        <input type="checkbox" id="togManutencao" onchange="toggleManutencao(this)">
+                        <span class="tog-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="manut-footer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="manutFooterMsg">Nenhum visitante está sendo afetado agora.</span>
+            </div>
         </div>
 
         <!-- Páginas -->
@@ -286,6 +329,57 @@ function buildRow(item, visivel, tipo) {
         '</tr>';
 }
 
+function applyManutencaoUI(ativa) {
+    var card  = document.getElementById('manutCard');
+    var badge = document.getElementById('manutBadge');
+    var msg   = document.getElementById('manutFooterMsg');
+    var tog   = document.getElementById('togManutencao');
+
+    tog.checked = ativa;
+
+    if (ativa) {
+        card.classList.add('ativa');
+        badge.className = 'manut-badge ativa';
+        badge.innerHTML = '<i class="fas fa-exclamation-circle"></i> Manutenção ativa';
+        msg.innerHTML = '<strong>Visitantes estão vendo a tela de manutenção agora.</strong> Lembre-se de desativar quando o site estiver pronto.';
+    } else {
+        card.classList.remove('ativa');
+        badge.className = 'manut-badge normal';
+        badge.innerHTML = '<i class="fas fa-check-circle"></i> Site no ar';
+        msg.textContent = 'Nenhum visitante está sendo afetado agora.';
+    }
+}
+
+function toggleManutencao(cb) {
+    var ativa = cb.checked;
+    if (ativa && !confirm('Ativar o modo manutenção?\n\nTodos os visitantes verão a tela de manutenção imediatamente.\nO painel admin continua acessível normalmente.')) {
+        cb.checked = false;
+        return;
+    }
+    cb.disabled = true;
+
+    fetch(API, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+        body: JSON.stringify({ chave: 'manutencao_ativa', visivel: ativa }),
+    })
+    .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, d: d }; }); })
+    .then(function(res) {
+        if (!res.ok) throw new Error(res.d.error || 'Erro ao salvar.');
+        applyManutencaoUI(ativa);
+        localStorage.removeItem('adesiap_vis');
+        showToast(
+            ativa ? 'Modo manutenção ativado — visitantes veem a tela de manutenção.' : 'Modo manutenção desativado — site funcionando normalmente.',
+            ativa ? 'erro' : 'ok'
+        );
+    })
+    .catch(function(e) {
+        cb.checked = !ativa;
+        showToast(e.message || 'Erro ao salvar.', 'erro');
+    })
+    .finally(function() { cb.disabled = false; });
+}
+
 function toggle(chave, cb) {
     var visivel = cb.checked;
     cb.disabled = true;
@@ -320,6 +414,9 @@ function init() {
     fetch(API)
         .then(function (r) { return r.json(); })
         .then(function (data) {
+            // Modo manutenção
+            applyManutencaoUI(data['manutencao_ativa'] === true);
+
             var htmlP = '';
             PAGINAS.forEach(function (p) {
                 var vis = data[p.chave] !== false;
