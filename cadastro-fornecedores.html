@@ -975,13 +975,11 @@
             }
 
             function cnpjValido(d) {
-                if (/^(\d)\1+$/.test(d)) return false;
-                var calc = function(d, n) {
-                    var s = 0, p = n;
-                    for (var i = 0; i < n - 1; i++) { s += +d[i] * p--; if (p < 2) p = 9; }
-                    var r = s % 11; return r < 2 ? 0 : 11 - r;
-                };
-                return calc(d, 13) === +d[12] && calc(d, 14) === +d[13];
+                if (d.length !== 14 || /^(\d)\1+$/.test(d)) return false;
+                var w1 = [5,4,3,2,9,8,7,6,5,4,3,2];
+                var w2 = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+                var soma = function(w) { var s=0; for(var i=0;i<w.length;i++) s += +d[i]*w[i]; var r=s%11; return r<2?0:11-r; };
+                return soma(w1) === +d[12] && soma(w2) === +d[13];
             }
 
             async function tentarFetch(url, signal) {
