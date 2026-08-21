@@ -20,6 +20,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/cnpj/:cnpj", "destination": "https://brasilapi.com.br/api/cnpj/v1/:cnpj" },
     { "source": "/api/(.*)", "destination": "/api/$1" }
   ]
 }
