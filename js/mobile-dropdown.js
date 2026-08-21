@@ -29,6 +29,30 @@
     ].join('\n');
     document.head.appendChild(style);
 
+    function getDropdownLinks() {
+        return document.querySelectorAll('.dropdown > a');
+    }
+
+    // Remove href on mobile so the link cannot navigate; restore on desktop
+    function patchHrefs() {
+        var mobile = window.innerWidth <= 991;
+        getDropdownLinks().forEach(function (a) {
+            if (mobile) {
+                if (a.getAttribute('href') && !a.dataset.mobileHref) {
+                    a.dataset.mobileHref = a.getAttribute('href');
+                    a.removeAttribute('href');
+                    a.style.cursor = 'pointer';
+                }
+            } else {
+                if (a.dataset.mobileHref) {
+                    a.setAttribute('href', a.dataset.mobileHref);
+                    delete a.dataset.mobileHref;
+                    a.style.cursor = '';
+                }
+            }
+        });
+    }
+
     function initDropdowns() {
         var mainMenu = document.querySelector('.main-menu');
 
@@ -42,12 +66,15 @@
             });
         }
 
-        // Intercept ALL dropdown parent links on mobile (main menu + footer)
-        document.querySelectorAll('.dropdown > a').forEach(function (link) {
+        // Patch hrefs now and on every resize
+        patchHrefs();
+        window.addEventListener('resize', patchHrefs);
+
+        // Toggle dropdown on click (link has no href on mobile, so no navigation risk)
+        getDropdownLinks().forEach(function (link) {
             link.addEventListener('click', function (e) {
                 if (window.innerWidth > 991) return;
                 e.preventDefault();
-                e.stopImmediatePropagation();
                 var dropdown = link.parentElement;
                 var isOpen = dropdown.classList.contains('open');
                 // Close all open dropdowns in the same container
