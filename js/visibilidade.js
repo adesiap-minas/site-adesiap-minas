@@ -191,56 +191,81 @@
     function checkMaintenance(data) {
         if (data['manutencao_ativa'] !== true || isSuperAdmin()) return;
 
-        // Injeta CSS de animação
         var style = document.createElement('style');
         style.textContent = '@keyframes adesiap-fadein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}' +
             '@keyframes adesiap-pulse{0%,100%{opacity:.4}50%{opacity:.9}}' +
             '#adesiap-manutencao *{box-sizing:border-box}';
         document.head.appendChild(style);
 
-        // Esconde o conteúdo original
         document.documentElement.style.overflow = 'hidden';
+
+        var PILL = 'display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:50px;font-size:.85rem;text-decoration:none;font-family:Inter,sans-serif;';
 
         var el = document.createElement('div');
         el.id = 'adesiap-manutencao';
         el.style.cssText = 'position:fixed;inset:0;z-index:999999;background:linear-gradient(145deg,#0B1F33 0%,#12395D 55%,#1a4f82 100%);display:flex;align-items:center;justify-content:center;font-family:Inter,sans-serif;';
 
         el.innerHTML =
-            '<div style="text-align:center;max-width:500px;padding:48px 28px;animation:adesiap-fadein .6s ease both">' +
+            '<div style="text-align:center;max-width:520px;padding:48px 28px;animation:adesiap-fadein .6s ease both">' +
 
-            // Logo
             '<img src="./ADESIAP MINAS BRANCA.png" alt="ADESIAP Minas"' +
             ' style="height:52px;margin-bottom:48px;opacity:.95;filter:drop-shadow(0 2px 12px rgba(0,0,0,.3))"' +
             ' onerror="this.style.display=\'none\'">' +
 
-            // Ícone animado
             '<div style="width:80px;height:80px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 32px;font-size:2.2rem;animation:adesiap-pulse 2.4s ease-in-out infinite">' +
             '<i class="fas fa-tools" style="color:rgba(255,255,255,.75)"></i>' +
             '</div>' +
 
-            // Título
-            '<h1 style="color:#fff;font-size:2rem;font-weight:700;margin:0 0 14px;letter-spacing:-.03em;line-height:1.2">' +
-            'Site em Manutenção' +
-            '</h1>' +
+            '<h1 style="color:#fff;font-size:2rem;font-weight:700;margin:0 0 14px;letter-spacing:-.03em;line-height:1.2">Site em Manutenção</h1>' +
 
-            // Descrição
-            '<p style="color:rgba(255,255,255,.6);font-size:1rem;line-height:1.75;margin:0 0 48px">' +
+            '<p style="color:rgba(255,255,255,.6);font-size:1rem;line-height:1.75;margin:0 0 40px">' +
             'Estamos realizando melhorias para oferecer<br>uma experiência ainda melhor.<br>' +
             '<span style="color:rgba(255,255,255,.85);font-weight:600">Voltaremos em breve!</span>' +
             '</p>' +
 
-            // Divider
-            '<div style="width:40px;height:2px;background:rgba(255,255,255,.15);margin:0 auto 32px;border-radius:2px"></div>' +
+            '<div style="width:40px;height:2px;background:rgba(255,255,255,.15);margin:0 auto 28px;border-radius:2px"></div>' +
 
-            // Contato
-            '<div style="display:inline-flex;align-items:center;gap:10px;padding:12px 22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:50px">' +
+            // E-mail
+            '<div style="' + PILL + 'background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);">' +
             '<i class="fas fa-envelope" style="color:rgba(255,255,255,.4);font-size:.85rem"></i>' +
             '<a href="mailto:contato@adesiap.org.br" style="color:rgba(255,255,255,.5);font-size:.85rem;text-decoration:none;font-family:Inter,sans-serif">contato@adesiap.org.br</a>' +
             '</div>' +
 
+            // WhatsApp — preenchido após fetch
+            '<div id="manut-wa" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px;min-height:44px"></div>' +
+
             '</div>';
 
         document.body.appendChild(el);
+
+        // Busca os números da topbar (mesma fonte do wa-config.js)
+        fetch(SB_URL + '/rest/v1/configuracoes?grupo=eq.whatsapp&select=chave,valor', {
+            headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(rows) {
+            var cfg = {};
+            rows.forEach(function(r) { cfg[r.chave] = r.valor || ''; });
+
+            var html = '';
+            [3, 1, 2].forEach(function(i) {
+                var num   = cfg['wa_topbar_' + i + '_numero'];
+                var label = cfg['wa_topbar_' + i + '_label'];
+                var msg   = cfg['wa_topbar_' + i + '_msg'] || '';
+                if (!num || !label) return;
+                var href = 'https://wa.me/' + num + (msg ? '?text=' + encodeURIComponent(msg) : '');
+                html +=
+                    '<a href="' + href + '" target="_blank" rel="noopener"' +
+                    ' style="' + PILL + 'background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:rgba(255,255,255,.65);">' +
+                    '<i class="fab fa-whatsapp" style="color:#25D366;font-size:.95rem"></i>' +
+                    '<span style="font-size:.82rem;font-family:Inter,sans-serif">' + label + '</span>' +
+                    '</a>';
+            });
+
+            var waEl = document.getElementById('manut-wa');
+            if (waEl && html) waEl.innerHTML = html;
+        })
+        .catch(function() {});
     }
 
     function applyAll(data) {
