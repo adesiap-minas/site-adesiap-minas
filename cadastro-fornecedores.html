@@ -345,6 +345,34 @@
             min-height: 120px;
         }
 
+        /* CNPJ lookup */
+        .cnpj-destaque {
+            background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 100%);
+            border: 1.5px solid #BFDBFE;
+            border-radius: 10px;
+            padding: 20px 22px;
+            margin-bottom: 24px;
+        }
+        .cnpj-destaque-header {
+            display: flex; align-items: center; gap: 8px;
+            font-size: .78rem; font-weight: 700; color: #1D4ED8;
+            text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px;
+        }
+        #cnpj-status {
+            font-size: .82rem; font-weight: 500;
+            margin-top: 6px; min-height: 20px;
+        }
+        .cnpj-ok    { color: #059669; }
+        .cnpj-erro  { color: #DC2626; }
+        .cnpj-aviso { color: #D97706; }
+        .cnpj-load  { color: #1D4ED8; }
+
+        @keyframes cnpj-flash {
+            0%   { background: #D1FAE5; border-color: #6EE7B7; }
+            100% { background: #fff; }
+        }
+        .cnpj-autofilled { animation: cnpj-flash 1.8s ease forwards; }
+
         .alert {
             padding: 15px 20px;
             border-radius: 8px;
@@ -598,6 +626,29 @@
                 <div class="form-section-title">
                     <i class="fas fa-building"></i> Dados Cadastrais da Empresa
                 </div>
+
+                <!-- CNPJ em destaque — consulta automática Receita Federal -->
+                <div class="cnpj-destaque">
+                    <div class="cnpj-destaque-header">
+                        <i class="fas fa-search"></i> Consulta automática pela Receita Federal
+                    </div>
+                    <p style="font-size:.85rem;color:#3B5B8C;margin:0 0 14px">Digite o CNPJ da empresa e preencheremos os dados automaticamente.</p>
+                    <div class="row">
+                        <div class="col-md-6 form-group" style="margin-bottom:0">
+                            <label class="form-label" for="cnpj">CNPJ *</label>
+                            <div style="position:relative">
+                                <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" maxlength="18" required autocomplete="off">
+                                <span id="cnpj-spinner" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#1D4ED8"><i class="fas fa-circle-notch fa-spin"></i></span>
+                            </div>
+                            <div id="cnpj-status"></div>
+                        </div>
+                        <div class="col-md-6 form-group" style="margin-bottom:0">
+                            <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
+                            <input type="text" id="inscricao_estadual" class="form-control" placeholder="Isento ou nº da inscrição">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label class="form-label" for="razao_social">Razão Social *</label>
@@ -606,16 +657,6 @@
                     <div class="col-md-6 form-group">
                         <label class="form-label" for="nome_fantasia">Nome Fantasia</label>
                         <input type="text" id="nome_fantasia" class="form-control" placeholder="Como sua empresa é conhecida">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label class="form-label" for="cnpj">CNPJ *</label>
-                        <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0001-00" required>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label class="form-label" for="inscricao_estadual">Inscrição Estadual</label>
-                        <input type="text" id="inscricao_estadual" class="form-control" placeholder="Isento ou nº da inscrição">
                     </div>
                 </div>
 
@@ -868,6 +909,124 @@
                 }
             });
         }
+
+        // ── CNPJ auto-lookup ─────────────────────────────────────────────────────
+        (function () {
+            function toTitleCase(str) {
+                if (!str) return '';
+                var minors = ['de','da','do','das','dos','e','em','na','no','nas','nos','a','o','as','os'];
+                return str.toLowerCase().split(' ').map(function(w, i) {
+                    return (i > 0 && minors.includes(w)) ? w : w.charAt(0).toUpperCase() + w.slice(1);
+                }).join(' ');
+            }
+
+            function maskCNPJ(v) {
+                v = v.replace(/\D/g, '').slice(0, 14);
+                if (v.length > 12) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
+                else if (v.length > 8) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})/, '$1.$2.$3/$4');
+                else if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d{0,3})/, '$1.$2.$3');
+                else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,3})/, '$1.$2');
+                return v;
+            }
+
+            function fmtPhone(raw) {
+                var d = (raw || '').replace(/\D/g, '');
+                if (d.length === 10) return '(' + d.slice(0,2) + ') ' + d.slice(2,6) + '-' + d.slice(6);
+                if (d.length === 11) return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+                return raw || '';
+            }
+
+            function fmtCEP(raw) {
+                var d = (raw || '').replace(/\D/g, '');
+                return d.length === 8 ? d.slice(0,5) + '-' + d.slice(5) : raw || '';
+            }
+
+            function setStatus(cls, msg) {
+                var el = document.getElementById('cnpj-status');
+                if (!el) return;
+                el.className = cls;
+                el.textContent = msg;
+            }
+
+            function flash(id) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                el.classList.remove('cnpj-autofilled');
+                void el.offsetWidth;
+                el.classList.add('cnpj-autofilled');
+            }
+
+            function setVal(id, val) {
+                var el = document.getElementById(id);
+                if (!el || !val) return;
+                el.value = val;
+                flash(id);
+            }
+
+            function preencherCampos(data) {
+                var situacao = (data.situacao_cadastral || '').toUpperCase();
+                if (situacao && situacao !== 'ATIVA') {
+                    setStatus('cnpj-aviso', '⚠️ CNPJ com situação: ' + toTitleCase(data.descricao_situacao_cadastral || situacao));
+                } else {
+                    setStatus('cnpj-ok', '✓ CNPJ encontrado — campos preenchidos automaticamente');
+                }
+
+                setVal('razao_social', data.razao_social || '');
+                setVal('nome_fantasia', data.nome_fantasia || '');
+                setVal('cep', fmtCEP(data.cep || ''));
+                setVal('cidade', toTitleCase(data.municipio || ''));
+                setVal('logradouro',
+                    [toTitleCase(data.logradouro || ''),
+                     data.numero || '',
+                     data.complemento || ''].filter(Boolean).join(', '));
+                setVal('bairro', toTitleCase(data.bairro || ''));
+                setVal('contato_telefone', fmtPhone(data.ddd_telefone_1 || ''));
+                if (data.email) setVal('contato_email', data.email);
+
+                // UF select
+                var ufSel = document.getElementById('uf');
+                if (ufSel && data.uf) {
+                    for (var i = 0; i < ufSel.options.length; i++) {
+                        if (ufSel.options[i].value === data.uf) { ufSel.selectedIndex = i; break; }
+                    }
+                }
+            }
+
+            async function buscarCNPJ(cnpj) {
+                var spinner = document.getElementById('cnpj-spinner');
+                if (spinner) spinner.style.display = 'inline-block';
+                setStatus('cnpj-load', 'Consultando Receita Federal…');
+                try {
+                    var res = await fetch('https://brasilapi.com.br/api/cnpj/v1/' + cnpj);
+                    if (!res.ok) {
+                        var err = await res.json().catch(function() { return {}; });
+                        setStatus('cnpj-erro', '✕ ' + (err.message || 'CNPJ não encontrado. Verifique e tente novamente.'));
+                        return;
+                    }
+                    var data = await res.json();
+                    preencherCampos(data);
+                } catch (e) {
+                    setStatus('cnpj-erro', '✕ Erro ao consultar. Verifique sua conexão.');
+                } finally {
+                    if (spinner) spinner.style.display = 'none';
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var inp = document.getElementById('cnpj');
+                if (!inp) return;
+                inp.addEventListener('input', function () {
+                    var masked = maskCNPJ(inp.value);
+                    inp.value = masked;
+                    var digits = masked.replace(/\D/g, '');
+                    if (digits.length === 14) {
+                        buscarCNPJ(digits);
+                    } else {
+                        setStatus('', '');
+                    }
+                });
+            });
+        })();
 
         // Formulário de Cadastro de Fornecedor
         function selText(id) {
