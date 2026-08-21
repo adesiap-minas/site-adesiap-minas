@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visibilidade — Admin ADESIAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul: #12395D; --azul-escuro: #0B1F33; --azul-prof: #0B1F33;
+            --azul-claro: #1a4f82; --terracota: #B85C38; --verde: #3B8C6E;
+            --areia: #F4EFE7; --texto: #1F2933; --texto-leve: #5F6B76; --borda: #E2E8F0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #F0F4F8; color: var(--texto); min-height: 100vh; }
+
+        /* Login */
+        #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--azul-prof); }
+        .login-box { background: #fff; border-radius: 16px; padding: 40px; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+        .login-logo { text-align: center; margin-bottom: 28px; }
+        .login-logo img { height: 48px; }
+        .login-logo h2 { font-size: 1.1rem; color: var(--azul); margin-top: 10px; font-weight: 600; }
+        .login-box .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+        .login-box label { font-size: .8rem; font-weight: 600; color: var(--texto-leve); text-transform: uppercase; letter-spacing: .5px; }
+        .login-box input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--borda); border-radius: 8px; font-size: .95rem; outline: none; transition: border-color .2s; font-family: 'Inter', sans-serif; }
+        .login-box input:focus { border-color: var(--azul); }
+        .login-box .btn-login { width: 100%; margin-top: 8px; padding: 12px; background: var(--azul); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+        .login-box .btn-login:hover { background: var(--azul-claro); }
+        .login-error { color: #e53e3e; font-size: .83rem; margin-top: 10px; text-align: center; display: none; }
+
+        /* Layout */
+        .admin-wrap { display: none; min-height: 100vh; }
+        html[data-auth] #loginScreen { display: none !important; }
+        html[data-auth] #appShell { display: flex !important; }
+
+        .sidebar { width: 240px; background: var(--azul-escuro); min-height: 100vh; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .sidebar-logo img { height: 36px; }
+        .sidebar-nav { padding: 16px 0; flex: 1; }
+        .nav-section-label { display: block; padding: 16px 20px 6px; color: rgba(255,255,255,.3); font-size: .7rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: rgba(255,255,255,.65); font-size: .88rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: all .2s; border-left: 3px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,.06); border-left-color: var(--terracota); }
+        .nav-item i { width: 18px; text-align: center; font-size: .95rem; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-footer a, .btn-logout { color: rgba(255,255,255,.45); font-size: .82rem; text-decoration: none; display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+        .sidebar-footer a:hover { color: #fff; }
+        .btn-logout:hover { color: var(--terracota); }
+
+        .main-content { margin-left: 240px; padding: 40px; }
+        .page-header { margin-bottom: 32px; }
+        .page-header h1 { font-size: 1.8rem; color: var(--azul); margin-bottom: 6px; }
+        .page-header p { color: var(--texto-leve); font-size: .95rem; }
+
+        /* Cards de seção */
+        .vis-card { background: #fff; border-radius: 12px; margin-bottom: 24px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+        .vis-card-header { display: flex; align-items: center; gap: 14px; padding: 20px 28px; border-bottom: 1px solid var(--borda); background: #FAFBFC; }
+        .vis-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; }
+        .vis-card-icon.paginas { background: var(--azul); }
+        .vis-card-icon.secoes { background: var(--terracota); }
+        .vis-card-header h2 { font-size: 1rem; color: var(--azul); font-weight: 600; margin: 0; }
+        .vis-card-header p { font-size: .8rem; color: var(--texto-leve); margin: 2px 0 0; }
+
+        /* Tabela */
+        .vis-table { width: 100%; border-collapse: collapse; }
+        .vis-table th { font-size: .74rem; font-weight: 700; color: var(--texto-leve); text-transform: uppercase; letter-spacing: .5px; padding: 11px 28px; border-bottom: 2px solid var(--borda); background: #FAFBFC; text-align: left; }
+        .vis-table th:last-child { text-align: center; width: 100px; }
+        .vis-table td { padding: 14px 28px; border-bottom: 1px solid var(--borda); vertical-align: middle; font-size: .9rem; }
+        .vis-table tr:last-child td { border-bottom: none; }
+        .vis-table tr:hover td { background: #FAFCFF; }
+
+        .vis-label { display: flex; align-items: center; gap: 10px; }
+        .vis-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: .85rem; flex-shrink: 0; }
+        .vis-icon.pagina { background: #EFF6FF; color: #1D4ED8; }
+        .vis-icon.secao  { background: #FFF7ED; color: #C2410C; }
+        .vis-name { font-weight: 500; color: var(--texto); }
+        .vis-rota { font-size: .78rem; color: var(--texto-leve); margin-top: 2px; font-family: monospace; }
+
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; }
+        .status-badge.vis  { background: #D1FAE5; color: #065F46; }
+        .status-badge.oculto { background: #F3F4F6; color: #6B7280; }
+
+        /* Toggle */
+        .tog { position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer; flex-shrink: 0; }
+        .tog input { display: none; }
+        .tog-slider { position: absolute; inset: 0; border-radius: 24px; background: var(--borda); transition: background .25s; }
+        .tog-slider::after { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .25s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+        .tog input:checked + .tog-slider { background: var(--verde); }
+        .tog input:checked + .tog-slider::after { transform: translateX(20px); }
+        .tog input:disabled + .tog-slider { opacity: .5; cursor: not-allowed; }
+
+        .td-toggle { text-align: center; }
+
+        /* Loading */
+        .loading-row td { text-align: center; padding: 40px; color: var(--texto-leve); }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--borda); border-top-color: var(--azul); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--azul-escuro); color: #fff; padding: 14px 22px; border-radius: 10px; font-size: .9rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,.2); transform: translateY(80px); opacity: 0; transition: all .4s cubic-bezier(.175,.885,.32,1.275); z-index: 9999; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.erro { background: #DC2626; }
+        .toast.ok { background: var(--verde); }
+    </style>
+</head>
+<body>
+<script>if (localStorage.getItem('admin_logado') === '1') document.documentElement.dataset.auth = '1';</script>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'">
+            <h2>Área Administrativa</h2>
+        </div>
+        <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="emailInput" placeholder="seu@adesiap.org.br" autocomplete="email" onkeydown="if(event.key==='Enter')fazerLogin()">
+        </div>
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="senhaInput" placeholder="Sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')fazerLogin()">
+        </div>
+        <button class="btn-login" id="btnLogin" onclick="fazerLogin()">Entrar</button>
+        <div class="login-error" id="loginError"></div>
+    </div>
+</div>
+
+<!-- PAINEL -->
+<div class="admin-wrap" id="appShell">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.style.height='28px';this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-label" data-perfis="super_admin,gestor_projetos,comercial_captacao">Comercial</span>
+            <a href="bpc.html" class="nav-item" data-perfis="super_admin,gestor_projetos,comercial_captacao"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+            <span class="nav-section-label" data-perfis="super_admin,editor,gestor_projetos">Conteúdo</span>
+            <a href="configuracoes.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-cog"></i> Configurações</a>
+            <a href="projetos.html" class="nav-item" data-perfis="super_admin,editor,gestor_projetos"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <a href="conselhos.html" class="nav-item" data-perfis="super_admin,editor"><i class="fas fa-landmark"></i> Conselhos</a>
+            <span class="nav-section-label" data-perfis="super_admin,operador_totvs">Gestão</span>
+            <a href="erp.html" class="nav-item" data-perfis="super_admin,operador_totvs"><i class="fas fa-database"></i> Projetos ERP</a>
+            <span class="nav-section-label" data-perfis="super_admin,ouvidoria_compliance">Atendimento</span>
+            <a href="ouvidoria.html" class="nav-item" data-perfis="super_admin,ouvidoria_compliance"><i class="fas fa-inbox"></i> Ouvidoria</a>
+            <span class="nav-section-label" data-perfis="super_admin">Ferramentas</span>
+            <a href="ferramentas.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-tools"></i> Conversor de Imagens</a>
+            <span class="nav-section-label" data-perfis="super_admin">Administração</span>
+            <a href="usuarios.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-users-cog"></i> Usuários</a>
+            <a href="visibilidade.html" class="nav-item active" data-perfis="super_admin"><i class="fas fa-eye-slash"></i> Visibilidade</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div id="userInfo" style="display:none;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px">
+                <div id="userNome" style="color:#fff;font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px"></div>
+                <div id="userPerfil" style="color:rgba(255,255,255,.4);font-size:.72rem;margin-top:2px"></div>
+            </div>
+            <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+            <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-eye-slash" style="color:var(--terracota);margin-right:10px;font-size:1.4rem;"></i>Visibilidade do Site</h1>
+            <p>Controle quais páginas e seções estão visíveis para os visitantes. Páginas ocultas somem do menu, rodapé e redirecionam para a home.</p>
+        </div>
+
+        <!-- Páginas -->
+        <div class="vis-card">
+            <div class="vis-card-header">
+                <div class="vis-card-icon paginas"><i class="fas fa-file-alt"></i></div>
+                <div>
+                    <h2>Páginas</h2>
+                    <p>Ocultar uma página remove seus links do menu e rodapé e redireciona visitantes para a home.</p>
+                </div>
+            </div>
+            <table class="vis-table">
+                <thead>
+                    <tr>
+                        <th>Página</th>
+                        <th>Status</th>
+                        <th>Visível</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyPaginas">
+                    <tr class="loading-row"><td colspan="3"><span class="spinner"></span> Carregando…</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Seções da home -->
+        <div class="vis-card">
+            <div class="vis-card-header">
+                <div class="vis-card-icon secoes"><i class="fas fa-th-large"></i></div>
+                <div>
+                    <h2>Seções da Página Inicial</h2>
+                    <p>Ocultar uma seção remove o bloco da home. O link de Notícias no menu acompanha a visibilidade da seção.</p>
+                </div>
+            </div>
+            <table class="vis-table">
+                <thead>
+                    <tr>
+                        <th>Seção</th>
+                        <th>Status</th>
+                        <th>Visível</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodySecoes">
+                    <tr class="loading-row"><td colspan="3"><span class="spinner"></span> Carregando…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>window.PERFIS_PERMITIDOS = ['super_admin'];</script>
+<script src="auth.js"></script>
+<script>
+var API = '/api/admin/visibilidade';
+
+var PAGINAS = [
+    { chave: 'pagina_quem-somos',            label: 'Quem Somos',                rota: '/quem-somos.html' },
+    { chave: 'pagina_selos',                 label: 'Selos e Reconhecimentos',   rota: '/selos-reconhecimentos.html' },
+    { chave: 'pagina_terceiro-setor',        label: 'O Terceiro Setor',           rota: '/terceiro-setor.html' },
+    { chave: 'pagina_governanca',            label: 'Governança',                 rota: '/governanca.html' },
+    { chave: 'pagina_agenda-2030',           label: 'Agenda 2030',                rota: '/agenda-2030.html' },
+    { chave: 'pagina_transparencia',         label: 'Transparência',              rota: '/transparencia.html' },
+    { chave: 'pagina_servicos',              label: 'Serviços',                   rota: '/servicos.html' },
+    { chave: 'pagina_projetos',              label: 'Projetos',                   rota: '/projetos.html' },
+    { chave: 'pagina_doacoes',               label: 'Seja Doador',                rota: '/doacoes.html' },
+    { chave: 'pagina_seja-parceiro',         label: 'Seja Parceiro',              rota: '/seja-parceiro.html' },
+    { chave: 'pagina_ouvidoria',             label: 'Ouvidoria',                  rota: '/ouvidoria.html' },
+    { chave: 'pagina_canal-denuncias',       label: 'Canal de Denúncias',         rota: '/canal-denuncias.html' },
+    { chave: 'pagina_trabalhe-conosco',      label: 'Trabalhe Conosco',           rota: '/trabalhe-conosco.html' },
+    { chave: 'pagina_fale-conosco',          label: 'Fale Conosco',               rota: '/fale-conosco.html' },
+    { chave: 'pagina_cadastro-fornecedores', label: 'Cadastro de Fornecedores',   rota: '/cadastro-fornecedores.html' },
+    { chave: 'pagina_politica-privacidade',  label: 'Política de Privacidade',    rota: '/politica-privacidade.html' },
+];
+
+var SECOES = [
+    { chave: 'secao_hero',         label: 'Hero / Banner Principal', rota: 'index.html → .hero' },
+    { chave: 'secao_quem-somos',   label: 'Conheça a ADESIAP',       rota: 'index.html → #quem-somos' },
+    { chave: 'secao_parceiros',    label: 'Parceiros',               rota: 'index.html → .partners-section' },
+    { chave: 'secao_onde-estamos', label: 'Onde Estamos',            rota: 'index.html → #onde-estamos' },
+    { chave: 'secao_impacto',      label: 'Painel de Impacto',       rota: 'index.html → #impacto' },
+    { chave: 'secao_governanca',   label: 'Governança (seção)',       rota: 'index.html → .governance-section' },
+    { chave: 'secao_servicos',     label: 'Serviços (seção)',         rota: 'index.html → #servicos' },
+    { chave: 'secao_projetos',     label: 'Projetos (seção)',         rota: 'index.html → #projetos' },
+    { chave: 'secao_noticias',     label: 'Notícias',                rota: 'index.html → #noticias + menu' },
+    { chave: 'secao_instagram',    label: 'Instagram Feed',          rota: 'index.html → #instagram' },
+];
+
+var toastTimer;
+function showToast(msg, tipo) {
+    var t = document.getElementById('toast');
+    t.className = 'toast ' + (tipo || '');
+    t.innerHTML = '<i class="fas fa-' + (tipo === 'erro' ? 'times-circle' : 'check-circle') + '"></i> ' + msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3000);
+}
+
+function getToken() {
+    try {
+        var s = JSON.parse(localStorage.getItem('adesiap_admin_auth') || 'null');
+        return s && s.access_token || '';
+    } catch (e) { return ''; }
+}
+
+function buildRow(item, visivel, tipo) {
+    var chave = item.chave;
+    var id = 'tog_' + chave;
+    return '<tr>' +
+        '<td><div class="vis-label">' +
+            '<div class="vis-icon ' + tipo + '"><i class="fas fa-' + (tipo === 'pagina' ? 'file-alt' : 'th-large') + '"></i></div>' +
+            '<div><div class="vis-name">' + item.label + '</div><div class="vis-rota">' + item.rota + '</div></div>' +
+        '</div></td>' +
+        '<td><span class="status-badge ' + (visivel ? 'vis' : 'oculto') + '" id="badge_' + chave + '">' +
+            (visivel ? '<i class="fas fa-eye"></i> Visível' : '<i class="fas fa-eye-slash"></i> Oculto') +
+        '</span></td>' +
+        '<td class="td-toggle"><label class="tog"><input type="checkbox" id="' + id + '" ' + (visivel ? 'checked' : '') + ' onchange="toggle(\'' + chave + '\',this)"><span class="tog-slider"></span></label></td>' +
+        '</tr>';
+}
+
+function toggle(chave, cb) {
+    var visivel = cb.checked;
+    cb.disabled = true;
+    var badge = document.getElementById('badge_' + chave);
+
+    fetch(API, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() },
+        body: JSON.stringify({ chave: chave, visivel: visivel }),
+    })
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+    .then(function (res) {
+        if (!res.ok) throw new Error(res.d.error || 'Erro ao salvar.');
+        if (badge) {
+            badge.className = 'status-badge ' + (visivel ? 'vis' : 'oculto');
+            badge.innerHTML = visivel
+                ? '<i class="fas fa-eye"></i> Visível'
+                : '<i class="fas fa-eye-slash"></i> Oculto';
+        }
+        // Invalida cache do visitante
+        localStorage.removeItem('adesiap_vis');
+        showToast(visivel ? 'Página publicada com sucesso.' : 'Página ocultada com sucesso.', 'ok');
+    })
+    .catch(function (e) {
+        cb.checked = !visivel; // reverte
+        showToast(e.message || 'Erro ao salvar.', 'erro');
+    })
+    .finally(function () { cb.disabled = false; });
+}
+
+function init() {
+    fetch(API)
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var htmlP = '';
+            PAGINAS.forEach(function (p) {
+                var vis = data[p.chave] !== false;
+                htmlP += buildRow(p, vis, 'pagina');
+            });
+            document.getElementById('tbodyPaginas').innerHTML = htmlP || '<tr><td colspan="3">Sem dados.</td></tr>';
+
+            var htmlS = '';
+            SECOES.forEach(function (s) {
+                var vis = data[s.chave] !== false;
+                htmlS += buildRow(s, vis, 'secao');
+            });
+            document.getElementById('tbodySecoes').innerHTML = htmlS || '<tr><td colspan="3">Sem dados.</td></tr>';
+        })
+        .catch(function () {
+            document.getElementById('tbodyPaginas').innerHTML = '<tr class="loading-row"><td colspan="3">Erro ao carregar dados.</td></tr>';
+            document.getElementById('tbodySecoes').innerHTML = '<tr class="loading-row"><td colspan="3">Erro ao carregar dados.</td></tr>';
+        });
+}
+</script>
+</body>
+</html>
