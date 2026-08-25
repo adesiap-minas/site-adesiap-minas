@@ -1,12 +1,13 @@
 // api/admin/transparencia-docs.js — Gestão do Portal de Transparência
 //
 // Ações públicas (sem auth):
-//   GET  ?action=public-list  → documentos ativos agrupados por aba/ano
+//   GET  ?action=public-list      → documentos ativos agrupados por aba/ano
 //
 // Ações admin (requer JWT super_admin ou editor):
-//   GET  ?action=list         → todos os documentos (inclusive inativos)
-//   POST ?action=upload       → { tab, year, title, descritivo, filename, fileBase64, mimeType }
-//   POST ?action=delete       → { id }
+//   GET  ?action=list             → todos os documentos (inclusive inativos)
+//   POST ?action=create-session   → { tab, year, filename } → cria sessão de upload direta no SharePoint
+//   POST ?action=finalize         → { tab, year, title, descritivo, filename, sp_url } → salva no Supabase
+//   POST ?action=delete           → { id }
 
 const SB_URL      = process.env.SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -174,29 +175,38 @@ module.exports = async function handler(req, res) {
             return res.json(data);
         }
 
-        // ── Upload ───────────────────────────────────────────────────────────
-        if (req.method === 'POST' && action === 'upload') {
-            const { tab, year, title, descritivo, filename, fileBase64, mimeType } = req.body || {};
-            if (!tab || !title || !filename || !fileBase64)
-                return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename, fileBase64' });
-            if (!TAB_INFO[tab])
-                return res.status(400).json({ error: 'Aba inválida' });
+        // ── Criar sessão de upload direto no SharePoint ──────────────────────
+        if (req.method === 'POST' && action === 'create-session') {
+            const { tab, year, filename } = req.body || {};
+            if (!tab || !filename) return res.status(400).json({ error: 'tab e filename são obrigatórios' });
+            if (!TAB_INFO[tab])    return res.status(400).json({ error: 'Aba inválida' });
 
             const token      = await getSpToken();
             const folderPath = buildSpPath(tab, year);
             await ensureFolderPath(folderPath, token);
 
-            const buffer   = Buffer.from(fileBase64, 'base64');
             const filePath = `${folderPath}/${filename}`;
-            const item     = await graphPut(`/root:/${enc(filePath)}:/content`, buffer,
-                                mimeType || 'application/octet-stream', token);
+            const sessRes  = await fetch(`${graphBase()}/root:/${enc(filePath)}:/createUploadSession`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item: { '@microsoft.graph.conflictBehavior': 'rename', name: filename } }),
+            });
+            const sess = await sessRes.json();
+            if (!sessRes.ok) throw new Error(sess.error?.message || `Sessão: ${sessRes.status}`);
+            return res.json({ uploadUrl: sess.uploadUrl, expirationDateTime: sess.expirationDateTime });
+        }
+
+        // ── Finalizar: salva metadados no Supabase após upload direto ─────────
+        if (req.method === 'POST' && action === 'finalize') {
+            const { tab, year, title, descritivo, filename, sp_url } = req.body || {};
+            if (!tab || !title || !filename || !sp_url)
+                return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename, sp_url' });
+            if (!TAB_INFO[tab]) return res.status(400).json({ error: 'Aba inválida' });
 
             const [row] = await sbFetch('documentos_transparencia', 'POST', {
                 tab, year: year || null, title,
                 descritivo: descritivo || null,
-                filename: item.name || filename,
-                sp_url: item.webUrl,
-                active: true,
+                filename, sp_url, active: true,
             }, SERVICE_KEY);
             return res.json({ ok: true, doc: row });
         }

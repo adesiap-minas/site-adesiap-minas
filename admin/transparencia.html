@@ -319,40 +319,62 @@ function toggleYear() {
     document.getElementById('yearGroup').style.display = TABS_SEM_ANO.includes(tab) ? 'none' : '';
 }
 
-// ── Upload ───────────────────────────────────────────────────────────────────
+// ── Upload (3 etapas: sessão → upload direto → finalizar) ────────────────────
 async function uploadDoc() {
-    const tab   = document.getElementById('fTab').value;
-    const year  = document.getElementById('fYear').value;
-    const title = document.getElementById('fTitle').value.trim();
-    const btn   = document.getElementById('btnUpload');
-    const status= document.getElementById('uploadStatus');
+    const tab        = document.getElementById('fTab').value;
+    const year       = document.getElementById('fYear').value;
+    const title      = document.getElementById('fTitle').value.trim();
+    const descritivo = document.getElementById('fDescritivo').value.trim();
+    const btn        = document.getElementById('btnUpload');
+    const status     = document.getElementById('uploadStatus');
 
-    if (!tab)   { toast('Selecione a aba.', 'erro'); return; }
-    if (!title) { toast('Informe o título do documento.', 'erro'); return; }
+    if (!tab)          { toast('Selecione a aba.', 'erro'); return; }
+    if (!title)        { toast('Informe o título do documento.', 'erro'); return; }
     if (!selectedFile) { toast('Selecione o arquivo.', 'erro'); return; }
     if (!TABS_SEM_ANO.includes(tab) && !year) { toast('Informe o ano.', 'erro'); return; }
 
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-inline"></span> Enviando…';
-    status.textContent = 'Fazendo upload para o SharePoint…';
+    btn.innerHTML = '<span class="spinner-inline"></span> Preparando…';
 
     try {
-        const base64     = await toBase64(selectedFile);
-        const descritivo = document.getElementById('fDescritivo').value.trim();
-        const jwt        = getJWT();
-        const res = await fetch(`${API}?action=upload`, {
+        const jwt = getJWT();
+
+        // 1. Criar sessão de upload no SharePoint
+        status.textContent = 'Criando sessão de upload…';
+        const sessRes = await fetch(`${API}?action=create-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
+            body: JSON.stringify({ tab, year: year ? parseInt(year) : null, filename: selectedFile.name }),
+        });
+        const sessData = await sessRes.json();
+        if (!sessRes.ok) throw new Error(sessData.error || 'Erro ao criar sessão');
+
+        // 2. Upload direto para o SharePoint (sem passar pela Vercel)
+        btn.innerHTML = '<span class="spinner-inline"></span> Enviando arquivo…';
+        status.textContent = 'Enviando para o SharePoint (' + (selectedFile.size / 1024 / 1024).toFixed(1) + ' MB)…';
+        const fileSize  = selectedFile.size;
+        const upRes = await fetch(sessData.uploadUrl, {
+            method: 'PUT',
+            headers: { 'Content-Range': `bytes 0-${fileSize - 1}/${fileSize}` },
+            body: selectedFile,
+        });
+        const upData = await upRes.json();
+        if (!upRes.ok) throw new Error(upData.error?.message || 'Erro no envio do arquivo');
+
+        // 3. Salvar metadados no Supabase
+        status.textContent = 'Registrando documento…';
+        const finalRes = await fetch(`${API}?action=finalize`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
             body: JSON.stringify({
                 tab, year: year ? parseInt(year) : null, title,
                 descritivo: descritivo || null,
-                filename: selectedFile.name,
-                fileBase64: base64,
-                mimeType: selectedFile.type || 'application/octet-stream',
+                filename: upData.name || selectedFile.name,
+                sp_url: upData.webUrl,
             }),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Erro no upload');
+        const finalData = await finalRes.json();
+        if (!finalRes.ok) throw new Error(finalData.error || 'Erro ao registrar documento');
 
         toast('Documento publicado com sucesso!', 'ok');
         resetForm();
@@ -375,15 +397,6 @@ function resetForm() {
     document.getElementById('fileName').style.display = 'none';
     document.getElementById('yearGroup').style.display = '';
     selectedFile = null;
-}
-
-function toBase64(file) {
-    return new Promise((resolve, reject) => {
-        const r = new FileReader();
-        r.onload  = () => resolve(r.result.split(',')[1]);
-        r.onerror = reject;
-        r.readAsDataURL(file);
-    });
 }
 
 // ── Listagem ─────────────────────────────────────────────────────────────────
