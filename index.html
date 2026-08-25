@@ -1,17 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NRS69H6HV"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-4NRS69H6HV');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4NRS69H6HV');
     </script>
     <meta charset="UTF-8">
-    <meta name="description" content="Adesiap Minas é uma associação do terceiro setor que atua como gestora técnica e intermediadora intersetorial, estruturando soluções para municípios, empresas e organizações em Minas Gerais.">
+    <meta name="description"
+        content="Adesiap Minas é uma associação do terceiro setor que atua como gestora técnica e intermediadora intersetorial, estruturando soluções para municípios, empresas e organizações em Minas Gerais.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="./flaticon.svg" type="image/svg+xml">
     <title>Adesiap Minas</title>
@@ -528,12 +529,52 @@
                 display: block;
             }
 
-            #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow-y: auto; max-height: calc(100vh - var(--topbar-height) - var(--header-height)); z-index: 999; }
-            #main-menu.open { display: block; }
-            .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
-            .main-menu > li { width: 100%; }
-            .main-menu > li > a { display: block; padding: 12px 0; border-bottom: 1px solid var(--areia-fundo); font-size: 1rem !important; font-weight: 600; text-transform: none; letter-spacing: normal; }
-            .dropdown-menu { position: static !important; display: none !important; box-shadow: none !important; padding-left: 16px; min-width: unset !important; width: 100% !important; }
+            #main-menu {
+                display: none;
+                position: fixed;
+                top: calc(var(--topbar-height) + var(--header-height));
+                left: 0;
+                width: 100%;
+                background: #fff;
+                padding: 20px 24px 40px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+                max-height: calc(100vh - var(--topbar-height) - var(--header-height));
+                z-index: 999;
+            }
+
+            #main-menu.open {
+                display: block;
+            }
+
+            .main-menu {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+            }
+
+            .main-menu>li {
+                width: 100%;
+            }
+
+            .main-menu>li>a {
+                display: block;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--areia-fundo);
+                font-size: 1rem !important;
+                font-weight: 600;
+                text-transform: none;
+                letter-spacing: normal;
+            }
+
+            .dropdown-menu {
+                position: static !important;
+                display: none !important;
+                box-shadow: none !important;
+                padding-left: 16px;
+                min-width: unset !important;
+                width: 100% !important;
+            }
 
             /* Ajustes Tipográficos Mobile */
             .hero h1 {
@@ -2013,10 +2054,12 @@
             transition: opacity 0.35s ease, visibility 0.35s ease;
             backdrop-filter: blur(5px);
         }
+
         .project-modal-overlay.active {
             opacity: 1;
             visibility: visible;
         }
+
         .project-modal {
             background: #fff;
             border-radius: 20px;
@@ -2031,9 +2074,11 @@
             scrollbar-width: thin;
             scrollbar-color: var(--areia-fundo) transparent;
         }
+
         .project-modal-overlay.active .project-modal {
             transform: translateY(0) scale(1);
         }
+
         .modal-close {
             position: absolute;
             top: 18px;
@@ -2053,7 +2098,12 @@
             transition: background 0.2s, transform 0.2s;
             backdrop-filter: blur(4px);
         }
-        .modal-close:hover { background: rgba(255,255,255,0.32); transform: scale(1.1); }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.32);
+            transform: scale(1.1);
+        }
+
         .modal-hero {
             height: 280px;
             background-size: cover;
@@ -2064,23 +2114,37 @@
             align-items: flex-end;
             flex-shrink: 0;
         }
+
         .modal-hero::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(11,31,51,0.92) 0%, rgba(11,31,51,0.3) 55%, transparent 100%);
+            background: linear-gradient(to top, rgba(11, 31, 51, 0.92) 0%, rgba(11, 31, 51, 0.3) 55%, transparent 100%);
             border-radius: 20px 20px 0 0;
         }
+
         .modal-hero-content {
             position: relative;
             z-index: 2;
             padding: 28px 32px;
             width: 100%;
         }
-        .modal-hero-content .project-tag { display: inline-block; margin-bottom: 10px; font-size: 0.72rem; }
-        .modal-hero-content h2 { color: #fff; font-size: 1.75rem; margin-bottom: 6px; line-height: 1.2; }
+
+        .modal-hero-content .project-tag {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: 0.72rem;
+        }
+
+        .modal-hero-content h2 {
+            color: #fff;
+            font-size: 1.75rem;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
         .modal-meta {
-            color: rgba(255,255,255,0.65);
+            color: rgba(255, 255, 255, 0.65);
             font-size: 0.88rem;
             margin: 0;
             font-family: 'Roboto', sans-serif;
@@ -2089,14 +2153,28 @@
             align-items: center;
             flex-wrap: wrap;
         }
-        .modal-meta i { margin-right: 5px; opacity: 0.7; }
-        .modal-body { padding: 32px 38px; }
+
+        .modal-meta i {
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 32px 38px;
+        }
+
         .modal-section {
             margin-bottom: 28px;
             padding-bottom: 28px;
             border-bottom: 1px solid var(--areia-fundo);
         }
-        .modal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .modal-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
         .modal-section-label {
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -2107,14 +2185,29 @@
             margin-bottom: 14px;
             display: block;
         }
-        .modal-section p { font-size: 1rem; color: var(--texto-secundario); line-height: 1.8; margin: 0; }
+
+        .modal-section p {
+            font-size: 1rem;
+            color: var(--texto-secundario);
+            line-height: 1.8;
+            margin: 0;
+        }
+
         .modal-metrics {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 12px;
             align-items: start;
         }
-        .modal-metric { min-width: 0; background: var(--areia-fundo); border-radius: 12px; padding: 16px 12px; text-align: center; }
+
+        .modal-metric {
+            min-width: 0;
+            background: var(--areia-fundo);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
         .modal-metric strong {
             display: block;
             font-size: 1.2rem;
@@ -2126,8 +2219,20 @@
             overflow-wrap: break-word;
             line-height: 1.2;
         }
-        .modal-metric span { font-size: 0.82rem; color: var(--texto-secundario); font-family: 'Roboto', sans-serif; line-height: 1.3; }
-        .modal-partners { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .modal-metric span {
+            font-size: 0.82rem;
+            color: var(--texto-secundario);
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.3;
+        }
+
+        .modal-partners {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .modal-partner-tag {
             background: var(--azul-institucional);
             color: #fff;
@@ -2137,36 +2242,196 @@
             font-weight: 600;
             font-family: 'Inter', sans-serif;
         }
-        .modal-ods-grid { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .modal-ods-grid img { height: 50px; width: auto; border-radius: 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.12); transition: transform 0.2s; }
-        .modal-ods-grid img:hover { transform: scale(1.08); }
-        .modal-footer { padding: 4px 38px 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .modal-galeria-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-        .modal-gal-item { aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; cursor: zoom-in; background: var(--areia-fundo); }
-        .modal-gal-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-        .modal-gal-item:hover img { transform: scale(1.05); }
-        .modal-video-embed { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 10px; overflow: hidden; margin-bottom: 14px; background: #000; }
-        .modal-video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .modal-video-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--azul-institucional); color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; margin-bottom: 10px; }
-        .modal-doc-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--areia-fundo); border-radius: 8px; text-decoration: none; color: var(--azul-institucional); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; transition: background 0.2s; border: 1px solid rgba(18,57,93,0.08); }
-        .modal-doc-link:hover { background: #e4ecf5; color: var(--azul-institucional); }
-        .modal-doc-link:last-child { margin-bottom: 0; }
-        .modal-doc-link i { font-size: 1.1rem; flex-shrink: 0; }
-        .modal-doc-link .doc-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .modal-doc-link .doc-ext { font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; text-transform: uppercase; }
-        .doc-ext-pdf { background: #fee2e2; color: #b91c1c; }
-        .doc-ext-docx, .doc-ext-doc { background: #dbeafe; color: #1d4ed8; }
-        button.project-link.open-modal { background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; text-align: left; }
+
+        .modal-ods-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .modal-ods-grid img {
+            height: 50px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            transition: transform 0.2s;
+        }
+
+        .modal-ods-grid img:hover {
+            transform: scale(1.08);
+        }
+
+        .modal-footer {
+            padding: 4px 38px 32px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .modal-gal-item {
+            aspect-ratio: 4/3;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: zoom-in;
+            background: var(--areia-fundo);
+        }
+
+        .modal-gal-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .modal-gal-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .modal-video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            background: #000;
+        }
+
+        .modal-video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--azul-institucional);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .modal-doc-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: var(--areia-fundo);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--azul-institucional);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+            border: 1px solid rgba(18, 57, 93, 0.08);
+        }
+
+        .modal-doc-link:hover {
+            background: #e4ecf5;
+            color: var(--azul-institucional);
+        }
+
+        .modal-doc-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-doc-link i {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .modal-doc-link .doc-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .modal-doc-link .doc-ext {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .doc-ext-pdf {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .doc-ext-docx,
+        .doc-ext-doc {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        button.project-link.open-modal {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+        }
+
         @media (max-width: 767px) {
-            .project-modal { max-height: 96vh; border-radius: 16px; }
-            .modal-hero { height: 200px; border-radius: 16px 16px 0 0; }
-            .modal-hero-content { padding: 20px; }
-            .modal-hero-content h2 { font-size: 1.35rem; }
-            .modal-body { padding: 22px 20px; }
-            .modal-footer { padding: 4px 20px 24px; }
-            .modal-metrics { gap: 8px; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-            .modal-metric { padding: 12px 10px; }
-            .modal-galeria-grid { grid-template-columns: repeat(2,1fr); }
+            .project-modal {
+                max-height: 96vh;
+                border-radius: 16px;
+            }
+
+            .modal-hero {
+                height: 200px;
+                border-radius: 16px 16px 0 0;
+            }
+
+            .modal-hero-content {
+                padding: 20px;
+            }
+
+            .modal-hero-content h2 {
+                font-size: 1.35rem;
+            }
+
+            .modal-body {
+                padding: 22px 20px;
+            }
+
+            .modal-footer {
+                padding: 4px 20px 24px;
+            }
+
+            .modal-metrics {
+                gap: 8px;
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+
+            .modal-metric {
+                padding: 12px 10px;
+            }
+
+            .modal-galeria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
     <link rel="stylesheet" href="./css/nav.css">
@@ -2225,12 +2490,20 @@
             <nav id="main-menu">
                 <ul class="main-menu">
                     <li><a href="index.html" style="color: var(--terracota-institucional);">Início</a></li>
-                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li><li><a href="terceiro-setor.html">O Terceiro Setor</a></li></ul></li>
+                    <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down"
+                                style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quem-somos.html">Quem Somos</a></li>
+                            <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                            <li><a href="terceiro-setor.html">O Terceiro Setor</a></li>
+                        </ul>
+                    </li>
                     <li class="dropdown">
                         <a href="governanca.html">Governança <i class="fas fa-chevron-down"
                                 style="font-size: 0.7em; margin-left: 3px;"></i></a>
                         <ul class="dropdown-menu">
-                            <li><a href="governanca.html">Governança</a></li><li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
+                            <li><a href="governanca.html">Governança</a></li>
+                            <li><a href="agenda-2030.html">Agenda 2030 e Pacto Global</a></li>
                         </ul>
                     </li>
                     <li><a href="transparencia.html">Transparência</a></li>
@@ -2243,9 +2516,13 @@
                         <ul class="dropdown-menu">
                             <li><a href="fale-conosco.html">Fale Conosco</a></li>
                             <li><a href="cadastro-fornecedores.html">Cadastro de Fornecedores</a></li>
-                            <li><a href="ouvidoria.html">Ouvidoria</a></li><li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li><li><a href="seja-parceiro.html">Seja Parceiro</a></li></ul>
+                            <li><a href="ouvidoria.html">Ouvidoria</a></li>
+                            <li><a href="trabalhe-conosco.html">Trabalhe Conosco</a></li>
+                            <li><a href="seja-parceiro.html">Seja Parceiro</a></li>
+                        </ul>
                     </li>
-                    <li style="margin-left:6px"><a href="doacoes.html" style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
+                    <li style="margin-left:6px"><a href="doacoes.html"
+                            style="color:#12395D;font-weight:700;white-space:nowrap">Seja Doador</a></li>
                 </ul>
             </nav>
         </div>
@@ -2438,15 +2715,15 @@
                             <!-- Pin ADESIAP (MG) — estilo logo -->
                             <g class="map-dot" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.30));">
                                 <g transform="translate(480, 432)">
-                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 1,1 18,-8 C18,14 5,24 0,36Z" fill="#BF3030"/>
-                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 0,1 18,-8 C18,14 5,24 0,36Z" fill="#A02828" opacity="0.25"/>
-                                    <circle cx="0" cy="-8" r="9" fill="white"/>
+                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 1,1 18,-8 C18,14 5,24 0,36Z"
+                                        fill="#BF3030" />
+                                    <path d="M0,36 C-5,24 -18,14 -18,-8 A18,18 0 0,1 18,-8 C18,14 5,24 0,36Z"
+                                        fill="#A02828" opacity="0.25" />
+                                    <circle cx="0" cy="-8" r="9" fill="white" />
                                     <animateTransform attributeName="transform" type="translate"
-                                        values="480,432; 480,427; 480,432"
-                                        keyTimes="0; 0.5; 1"
-                                        dur="2.4s" repeatCount="indefinite"
-                                        calcMode="spline"
-                                        keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"/>
+                                        values="480,432; 480,427; 480,432" keyTimes="0; 0.5; 1" dur="2.4s"
+                                        repeatCount="indefinite" calcMode="spline"
+                                        keySplines="0.45 0 0.55 1; 0.45 0 0.55 1" />
                                 </g>
                             </g> <!-- MG -->
                             <circle cx="380" cy="650" r="12" fill="#fff" stroke="var(--verde-sustentabilidade)"
@@ -2567,7 +2844,8 @@
                         <span>GOVERNANÇA</span>
                         SÓLIDA
                     </h2>
-                    <p class="section-desc"><strong>Mais do que gestão, garantimos segurança jurídica, compliance e transparência total em todas as etapas de execução.</strong></p>
+                    <p class="section-desc"><strong>Mais do que gestão, garantimos segurança jurídica, compliance e
+                            transparência total em todas as etapas de execução.</strong></p>
                 </div>
             </div>
             <div class="row g-4">
@@ -2642,7 +2920,7 @@
                         <div class="service-icon"><i class="fas fa-chart-line"></i></div>
                         <h3>Desenvolvimento Econômico</h3>
                         <p>Fomentamos ecossistemas locais de negócios e apoiamos micro e pequenas empresas com o CAMPE
-                            (Selo Ouro Sebrae 2025), além de semanas e fóruns de desenvolvimento e qualificação
+                            (Selo Diamante Sebrae 2025), além de semanas e fóruns de desenvolvimento e qualificação
                             profissional.</p>
                     </div>
                 </div>
@@ -2689,7 +2967,8 @@
             </div>
             <div class="row mt-5">
                 <div class="col-12 text-center reveal-on-scroll">
-                    <a href="servicos.html" class="btn-primary" style="padding: 12px 30px;">Saiba mais sobre nossos serviços</a>
+                    <a href="servicos.html" class="btn-primary" style="padding: 12px 30px;">Saiba mais sobre nossos
+                        serviços</a>
                 </div>
             </div>
         </div>
@@ -2962,7 +3241,8 @@
     </section>
 
     <!-- Modal de Detalhes do Projeto (homepage) -->
-    <div class="project-modal-overlay" id="hpProjectModalOverlay" role="dialog" aria-modal="true" aria-labelledby="hpModalTitle">
+    <div class="project-modal-overlay" id="hpProjectModalOverlay" role="dialog" aria-modal="true"
+        aria-labelledby="hpModalTitle">
         <div class="project-modal" id="hpProjectModal">
             <button class="modal-close" id="hpModalClose" aria-label="Fechar">
                 <i class="fas fa-times"></i>
@@ -3006,7 +3286,10 @@
             </div>
             <div class="modal-footer">
                 <a href="projetos.html" class="btn-outline" style="padding:12px 28px;">Ver todos os projetos</a>
-                <a data-wa-cta="projetos-home" href="https://wa.me/553184011390?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20projetos%20da%20ADESIAP%20Minas." target="_blank" rel="noopener" class="btn-primary" style="padding:12px 28px;">Fale com um Especialista</a>
+                <a data-wa-cta="projetos-home"
+                    href="https://wa.me/553184011390?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20projetos%20da%20ADESIAP%20Minas."
+                    target="_blank" rel="noopener" class="btn-primary" style="padding:12px 28px;">Fale com um
+                    Especialista</a>
             </div>
         </div>
     </div>
@@ -3017,20 +3300,56 @@
             <div class="row">
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <img src="ADESIAP MINAS BRANCA.png" alt="Adesiap Minas" class="footer-logo">
-                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social sustentável do território.</p>
+                    <p>Novos tempos, novos rumos. Uma organização comprometida com o desenvolvimento econômico e social
+                        sustentável do território.</p>
                     <div style="display:flex;gap:12px;align-items:center;margin-top:0;flex-wrap:wrap;">
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png" alt="Sebrae Diamante 2025" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
-                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos" style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png" alt="Sebrae Diamante 2023" style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;" onmouseover="this.style.transform=`scale(1.1)`" onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/selo-ong-verificada.webp" alt="ONG Verificada"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-diamante-2025-g.png"
+                                alt="Sebrae Diamante 2025"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-ouro-2024-g.png" alt="Sebrae Ouro 2024"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
+                        <a href="selos-reconhecimentos.html" title="Selos e Reconhecimentos"
+                            style="display:inline-block;"><img src="Selos/sebrae-diamante-2023-g.png"
+                                alt="Sebrae Diamante 2023"
+                                style="height:48px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.35));transition:transform 0.3s;"
+                                onmouseover="this.style.transform=`scale(1.1)`"
+                                onmouseout="this.style.transform=`scale(1)`"></a>
                     </div>
                     <div style="margin-top:22px;margin-bottom:24px;">
-                        <p style="color:rgba(255,255,255,.45);font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:12px;">Siga-nos</p>
+                        <p
+                            style="color:rgba(255,255,255,.45);font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:12px;">
+                            Siga-nos</p>
                         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-                            <a href="https://www.instagram.com/adesiap.itabirito/" target="_blank" aria-label="Instagram" style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;" onmouseover="this.style.color='#E1306C'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.facebook.com/AdesiapItabirito" target="_blank" aria-label="Facebook" style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;" onmouseover="this.style.color='#1877F2'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-facebook"></i></a>
-                            <a href="https://www.youtube.com/@adesiapminas" target="_blank" aria-label="YouTube" style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;" onmouseover="this.style.color='#FF0000'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-youtube"></i></a>
-                            <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico" target="_blank" aria-label="LinkedIn" style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;" onmouseover="this.style.color='#0A66C2'" onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://www.instagram.com/adesiap.itabirito/" target="_blank"
+                                aria-label="Instagram"
+                                style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;"
+                                onmouseover="this.style.color='#E1306C'"
+                                onmouseout="this.style.color='rgba(255,255,255,.6)'"><i
+                                    class="fab fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/AdesiapItabirito" target="_blank" aria-label="Facebook"
+                                style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;"
+                                onmouseover="this.style.color='#1877F2'"
+                                onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.youtube.com/@adesiapminas" target="_blank" aria-label="YouTube"
+                                style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;"
+                                onmouseover="this.style.color='#FF0000'"
+                                onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-youtube"></i></a>
+                            <a href="https://br.linkedin.com/company/adesiap-minas-agencia-de-desenvolvimento-economico"
+                                target="_blank" aria-label="LinkedIn"
+                                style="color:rgba(255,255,255,.6);font-size:1.5rem;transition:color .2s;"
+                                onmouseover="this.style.color='#0A66C2'"
+                                onmouseout="this.style.color='rgba(255,255,255,.6)'"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
@@ -3038,7 +3357,14 @@
                     <h4>Institucional</h4>
                     <ul>
                         <li><a href="index.html">Início</a></li>
-                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 3px;"></i></a><ul class="dropdown-menu"><li><a href="quem-somos.html">Quem Somos</a></li><li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li><li><a href="terceiro-setor.html">O Terceiro Setor</a></li></ul></li>
+                        <li class="dropdown"><a href="quem-somos.html">Quem Somos <i class="fas fa-chevron-down"
+                                    style="font-size: 0.7em; margin-left: 3px;"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="quem-somos.html">Quem Somos</a></li>
+                                <li><a href="selos-reconhecimentos.html">Selos e Reconhecimentos</a></li>
+                                <li><a href="terceiro-setor.html">O Terceiro Setor</a></li>
+                            </ul>
+                        </li>
                         <li><a href="governanca.html">Governança</a></li>
                         <li><a href="agenda-2030.html">Agenda 2030</a></li>
                     </ul>
@@ -3058,8 +3384,11 @@
                 <div class="col-lg-3 col-md-4 mb-4 mb-md-0 footer-links">
                     <h4>Contato</h4>
                     <ul>
-                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG" target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro, Itabirito/MG</a></li>
-                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i> contato@adesiap.org.br</a></li>
+                        <li><a href="https://maps.google.com/?q=Rua+Dr.+Guilherme,+44+-+Centro,+Itabirito+-+MG"
+                                target="_blank"><i class="fas fa-map-marker-alt"></i> Rua Dr. Guilherme, nº 44 - Centro,
+                                Itabirito/MG</a></li>
+                        <li><a href="mailto:contato@adesiap.org.br"><i class="fas fa-envelope"></i>
+                                contato@adesiap.org.br</a></li>
                         <li><a href="tel:+553135631958"><i class="fas fa-phone"></i> (31) 3563-1958</a></li>
                     </ul>
                 </div>
@@ -3374,20 +3703,10 @@
             });
         }
     </script>
-<script src="./js/wa-config.js" defer></script>
-<script src="./js/index-projetos-loader.js" defer></script>
-<script src="./js/visibilidade.js" async></script>
-<script src="./js/cookie-banner.js" defer></script>
+    <script src="./js/wa-config.js" defer></script>
+    <script src="./js/index-projetos-loader.js" defer></script>
+    <script src="./js/visibilidade.js" async></script>
+    <script src="./js/cookie-banner.js" defer></script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
