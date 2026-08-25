@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../flaticon.svg" type="image/svg+xml">
+    <title>Portal de Transparência — Admin ADESIAP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul: #12395D; --azul-escuro: #0B1F33; --azul-claro: #1a4f82;
+            --terracota: #B85C38; --verde: #3B8C6E; --ambar: #D9902F;
+            --areia: #F4EFE7; --texto: #1F2933; --texto-leve: #5F6B76; --borda: #E2E8F0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #F0F4F8; color: var(--texto); min-height: 100vh; }
+
+        /* Login */
+        #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--azul-escuro); }
+        .login-box { background: #fff; border-radius: 16px; padding: 40px; width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+        .login-logo { text-align: center; margin-bottom: 28px; }
+        .login-logo img { height: 48px; }
+        .login-logo h2 { font-size: 1.1rem; color: var(--azul); margin-top: 10px; font-weight: 600; }
+        .login-box .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+        .login-box label { font-size: .8rem; font-weight: 600; color: var(--texto-leve); text-transform: uppercase; letter-spacing: .5px; }
+        .login-box input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--borda); border-radius: 8px; font-size: .95rem; outline: none; transition: border-color .2s; font-family: 'Inter', sans-serif; }
+        .login-box input:focus { border-color: var(--azul); }
+        .btn-login { width: 100%; margin-top: 8px; padding: 12px; background: var(--azul); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+        .btn-login:hover { background: var(--azul-claro); }
+        .login-error { color: #e53e3e; font-size: .83rem; margin-top: 10px; text-align: center; display: none; }
+
+        /* Layout */
+        html[data-auth] #loginScreen { display: none !important; }
+        html[data-auth] #appShell    { display: flex !important; }
+        #appShell { display: none; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar { width: 240px; background: var(--azul-escuro); min-height: 100vh; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100; }
+        .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .sidebar-logo img { height: 36px; }
+        .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+        .nav-section-label { display: block; padding: 16px 20px 6px; color: rgba(255,255,255,.3); font-size: .7rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: rgba(255,255,255,.65); font-size: .88rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: all .2s; border-left: 3px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,.06); border-left-color: var(--terracota); }
+        .nav-item i { width: 18px; text-align: center; font-size: .95rem; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-footer a, .btn-logout { color: rgba(255,255,255,.45); font-size: .82rem; text-decoration: none; display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; padding: 0; }
+        .sidebar-footer a:hover { color: #fff; }
+        .btn-logout:hover { color: var(--terracota); }
+
+        /* Main */
+        .main-content { margin-left: 240px; padding: 40px; flex: 1; }
+        .page-header { margin-bottom: 32px; }
+        .page-header h1 { font-size: 1.8rem; color: var(--azul); margin-bottom: 6px; }
+        .page-header p { color: var(--texto-leve); font-size: .95rem; }
+
+        /* Cards */
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 28px; overflow: hidden; }
+        .card-header { padding: 20px 28px; border-bottom: 1px solid var(--borda); display: flex; align-items: center; gap: 12px; }
+        .card-header h2 { font-size: 1.05rem; color: var(--azul); font-weight: 700; }
+        .card-header .icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #fff; background: var(--azul); flex-shrink: 0; }
+        .card-body { padding: 28px; }
+
+        /* Formulário de upload */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 7px; }
+        .form-group.full { grid-column: 1 / -1; }
+        label { font-size: .8rem; font-weight: 600; color: var(--texto-leve); text-transform: uppercase; letter-spacing: .5px; }
+        input[type=text], input[type=number], select {
+            padding: 10px 14px; border: 1.5px solid var(--borda); border-radius: 8px;
+            font-size: .95rem; font-family: 'Inter', sans-serif; outline: none;
+            transition: border-color .2s; color: var(--texto); background: #fff;
+        }
+        input:focus, select:focus { border-color: var(--azul); }
+        input[type=number] { max-width: 140px; }
+
+        /* File drop */
+        .file-drop { border: 2px dashed var(--borda); border-radius: 10px; padding: 28px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
+        .file-drop:hover, .file-drop.drag { border-color: var(--azul); background: #F0F6FF; }
+        .file-drop i { font-size: 2rem; color: var(--azul); margin-bottom: 10px; display: block; }
+        .file-drop p { font-size: .88rem; color: var(--texto-leve); margin-bottom: 6px; }
+        .file-drop strong { color: var(--texto); font-size: .9rem; }
+        .file-drop input { display: none; }
+        .file-name { margin-top: 10px; font-size: .85rem; color: var(--verde); font-weight: 600; display: none; }
+        .file-name i { margin-right: 6px; }
+
+        /* Botões */
+        .btn { padding: 11px 24px; border: none; border-radius: 8px; font-size: .9rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; display: inline-flex; align-items: center; gap: 8px; transition: opacity .2s; }
+        .btn:disabled { opacity: .5; cursor: not-allowed; }
+        .btn-primary { background: var(--azul); color: #fff; }
+        .btn-primary:hover:not(:disabled) { background: var(--azul-claro); }
+        .btn-danger  { background: #DC2626; color: #fff; }
+        .btn-danger:hover:not(:disabled) { opacity: .85; }
+        .btn-sm { padding: 6px 14px; font-size: .8rem; }
+        .form-actions { margin-top: 24px; display: flex; gap: 12px; align-items: center; }
+
+        /* Filtros da listagem */
+        .filter-row { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-row select { font-size: .85rem; padding: 8px 12px; }
+
+        /* Tabela de documentos */
+        .doc-table { width: 100%; border-collapse: collapse; }
+        .doc-table th { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--texto-leve); padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--borda); }
+        .doc-table td { padding: 14px; border-bottom: 1px solid var(--borda); font-size: .88rem; vertical-align: middle; }
+        .doc-table tr:last-child td { border-bottom: none; }
+        .doc-table tr:hover td { background: #FAFBFC; }
+        .badge-tab { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; background: #DBEAFE; color: #1E40AF; }
+        .badge-tab.contas    { background: #D1FAE5; color: #065F46; }
+        .badge-tab.relatorios{ background: #FEF3C7; color: #92400E; }
+        .badge-tab.editais   { background: #EDE9FE; color: #4C1D95; }
+        .badge-tab.parcerias { background: #FFE4E6; color: #9F1239; }
+        .badge-tab.mural     { background: #F3F4F6; color: #374151; }
+        .doc-link { color: var(--azul); text-decoration: none; font-weight: 500; }
+        .doc-link:hover { text-decoration: underline; }
+        .empty-row td { text-align: center; padding: 40px; color: var(--texto-leve); }
+        .spinner-inline { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+        .spinner-table { width: 20px; height: 20px; border: 2px solid var(--borda); border-top-color: var(--azul); border-radius: 50%; animation: spin .7s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--azul-escuro); color: #fff; padding: 14px 22px; border-radius: 10px; font-size: .9rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,0,0,.2); transform: translateY(80px); opacity: 0; transition: all .4s cubic-bezier(.175,.885,.32,1.275); z-index: 9999; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.erro { background: #DC2626; }
+        .toast.ok   { background: var(--verde); }
+    </style>
+</head>
+<body>
+<script>if (localStorage.getItem('admin_logado') === '1') document.documentElement.dataset.auth = '1';</script>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="../LOGO ADESIAP MINAS PRETA.png" alt="ADESIAP" onerror="this.style.display='none'">
+            <h2>Área Administrativa</h2>
+        </div>
+        <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" id="emailInput" placeholder="seu@adesiap.org.br" autocomplete="email" onkeydown="if(event.key==='Enter')fazerLogin()">
+        </div>
+        <div class="form-group">
+            <label>Senha</label>
+            <input type="password" id="senhaInput" placeholder="Sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter')fazerLogin()">
+        </div>
+        <button class="btn-login" id="btnLogin" onclick="fazerLogin()">Entrar</button>
+        <div class="login-error" id="loginError"></div>
+    </div>
+</div>
+
+<!-- PAINEL -->
+<div id="appShell">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="../ADESIAP MINAS BRANCA.png" alt="ADESIAP" onerror="this.style.height='28px';this.outerHTML='<span style=\'color:#fff;font-weight:700;font-size:1rem\'>ADESIAP</span>'">
+        </div>
+        <nav class="sidebar-nav">
+            <span class="nav-section-label" data-perfis="super_admin,gestor_projetos,comercial_captacao">Comercial</span>
+            <a href="bpc.html" class="nav-item" data-perfis="super_admin,gestor_projetos,comercial_captacao"><i class="fas fa-briefcase"></i> Banco de Projetos</a>
+            <span class="nav-section-label" data-perfis="super_admin,editor,gestor_projetos">Conteúdo</span>
+            <a href="configuracoes.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-cog"></i> Configurações</a>
+            <a href="projetos.html" class="nav-item" data-perfis="super_admin,editor,gestor_projetos"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <a href="conselhos.html" class="nav-item" data-perfis="super_admin,editor"><i class="fas fa-landmark"></i> Conselhos</a>
+            <a href="transparencia.html" class="nav-item active" data-perfis="super_admin,editor"><i class="fas fa-file-alt"></i> Portal Transparência</a>
+            <span class="nav-section-label" data-perfis="super_admin,operador_totvs">Gestão</span>
+            <a href="erp.html" class="nav-item" data-perfis="super_admin,operador_totvs"><i class="fas fa-database"></i> Projetos ERP</a>
+            <span class="nav-section-label" data-perfis="super_admin,ouvidoria_compliance">Atendimento</span>
+            <a href="ouvidoria.html" class="nav-item" data-perfis="super_admin,ouvidoria_compliance"><i class="fas fa-inbox"></i> Ouvidoria</a>
+            <span class="nav-section-label" data-perfis="super_admin">Ferramentas</span>
+            <a href="ferramentas.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-tools"></i> Conversor de Imagens</a>
+            <span class="nav-section-label" data-perfis="super_admin">Administração</span>
+            <a href="usuarios.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-users-cog"></i> Usuários</a>
+            <a href="visibilidade.html" class="nav-item" data-perfis="super_admin"><i class="fas fa-eye-slash"></i> Visibilidade</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div id="userInfo" style="display:none;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px">
+                <div id="userNome" style="color:#fff;font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px"></div>
+                <div id="userPerfil" style="color:rgba(255,255,255,.4);font-size:.72rem;margin-top:2px"></div>
+            </div>
+            <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> Ver site</a>
+            <button class="btn-logout" onclick="fazerLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-file-alt" style="color:var(--terracota);margin-right:10px;font-size:1.4rem;"></i>Portal de Transparência</h1>
+            <p>Faça upload de documentos para o SharePoint e publique-os no site. Os arquivos ficam em <strong>Registros / Documentos site / Transparência</strong>.</p>
+        </div>
+
+        <!-- UPLOAD -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon"><i class="fas fa-upload"></i></div>
+                <h2>Publicar novo documento</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Aba <span style="color:#e53e3e">*</span></label>
+                        <select id="fTab" onchange="toggleYear()">
+                            <option value="">Selecione…</option>
+                            <option value="inst">Documentos Institucionais</option>
+                            <option value="contas">Prestação de Contas</option>
+                            <option value="relatorios">Relatórios e Atas</option>
+                            <option value="editais">Editais</option>
+                            <option value="parcerias">Parcerias Públicas e Privadas</option>
+                            <option value="mural">Contratos e Parcerias</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="yearGroup">
+                        <label>Ano</label>
+                        <input type="number" id="fYear" placeholder="Ex: 2024" min="2000" max="2099">
+                    </div>
+                    <div class="form-group full">
+                        <label>Título do documento <span style="color:#e53e3e">*</span></label>
+                        <input type="text" id="fTitle" placeholder="Ex: Prestação de Contas Anual 2024">
+                    </div>
+                    <div class="form-group full">
+                        <label>Arquivo (PDF ou DOCX) <span style="color:#e53e3e">*</span></label>
+                        <div class="file-drop" id="fileDrop" onclick="document.getElementById('fFile').click()"
+                             ondragover="event.preventDefault();this.classList.add('drag')"
+                             ondragleave="this.classList.remove('drag')"
+                             ondrop="handleDrop(event)">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Arraste o arquivo aqui ou</p>
+                            <strong>clique para selecionar</strong>
+                            <div class="file-name" id="fileName"><i class="fas fa-check-circle"></i><span id="fileNameText"></span></div>
+                            <input type="file" id="fFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="btnUpload" onclick="uploadDoc()">
+                        <i class="fas fa-upload"></i> Publicar documento
+                    </button>
+                    <span id="uploadStatus" style="font-size:.85rem;color:var(--texto-leve)"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTA -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon" style="background:var(--verde)"><i class="fas fa-list"></i></div>
+                <h2>Documentos publicados</h2>
+                <div style="margin-left:auto">
+                    <select id="filterTab" class="filter-row" onchange="renderDocs()" style="font-size:.85rem;padding:8px 12px;border:1.5px solid var(--borda);border-radius:8px;font-family:'Inter',sans-serif;outline:none;">
+                        <option value="">Todas as abas</option>
+                        <option value="inst">Institucional</option>
+                        <option value="contas">Prestação de Contas</option>
+                        <option value="relatorios">Relatórios e Atas</option>
+                        <option value="editais">Editais</option>
+                        <option value="parcerias">Parcerias Públicas e Privadas</option>
+                        <option value="mural">Contratos e Parcerias</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body" style="padding:0">
+                <div style="overflow-x:auto">
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Aba</th>
+                                <th>Ano</th>
+                                <th>Arquivo</th>
+                                <th>Publicado em</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="docsTbody">
+                            <tr class="empty-row"><td colspan="6"><span class="spinner-table"></span> Carregando…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.PERFIS_PERMITIDOS = ['super_admin', 'editor'];
+
+const API     = '/api/admin/transparencia-docs';
+const TAB_LABELS = {
+    inst: 'Institucional', contas: 'Prestação de Contas',
+    relatorios: 'Relatórios e Atas', editais: 'Editais',
+    parcerias: 'Parcerias Públicas e Privadas', mural: 'Contratos e Parcerias',
+};
+const TABS_SEM_ANO = ['inst'];
+
+let allDocs = [];
+let selectedFile = null;
+
+// ── Arquivo selecionado ──────────────────────────────────────────────────────
+function handleFile(file) {
+    if (!file) return;
+    selectedFile = file;
+    document.getElementById('fileName').style.display = 'block';
+    document.getElementById('fileNameText').textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('fileDrop').classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file) { document.getElementById('fFile').files = e.dataTransfer.files; handleFile(file); }
+}
+
+function toggleYear() {
+    const tab = document.getElementById('fTab').value;
+    document.getElementById('yearGroup').style.display = TABS_SEM_ANO.includes(tab) ? 'none' : '';
+}
+
+// ── Upload ───────────────────────────────────────────────────────────────────
+async function uploadDoc() {
+    const tab   = document.getElementById('fTab').value;
+    const year  = document.getElementById('fYear').value;
+    const title = document.getElementById('fTitle').value.trim();
+    const btn   = document.getElementById('btnUpload');
+    const status= document.getElementById('uploadStatus');
+
+    if (!tab)   { toast('Selecione a aba.', 'erro'); return; }
+    if (!title) { toast('Informe o título do documento.', 'erro'); return; }
+    if (!selectedFile) { toast('Selecione o arquivo.', 'erro'); return; }
+    if (!TABS_SEM_ANO.includes(tab) && !year) { toast('Informe o ano.', 'erro'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span> Enviando…';
+    status.textContent = 'Fazendo upload para o SharePoint…';
+
+    try {
+        const base64 = await toBase64(selectedFile);
+        const jwt = getJWT();
+        const res = await fetch(`${API}?action=upload`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
+            body: JSON.stringify({
+                tab, year: year ? parseInt(year) : null, title,
+                filename: selectedFile.name,
+                fileBase64: base64,
+                mimeType: selectedFile.type || 'application/octet-stream',
+            }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erro no upload');
+
+        toast('Documento publicado com sucesso!', 'ok');
+        resetForm();
+        await loadDocs();
+    } catch (e) {
+        toast('Erro: ' + e.message, 'erro');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-upload"></i> Publicar documento';
+        status.textContent = '';
+    }
+}
+
+function resetForm() {
+    document.getElementById('fTab').value   = '';
+    document.getElementById('fYear').value  = '';
+    document.getElementById('fTitle').value = '';
+    document.getElementById('fFile').value  = '';
+    document.getElementById('fileName').style.display = 'none';
+    document.getElementById('yearGroup').style.display = '';
+    selectedFile = null;
+}
+
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload  = () => resolve(r.result.split(',')[1]);
+        r.onerror = reject;
+        r.readAsDataURL(file);
+    });
+}
+
+// ── Listagem ─────────────────────────────────────────────────────────────────
+async function loadDocs() {
+    const jwt = getJWT();
+    try {
+        const res  = await fetch(`${API}?action=list`, { headers: { 'Authorization': `Bearer ${jwt}` } });
+        const data = await res.json();
+        allDocs = Array.isArray(data) ? data : [];
+        renderDocs();
+    } catch {
+        document.getElementById('docsTbody').innerHTML =
+            '<tr class="empty-row"><td colspan="6">Erro ao carregar documentos.</td></tr>';
+    }
+}
+
+function renderDocs() {
+    const filter = document.getElementById('filterTab').value;
+    const docs   = filter ? allDocs.filter(d => d.tab === filter) : allDocs;
+    const tbody  = document.getElementById('docsTbody');
+
+    if (!docs.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Nenhum documento encontrado.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = docs.map(d => `
+        <tr>
+            <td style="font-weight:600;max-width:280px">${esc(d.title)}</td>
+            <td><span class="badge-tab ${d.tab}">${esc(TAB_LABELS[d.tab] || d.tab)}</span></td>
+            <td style="font-variant-numeric:tabular-nums">${d.year || '—'}</td>
+            <td><a href="${esc(d.sp_url)}" target="_blank" class="doc-link" title="${esc(d.filename)}">
+                <i class="fas fa-external-link-alt" style="font-size:.75rem;margin-right:4px"></i>${esc(d.filename)}</a></td>
+            <td style="color:var(--texto-leve);font-size:.82rem;white-space:nowrap">${fmtDate(d.created_at)}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" onclick="deleteDoc('${d.id}', this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// ── Remover ──────────────────────────────────────────────────────────────────
+async function deleteDoc(id, btn) {
+    if (!confirm('Remover este documento do site? O arquivo no SharePoint não será apagado.')) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span>';
+    try {
+        const jwt = getJWT();
+        const res = await fetch(`${API}?action=delete`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
+            body: JSON.stringify({ id }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        toast('Documento removido.', 'ok');
+        await loadDocs();
+    } catch (e) {
+        toast('Erro: ' + e.message, 'erro');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-trash"></i>';
+    }
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function getJWT() {
+    try {
+        const raw = localStorage.getItem('adesiap_admin_auth');
+        if (!raw) return '';
+        const obj = JSON.parse(raw);
+        return obj?.access_token || obj?.currentSession?.access_token || '';
+    } catch { return ''; }
+}
+
+function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+}
+
+let toastTimer;
+function toast(msg, type) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className   = 'toast show' + (type ? ' ' + type : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.className = 'toast'; }, 3500);
+}
+
+function init() { loadDocs(); }
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
