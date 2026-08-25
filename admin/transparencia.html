@@ -217,6 +217,10 @@
                         <input type="text" id="fTitle" placeholder="Ex: Prestação de Contas Anual 2024">
                     </div>
                     <div class="form-group full">
+                        <label>Descritivo <span style="color:var(--texto-leve);font-weight:400;text-transform:none;font-size:.78rem">(opcional — aparece como texto de apoio no site)</span></label>
+                        <textarea id="fDescritivo" rows="3" placeholder="Breve descrição do documento, contexto ou finalidade…" style="padding:10px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.95rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;color:var(--texto);resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-group full">
                         <label>Arquivo (PDF ou DOCX) <span style="color:#e53e3e">*</span></label>
                         <div class="file-drop" id="fileDrop" onclick="document.getElementById('fFile').click()"
                              ondragover="event.preventDefault();this.classList.add('drag')"
@@ -333,13 +337,15 @@ async function uploadDoc() {
     status.textContent = 'Fazendo upload para o SharePoint…';
 
     try {
-        const base64 = await toBase64(selectedFile);
-        const jwt = getJWT();
+        const base64     = await toBase64(selectedFile);
+        const descritivo = document.getElementById('fDescritivo').value.trim();
+        const jwt        = getJWT();
         const res = await fetch(`${API}?action=upload`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
             body: JSON.stringify({
                 tab, year: year ? parseInt(year) : null, title,
+                descritivo: descritivo || null,
                 filename: selectedFile.name,
                 fileBase64: base64,
                 mimeType: selectedFile.type || 'application/octet-stream',
@@ -363,8 +369,9 @@ async function uploadDoc() {
 function resetForm() {
     document.getElementById('fTab').value   = '';
     document.getElementById('fYear').value  = '';
-    document.getElementById('fTitle').value = '';
-    document.getElementById('fFile').value  = '';
+    document.getElementById('fTitle').value      = '';
+    document.getElementById('fDescritivo').value = '';
+    document.getElementById('fFile').value       = '';
     document.getElementById('fileName').style.display = 'none';
     document.getElementById('yearGroup').style.display = '';
     selectedFile = null;

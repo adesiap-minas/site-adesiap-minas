@@ -6,12 +6,16 @@ CREATE TABLE IF NOT EXISTS documentos_transparencia (
     tab         text        NOT NULL CHECK (tab IN ('inst','contas','relatorios','editais','parcerias','mural')),
     year        int,
     title       text        NOT NULL,
+    descritivo  text,
     filename    text        NOT NULL,
     sp_url      text        NOT NULL,
     sort_order  int         DEFAULT 0,
     active      boolean     DEFAULT true,
     created_at  timestamptz DEFAULT now()
 );
+
+-- Se a tabela já existe (criada sem descritivo), adicione a coluna:
+-- ALTER TABLE documentos_transparencia ADD COLUMN IF NOT EXISTS descritivo text;
 
 ALTER TABLE documentos_transparencia ENABLE ROW LEVEL SECURITY;
 

@@ -723,11 +723,13 @@
     }
 
     function docItem(doc) {
-        return '<a href="' + doc.url + '" target="_blank" class="doc-item">' +
-            iconForFile(doc.title) +
-            '<div><h4 style="margin-bottom:2px;font-size:1.15rem;color:var(--azul-institucional);">' + doc.title + '</h4>' +
-            '<span style="font-size:0.85rem;color:var(--texto-secundario);">Abrir documento</span></div>' +
-            '<i class="fas fa-download" style="margin-left:auto;color:var(--terracota-institucional);font-size:1.2rem;"></i>' +
+        var desc = doc.descritivo
+            ? '<p style="font-size:0.82rem;color:var(--texto-secundario);margin:4px 0 0;line-height:1.5;">' + doc.descritivo + '</p>'
+            : '<span style="font-size:0.85rem;color:var(--texto-secundario);">Abrir documento</span>';
+        return '<a href="' + doc.url + '" target="_blank" class="doc-item" style="align-items:flex-start;">' +
+            '<div style="margin-right:18px;flex-shrink:0;padding-top:2px;">' + iconForFile(doc.title) + '</div>' +
+            '<div style="flex:1;min-width:0;"><h4 style="margin-bottom:2px;font-size:1.1rem;color:var(--azul-institucional);">' + doc.title + '</h4>' + desc + '</div>' +
+            '<i class="fas fa-download" style="margin-left:16px;flex-shrink:0;color:var(--terracota-institucional);font-size:1.2rem;align-self:center;"></i>' +
             '</a>';
     }
 
@@ -754,7 +756,7 @@
         tabEl.innerHTML = html;
     }
 
-    fetch('/api/transparencia-docs')
+    fetch('/api/admin/transparencia-docs?action=public-list')
         .then(function (r) { return r.json(); })
         .then(function (grouped) {
             ['inst','contas','relatorios','editais','parcerias','mural'].forEach(function (tab) {

@@ -1,9 +1,16 @@
-// api/admin/transparencia-docs.js — Gestão de documentos do Portal de Transparência
-// Requer JWT Supabase com app_metadata.perfil = 'super_admin'
-// Ações: list | upload | delete
+// api/admin/transparencia-docs.js — Gestão do Portal de Transparência
+//
+// Ações públicas (sem auth):
+//   GET  ?action=public-list  → documentos ativos agrupados por aba/ano
+//
+// Ações admin (requer JWT super_admin ou editor):
+//   GET  ?action=list         → todos os documentos (inclusive inativos)
+//   POST ?action=upload       → { tab, year, title, descritivo, filename, fileBase64, mimeType }
+//   POST ?action=delete       → { id }
 
 const SB_URL      = process.env.SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const ANON_KEY    = process.env.SUPABASE_ANON_KEY;
 
 const TAB_INFO = {
     inst:      { label: 'Institucional',                 hasYear: false },
@@ -87,10 +94,10 @@ async function ensureFolderPath(folderPath, token) {
     }
 }
 
-// ── Supabase REST (service key — ignora RLS) ─────────────────────────────────
-async function sb(path, method = 'GET', body) {
+// ── Supabase REST ────────────────────────────────────────────────────────────
+async function sbFetch(path, method = 'GET', body, key) {
     const opts = { method, headers: {
-        'apikey': SERVICE_KEY, 'Authorization': `Bearer ${SERVICE_KEY}`,
+        'apikey': key, 'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json', 'Prefer': 'return=representation',
     }};
     if (body) opts.body = JSON.stringify(body);
@@ -110,7 +117,13 @@ function decodeJWT(req) {
     catch { return null; }
 }
 
-// ── Caminho SharePoint para o documento ─────────────────────────────────────
+function isAdmin(req) {
+    const jwt = decodeJWT(req);
+    const perfil = jwt?.app_metadata?.perfil;
+    return perfil === 'super_admin' || perfil === 'editor';
+}
+
+// ── Caminho SharePoint ───────────────────────────────────────────────────────
 function buildSpPath(tab, year) {
     const info  = TAB_INFO[tab];
     const parts = ['Registros/Documentos site/Transparência', info.label];
@@ -125,24 +138,45 @@ module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     if (req.method === 'OPTIONS') return res.status(204).end();
 
-    const jwt = decodeJWT(req);
-    if (!jwt || jwt.app_metadata?.perfil !== 'super_admin')
-        return res.status(403).json({ error: 'Acesso negado.' });
-
     const action = req.query.action;
 
     try {
-        // ── Listar todos os documentos (inclusive inativos) para o admin
+        // ── Listagem pública — sem autenticação ──────────────────────────────
+        if (req.method === 'GET' && action === 'public-list') {
+            res.setHeader('Cache-Control', 'public, max-age=60');
+            const rows = await sbFetch(
+                'documentos_transparencia' +
+                '?select=tab,year,title,descritivo,sp_url,sort_order' +
+                '&active=eq.true' +
+                '&order=tab,year.desc,sort_order,created_at.desc',
+                'GET', undefined, ANON_KEY
+            );
+            const grouped = {};
+            for (const row of rows) {
+                if (!grouped[row.tab]) grouped[row.tab] = {};
+                const key = row.year ? String(row.year) : 'sem-ano';
+                if (!grouped[row.tab][key]) grouped[row.tab][key] = [];
+                grouped[row.tab][key].push({ title: row.title, descritivo: row.descritivo || '', url: row.sp_url });
+            }
+            return res.json(grouped);
+        }
+
+        // ── A partir daqui: requer autenticação ─────────────────────────────
+        if (!isAdmin(req))
+            return res.status(403).json({ error: 'Acesso negado.' });
+
+        // ── Listar todos (admin) ─────────────────────────────────────────────
         if (req.method === 'GET' && action === 'list') {
-            const data = await sb(
-                'documentos_transparencia?select=*&order=tab,year.desc,sort_order,created_at.desc'
+            const data = await sbFetch(
+                'documentos_transparencia?select=*&order=tab,year.desc,sort_order,created_at.desc',
+                'GET', undefined, SERVICE_KEY
             );
             return res.json(data);
         }
 
-        // ── Upload: base64 → SharePoint → Supabase
+        // ── Upload ───────────────────────────────────────────────────────────
         if (req.method === 'POST' && action === 'upload') {
-            const { tab, year, title, filename, fileBase64, mimeType } = req.body || {};
+            const { tab, year, title, descritivo, filename, fileBase64, mimeType } = req.body || {};
             if (!tab || !title || !filename || !fileBase64)
                 return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename, fileBase64' });
             if (!TAB_INFO[tab])
@@ -157,20 +191,21 @@ module.exports = async function handler(req, res) {
             const item     = await graphPut(`/root:/${enc(filePath)}:/content`, buffer,
                                 mimeType || 'application/octet-stream', token);
 
-            const [row] = await sb('documentos_transparencia', 'POST', {
+            const [row] = await sbFetch('documentos_transparencia', 'POST', {
                 tab, year: year || null, title,
+                descritivo: descritivo || null,
                 filename: item.name || filename,
                 sp_url: item.webUrl,
                 active: true,
-            });
+            }, SERVICE_KEY);
             return res.json({ ok: true, doc: row });
         }
 
-        // ── Remover documento (soft delete)
+        // ── Remover (soft delete) ────────────────────────────────────────────
         if (req.method === 'POST' && action === 'delete') {
             const { id } = req.body || {};
             if (!id) return res.status(400).json({ error: 'id ausente' });
-            await sb(`documentos_transparencia?id=eq.${id}`, 'PATCH', { active: false });
+            await sbFetch(`documentos_transparencia?id=eq.${id}`, 'PATCH', { active: false }, SERVICE_KEY);
             return res.json({ ok: true });
         }
 
