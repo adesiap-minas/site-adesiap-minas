@@ -9,17 +9,20 @@ CREATE TABLE IF NOT EXISTS documentos_transparencia (
     descritivo  text,
     filename    text        NOT NULL,
     sp_url      text        NOT NULL,
+    status      text        DEFAULT 'em_execucao' CHECK (status IN ('em_execucao','finalizado')),
     sort_order  int         DEFAULT 0,
     active      boolean     DEFAULT true,
     created_at  timestamptz DEFAULT now()
 );
 
--- Se a tabela já existe (criada sem descritivo), adicione a coluna:
+-- Se a tabela já existe, adicione as colunas novas:
 -- ALTER TABLE documentos_transparencia ADD COLUMN IF NOT EXISTS descritivo text;
+-- ALTER TABLE documentos_transparencia ADD COLUMN IF NOT EXISTS status text DEFAULT 'em_execucao' CHECK (status IN ('em_execucao','finalizado'));
 
 ALTER TABLE documentos_transparencia ENABLE ROW LEVEL SECURITY;
 
 -- Público lê apenas documentos ativos
+DROP POLICY IF EXISTS "public_read" ON documentos_transparencia;
 CREATE POLICY "public_read" ON documentos_transparencia
     FOR SELECT USING (active = true);
 

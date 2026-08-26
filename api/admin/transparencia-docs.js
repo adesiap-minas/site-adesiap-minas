@@ -147,7 +147,7 @@ module.exports = async function handler(req, res) {
             res.setHeader('Cache-Control', 'public, max-age=60');
             const rows = await sbFetch(
                 'documentos_transparencia' +
-                '?select=tab,year,title,descritivo,sp_url,sort_order' +
+                '?select=tab,year,title,descritivo,status,sp_url,sort_order' +
                 '&active=eq.true' +
                 '&order=tab,year.desc,sort_order,created_at.desc',
                 'GET', undefined, ANON_KEY
@@ -157,7 +157,7 @@ module.exports = async function handler(req, res) {
                 if (!grouped[row.tab]) grouped[row.tab] = {};
                 const key = row.year ? String(row.year) : 'sem-ano';
                 if (!grouped[row.tab][key]) grouped[row.tab][key] = [];
-                grouped[row.tab][key].push({ title: row.title, descritivo: row.descritivo || '', url: row.sp_url });
+                grouped[row.tab][key].push({ title: row.title, descritivo: row.descritivo || '', url: row.sp_url, status: row.status || 'em_execucao' });
             }
             return res.json(grouped);
         }
@@ -198,7 +198,7 @@ module.exports = async function handler(req, res) {
 
         // ── Finalizar: salva metadados no Supabase após upload direto ─────────
         if (req.method === 'POST' && action === 'finalize') {
-            const { tab, year, title, descritivo, filename, sp_url } = req.body || {};
+            const { tab, year, title, descritivo, status, filename, sp_url } = req.body || {};
             if (!tab || !title || !filename || !sp_url)
                 return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename, sp_url' });
             if (!TAB_INFO[tab]) return res.status(400).json({ error: 'Aba inválida' });
@@ -206,9 +206,25 @@ module.exports = async function handler(req, res) {
             const [row] = await sbFetch('documentos_transparencia', 'POST', {
                 tab, year: year || null, title,
                 descritivo: descritivo || null,
+                status: status || 'em_execucao',
                 filename, sp_url, active: true,
             }, SERVICE_KEY);
             return res.json({ ok: true, doc: row });
+        }
+
+        // ── Editar metadados ─────────────────────────────────────────────────
+        if (req.method === 'POST' && action === 'update') {
+            const { id, tab, year, title, descritivo, status } = req.body || {};
+            if (!id || !title) return res.status(400).json({ error: 'id e title são obrigatórios' });
+            if (tab && !TAB_INFO[tab]) return res.status(400).json({ error: 'Aba inválida' });
+
+            const patch = { title, descritivo: descritivo || null };
+            if (tab)    patch.tab    = tab;
+            if (year !== undefined) patch.year = year || null;
+            if (status) patch.status = status;
+
+            await sbFetch(`documentos_transparencia?id=eq.${id}`, 'PATCH', patch, SERVICE_KEY);
+            return res.json({ ok: true });
         }
 
         // ── Remover (soft delete) ────────────────────────────────────────────
