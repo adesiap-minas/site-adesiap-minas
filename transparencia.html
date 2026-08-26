@@ -812,7 +812,7 @@
             var emEx = items.filter(function(d) { return d.status === 'em_execucao'; });
             var fin  = items.filter(function(d) { return d.status === 'finalizado'; });
             var none = items.filter(function(d) { return !d.status; });
-            var showStatus = emEx.length > 0 && fin.length > 0;
+            var showStatus = emEx.length > 0 || fin.length > 0;
 
             if (year !== 'sem-ano') {
                 html += '<div class="year-section" style="margin-bottom:40px;">' +
