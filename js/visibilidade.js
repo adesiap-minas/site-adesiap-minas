@@ -88,9 +88,10 @@
         'pagina_politica-privacidade':  ['politica-privacidade.html'],
     };
 
-    // Mapa: chave → { página, seletor } para seções em páginas específicas (fora da index)
+    // Mapa: chave → seletor CSS para seções em páginas específicas (fora da index)
+    // Quando pagina_canal-denuncias está oculta, o card na ouvidoria.html também some
     var OTHER_SECTIONS = {
-        'secao_ouvidoria-denuncias': { page: 'ouvidoria.html', sel: '#hub-card-denuncias' },
+        'pagina_canal-denuncias': { sel: '#hub-card-denuncias' },
     };
 
     var filename = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
