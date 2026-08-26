@@ -827,8 +827,8 @@
                     none.forEach(function(doc) { html += docItem(doc); });
                     html += '</div>';
                 }
-                html += statusSection('EM EXECUÇÃO', emEx, 'var(--verde-sustentabilidade)');
-                html += statusSection('FINALIZADO', fin, '#6B7280');
+                if (emEx.length) html += statusSection('EM EXECUÇÃO', emEx, 'var(--verde-sustentabilidade)');
+                if (fin.length)  html += statusSection('FINALIZADO',  fin,  '#6B7280');
             } else {
                 html += '<div class="doc-list">';
                 items.forEach(function(doc) { html += docItem(doc); });
