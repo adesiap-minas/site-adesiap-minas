@@ -206,7 +206,7 @@ module.exports = async function handler(req, res) {
             const [row] = await sbFetch('documentos_transparencia', 'POST', {
                 tab, year: year || null, title,
                 descritivo: descritivo || null,
-                status: status || 'em_execucao',
+                status: status || null,
                 filename, sp_url, active: true,
             }, SERVICE_KEY);
             return res.json({ ok: true, doc: row });

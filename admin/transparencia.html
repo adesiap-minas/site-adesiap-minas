@@ -136,7 +136,6 @@
         .badge-status { display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700; }
         .badge-status.em_execucao { background:#D1FAE5;color:#065F46; }
         .badge-status.finalizado  { background:#E5E7EB;color:#374151; }
-        .badge-status.sem_divisao { background:#F9FAFB;color:#9CA3AF;border:1px solid #E5E7EB; }
 
         textarea { padding:10px 14px;border:1.5px solid var(--borda);border-radius:8px;font-size:.95rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;color:var(--texto);resize:vertical; }
         textarea:focus { border-color:var(--azul); }
@@ -505,7 +504,7 @@ function renderDocs() {
         <tr>
             <td style="font-weight:600;max-width:260px">${esc(d.title)}</td>
             <td><span class="badge-tab ${d.tab}">${esc(TAB_LABELS[d.tab] || d.tab)}</span></td>
-            <td><span class="badge-status ${d.status || 'sem_divisao'}">${esc(d.status ? STATUS_LABELS[d.status] : 'Sem divisão')}</span></td>
+            <td>${d.status ? `<span class="badge-status ${d.status}">${esc(STATUS_LABELS[d.status])}</span>` : '<span style="color:var(--texto-leve);font-size:.8rem;">—</span>'}</td>
             <td style="font-variant-numeric:tabular-nums">${d.year || '—'}</td>
             <td><a href="${esc(d.sp_url)}" target="_blank" class="doc-link" title="${esc(d.filename)}">
                 <i class="fas fa-external-link-alt" style="font-size:.75rem;margin-right:4px"></i>${esc(d.filename)}</a></td>
