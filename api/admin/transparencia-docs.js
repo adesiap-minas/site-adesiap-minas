@@ -218,10 +218,13 @@ module.exports = async function handler(req, res) {
             if (!id || !title) return res.status(400).json({ error: 'id e title são obrigatórios' });
             if (tab && !TAB_INFO[tab]) return res.status(400).json({ error: 'Aba inválida' });
 
-            const patch = { title, descritivo: descritivo || null };
-            if (tab)    patch.tab    = tab;
+            const patch = {
+                title,
+                descritivo: descritivo || null,
+                status: status || null,
+            };
+            if (tab) patch.tab = tab;
             if (year !== undefined) patch.year = year || null;
-            if (status) patch.status = status;
 
             await sbFetch(`documentos_transparencia?id=eq.${id}`, 'PATCH', patch, SERVICE_KEY);
             return res.json({ ok: true });
