@@ -157,7 +157,7 @@ module.exports = async function handler(req, res) {
                 if (!grouped[row.tab]) grouped[row.tab] = {};
                 const key = row.year ? String(row.year) : 'sem-ano';
                 if (!grouped[row.tab][key]) grouped[row.tab][key] = [];
-                grouped[row.tab][key].push({ title: row.title, descritivo: row.descritivo || '', url: row.sp_url, status: row.status || 'em_execucao' });
+                grouped[row.tab][key].push({ title: row.title, descritivo: row.descritivo || '', url: row.sp_url, status: row.status || null });
             }
             return res.json(grouped);
         }
