@@ -231,6 +231,7 @@
                     <div class="form-group">
                         <label>Status</label>
                         <select id="fStatus">
+                            <option value="">— sem divisão —</option>
                             <option value="em_execucao">Em Execução</option>
                             <option value="finalizado">Finalizado</option>
                         </select>
@@ -327,6 +328,7 @@
             <div class="form-group">
                 <label>Status</label>
                 <select id="eStatus">
+                    <option value="">— sem divisão —</option>
                     <option value="em_execucao">Em Execução</option>
                     <option value="finalizado">Finalizado</option>
                 </select>
@@ -440,7 +442,7 @@ async function uploadDoc() {
             body: JSON.stringify({
                 tab, year: year ? parseInt(year) : null, title,
                 descritivo: descritivo || null,
-                status: docStatus || 'em_execucao',
+                status: docStatus || null,
                 filename: upData.name || selectedFile.name,
                 sp_url: upData.webUrl,
             }),
@@ -465,7 +467,7 @@ function resetForm() {
     document.getElementById('fYear').value       = '';
     document.getElementById('fTitle').value      = '';
     document.getElementById('fDescritivo').value = '';
-    document.getElementById('fStatus').value     = 'em_execucao';
+    document.getElementById('fStatus').value     = '';
     document.getElementById('fFile').value       = '';
     document.getElementById('fileName').style.display = 'none';
     document.getElementById('yearGroup').style.display = '';
@@ -548,7 +550,7 @@ function openEdit(id) {
     if (!d) return;
     document.getElementById('eId').value         = d.id;
     document.getElementById('eTab').value        = d.tab;
-    document.getElementById('eStatus').value     = d.status || 'em_execucao';
+    document.getElementById('eStatus').value     = d.status || '';
     document.getElementById('eYear').value       = d.year || '';
     document.getElementById('eTitle').value      = d.title;
     document.getElementById('eDescritivo').value = d.descritivo || '';

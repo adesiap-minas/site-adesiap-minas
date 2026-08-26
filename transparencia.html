@@ -809,8 +809,9 @@
         var years = Object.keys(docs).sort(function (a, b) { return b - a; });
         years.forEach(function (year) {
             var items = docs[year];
-            var emEx = items.filter(function(d) { return !d.status || d.status === 'em_execucao'; });
+            var emEx = items.filter(function(d) { return d.status === 'em_execucao'; });
             var fin  = items.filter(function(d) { return d.status === 'finalizado'; });
+            var none = items.filter(function(d) { return !d.status; });
             var showStatus = emEx.length > 0 && fin.length > 0;
 
             if (year !== 'sem-ano') {
@@ -820,8 +821,14 @@
             }
 
             if (showStatus) {
-                if (emEx.length) html += statusSection('EM EXECUÇÃO', emEx, 'var(--verde-sustentabilidade)');
-                if (fin.length)  html += statusSection('FINALIZADO', fin, '#6B7280');
+                // Docs sem status aparecem flat no topo
+                if (none.length) {
+                    html += '<div class="doc-list" style="margin-bottom:16px;">';
+                    none.forEach(function(doc) { html += docItem(doc); });
+                    html += '</div>';
+                }
+                html += statusSection('EM EXECUÇÃO', emEx, 'var(--verde-sustentabilidade)');
+                html += statusSection('FINALIZADO', fin, '#6B7280');
             } else {
                 html += '<div class="doc-list">';
                 items.forEach(function(doc) { html += docItem(doc); });
