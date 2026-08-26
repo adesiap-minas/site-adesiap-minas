@@ -270,6 +270,15 @@
                 display: block;
             }
 
+            /* Impede que o efeito scroll altere a altura do header no mobile,
+               evitando o gap entre cabeçalho e menu suspenso */
+            header, header.scrolled {
+                height: var(--header-height) !important;
+                padding: 0 !important;
+                display: flex;
+                align-items: center;
+            }
+
             #main-menu { display: none; position: fixed; top: calc(var(--topbar-height) + var(--header-height)); left: 0; width: 100%; background: #fff; padding: 20px 24px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow-y: auto; max-height: calc(100vh - var(--topbar-height) - var(--header-height)); z-index: 999; }
             #main-menu.open { display: block; }
             .main-menu { flex-direction: column; align-items: flex-start; gap: 0; }
