@@ -1695,7 +1695,14 @@
 
         // ── MOBILE MENU ────────────────────────────────────────────
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('main-menu').classList.toggle('open');
+            const menu = document.getElementById('main-menu');
+            menu.classList.toggle('open');
+            // Posiciona o menu com base na altura real do header (não pela variável CSS)
+            if (window.innerWidth <= 991) {
+                const rect = document.querySelector('header').getBoundingClientRect();
+                menu.style.top = rect.bottom + 'px';
+                menu.style.maxHeight = (window.innerHeight - rect.bottom) + 'px';
+            }
         });
 
         // ── FAQ ────────────────────────────────────────────────────
