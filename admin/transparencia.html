@@ -510,6 +510,9 @@ function renderDocs() {
                 <i class="fas fa-external-link-alt" style="font-size:.75rem;margin-right:4px"></i>${esc(d.filename)}</a></td>
             <td style="color:var(--texto-leve);font-size:.82rem;white-space:nowrap">${fmtDate(d.created_at)}</td>
             <td style="display:flex;gap:6px;">
+                <button class="btn btn-sm" style="background:#0EA5E9;color:#fff;" onclick="regenLink('${d.id}', this)" title="Gerar link público para visitantes">
+                    <i class="fas fa-link"></i>
+                </button>
                 <button class="btn btn-sm" style="background:var(--ambar);color:#fff;" onclick="openEdit('${d.id}')" title="Editar">
                     <i class="fas fa-pen"></i>
                 </button>
@@ -519,6 +522,31 @@ function renderDocs() {
             </td>
         </tr>
     `).join('');
+}
+
+// ── Regenerar link público ────────────────────────────────────────────────────
+async function regenLink(id, btn) {
+    var d = docsMap[id];
+    if (!confirm('Gerar link público para "' + (d ? d.title : id) + '"?\n\nIsso cria um link de compartilhamento anônimo no SharePoint (somente leitura). O restante do SharePoint não é afetado.')) return;
+    var prev = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span>';
+    try {
+        var jwt = getJWT();
+        var res = await fetch(`${API}?action=regenerate-link`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${jwt}` },
+            body: JSON.stringify({ id }),
+        });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erro ao gerar link');
+        toast('Link público gerado! Documento acessível para visitantes.', 'ok');
+        await loadDocs();
+    } catch(e) {
+        toast('Erro: ' + e.message, 'erro');
+        btn.disabled = false;
+        btn.innerHTML = prev;
+    }
 }
 
 // ── Remover ──────────────────────────────────────────────────────────────────

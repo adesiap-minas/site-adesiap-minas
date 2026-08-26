@@ -198,18 +198,49 @@ module.exports = async function handler(req, res) {
 
         // ── Finalizar: salva metadados no Supabase após upload direto ─────────
         if (req.method === 'POST' && action === 'finalize') {
-            const { tab, year, title, descritivo, status, filename, sp_url } = req.body || {};
-            if (!tab || !title || !filename || !sp_url)
-                return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename, sp_url' });
+            const { tab, year, title, descritivo, status, filename } = req.body || {};
+            if (!tab || !title || !filename)
+                return res.status(400).json({ error: 'Parâmetros obrigatórios: tab, title, filename' });
             if (!TAB_INFO[tab]) return res.status(400).json({ error: 'Aba inválida' });
+
+            // Gerar link anônimo de visualização (qualquer pessoa com o link pode ver)
+            const token    = await getSpToken();
+            const filePath = `${buildSpPath(tab, year)}/${filename}`;
+            const item     = await graph('GET', `/root:/${enc(filePath)}`, undefined, token);
+            const linkRes  = await graph('POST', `/items/${item.id}/createLink`,
+                { type: 'view', scope: 'anonymous' }, token);
+            const publicUrl = linkRes.link.webUrl;
 
             const [row] = await sbFetch('documentos_transparencia', 'POST', {
                 tab, year: year || null, title,
                 descritivo: descritivo || null,
                 status: status || null,
-                filename, sp_url, active: true,
+                filename, sp_url: publicUrl, active: true,
             }, SERVICE_KEY);
             return res.json({ ok: true, doc: row });
+        }
+
+        // ── Regenerar link público (para documentos já cadastrados) ──────────
+        if (req.method === 'POST' && action === 'regenerate-link') {
+            const { id } = req.body || {};
+            if (!id) return res.status(400).json({ error: 'id ausente' });
+
+            const docs = await sbFetch(
+                `documentos_transparencia?id=eq.${id}&select=tab,year,filename`,
+                'GET', undefined, SERVICE_KEY
+            );
+            const doc = docs[0];
+            if (!doc) return res.status(404).json({ error: 'Documento não encontrado' });
+
+            const token    = await getSpToken();
+            const filePath = `${buildSpPath(doc.tab, doc.year)}/${doc.filename}`;
+            const item     = await graph('GET', `/root:/${enc(filePath)}`, undefined, token);
+            const linkRes  = await graph('POST', `/items/${item.id}/createLink`,
+                { type: 'view', scope: 'anonymous' }, token);
+            const publicUrl = linkRes.link.webUrl;
+
+            await sbFetch(`documentos_transparencia?id=eq.${id}`, 'PATCH', { sp_url: publicUrl }, SERVICE_KEY);
+            return res.json({ ok: true, url: publicUrl });
         }
 
         // ── Editar metadados ─────────────────────────────────────────────────
