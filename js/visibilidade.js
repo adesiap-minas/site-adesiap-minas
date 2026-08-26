@@ -1,7 +1,7 @@
 (function () {
     var CACHE_KEY = 'adesiap_vis';
     var CACHE_TTL = 5 * 60 * 1000; // 5 min
-    var API = '/api/admin/visibilidade';
+    var API = '/api/admin/usuarios?action=visibilidade';
 
     // ── Favicon sync ─────────────────────────────────────────────────────────
     var FAV_KEY = 'adesiap_flaticon';
