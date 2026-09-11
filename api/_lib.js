@@ -30,6 +30,16 @@ export function gerarProtocolo(prefixo) {
     return `${prefixo}-${ano}${mes}${dia}-${rand}`;
 }
 
+export function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+}
+
 export function corsHeaders() {
     return {
         'Access-Control-Allow-Origin': '*',

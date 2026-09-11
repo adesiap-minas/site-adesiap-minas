@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -37,17 +37,17 @@ export default async function handler(req, res) {
             subject: `[Trabalhe Conosco] Nova candidatura — ${nome} | ${area_interesse}`,
             html: `
                 <h2>Nova Candidatura — Trabalhe Conosco</h2>
-                <p><strong>Nome:</strong> ${nome}</p>
-                <p><strong>E-mail:</strong> ${email}</p>
-                <p><strong>Telefone:</strong> ${telefone || '—'}</p>
-                <p><strong>LinkedIn:</strong> ${linkedin || '—'}</p>
+                <p><strong>Nome:</strong> ${escapeHtml(nome)}</p>
+                <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
+                <p><strong>Telefone:</strong> ${escapeHtml(telefone) || '—'}</p>
+                <p><strong>LinkedIn:</strong> ${escapeHtml(linkedin) || '—'}</p>
                 <hr>
-                <p><strong>Área de interesse:</strong> ${area_interesse}</p>
-                <p><strong>Nível:</strong> ${nivel}</p>
-                <p><strong>Escolaridade:</strong> ${escolaridade}</p>
-                <p><strong>Disponibilidade:</strong> ${disponibilidade || '—'}</p>
-                <p><strong>Currículo:</strong> ${curriculo_url ? `<a href="${curriculo_url}">Ver currículo</a>` : 'Não anexado'}</p>
-                ${carta_apresentacao ? `<hr><p><strong>Carta de Apresentação:</strong></p><p>${carta_apresentacao.replace(/\n/g, '<br>')}</p>` : ''}
+                <p><strong>Área de interesse:</strong> ${escapeHtml(area_interesse)}</p>
+                <p><strong>Nível:</strong> ${escapeHtml(nivel)}</p>
+                <p><strong>Escolaridade:</strong> ${escapeHtml(escolaridade)}</p>
+                <p><strong>Disponibilidade:</strong> ${escapeHtml(disponibilidade) || '—'}</p>
+                <p><strong>Currículo:</strong> ${curriculo_url ? `<a href="${escapeHtml(curriculo_url)}">Ver currículo</a>` : 'Não anexado'}</p>
+                ${carta_apresentacao ? `<hr><p><strong>Carta de Apresentação:</strong></p><p>${escapeHtml(carta_apresentacao).replace(/\n/g, '<br>')}</p>` : ''}
             `,
         });
         await transport.sendMail({
@@ -55,8 +55,8 @@ export default async function handler(req, res) {
             to: email,
             subject: `Recebemos sua candidatura — ADESIAP Minas`,
             html: `
-                <h2>Olá, ${nome}!</h2>
-                <p>Recebemos sua candidatura para a área de <strong>${area_interesse}</strong>.</p>
+                <h2>Olá, ${escapeHtml(nome)}!</h2>
+                <p>Recebemos sua candidatura para a área de <strong>${escapeHtml(area_interesse)}</strong>.</p>
                 <p>Nossa equipe irá analisar o seu perfil e entrará em contato caso haja uma oportunidade compatível.</p>
                 <p>Obrigado pelo interesse em fazer parte da ADESIAP Minas!</p>
                 <br>

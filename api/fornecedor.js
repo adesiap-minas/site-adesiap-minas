@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -29,13 +29,13 @@ export default async function handler(req, res) {
             subject: `[Fornecedores] Novo cadastro — ${razao_social}`,
             html: `
                 <h2>Novo Cadastro de Fornecedor</h2>
-                <p><strong>Razão Social:</strong> ${razao_social}</p>
-                <p><strong>CNPJ:</strong> ${cnpj || '—'}</p>
-                <p><strong>Contato:</strong> ${nome_contato}</p>
-                <p><strong>E-mail:</strong> ${email}</p>
-                <p><strong>Telefone:</strong> ${telefone || '—'}</p>
-                <p><strong>Segmento:</strong> ${segmento || '—'}</p>
-                ${descricao ? `<hr><p><strong>Descrição:</strong> ${descricao}</p>` : ''}
+                <p><strong>Razão Social:</strong> ${escapeHtml(razao_social)}</p>
+                <p><strong>CNPJ:</strong> ${escapeHtml(cnpj) || '—'}</p>
+                <p><strong>Contato:</strong> ${escapeHtml(nome_contato)}</p>
+                <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
+                <p><strong>Telefone:</strong> ${escapeHtml(telefone) || '—'}</p>
+                <p><strong>Segmento:</strong> ${escapeHtml(segmento) || '—'}</p>
+                ${descricao ? `<hr><p><strong>Descrição:</strong> ${escapeHtml(descricao)}</p>` : ''}
             `,
         });
 
@@ -44,8 +44,8 @@ export default async function handler(req, res) {
             to: email,
             subject: `Cadastro recebido — ADESIAP Minas`,
             html: `
-                <h2>Olá, ${nome_contato}!</h2>
-                <p>Recebemos o cadastro de <strong>${razao_social}</strong> em nossa base de fornecedores.</p>
+                <h2>Olá, ${escapeHtml(nome_contato)}!</h2>
+                <p>Recebemos o cadastro de <strong>${escapeHtml(razao_social)}</strong> em nossa base de fornecedores.</p>
                 <p>Nossa equipe irá analisar as informações e entrará em contato em breve.</p>
                 <br>
                 <p>Atenciosamente,<br><strong>Equipe ADESIAP Minas</strong></p>

@@ -1,6 +1,16 @@
 ﻿const SUPABASE_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
 
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+}
+
 const TIPO_LABELS = {
     contato:              'Fale Conosco',
     fornecedores:         'Cadastro de Fornecedor',
@@ -74,7 +84,7 @@ function buildConfirmacaoEmail(protocolo, tipo, nome) {
       <h1 style="margin:0 0 8px;color:#fff;font-size:21px;font-weight:700;">Mensagem Recebida</h1>
     </div>
     <div style="padding:28px 32px;">
-      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + nome + '</strong>' : ''},</p>
+      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + escapeHtml(nome) + '</strong>' : ''},</p>
       <p style="font-size:14px;color:#374151;">Sua <strong>${tipoLabel}</strong> foi recebida com sucesso e está sendo analisada pela nossa equipe.</p>
       <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:20px 24px;margin:20px 0;text-align:center;">
         <p style="margin:0 0 6px;font-size:12px;color:#6b7280;letter-spacing:1px;text-transform:uppercase;">Seu número de protocolo</p>
@@ -104,15 +114,15 @@ function buildRespostaEmail(protocolo, tipo, nome, status, resposta) {
       <p style="margin:0;color:rgba(255,255,255,.55);font-size:12px;">Protocolo: <strong style="color:#fff;font-family:monospace;">${protocolo}</strong></p>
     </div>
     <div style="padding:28px 32px;">
-      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + nome + '</strong>' : ''},</p>
+      <p style="font-size:15px;color:#1f2937;">Olá${nome ? ', <strong>' + escapeHtml(nome) + '</strong>' : ''},</p>
       <p style="font-size:14px;color:#374151;">Há uma atualização sobre sua <strong>${tipoLabel}</strong>.</p>
       <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin:20px 0;">
         <p style="margin:0 0 4px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Status atual</p>
-        <p style="margin:0;font-size:16px;font-weight:700;color:#12395D;">${status}</p>
+        <p style="margin:0;font-size:16px;font-weight:700;color:#12395D;">${escapeHtml(status)}</p>
       </div>
       ${resposta ? `<div style="background:#fff9f5;border-left:4px solid #B85C38;padding:16px 20px;margin:20px 0;border-radius:0 8px 8px 0;">
         <p style="margin:0 0 8px;font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;">Mensagem da equipe</p>
-        <p style="margin:0;font-size:14px;color:#1f2937;line-height:1.6;">${resposta.replace(/\n/g, '<br>')}</p>
+        <p style="margin:0;font-size:14px;color:#1f2937;line-height:1.6;">${escapeHtml(resposta).replace(/\n/g, '<br>')}</p>
       </div>` : ''}
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
       <p style="font-size:11px;color:#9ca3af;text-align:center;">ADESIAP Minas · <a href="mailto:sac@adesiap.org.br" style="color:#B85C38;">sac@adesiap.org.br</a></p>
@@ -132,7 +142,7 @@ function buildEmail(tipo, dados, protocolo) {
         .map(([k, v]) => `
             <tr>
                 <td style="padding:9px 14px;background:#f8fafc;font-weight:600;font-size:13px;color:#374151;width:36%;border-bottom:1px solid #e5e7eb;white-space:nowrap;">${labelFor(k)}</td>
-                <td style="padding:9px 14px;font-size:13px;color:#1f2937;border-bottom:1px solid #e5e7eb;">${String(v).replace(/\n/g, '<br>')}</td>
+                <td style="padding:9px 14px;font-size:13px;color:#1f2937;border-bottom:1px solid #e5e7eb;">${escapeHtml(String(v)).replace(/\n/g, '<br>')}</td>
             </tr>`).join('');
 
     const html = `<!DOCTYPE html>

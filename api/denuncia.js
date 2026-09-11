@@ -1,4 +1,4 @@
-import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino } from './_lib.js';
+import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -34,13 +34,13 @@ export default async function handler(req, res) {
                 <p><strong>Protocolo:</strong> ${protocolo}</p>
                 <p><strong>Identificado:</strong> ${identificado ? 'Sim' : 'Não'}</p>
                 ${identificado ? `
-                <p><strong>Nome:</strong> ${nome || '—'}</p>
-                <p><strong>E-mail:</strong> ${email || '—'}</p>
+                <p><strong>Nome:</strong> ${escapeHtml(nome) || '—'}</p>
+                <p><strong>E-mail:</strong> ${escapeHtml(email) || '—'}</p>
                 ` : ''}
-                <p><strong>Categoria:</strong> ${categoria || '—'}</p>
+                <p><strong>Categoria:</strong> ${escapeHtml(categoria) || '—'}</p>
                 <hr>
                 <p><strong>Descrição:</strong></p>
-                <p>${descricao.replace(/\n/g, '<br>')}</p>
+                <p>${escapeHtml(descricao).replace(/\n/g, '<br>')}</p>
             `,
         });
 

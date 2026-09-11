@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -29,13 +29,13 @@ export default async function handler(req, res) {
             subject: `[Fale Conosco] ${assunto || 'Nova mensagem'} — ${nome}`,
             html: `
                 <h2>Nova mensagem — Fale Conosco</h2>
-                <p><strong>Nome:</strong> ${nome}</p>
-                <p><strong>E-mail:</strong> ${email}</p>
-                <p><strong>Telefone:</strong> ${telefone || '—'}</p>
-                <p><strong>Assunto:</strong> ${assunto || '—'}</p>
+                <p><strong>Nome:</strong> ${escapeHtml(nome)}</p>
+                <p><strong>E-mail:</strong> ${escapeHtml(email)}</p>
+                <p><strong>Telefone:</strong> ${escapeHtml(telefone) || '—'}</p>
+                <p><strong>Assunto:</strong> ${escapeHtml(assunto) || '—'}</p>
                 <hr>
                 <p><strong>Mensagem:</strong></p>
-                <p>${mensagem.replace(/\n/g, '<br>')}</p>
+                <p>${escapeHtml(mensagem).replace(/\n/g, '<br>')}</p>
             `,
         });
     } catch (mailErr) {

@@ -1,4 +1,4 @@
-import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino } from './_lib.js';
+import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
 
 const PREFIXOS   = { reclamacao: 'RCL', sugestao: 'SUG', elogio: 'ELG' };
 const LABELS     = { reclamacao: 'Reclamação', sugestao: 'Sugestão', elogio: 'Elogio' };
@@ -38,13 +38,13 @@ export default async function handler(req, res) {
                 <p><strong>Protocolo:</strong> ${protocolo}</p>
                 <p><strong>Anônimo:</strong> ${anonimo ? 'Sim' : 'Não'}</p>
                 ${!anonimo ? `
-                <p><strong>Nome:</strong> ${nome || '—'}</p>
-                <p><strong>E-mail:</strong> ${email || '—'}</p>
-                <p><strong>Telefone:</strong> ${telefone || '—'}</p>
+                <p><strong>Nome:</strong> ${escapeHtml(nome) || '—'}</p>
+                <p><strong>E-mail:</strong> ${escapeHtml(email) || '—'}</p>
+                <p><strong>Telefone:</strong> ${escapeHtml(telefone) || '—'}</p>
                 ` : ''}
                 <hr>
                 <p><strong>Mensagem:</strong></p>
-                <p>${mensagem.replace(/\n/g, '<br>')}</p>
+                <p>${escapeHtml(mensagem).replace(/\n/g, '<br>')}</p>
             `,
         });
 
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
                 subject: `Protocolo ${protocolo} — Ouvidoria ADESIAP Minas`,
                 html: `
                     <h2>Sua ${LABELS[tipo]} foi registrada</h2>
-                    <p>Olá${nome ? `, ${nome}` : ''}!</p>
+                    <p>Olá${nome ? `, ${escapeHtml(nome)}` : ''}!</p>
                     <p>Recebemos sua manifestação. Guarde o número do protocolo para acompanhamento:</p>
                     <h3 style="background:#12395D;color:#fff;padding:12px 20px;border-radius:6px;display:inline-block;">${protocolo}</h3>
                     <p>Prazo de resposta: até <strong>15 dias úteis</strong>.</p>
