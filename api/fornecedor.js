@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml, rateLimit, checkHoneypot } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -8,6 +8,12 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
     const { razao_social, cnpj, nome_contato, email, telefone, segmento, descricao } = req.body;
+
+    if (!checkHoneypot(req.body))
+        return res.status(200).json({ ok: true });
+
+    const rl = await rateLimit(req, 'fornecedor', 5, 60);
+    if (!rl.ok) return res.status(429).json({ error: 'Muitas tentativas. Aguarde um momento e tente novamente.' });
 
     if (!razao_social || !nome_contato || !email) {
         return res.status(400).json({ error: 'Campos obrigatórios: razão social, nome do contato, e-mail' });

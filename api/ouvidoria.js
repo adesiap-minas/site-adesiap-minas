@@ -1,4 +1,4 @@
-import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
+import { supabase, mailer, gerarProtocolo, corsHeaders, getEmailDestino, escapeHtml, rateLimit, checkHoneypot } from './_lib.js';
 
 const PREFIXOS   = { reclamacao: 'RCL', sugestao: 'SUG', elogio: 'ELG' };
 const LABELS     = { reclamacao: 'Reclamação', sugestao: 'Sugestão', elogio: 'Elogio' };
@@ -12,6 +12,12 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
     const { tipo, nome, email, telefone, anonimo, mensagem } = req.body;
+
+    if (!checkHoneypot(req.body))
+        return res.status(200).json({ ok: true });
+
+    const rl = await rateLimit(req, 'ouvidoria', 5, 60);
+    if (!rl.ok) return res.status(429).json({ error: 'Muitas tentativas. Aguarde um momento e tente novamente.' });
 
     if (!tipo || !mensagem) {
         return res.status(400).json({ error: 'Tipo e mensagem são obrigatórios' });

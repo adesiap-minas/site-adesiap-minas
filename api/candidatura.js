@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml, rateLimit, checkHoneypot } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -12,6 +12,12 @@ export default async function handler(req, res) {
         area_interesse, nivel, escolaridade, disponibilidade,
         curriculo_url, carta_apresentacao
     } = req.body;
+
+    if (!checkHoneypot(req.body))
+        return res.status(200).json({ ok: true });
+
+    const rl = await rateLimit(req, 'candidatura', 5, 60);
+    if (!rl.ok) return res.status(429).json({ error: 'Muitas tentativas. Aguarde um momento e tente novamente.' });
 
     if (!nome || !email || !area_interesse || !nivel || !escolaridade) {
         return res.status(400).json({ error: 'Preencha todos os campos obrigatórios' });

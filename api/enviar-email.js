@@ -1,6 +1,25 @@
 ﻿const SUPABASE_URL = 'https://vpnqqrzzptuselhiemyp.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwbnFxcnp6cHR1c2VsaGllbXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTc1ODksImV4cCI6MjA5ODAzMzU4OX0.kAlFnSeOD_n2JyhFGx9oqiIaqo-IauUIhVmVrRHNeUY';
 
+async function rateLimit(req, prefix, max = 10, windowSec = 60) {
+    const rlUrl   = process.env.UPSTASH_REDIS_REST_URL;
+    const rlToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (!rlUrl || !rlToken) return { ok: true };
+    const ip = ((req.headers['x-forwarded-for'] || '').split(',')[0].trim()) || 'unknown';
+    const window = Math.floor(Date.now() / (windowSec * 1000));
+    const key = `rl:${prefix}:${ip}:${window}`;
+    try {
+        const r = await fetch(`${rlUrl}/pipeline`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${rlToken}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify([['INCR', key], ['EXPIRE', key, windowSec * 2]]),
+        });
+        const data = await r.json();
+        const count = data?.[0]?.result ?? 0;
+        return { ok: count <= max };
+    } catch { return { ok: true }; }
+}
+
 function escapeHtml(str) {
     if (str == null) return '';
     return String(str)
@@ -218,6 +237,11 @@ async function handler(req, res) {
     try {
         const body = await parseBody(req);
         const { tipo, dados = {}, protocolo = '' } = body;
+
+        if (dados._hp) return res.status(200).json({ ok: true }); // honeypot
+
+        const rl = await rateLimit(req, `email:${tipo || 'gen'}`, 10, 60);
+        if (!rl.ok) return res.status(429).json({ error: 'Muitas tentativas. Aguarde um momento e tente novamente.' });
 
         console.log('Recebido tipo:', tipo, '| protocolo:', protocolo);
         console.log('CV presente:', !!dados._curriculo, '| tamanho base64:', dados._curriculo?.length || 0);

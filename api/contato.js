@@ -1,4 +1,4 @@
-import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml } from './_lib.js';
+import { supabase, mailer, corsHeaders, getEmailDestino, escapeHtml, rateLimit, checkHoneypot } from './_lib.js';
 
 export default async function handler(req, res) {
     const headers = corsHeaders();
@@ -7,7 +7,13 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
 
-    const { nome, email, telefone, assunto, mensagem } = req.body;
+    const { nome, email, telefone, assunto, mensagem, _hp } = req.body;
+
+    if (!checkHoneypot(req.body))
+        return res.status(200).json({ ok: true }); // silencioso: bot não sabe que foi bloqueado
+
+    const rl = await rateLimit(req, 'contato', 5, 60);
+    if (!rl.ok) return res.status(429).json({ error: 'Muitas tentativas. Aguarde um momento e tente novamente.' });
 
     if (!nome || !email || !mensagem) {
         return res.status(400).json({ error: 'Campos obrigatórios: nome, email, mensagem' });

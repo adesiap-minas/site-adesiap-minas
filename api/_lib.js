@@ -40,6 +40,45 @@ export function escapeHtml(str) {
         .replace(/'/g, '&#x27;');
 }
 
+// Rate limiting via Upstash REST (sem pacotes extras — usa fetch nativo do Node 18+).
+// Se as variáveis UPSTASH_* não estiverem configuradas, a função falha aberta (não bloqueia).
+// max = requisições permitidas por janela; windowSec = tamanho da janela em segundos.
+export async function rateLimit(req, prefix, max = 10, windowSec = 60) {
+    const rlUrl   = process.env.UPSTASH_REDIS_REST_URL;
+    const rlToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (!rlUrl || !rlToken) return { ok: true }; // fail open se não configurado
+
+    const ip = (
+        (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||
+        req.socket?.remoteAddress ||
+        'unknown'
+    );
+    const window = Math.floor(Date.now() / (windowSec * 1000));
+    const key    = `rl:${prefix}:${ip}:${window}`;
+
+    try {
+        const r = await fetch(`${rlUrl}/pipeline`, {
+            method:  'POST',
+            headers: { Authorization: `Bearer ${rlToken}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify([
+                ['INCR', key],
+                ['EXPIRE', key, windowSec * 2],
+            ]),
+        });
+        const data  = await r.json();
+        const count = data?.[0]?.result ?? 0;
+        return { ok: count <= max, count, limit: max, ip };
+    } catch {
+        return { ok: true }; // falha silenciosa — não bloqueia o usuário
+    }
+}
+
+// Verifica honeypot: o campo _hp deve chegar vazio (humano) ou ausente.
+// Bots tendem a preencher todos os campos visíveis e ocultos.
+export function checkHoneypot(body) {
+    return !body?._hp; // true = passou; false = bot detectado
+}
+
 export function corsHeaders() {
     return {
         'Access-Control-Allow-Origin': '*',
