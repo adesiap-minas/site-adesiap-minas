@@ -19,23 +19,17 @@ const ANON_KEY       = process.env.SUPABASE_ANON_KEY;
 
 const PERFIS_VALIDOS = ['super_admin','editor','ouvidoria_compliance','gestor_projetos','operador_totvs','comercial_captacao'];
 
-function decodeJWT(req) {
-    const auth = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
-    if (!auth) return null;
-    const parts = auth.split('.');
-    if (parts.length !== 3) return null;
-    try { return JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')); }
-    catch { return null; }
-}
-
-function autenticarSuperAdmin(req) {
-    const payload = decodeJWT(req);
-    if (!payload) throw new Error('Não autorizado: token ausente.');
-    if (payload.exp && Math.floor(Date.now() / 1000) > payload.exp)
-        throw new Error('Não autorizado: token expirado.');
-    if (payload?.app_metadata?.perfil !== 'super_admin')
+async function autenticarSuperAdmin(req) {
+    const token = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
+    if (!token) throw new Error('Não autorizado: token ausente.');
+    const r = await fetch(`${SB_URL}/auth/v1/user`, {
+        headers: { 'apikey': ANON_KEY, 'Authorization': `Bearer ${token}` },
+    });
+    if (!r.ok) throw new Error('Não autorizado: token inválido.');
+    const user = await r.json();
+    if (user?.app_metadata?.perfil !== 'super_admin')
         throw new Error('Acesso negado: apenas Super Admin.');
-    return payload;
+    return user;
 }
 
 async function sbAdmin(path, method = 'GET', body) {
@@ -72,7 +66,10 @@ async function sbRest(path, method = 'GET', body) {
 }
 
 module.exports = async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const allowedOrigins = new Set(['https://www.adesiap.org.br', 'https://adesiap.org.br']);
+    const origin = req.headers.origin || '';
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins.has(origin) ? origin : 'https://www.adesiap.org.br');
+    res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     if (req.method === 'OPTIONS') return res.status(204).end();
@@ -95,7 +92,7 @@ module.exports = async function handler(req, res) {
 
         // ── Visibilidade update (super_admin) ────────────────────────────────
         if (action === 'visibilidade' && req.method === 'PUT') {
-            autenticarSuperAdmin(req);
+            await autenticarSuperAdmin(req);
             const { chave, visivel } = req.body || {};
             if (!chave || typeof visivel !== 'boolean')
                 return res.status(400).json({ error: 'chave e visivel são obrigatórios.' });
@@ -108,7 +105,7 @@ module.exports = async function handler(req, res) {
         }
 
         // ── A partir daqui: gestão de usuários (super_admin) ─────────────────
-        autenticarSuperAdmin(req);
+        await autenticarSuperAdmin(req);
 
         if (req.method === 'GET') {
             const data = await sbAdmin('users?per_page=500');

@@ -108,20 +108,18 @@ async function sbFetch(path, method = 'GET', body, key) {
     return json;
 }
 
-// ── JWT decode ───────────────────────────────────────────────────────────────
-function decodeJWT(req) {
-    const auth = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
-    if (!auth) return null;
-    const parts = auth.split('.');
-    if (parts.length !== 3) return null;
-    try { return JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')); }
-    catch { return null; }
-}
-
-function isAdmin(req) {
-    const jwt = decodeJWT(req);
-    const perfil = jwt?.app_metadata?.perfil;
-    return perfil === 'super_admin' || perfil === 'editor';
+// ── Verificação JWT via Supabase Auth (valida assinatura no servidor) ────────
+async function getVerifiedPerfil(req) {
+    const token = (req.headers['authorization'] || '').replace('Bearer ', '').trim();
+    if (!token) return null;
+    try {
+        const r = await fetch(`${SB_URL}/auth/v1/user`, {
+            headers: { 'apikey': ANON_KEY, 'Authorization': `Bearer ${token}` },
+        });
+        if (!r.ok) return null;
+        const user = await r.json();
+        return user?.app_metadata?.perfil || null;
+    } catch { return null; }
 }
 
 // ── Caminho SharePoint ───────────────────────────────────────────────────────
@@ -134,7 +132,10 @@ function buildSpPath(tab, year) {
 
 // ── Handler principal ────────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const allowedOrigins = new Set(['https://www.adesiap.org.br', 'https://adesiap.org.br']);
+    const origin = req.headers.origin || '';
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins.has(origin) ? origin : 'https://www.adesiap.org.br');
+    res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     if (req.method === 'OPTIONS') return res.status(204).end();
@@ -163,7 +164,8 @@ module.exports = async function handler(req, res) {
         }
 
         // ── A partir daqui: requer autenticação ─────────────────────────────
-        if (!isAdmin(req))
+        const perfil = await getVerifiedPerfil(req);
+        if (perfil !== 'super_admin' && perfil !== 'editor')
             return res.status(403).json({ error: 'Acesso negado.' });
 
         // ── Listar todos (admin) ─────────────────────────────────────────────
