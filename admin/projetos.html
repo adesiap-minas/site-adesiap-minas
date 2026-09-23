@@ -999,7 +999,7 @@ async function salvarProjeto() {
         ods: odsNums,
         indicadores: lerIndicadores(),
         parceiros: parceiros.filter(Boolean),
-        ...(documentosPc.length ? { documentos_pc: documentosPc.filter(d => d?.url) } : {})
+        documentos_pc: documentosPc.filter(d => d?.url)
     };
 
     const btn = document.getElementById('btnSalvar');
