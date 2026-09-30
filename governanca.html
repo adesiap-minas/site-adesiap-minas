@@ -943,14 +943,16 @@
                 </div>
             </div>
         `).join('');
-        // Anima novos elementos
+        // Anima novos elementos (carregados dinamicamente após initAnimations)
         if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             document.querySelectorAll('#conselhosGrid .reveal-on-scroll').forEach(el => {
                 gsap.from(el, {
                     y: 50, opacity: 0, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none reverse' }
+                    scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
                 });
             });
+            // Recalcula posições para disparar animação em elementos já visíveis no viewport
+            ScrollTrigger.refresh();
         }
     } catch (e) {
         grid.innerHTML = '';
