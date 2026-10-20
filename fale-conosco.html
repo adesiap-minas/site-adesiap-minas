@@ -561,7 +561,11 @@
             .contact-header { padding: 50px 0 40px; }
             .info-card { padding: 24px 16px; }
             .form-container { padding: 24px 16px; }
-        }    </style>
+        }
+        .info-note { display:flex; gap:12px; align-items:flex-start; background:#eef4fb; border-left:4px solid var(--azul-institucional); border-radius:0 10px 10px 0; padding:14px 16px; margin-bottom:20px; }
+        .info-note i { color:var(--azul-institucional); margin-top:3px; flex-shrink:0; }
+        .info-note p { margin:0; font-size:0.85rem; color:var(--texto-secundario); line-height:1.6; }
+    </style>
     <link rel="stylesheet" href="./css/nav.css">
 </head>
 
@@ -727,11 +731,9 @@
                             <textarea id="mensagem" class="form-control" placeholder="Escreva sua mensagem detalhadamente..." required></textarea>
                         </div>
 
-                        <div class="form-group" style="display: flex; gap: 10px; align-items: flex-start; margin-bottom: 25px;">
-                            <input type="checkbox" id="lgpd" required style="margin-top: 5px; cursor: pointer;">
-                            <label class="form-label" for="lgpd" style="font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario); cursor: pointer; margin-bottom: 0;">
-                                Li e aceito a <a href="#" onclick="abrirPoliticaPrivacidade(); return false;" style="color: var(--terracota-institucional); font-weight: 600; text-decoration: underline;">Política de Privacidade</a> e autorizo o processamento dos meus dados para fins de retorno de contato.
-                            </label>
+                        <div class="info-note" style="margin-bottom:25px">
+                            <i class="fas fa-shield-alt"></i>
+                            <p><strong>Tratamento de dados (LGPD — Art. 9º):</strong> Os dados pessoais fornecidos serão tratados pela ADESIAP para retorno ao contato solicitado e registro de interações institucionais, com fundamento no art. 7º, inciso V, da Lei 13.709/2018. Os dados não serão compartilhados com terceiros sem sua ciência, salvo obrigação legal ou determinação de autoridade. Para mais informações ou para exercer seus direitos como titular, consulte nossa <a href="politica-privacidade.html" style="color:var(--azul-institucional);text-decoration:underline">Política de Privacidade</a> ou contate o Encarregado pelo e-mail: <a href="mailto:ouvidoria@adesiap.org.br" style="color:var(--azul-institucional)">ouvidoria@adesiap.org.br</a>.</p>
                         </div>
 
                         <div class="text-right" style="text-align: right;">

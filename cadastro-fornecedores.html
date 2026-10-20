@@ -522,7 +522,11 @@
             .topbar-inner { justify-content: center; }
             h1 { font-size: 2rem !important; }
             .form-container { padding: 24px 16px; }
-        }    </style>
+        }
+        .info-note { display:flex; gap:12px; align-items:flex-start; background:#eef4fb; border-left:4px solid var(--azul-institucional); border-radius:0 10px 10px 0; padding:14px 16px; margin-bottom:20px; }
+        .info-note i { color:var(--azul-institucional); margin-top:3px; flex-shrink:0; }
+        .info-note p { margin:0; font-size:0.85rem; color:var(--texto-secundario); line-height:1.6; }
+    </style>
     <link rel="stylesheet" href="./css/nav.css">
 </head>
 
@@ -750,12 +754,10 @@
                     </div>
                 </div>
 
-                <!-- Aceite LGPD -->
-                <div class="form-group" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 30px; margin-bottom: 25px;">
-                    <input type="checkbox" id="lgpd" required style="margin-top: 5px; cursor: pointer;">
-                    <label class="form-label" for="lgpd" style="font-weight: 500; font-size: 0.9rem; color: var(--texto-secundario); cursor: pointer; margin-bottom: 0;">
-                        Declaramos que todas as informações prestadas são verdadeiras e que estamos cientes e de acordo com a <a href="#" onclick="abrirPoliticaPrivacidade(); return false;" style="color: var(--terracota-institucional); font-weight: 600; text-decoration: underline;">Política de Privacidade</a> da Adesiap Minas, autorizando o tratamento de dados para fins de homologação e cotações.
-                    </label>
+                <!-- Aviso LGPD Art. 9º -->
+                <div class="info-note" style="margin-top:30px;margin-bottom:25px">
+                    <i class="fas fa-shield-alt"></i>
+                    <p><strong>Tratamento de dados (LGPD — Art. 9º):</strong> Os dados pessoais e documentos fornecidos serão tratados pela ADESIAP para homologação de fornecedores, participação em processos de cotação e cumprimento de obrigações legais e de prestação de contas, com fundamento no art. 7º, incisos II, V, VI e IX, da Lei 13.709/2018. Os dados serão armazenados pelo prazo exigido pela legislação aplicável. Para mais informações ou para exercer seus direitos como titular, consulte nossa <a href="politica-privacidade.html" style="color:var(--azul-institucional);text-decoration:underline">Política de Privacidade</a> ou contate o Encarregado pelo e-mail: <a href="mailto:ouvidoria@adesiap.org.br" style="color:var(--azul-institucional)">ouvidoria@adesiap.org.br</a>.</p>
                 </div>
 
                 <hr style="border: 0; border-top: 1px solid #eaeaea; margin: 35px 0;">

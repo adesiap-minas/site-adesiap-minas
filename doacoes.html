@@ -1524,19 +1524,9 @@
                                     direitos humanos/trabalhistas. <span class="req">*</span>
                                 </label>
                             </div>
-                            <div class="declaration-item">
-                                <input type="checkbox" id="aceitLGPD" name="aceite_lgpd" required>
-                                <label for="aceitLGPD">
-                                    <strong>Privacidade e LGPD:</strong> Autorizo a ADESIAP a tratar meus dados pessoais
-                                    e documentos fornecidos exclusivamente para fins de auditoria, conformidade legal e
-                                    emissão de recibos, conforme nossa <a href="#" onclick="abrirPoliticaPrivacidade(); return false;" style="color:var(--azul-institucional);text-decoration:underline">Política de
-                                        Privacidade</a>. <span class="req">*</span>
-                                </label>
-                            </div>
-
                             <div class="info-note" style="margin-top:20px;margin-bottom:24px">
-                                <i class="fas fa-lock"></i>
-                                <p>Seus dados são protegidos e tratados com total confidencialidade. Nunca compartilhamos informações com terceiros sem sua autorização, salvo obrigação legal, prestação de contas ou determinação de autoridade.</p>
+                                <i class="fas fa-shield-alt"></i>
+                                <p><strong>Tratamento de dados (LGPD — Art. 9º):</strong> Os dados pessoais e documentos fornecidos serão tratados pela ADESIAP para registro da doação, emissão de recibos, cumprimento de obrigações legais, fiscais e de prestação de contas, e para fins de auditoria e controles internos, com fundamento no art. 7º, incisos II, V, VI e IX, da Lei 13.709/2018. Os dados serão armazenados pelo prazo exigido pela legislação aplicável. Para mais informações ou para exercer seus direitos como titular, consulte nossa <a href="politica-privacidade.html" style="color:var(--azul-institucional);text-decoration:underline">Política de Privacidade</a> ou contate o Encarregado pelo e-mail: <a href="mailto:ouvidoria@adesiap.org.br" style="color:var(--azul-institucional)">ouvidoria@adesiap.org.br</a>.</p>
                             </div>
 
                             <button type="submit" class="btn-submit" id="submitBtn">
@@ -1893,10 +1883,6 @@
 
             if (!document.getElementById('aceitOrigem').checked) {
                 showToast('Você precisa aceitar a declaração de origem dos recursos.', 'error');
-                return;
-            }
-            if (!document.getElementById('aceitLGPD').checked) {
-                showToast('Você precisa autorizar o tratamento de dados (LGPD).', 'error');
                 return;
             }
 
