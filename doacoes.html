@@ -1325,6 +1325,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="form-label">CPF — Documento com Foto <span class="req">*</span></label>
+                                    <p style="font-size:0.82rem;margin-bottom:8px;color:var(--texto-secundario)">RG, CNH ou outro documento oficial com CPF e foto (frente e verso em um único arquivo)</p>
+                                    <div class="doc-upload-item">
+                                        <div class="doc-upload-label">
+                                            <span class="doc-title">Selecione o arquivo</span>
+                                            <span class="doc-sub">PDF, JPG ou PNG — máx. 10 MB</span>
+                                            <div class="doc-filename" id="docCPFNome"></div>
+                                        </div>
+                                        <label class="doc-file-btn" for="fileCPFDoc">
+                                            <i class="fas fa-id-card"></i> Selecionar
+                                            <input type="file" id="fileCPFDoc" name="doc_cpf_foto"
+                                                accept=".pdf,.jpg,.jpeg,.png">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label">Comprovante de Residência <span
                                             class="req">*</span></label>
                                     <p style="font-size:0.82rem;margin-bottom:8px;color:var(--texto-secundario)">Emitido
@@ -1794,7 +1810,8 @@
 
         // File input feedback
         const fileMap = [
-            { input: 'fileComprovante', label: 'docCompResNome' },
+            { input: 'fileCPFDoc',       label: 'docCPFNome' },
+            { input: 'fileComprovante',  label: 'docCompResNome' },
             { input: 'fileIdentificacao', label: 'docIdentNome' },
             { input: 'fileContrato', label: 'docContratoNome' },
             { input: 'fileCNDFed', label: 'docCNDFedNome' },
@@ -1829,8 +1846,11 @@
                 }
             }
 
-            // PF: comprovante de residência sempre obrigatório
-            if (tipo === 'pf') checar('fileComprovante', 'Comprovante de Residência');
+            // PF: CPF com foto e comprovante de residência sempre obrigatórios
+            if (tipo === 'pf') {
+                checar('fileCPFDoc',      'CPF (documento com foto)');
+                checar('fileComprovante', 'Comprovante de Residência');
+            }
 
             // docsSection visível: identificação obrigatória
             if (document.getElementById('docsSection').style.display !== 'none') {
