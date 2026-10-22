@@ -492,7 +492,8 @@ async function loadDocs() {
 
 function renderDocs() {
     const filter = document.getElementById('filterTab').value;
-    const docs   = filter ? allDocs.filter(d => d.tab === filter) : allDocs;
+    const active = allDocs.filter(d => d.active !== false);
+    const docs   = filter ? active.filter(d => d.tab === filter) : active;
     const tbody  = document.getElementById('docsTbody');
 
     if (!docs.length) {
