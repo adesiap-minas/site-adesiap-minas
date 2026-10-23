@@ -933,8 +933,12 @@
         const res = await fetch(`${SB_URL}/rest/v1/conselhos?ativo=eq.true&order=ordem.asc,sigla.asc`, {
             headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
         });
-        const rows = res.ok ? await res.json() : [];
-        if (!rows.length) { grid.innerHTML = ''; return; }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const rows = await res.json();
+        if (!rows.length) {
+            grid.innerHTML = '<div class="col-12 text-center" style="padding:40px 0;color:var(--texto-secundario)"><i class="fas fa-landmark" style="font-size:2rem;margin-bottom:12px;display:block;opacity:.3"></i><p>Nenhum conselho cadastrado no momento.</p></div>';
+            return;
+        }
         grid.innerHTML = rows.map(r => `
             <div class="col-lg-4 col-md-6 reveal-on-scroll">
                 <div class="conselho-card">
@@ -955,7 +959,8 @@
             ScrollTrigger.refresh();
         }
     } catch (e) {
-        grid.innerHTML = '';
+        console.error('[conselhos]', e.message);
+        grid.innerHTML = '<div class="col-12 text-center" style="padding:40px 0;color:var(--texto-secundario)"><i class="fas fa-exclamation-circle" style="font-size:2rem;margin-bottom:12px;display:block;opacity:.4"></i><p>Não foi possível carregar os conselhos. Tente novamente mais tarde.</p></div>';
     }
 })();
 </script>
