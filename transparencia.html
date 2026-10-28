@@ -583,13 +583,12 @@
             <div class="row reveal-on-scroll delay-1">
                 <div class="col-12">
                     <div class="tabs-nav">
-                        <button class="tab-btn active" onclick="openTab(event, 'inst')">Documentos
-                            Institucionais</button>
-                        <button class="tab-btn" onclick="openTab(event, 'contas')">Prestação de Contas</button>
-                        <button class="tab-btn" onclick="openTab(event, 'relatorios')">Relatórios e Atas</button>
-                        <button class="tab-btn" onclick="openTab(event, 'editais')">Editais</button>
-                        <button class="tab-btn" onclick="openTab(event, 'parcerias')">Parcerias Públicas e Privadas</button>
-                        <button class="tab-btn" onclick="openTab(event, 'mural')">Contratos e Parcerias</button>
+                        <button class="tab-btn active" data-tab="inst"       onclick="openTab(event, 'inst')">Documentos Institucionais</button>
+                        <button class="tab-btn"         data-tab="contas"     onclick="openTab(event, 'contas')">Prestação de Contas</button>
+                        <button class="tab-btn"         data-tab="relatorios" onclick="openTab(event, 'relatorios')">Relatório de Atividades</button>
+                        <button class="tab-btn"         data-tab="editais"    onclick="openTab(event, 'editais')">Editais</button>
+                        <button class="tab-btn"         data-tab="parcerias"  onclick="openTab(event, 'parcerias')">Parcerias Públicas e Privadas</button>
+                        <button class="tab-btn"         data-tab="mural"      onclick="openTab(event, 'mural')">Contratos e Parcerias</button>
                     </div>
 
                     <div id="inst"      class="tab-content" style="display:block;"></div>
@@ -850,10 +849,25 @@
     fetch('/api/admin/transparencia-docs?action=public-list')
         .then(function (r) { return r.json(); })
         .then(function (grouped) {
+            var firstWithContent = null;
             ['inst','contas','relatorios','editais','parcerias','mural'].forEach(function (tab) {
-                var el = document.getElementById(tab);
+                var el  = document.getElementById(tab);
+                var btn = document.querySelector('[data-tab="' + tab + '"]');
+                var hasContent = grouped[tab] && Object.keys(grouped[tab]).length > 0;
                 if (el) renderTab(el, grouped[tab]);
+                if (btn) {
+                    btn.style.display = hasContent ? '' : 'none';
+                    if (hasContent && !firstWithContent) firstWithContent = tab;
+                }
             });
+            // Se a aba ativa ficou sem conteúdo, ativa a primeira que tiver
+            var activeBtn = document.querySelector('.tab-btn.active');
+            if (activeBtn && activeBtn.style.display === 'none' && firstWithContent) {
+                document.querySelectorAll('.tab-content').forEach(function(el) { el.style.display = 'none'; });
+                document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+                document.getElementById(firstWithContent).style.display = 'block';
+                document.querySelector('[data-tab="' + firstWithContent + '"]').classList.add('active');
+            }
         })
         .catch(function () {
             ['inst','contas','relatorios','editais','parcerias','mural'].forEach(function (tab) {
